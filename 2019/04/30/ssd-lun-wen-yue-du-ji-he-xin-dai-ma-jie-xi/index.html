@@ -1,0 +1,1339 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <meta name="keywords" content="SSD论文阅读及核心代码解析, MXQ">
+    <meta name="description" content="SSD:Single Shot MultiBox Detector
+作者Wei Liu
+内容在本文中,作者提出了一种使用单个神经网络进行目标检测的框架,该框架的特点如下:
+
+将网络的bounding boxes的输出空间划分为default">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SSD论文阅读及核心代码解析 | MXQ</title>
+    <link rel="icon" type="image/png" href="/my_favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
+
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/my_logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">MXQ</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/my_logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">MXQ</div>
+        <div class="logo-desc">
+            
+            Keep Thinking Keep Moving
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        SSD论文阅读及核心代码解析
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/深度学习/" target="_blank">
+                                <span class="chip bg-color">深度学习</span>
+                            </a>
+                        
+                            <a href="/tags/目标检测/" target="_blank">
+                                <span class="chip bg-color">目标检测</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/深度学习/" class="post-category" target="_blank">
+                                深度学习
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-04-30
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="SSD-Single-Shot-MultiBox-Detector"><a href="#SSD-Single-Shot-MultiBox-Detector" class="headerlink" title="SSD:Single Shot MultiBox Detector"></a>SSD:Single Shot MultiBox Detector</h2><hr>
+<h2 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h2><p><strong>Wei Liu</strong></p>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>在本文中,作者提出了一种使用单个神经网络进行目标检测的框架,该框架的特点如下:</p>
+<ol>
+<li><p>将网络的bounding boxes的输出空间划分为default boxes的集合,这些boxes具有不同的尺度和比例.对于被选中用于目标预测的feature maps,网络会针对该特征图中的每一个位置预测多个default boxes,这些default boxes又称为anchors.<br>对于每一个default box,网络给出其存在目标的分数(每一个类别分别预测一个),同时给出在default box的基础上进行形状调整的参数.</p>
+</li>
+<li><p>为了应对目标的尺度变化,SSD在来自于网络的多个具有不同分辨率的feature maps上进行预测.其中,靠近网络前侧,具有较高分辨率的feature map适用于进行小目标的检测,而后侧的feature maps适用于大目标的检测.</p>
+</li>
+</ol>
+<p>作者将本文的贡献总结如下:</p>
+<ol>
+<li>SSD的核心是:在事先设定的固定大小,比例的default boxes的基础上,使用较小的卷积核预测目标隶属于某一类的分数以及box的偏差.</li>
+<li>为了获得较高的检测准确率,在具有不同大小的feature maps上产生具有不同尺度的预测,且这些预测又可以具有不同的长宽比.</li>
+<li>网络可以进行end-to-end训练,同时取得不错的准确率.</li>
+</ol>
+<h2 id="SSD网络结构"><a href="#SSD网络结构" class="headerlink" title="SSD网络结构"></a>SSD网络结构</h2><h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>SSD方法基于前馈神经网络,该网络产生固定数目的bounding boxes集合,同时给出这些boxes中存在某一类别的目标的分数,在这些bounding boxes的基础上,使用NMS算法求出最后的结果.网络的结构如下:</p>
+<center><br><img src="/2019/04/30/ssd-lun-wen-yue-du-ji-he-xin-dai-ma-jie-xi/SSD网络结构.png" title="SSD网络结构"><br></center>
+
+<p>由上图可以发现,总共选取了6层具有不同大小的feature maps用于目标检测,与R-CNN等方法使用全连接层给出预测结果不同,SSD使用较小的卷积计算得到预测结果.对于每一层feature map,使用一个卷积核计算得到各个default boxes属于某一类的分数,使用另一个卷积核得到在各个default boxes位置的基础上的偏差.</p>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><h4 id="匹配策略"><a href="#匹配策略" class="headerlink" title="匹配策略"></a>匹配策略</h4><p>在进行训练的时候,需要决定哪一个default boxes与ground truth相关联,只有被选中的default boxes才会参与训练.所采取的策略为:<strong>首先将每一个ground truth和与其覆盖率最大的default boxes进行匹配,接着将与ground truth的jaccard重合率高于设定阈值的default boxes视为匹配</strong>,这样,在第一步保证每一个ground truth都会有匹配的default boxes的基础上,第二步使得多个default boxes可以匹配同一个ground truth.这一设定简化了学习问题,使得网络可以对多个重合的default boxes给出较高的预测分数,而不是仅仅选择具有最高重合率的一个.<br>匹配代码如下:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># ./layers/box_utils.py</span>
+<span class="token keyword">def</span> <span class="token function">point_form</span><span class="token punctuation">(</span>boxes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># 将(cx, cy, w, h) 形式的box坐标转换成 (xmin, ymin, xmax, ymax) 形式</span>
+    <span class="token keyword">return</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span> <span class="token punctuation">(</span>boxes<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">-</span> boxes<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true"># xmin, ymin</span>
+                    <span class="token punctuation">(</span>boxes<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">+</span> boxes<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># xmax, ymax</span>
+
+
+<span class="token keyword">def</span> <span class="token function">intersect</span><span class="token punctuation">(</span>box_a<span class="token punctuation">,</span> box_b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># box_a: (truths), (tensor:[num_obj, 4])</span>
+    <span class="token comment" spellcheck="true"># box_b: (priors), (tensor:[num_priors, 4], 即[8732, 4])</span>
+    <span class="token comment" spellcheck="true"># return: (tensor:[num_obj, num_priors]) box_a 与 box_b 两个集合中任意两个 box 的交集, 其中res[i][j]代表box_a中第i个box与box_b中第j个box的交集.(非对称矩阵)</span>
+    <span class="token comment" spellcheck="true"># 思路: 先将两个box的维度扩展至相同维度: [num_obj, num_priors, 4], 然后计算面积的交集</span>
+    <span class="token comment" spellcheck="true"># 两个box的交集可以看成是一个新的box, 该box的左上角坐标是box_a和box_b左上角坐标的较大值, 右下角坐标是box_a和box_b的右下角坐标的较小值</span>
+    A <span class="token operator">=</span> box_a<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+    B <span class="token operator">=</span> box_b<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># box_a 左上角/右下角坐标 expand以后, 维度会变成(A,B,2), 其中, 具体可看 expand 的相关原理. box_b也是同理, 这样做是为了得到a中某个box与b中某个box的左上角(min_xy)的较大者(max)</span>
+    <span class="token comment" spellcheck="true"># unsqueeze 为增加维度的数量, expand 为扩展维度的大小</span>
+    min_xy <span class="token operator">=</span> torch<span class="token punctuation">.</span>max<span class="token punctuation">(</span>box_a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand<span class="token punctuation">(</span>A<span class="token punctuation">,</span>B<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        box_b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand<span class="token punctuation">(</span>A<span class="token punctuation">,</span>B<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 在box_a的 A 和 2 之间增加一个维度, 并将维度扩展到 B. box_b 同理</span>
+    <span class="token comment" spellcheck="true"># 求右下角(max_xy)的较小者(min)</span>
+    max_xy <span class="token operator">=</span> torch<span class="token punctuation">.</span>min<span class="token punctuation">(</span>box_a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand<span class="token punctuation">(</span>A<span class="token punctuation">,</span>B<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                        box_b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand<span class="token punctuation">(</span>A<span class="token punctuation">,</span>B<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    inter <span class="token operator">=</span> torch<span class="token punctuation">.</span>clamp<span class="token punctuation">(</span><span class="token punctuation">(</span>max_xy<span class="token punctuation">,</span> min_xy<span class="token punctuation">)</span><span class="token punctuation">,</span> min<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 右下角减去左上角, 如果为负值, 说明没有交集, 置为0</span>
+    <span class="token keyword">return</span> inter<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> inter<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># 高×宽, 返回交集的面积, shape 刚好为 [A, B]</span>
+
+
+<span class="token keyword">def</span> <span class="token function">jaccard</span><span class="token punctuation">(</span>box_a<span class="token punctuation">,</span> box_b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># A ∩ B / A ∪ B = A ∩ B / (area(A) + area(B) - A ∩ B)</span>
+    <span class="token comment" spellcheck="true"># box_a: (truths), (tensor:[num_obj, 4])</span>
+    <span class="token comment" spellcheck="true"># box_b: (priors), (tensor:[num_priors, 4], 即[8732, 4])</span>
+    <span class="token comment" spellcheck="true"># return: (tensor:[num_obj, num_priors]), 代表了 box_a 和 box_b 两个集合中任意两个 box之间的交并比</span>
+    inter <span class="token operator">=</span> intersect<span class="token punctuation">(</span>box_a<span class="token punctuation">,</span> box_b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 求任意两个box的交集面积, shape为[A, B], 即[num_obj, num_priors]</span>
+    area_a <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>box_a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">-</span>box_a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>box_a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">-</span>box_a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>inter<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># [A,B]</span>
+    area_b <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>box_b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">-</span>box_b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span>box_b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">-</span>box_b<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>inter<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># [A,B], 这里会将A中的元素复制B次</span>
+    union <span class="token operator">=</span> area_a <span class="token operator">+</span> area_b <span class="token operator">-</span> inter
+    <span class="token keyword">return</span> inter <span class="token operator">/</span> union <span class="token comment" spellcheck="true"># [A, B], 返回任意两个box之间的交并比, res[i][j] 代表box_a中的第i个box与box_b中的第j个box之间的交并比.</span>
+
+<span class="token keyword">def</span> <span class="token function">encode</span><span class="token punctuation">(</span>matched<span class="token punctuation">,</span> priors<span class="token punctuation">,</span> variances<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># 对边框坐标进行编码, 需要宽度方差和高度方差两个参数, 具体公式可以参见原文公式(2)</span>
+    <span class="token comment" spellcheck="true"># matched: [num_priors,4] 存储的是与priorbox匹配的gtbox的坐标. 形式为(xmin, ymin, xmax, ymax)</span>
+    <span class="token comment" spellcheck="true"># priors: [num_priors, 4] 存储的是priorbox的坐标. 形式为(cx, cy, w, h)</span>
+    <span class="token comment" spellcheck="true"># return : encoded boxes: [num_priors, 4]</span>
+    g_cxy <span class="token operator">=</span> <span class="token punctuation">(</span>matched<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">+</span> matched<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span> <span class="token operator">-</span> priors<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># 用互相匹配的gtbox的中心坐标减去priorbox的中心坐标, 获得中心坐标的偏移量</span>
+    g_cxy <span class="token operator">/=</span> <span class="token punctuation">(</span>variances<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>priors<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 令中心坐标分别除以 d_i^w 和 d_i^h, 正如原文公式所示</span>
+    <span class="token comment" spellcheck="true">#variances[0]为0.1, 令其分别乘以w和h, 得到d_i^w 和 d_i^h</span>
+    g_wh <span class="token operator">=</span> <span class="token punctuation">(</span>matched<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">-</span> matched<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">/</span> priors<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># 令互相匹配的gtbox的宽高除以priorbox的宽高.</span>
+    g_wh <span class="token operator">=</span> torch<span class="token punctuation">.</span>log<span class="token punctuation">(</span>g_wh<span class="token punctuation">)</span> <span class="token operator">/</span> variances<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># 这里这个variances[1]=0.2 不太懂是为什么.</span>
+    <span class="token keyword">return</span> torch<span class="token punctuation">.</span>cat<span class="token punctuation">(</span><span class="token punctuation">[</span>g_cxy<span class="token punctuation">,</span> g_wh<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 将编码后的中心坐标和宽高``连接起来, 返回 [num_priors, 4]</span>
+
+<span class="token keyword">def</span> <span class="token function">match</span><span class="token punctuation">(</span>threshold<span class="token punctuation">,</span> truths<span class="token punctuation">,</span> priors<span class="token punctuation">,</span> variances<span class="token punctuation">,</span> labels<span class="token punctuation">,</span> loc_t<span class="token punctuation">,</span> conf_t<span class="token punctuation">,</span> idx<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># threshold: (float) 确定是否匹配的交并比阈值</span>
+    <span class="token comment" spellcheck="true"># truths: (tensor: [num_obj, 4]) 存储真实 box 的边框坐标</span>
+    <span class="token comment" spellcheck="true"># priors: (tensor: [num_priors, 4], 即[8732, 4]), 存储推荐框的坐标, 注意, 此时的框是 default box, 而不是 SSD 网络预测出来的框的坐标, 预测的结果存储在 loc_data中, 其 shape 为[num_obj, 8732, 4].</span>
+    <span class="token comment" spellcheck="true"># variances: cfg['variance'], [0.1, 0.2], 用于将坐标转换成方便训练的形式(参考RCNN系列对边框坐标的处理)</span>
+    <span class="token comment" spellcheck="true"># labels: (tensor: [num_obj]), 代表了每个真实 box 对应的类别的编号</span>
+    <span class="token comment" spellcheck="true"># loc_t: (tensor: [batches, 8732, 4]),</span>
+    <span class="token comment" spellcheck="true"># conf_t: (tensor: [batches, 8732]),</span>
+    <span class="token comment" spellcheck="true"># idx: batches 中图片的序号, 标识当前正在处理的 image 在 batches 中的序号</span>
+    overlaps <span class="token operator">=</span> jaccard<span class="token punctuation">(</span>truths<span class="token punctuation">,</span> point_form<span class="token punctuation">(</span>priors<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># [A, B], 返回任意两个box之间的交并比, overlaps[i][j] 代表box_a中的第i个box与box_b中的第j个box之间的交并比.</span>
+
+    <span class="token comment" spellcheck="true"># 二部图匹配(Bipartite Matching)</span>
+    <span class="token comment" spellcheck="true"># [num_objs,1], 得到对于每个 gt box 来说的匹配度最高的 prior box, 前者存储交并比, 后者存储prior box在num_priors中的位置</span>
+    best_prior_overlap<span class="token punctuation">,</span> best_prior_idx <span class="token operator">=</span> overlaps<span class="token punctuation">.</span>max<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> keepdim<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># keepdim=True, 因此shape为[num_objs,1]</span>
+    <span class="token comment" spellcheck="true"># [1, num_priors], 即[1,8732], 同理, 得到对于每个 prior box 来说的匹配度最高的 gt box</span>
+    best_truth_overlap<span class="token punctuation">,</span> best_truth_idx <span class="token operator">=</span> overlaps<span class="token punctuation">.</span>max<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> keepdim<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    best_prior_idx<span class="token punctuation">.</span>squeeze_<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 上面特意保留了维度(keepdim=True), 这里又都把维度 squeeze/reduce 了, 实际上只需用默认的 keepdim=False 就可以自动 squeeze/reduce 维度.</span>
+    best_prior_overlap<span class="token punctuation">.</span>squeeze_<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    best_truth_idx<span class="token punctuation">.</span>squeeze_<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+    best_truth_overlap<span class="token punctuation">.</span>squeeze_<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+    best_truth_overlap<span class="token punctuation">.</span>index_fill_<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> best_prior_idx<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># 维度压缩后变为[num_priors], best_prior_idx 维度为[num_objs],</span>
+    <span class="token comment" spellcheck="true"># 该语句会将与gt box匹配度最好的prior box 的交并比置为 2, 确保其最大, 以免防止某些 gtbox 没有匹配的 priorbox.</span>
+
+    <span class="token comment" spellcheck="true"># 假想一种极端情况, 所有的priorbox与某个gtbox(标记为G)的交并比为1, 而其他gtbox分别有一个交并比</span>
+    <span class="token comment" spellcheck="true"># 最高的priorbox, 但是肯定小于1(因为其他的gtbox与G的交并比肯定小于1), 这样一来, 就会使得所有</span>
+    <span class="token comment" spellcheck="true"># 的priorbox都与G匹配, 为了防止这种情况, 我们将那些对gtbox来说, 具有最高交并比的priorbox,</span>
+    <span class="token comment" spellcheck="true"># 强制进行互相匹配, 即令best_truth_idx[best_prior_idx[j]] = j, 详细见下面的for循环</span>
+
+    <span class="token comment" spellcheck="true"># 注意!!: 因为 gt box 的数量要远远少于 prior box 的数量, 因此, 同一个 gt box 会与多个 prior box 匹配.</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>best_prior_idx<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># range:0~num_obj-1</span>
+        best_truth_idx<span class="token punctuation">[</span>best_prior_idx<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> j
+        <span class="token comment" spellcheck="true"># best_prior_idx[j] 代表与box_a的第j个box交并比最高的 prior box 的下标, 将与该 gtbox</span>
+        <span class="token comment" spellcheck="true"># 匹配度最好的 prior box 的下标改为j, 由此,完成了该 gtbox 与第j个 prior box 的匹配.</span>
+        <span class="token comment" spellcheck="true"># 这里的循环只会进行num_obj次, 剩余的匹配为 best_truth_idx 中原本的值.</span>
+        <span class="token comment" spellcheck="true"># 这里处理的情况是, priorbox中第i个box与gtbox中第k个box的交并比最高,</span>
+        <span class="token comment" spellcheck="true"># 即 best_truth_idx[i]= k</span>
+        <span class="token comment" spellcheck="true"># 但是对于best_prior_idx[k]来说, 它却与priorbox的第l个box有着最高的交并比,</span>
+        <span class="token comment" spellcheck="true"># 即best_prior_idx[k]=l</span>
+        <span class="token comment" spellcheck="true"># 而对于gtbox的另一个边框gtbox[j]来说, 它与priorbox[i]的交并比最大,</span>
+        <span class="token comment" spellcheck="true"># 即但是对于best_prior_idx[j] = i.</span>
+        <span class="token comment" spellcheck="true"># 那么, 此时, 我们就应该将best_truth_idx[i]= k 修改成 best_truth_idx[i]= j.</span>
+        <span class="token comment" spellcheck="true"># 即令 priorbox[i] 与 gtbox[j]对应.</span>
+        <span class="token comment" spellcheck="true"># 这样做的原因: 防止某个gtbox没有匹配的 prior box.</span>
+    mathes <span class="token operator">=</span> truths<span class="token punctuation">[</span>best_truth_idx<span class="token punctuation">]</span>
+    <span class="token comment" spellcheck="true"># truths 的shape 为[num_objs, 4], 而best_truth_idx是一个指示下标的列表, 列表长度为 8732,</span>
+    <span class="token comment" spellcheck="true"># 列表中的下标范围为0~num_objs-1, 代表的是与每个priorbox匹配的gtbox的下标</span>
+    <span class="token comment" spellcheck="true"># 上面的表达式会返回一个shape为 [num_priors, 4], 即 [8732, 4] 的tensor, 代表的就是与每个priorbox匹配的gtbox的坐标值.</span>
+    conf <span class="token operator">=</span> labels<span class="token punctuation">[</span>best_truth_idx<span class="token punctuation">]</span><span class="token operator">+</span><span class="token number">1</span> <span class="token comment" spellcheck="true"># 与上面的语句道理差不多, 这里得到的是每个prior box匹配的类别编号, shape 为[8732]</span>
+    conf<span class="token punctuation">[</span>best_truth_overlap <span class="token operator">&lt;</span> threshold<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment" spellcheck="true"># 将与gtbox的交并比小于阈值的置为0 , 即认为是非物体框</span>
+    loc <span class="token operator">=</span> encode<span class="token punctuation">(</span>matches<span class="token punctuation">,</span> priors<span class="token punctuation">,</span> variances<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 返回编码后的中心坐标和宽高.</span>
+    loc_t<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> loc <span class="token comment" spellcheck="true"># 设置第idx张图片的gt编码坐标信息</span>
+    conf_t<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> conf <span class="token comment" spellcheck="true"># 设置第idx张图片的编号信息.(大于0即为物体编号, 认为有物体, 小于0认为是背景)</span>
+</code></pre>
+<p><strong>代码流程为</strong>:</p>
+<ol>
+<li>计算出每一个ground truth与每一个default boxes的jaccard overlap;</li>
+<li>挑出与每一个ground truth最匹配(重复度最高)的default boxes;</li>
+<li>挑出与每一个default boxes最匹配的ground truth;</li>
+<li>注意,最终的匹配结果要保证在每一个ground truth都有与之匹配的default boxes的基础上,可以存在多个default boxes匹配同一个ground truth,这就是<pre><code>for j in range(best_prior_idx.size(0)):
+   best_truth_idx[best_prior_idx[j]] = j
+</code></pre> 这一for循环完成的功能.</li>
+<li>将重复率低于阈值的标记为背景目标.</li>
+</ol>
+<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>模型的整体损失函数如下:</p>
+<center><br>$L ( x , c , l , g ) = \frac { 1 } { N } \left( L _ { c o n f } ( x , c ) + \alpha L _ { l o c } ( x , l , g ) \right)$<br></center>
+
+<p>其中N表示匹配的default boxes的数目,其中定位误差的计算方式如下:</p>
+<center><br>$L _ { l o c } ( x , l , g ) = \sum _ { i \in P o s } ^ { N } \sum _ { m \in { c x , c y , w , h } } x _ { i j } ^ { k } \operatorname { smooth } _ { \mathrm { LI } } \left( l _ { i } ^ { m } - \hat { g } _ { j } ^ { m } \right)$<br><br>$\hat { g } _ { j } ^ { c x } = \left( g _ { j } ^ { c x } - d _ { i } ^ { c x } \right) / d _ { i } ^ { w } \quad \hat { g } _ { j } ^ { c y } = \left( g _ { j } ^ { c y } - d _ { i } ^ { c y } \right) / d _ { i } ^ { h }$<br><br>$\hat { g } _ { j } ^ { w } = \log \left( \frac { g _ { j } ^ { w } } { d _ { i } ^ { w } } \right) \quad \hat { g } _ { j } ^ { h } = \log \left( \frac { g _ { j } ^ { h } } { d _ { i } ^ { h } } \right)$<br></center>
+
+<p>与Faster R-CNN类似,预测相对于default boxes的中心坐标的偏差,以及其宽和高.其中$x_ij^p$表示,将第i个default boxes与类别p的第j个ground truth进行匹配,这里,要将ground truth转换为相对于default boxes的偏移量.<br>置信度损失如下:</p>
+<center><br>$L _ { c o n f } ( x , c ) = - \sum _ { i \in P o s } ^ { N } x _ { i j } ^ { p } \log \left( \hat { c } _ { i } ^ { p } \right) - \sum _ { i \in N e g } \log \left( \hat { c } _ { i } ^ { 0 } \right) \quad  where  \quad \hat { c } _ { i } ^ { p } = \frac { \exp \left( c _ { i } ^ { p } \right) } { \sum _ { p } \exp \left( c _ { i } ^ { p } \right) }$<br></center>
+
+<p>其中$\alpha$设置为1.<br>代码如下:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># layers/modules/multibox_loss.py</span>
+
+<span class="token keyword">class</span> <span class="token class-name">MultiBoxLoss</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># 计算目标:</span>
+    <span class="token comment" spellcheck="true"># 输出那些与真实框的iou大于一定阈值的框的下标.</span>
+    <span class="token comment" spellcheck="true"># 根据与真实框的偏移量输出localization目标</span>
+    <span class="token comment" spellcheck="true"># 用难样例挖掘算法去除大量负样本(默认正负样本比例为1:3)</span>
+    <span class="token comment" spellcheck="true"># 目标损失:</span>
+    <span class="token comment" spellcheck="true"># L(x,c,l,g) = (Lconf(x,c) + αLloc(x,l,g)) / N</span>
+    <span class="token comment" spellcheck="true"># 参数:</span>
+    <span class="token comment" spellcheck="true"># c: 类别置信度(class confidences)</span>
+    <span class="token comment" spellcheck="true"># l: 预测的框(predicted boxes)</span>
+    <span class="token comment" spellcheck="true"># g: 真实框(ground truth boxes)</span>
+    <span class="token comment" spellcheck="true"># N: 匹配到的框的数量(number of matched default boxes)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num_classes<span class="token punctuation">,</span> overlap_thresh<span class="token punctuation">,</span> prior_for_matching<span class="token punctuation">,</span> bkg_label<span class="token punctuation">,</span> neg_mining<span class="token punctuation">,</span> neg_pos<span class="token punctuation">,</span> neg_overlap<span class="token punctuation">,</span> encode_target<span class="token punctuation">,</span> use_gpu<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span>MultiBoxLoss<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>use_gpu <span class="token operator">=</span> use_gpu
+        self<span class="token punctuation">.</span>num_classes<span class="token operator">=</span> num_classes <span class="token comment" spellcheck="true"># 列表数</span>
+        self<span class="token punctuation">.</span>threshold <span class="token operator">=</span> overlap_thresh <span class="token comment" spellcheck="true"># 交并比阈值, 0.5</span>
+        self<span class="token punctuation">.</span>background_label <span class="token operator">=</span> bkg_label <span class="token comment" spellcheck="true"># 背景标签, 0</span>
+        self<span class="token punctuation">.</span>use_prior_for_matching <span class="token operator">=</span> prior_for_matching <span class="token comment" spellcheck="true"># True 没卵用</span>
+        self<span class="token punctuation">.</span>do_neg_mining <span class="token operator">=</span> neg_mining <span class="token comment" spellcheck="true"># True, 没卵用</span>
+        self<span class="token punctuation">.</span>negpos_ratio <span class="token operator">=</span> neg_pos <span class="token comment" spellcheck="true"># 负样本和正样本的比例, 3:1</span>
+        self<span class="token punctuation">.</span>neg_overlap <span class="token operator">=</span> neg_overlap <span class="token comment" spellcheck="true"># 0.5 判定负样本的阈值.</span>
+        self<span class="token punctuation">.</span>encode_target <span class="token operator">=</span> encode_target <span class="token comment" spellcheck="true"># False 没卵用</span>
+        self<span class="token punctuation">.</span>variance <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"variance"</span><span class="token punctuation">]</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> predictions<span class="token punctuation">,</span> targets<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        loc_data<span class="token punctuation">,</span> conf_data<span class="token punctuation">,</span> priors <span class="token operator">=</span> predictions
+        <span class="token comment" spellcheck="true"># loc_data: [batch_size, 8732, 4]</span>
+        <span class="token comment" spellcheck="true"># conf_data: [batch_size, 8732, 21]</span>
+        <span class="token comment" spellcheck="true"># priors: [8732, 4] default box 对于任意的图片, 都是相同的, 因此无需带有 batch 维度</span>
+        num <span class="token operator">=</span> loc_data<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># num = batch_size</span>
+        priors <span class="token operator">=</span> priors<span class="token punctuation">[</span><span class="token punctuation">:</span>loc_data<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># loc_data.size(1) = 8732, 因此 priors 维持不变</span>
+        num_priors <span class="token operator">=</span> <span class="token punctuation">(</span>priors<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># num_priors = 8732</span>
+        num_classes <span class="token operator">=</span> self<span class="token punctuation">.</span>num_classes <span class="token comment" spellcheck="true"># num_classes = 21 (默认为voc数据集)</span>
+
+        <span class="token comment" spellcheck="true"># 将priors(default boxes)和ground truth boxes匹配</span>
+        loc_t <span class="token operator">=</span> torch<span class="token punctuation">.</span>Tensor<span class="token punctuation">(</span>num<span class="token punctuation">,</span> num_priors<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># shape:[batch_size, 8732, 4]</span>
+        conf_t <span class="token operator">=</span> torch<span class="token punctuation">.</span>LongTensor<span class="token punctuation">(</span>num<span class="token punctuation">,</span> num_priors<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># shape:[batch_size, 8732]</span>
+        <span class="token keyword">for</span> idx <span class="token keyword">in</span> range<span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true"># targets是列表, 列表的长度为batch_size, 列表中每个元素为一个 tensor,</span>
+            <span class="token comment" spellcheck="true"># 其 shape 为 [num_objs, 5], 其中 num_objs 为当前图片中物体的数量, 第二维前4个元素为边框坐标, 最后一个元素为类别编号(1~20)</span>
+            truths <span class="token operator">=</span> targets<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token comment" spellcheck="true"># [num_objs, 4]</span>
+            labels <span class="token operator">=</span> targets<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token comment" spellcheck="true"># [num_objs] 使用的是 -1, 而不是 -1:, 因此, 返回的维度变少了</span>
+            defaults <span class="token operator">=</span> priors<span class="token punctuation">.</span>data <span class="token comment" spellcheck="true"># [8732, 4]</span>
+            <span class="token comment" spellcheck="true"># from ..box_utils import match</span>
+            <span class="token comment" spellcheck="true"># 关键函数, 实现候选框与真实框之间的匹配, 注意是候选框而不是预测结果框! 这个函数实现较为复杂, 会在后面着重讲解</span>
+            match<span class="token punctuation">(</span>self<span class="token punctuation">.</span>threshold<span class="token punctuation">,</span> truths<span class="token punctuation">,</span> defaults<span class="token punctuation">,</span> self<span class="token punctuation">.</span>variance<span class="token punctuation">,</span> labels<span class="token punctuation">,</span> loc_t<span class="token punctuation">,</span> conf_t<span class="token punctuation">,</span> idx<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 注意! 要清楚 Python 中的参数传递机制, 此处在函数内部会改变 loc_t, conf_t 的值, 关于 match 的详细讲解可以看后面的代码解析</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>use_gpu<span class="token punctuation">:</span>
+            loc_t <span class="token operator">=</span> loc_t<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            conf_t <span class="token operator">=</span> conf_t<span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 用Variable封装loc_t, 新版本的 PyTorch 无需这么做, 只需要将 requires_grad 属性设置为 True 就行了</span>
+        loc_t <span class="token operator">=</span> Variable<span class="token punctuation">(</span>loc_t<span class="token punctuation">,</span> requires_grad<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        conf_t <span class="token operator">=</span> Variable<span class="token punctuation">(</span>conf_t<span class="token punctuation">,</span> requires_grad<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+
+        pos <span class="token operator">=</span> conf_t <span class="token operator">></span> <span class="token number">0</span> <span class="token comment" spellcheck="true"># 筛选出 >0 的box下标(大部分都是=0的)</span>
+        num_pos <span class="token operator">=</span> pos<span class="token punctuation">.</span>sum<span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> keepdim<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 求和, 取得满足条件的box的数量, [batch_size, num_gt_threshold]</span>
+
+        <span class="token comment" spellcheck="true"># 位置(localization)损失函数, 使用 Smooth L1 函数求损失</span>
+        <span class="token comment" spellcheck="true"># loc_data:[batch, num_priors, 4]</span>
+        <span class="token comment" spellcheck="true"># pos: [batch, num_priors]</span>
+        <span class="token comment" spellcheck="true"># pos_idx: [batch, num_priors, 4], 复制下标成坐标格式, 以便获取坐标值</span>
+        pos_idx <span class="token operator">=</span> pos<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span>pos<span class="token punctuation">.</span>dim<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>loc_data<span class="token punctuation">)</span>
+        loc_p <span class="token operator">=</span> loc_data<span class="token punctuation">[</span>pos_idx<span class="token punctuation">]</span><span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true"># 获取预测结果值</span>
+        loc_t <span class="token operator">=</span> loc_t<span class="token punctuation">[</span>pos_idx<span class="token punctuation">]</span><span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 获取gt值</span>
+        loss_l <span class="token operator">=</span> F<span class="token punctuation">.</span>smooth_l1_loss<span class="token punctuation">(</span>loc_p<span class="token punctuation">,</span> loc_t<span class="token punctuation">,</span> size_average<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 计算损失</span>
+
+        <span class="token comment" spellcheck="true"># 计算最大的置信度, 以进行难负样本挖掘</span>
+        <span class="token comment" spellcheck="true"># conf_data: [batch, num_priors, num_classes]</span>
+        <span class="token comment" spellcheck="true"># batch_conf: [batch, num_priors, num_classes]</span>
+        batch_conf <span class="token operator">=</span> conf_data<span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>num_classes<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># reshape</span>
+
+        <span class="token comment" spellcheck="true"># conf_t: [batch, num_priors]</span>
+        <span class="token comment" spellcheck="true"># loss_c: [batch*num_priors, 1], 计算每个priorbox预测后的损失</span>
+        loss_c <span class="token operator">=</span> log_sum_exp<span class="token punctuation">(</span>batch_conf<span class="token punctuation">)</span> <span class="token operator">-</span> batch_conf<span class="token punctuation">.</span>gather<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> conf_t<span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token comment" spellcheck="true"># 难负样本挖掘, 按照loss进行排序, 取loss最大的负样本参与更新</span>
+        loss_c<span class="token punctuation">[</span>pos<span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment" spellcheck="true"># 将所有的pos下标的box的loss置为0(pos指示的是正样本的下标)</span>
+        <span class="token comment" spellcheck="true"># 将 loss_c 的shape 从 [batch*num_priors, 1] 转换成 [batch, num_priors]</span>
+        loss_c <span class="token operator">=</span> loss_c<span class="token punctuation">.</span>view<span class="token punctuation">(</span>num<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># reshape</span>
+        <span class="token comment" spellcheck="true"># 进行降序排序, 并获取到排序的下标</span>
+        _<span class="token punctuation">,</span> loss_idx <span class="token operator">=</span> loss_c<span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> descending<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 将下标进行升序排序, 并获取到下标的下标</span>
+        _<span class="token punctuation">,</span> idx_rank <span class="token operator">=</span> loss_idx<span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># num_pos: [batch, 1], 统计每个样本中的obj个数</span>
+        num_pos <span class="token operator">=</span> pos<span class="token punctuation">.</span>long<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sum<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> keepdim<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 根据obj的个数, 确定负样本的个数(正样本的3倍)</span>
+        num_neg <span class="token operator">=</span> torch<span class="token punctuation">.</span>clamp<span class="token punctuation">(</span>self<span class="token punctuation">.</span>negpos_ratio<span class="token operator">*</span>num_pos<span class="token punctuation">,</span> max<span class="token operator">=</span>pos<span class="token punctuation">.</span>size<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 获取到负样本的下标</span>
+        neg <span class="token operator">=</span> idx_rank <span class="token operator">&lt;</span> num_neg<span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>idx_rank<span class="token punctuation">)</span>
+
+        <span class="token comment" spellcheck="true"># 计算包括正样本和负样本的置信度损失</span>
+        <span class="token comment" spellcheck="true"># pos: [batch, num_priors]</span>
+        <span class="token comment" spellcheck="true"># pos_idx: [batch, num_priors, num_classes]</span>
+        pos_idx <span class="token operator">=</span> pos<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>conf_data<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># neg: [batch, num_priors]</span>
+        <span class="token comment" spellcheck="true"># neg_idx: [batch, num_priors, num_classes]</span>
+        neg_idx <span class="token operator">=</span> neg<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>expand_as<span class="token punctuation">(</span>conf_data<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 按照pos_idx和neg_idx指示的下标筛选参与计算损失的预测数据</span>
+        conf_p <span class="token operator">=</span> conf_data<span class="token punctuation">[</span><span class="token punctuation">(</span>pos_idx<span class="token operator">+</span>neg_idx<span class="token punctuation">)</span><span class="token punctuation">.</span>gt<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>num_classes<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># 按照pos_idx和neg_idx筛选目标数据</span>
+        targets_weighted <span class="token operator">=</span> conf_t<span class="token punctuation">[</span><span class="token punctuation">(</span>pos<span class="token operator">+</span>neg<span class="token punctuation">)</span><span class="token punctuation">.</span>gt<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token comment" spellcheck="true"># 计算二者的交叉熵</span>
+        loss_c <span class="token operator">=</span> F<span class="token punctuation">.</span>cross_entropy<span class="token punctuation">(</span>conf_p<span class="token punctuation">,</span> targets_weighted<span class="token punctuation">,</span> size_average<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+
+        <span class="token comment" spellcheck="true"># 将损失函数归一化后返回</span>
+        N <span class="token operator">=</span> num_pos<span class="token punctuation">.</span>data<span class="token punctuation">.</span>sum<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        loss_l <span class="token operator">=</span> loss_l <span class="token operator">/</span> N
+        loss_c <span class="token operator">=</span> loss_c <span class="token operator">/</span> N
+        <span class="token keyword">return</span> loss_l<span class="token punctuation">,</span> loss_c
+</code></pre>
+<h4 id="确定default-boxes的尺度以及比率"><a href="#确定default-boxes的尺度以及比率" class="headerlink" title="确定default boxes的尺度以及比率"></a>确定default boxes的尺度以及比率</h4><p>实验表明使用低层的feature maps可以提高语义分割质量,因为底层的feature maps包含输入目标的细节信息.<br>来自于一个网络不同层的feature maps具有不同的感受野,在SSD网络中,default boxes不需要与每一层的真实的感受野严格匹配.作者将default boxes的大小设计为与特定尺度的目标相关联.假设在模型中使用了m层特征图.每一层特征图的default boxes的尺度计算如下:</p>
+<center><br>$s _ { k } = s _ { \min } + \frac { s _ { \max } - s _ { \min } } { m - 1 } ( k - 1 ) , \quad k \in [ 1 , m ]$<br></center>
+
+<p>其中$s_{min}$为$0.2$,$s_{max}$为$0.9$,分别代表最低、最高层的尺度.<br>对于,每一层中的default又引入了五种不同的比率,即:</p>
+<center><br>${ 1,2,3 , \frac { 1 } { 2 } , \frac { 1 } { 3 }}$<br></center>
+
+<p>依据比率，得出宽的计算公式为:</p>
+<center><br>$w _ { k } ^ { a } = s _ { k } \sqrt { a _ { r } }$<br></center>
+
+<p>高的计算公式为:</p>
+<center><br>$h _ { k } ^ { a } = s _ { k } / \sqrt { a _ { r } }$<br></center>
+
+<p>对于比率1,又额外定义了一个尺度,计算如下:</p>
+<center><br>$s _ { k } ^ { \prime } = \sqrt { S _ { k } S _ { k + 1 } }$<br></center>
+
+<p>这样,每一层特征图的每一个位置上便有六个不同比率的default boxes,将每一个位置上的6个default boxes的中心坐标设置为:</p>
+<center><br>$\left( \frac { i + 0.5 } { \left| f _ { k } \right| } , \frac { j + 0.5 } { \left| f _ { k } \right| } \right)$<br></center>
+
+<p>其中 $\left| f _ { k } \right|$表示第k个特征图的大小，$i , j \in \left[ 0 , \left| f _ { k } \right|\right.]$,对应特征图上所有可能的位置点.</p>
+<p>实际中,不同的数据集适用于不同的尺度以及比例,若数据集中包含有更多的小目标,则需要设计更多的小尺度default boxes,相应的,若包含有更多的大目标,则需要设计更多的大尺度default boxes.<br>实现这一功能的代码如下:借鉴自:<a href="https://hellozhaozheng.github.io/z_post/PyTorch-SSD/#MultiBox," title="代码出处" target="_blank" rel="noopener">代码出处 </a></p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># `layers/functions/prior_box.py`</span>
+
+<span class="token keyword">class</span> <span class="token class-name">PriorBox</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># 所谓priorbox实际上就是网格中每一个cell推荐的box</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> cfg<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment" spellcheck="true"># 在SSD的init中, cfg=(coco, voc)[num_classes=21]</span>
+        <span class="token comment" spellcheck="true"># coco, voc的相关配置都来自于data/cfg.py 文件</span>
+        super<span class="token punctuation">(</span>PriorBox<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>image_size <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"min_dim"</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>num_priors <span class="token operator">=</span> len<span class="token punctuation">(</span>cfg<span class="token punctuation">[</span><span class="token string">"aspect_ratios"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>variance <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"variance"</span><span class="token punctuation">]</span> <span class="token operator">or</span> <span class="token punctuation">[</span><span class="token number">0.1</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>min_sizes <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"min_sizes"</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>max_sizes <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"max_sizes"</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>steps <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"steps"</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>aspect_ratios <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"aspect_ratios"</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>clip <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"clip"</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>version <span class="token operator">=</span> cfg<span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> v <span class="token keyword">in</span> self<span class="token punctuation">.</span>variance<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> v <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">"Variances must be greater than 0"</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">forward</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        mean <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> k<span class="token punctuation">,</span> f <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>self<span class="token punctuation">.</span>feature_maps<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 存放的是feature map的尺寸:38,19,10,5,3,1</span>
+            <span class="token comment" spellcheck="true"># from itertools import product as product</span>
+            <span class="token keyword">for</span> i<span class="token punctuation">,</span> j <span class="token keyword">in</span> product<span class="token punctuation">(</span>range<span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">,</span> repeat<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token comment" spellcheck="true"># 这里实际上可以用最普通的for循环嵌套来代替, 主要目的是产生anchor的坐标(i,j)</span>
+
+                f_k <span class="token operator">=</span> self<span class="token punctuation">.</span>image_size <span class="token operator">/</span> self<span class="token punctuation">.</span>steps<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># steps=[8,16,32,64,100,300]. f_k大约为feature map的尺寸</span>
+                <span class="token comment" spellcheck="true"># 求得center的坐标, 浮点类型. 实际上, 这里也可以直接使用整数类型的 `f`, 计算上没太大差别</span>
+                cx <span class="token operator">=</span> <span class="token punctuation">(</span>j <span class="token operator">+</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token operator">/</span> f_k
+                cy <span class="token operator">=</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token operator">/</span> f_k <span class="token comment" spellcheck="true"># 这里一定要特别注意 i,j 和cx, cy的对应关系, 因为cy对应的是行, 所以应该零cy与i对应.</span>
+
+                <span class="token comment" spellcheck="true"># aspect_ratios 为1时对应的box</span>
+                s_k <span class="token operator">=</span> self<span class="token punctuation">.</span>min_sizes<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">/</span>self<span class="token punctuation">.</span>image_size
+                mean <span class="token operator">+=</span> <span class="token punctuation">[</span>cx<span class="token punctuation">,</span> cy<span class="token punctuation">,</span> s_k<span class="token punctuation">,</span> s_k<span class="token punctuation">]</span>
+
+                <span class="token comment" spellcheck="true"># 根据原文, 当 aspect_ratios 为1时, 会有一个额外的 box, 如下:</span>
+                <span class="token comment" spellcheck="true"># rel size: sqrt(s_k * s_(k+1))</span>
+                s_k_prime <span class="token operator">=</span> sqrt<span class="token punctuation">(</span>s_k <span class="token operator">*</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>max_sizes<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">/</span>self<span class="token punctuation">.</span>image_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                mean <span class="token operator">+=</span> <span class="token punctuation">[</span>cx<span class="token punctuation">,</span> cy<span class="token punctuation">,</span> s_k_prime<span class="token punctuation">,</span> s_k_prime<span class="token punctuation">]</span>
+
+                <span class="token comment" spellcheck="true"># 其余(2, 或 2,3)的宽高比(aspect ratio)</span>
+                <span class="token keyword">for</span> ar <span class="token keyword">in</span> self<span class="token punctuation">.</span>aspect_ratios<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    mean <span class="token operator">+=</span> <span class="token punctuation">[</span>cx<span class="token punctuation">,</span> cy<span class="token punctuation">,</span> s_k<span class="token operator">*</span>sqrt<span class="token punctuation">(</span>ar<span class="token punctuation">)</span><span class="token punctuation">,</span> s_k<span class="token operator">/</span>sqrt<span class="token punctuation">(</span>ar<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                    mean <span class="token operator">+=</span> <span class="token punctuation">[</span>cx<span class="token punctuation">,</span> cy<span class="token punctuation">,</span> s_k<span class="token operator">/</span>sqrt<span class="token punctuation">(</span>ar<span class="token punctuation">)</span><span class="token punctuation">,</span> s_k<span class="token operator">*</span>sqrt<span class="token punctuation">(</span>ar<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                <span class="token comment" spellcheck="true"># 综上, 每个卷积特征图谱上每个像素点最终产生的 box 数量要么为4, 要么为6, 根据不同情况可自行修改.</span>
+        output <span class="token operator">=</span> torch<span class="token punctuation">.</span>Tensor<span class="token punctuation">(</span>mean<span class="token punctuation">)</span><span class="token punctuation">.</span>view<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>clip<span class="token punctuation">:</span>
+            output<span class="token punctuation">.</span>clamp_<span class="token punctuation">(</span>max<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> min<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># clamp_ 是clamp的原地执行版本</span>
+        <span class="token keyword">return</span> output <span class="token comment" spellcheck="true"># 输出default box坐标(可以理解为anchor box)</span>
+</code></pre>
+<h4 id="Hard-negative-mining"><a href="#Hard-negative-mining" class="headerlink" title="Hard negative mining"></a>Hard negative mining</h4><p>这一策略主要用于解决正负样本数目不均衡的问题,在进行边框匹配之后,大多数的default boxes都是负样本.这一结果会导致样本不平衡.因而在训练时,没有使用所有的负样本,而是首先依据每一个default box的置信度损失进行排序,选出最高的几个,使得正负样本的比例为1:3.使用选出的样本进行训练.</p>
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>mAP</th>
+<th>FPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSD 300</td>
+<td>74.3%</td>
+<td>59</td>
+</tr>
+<tr>
+<td>SSD 512</td>
+<td>76.9%</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Faster R-CNN</td>
+<td>73.2%</td>
+<td>7</td>
+</tr>
+<tr>
+<td>YOLOV1</td>
+<td>63.4%</td>
+<td>45</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+            <hr>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="http://xiangqianma.github.io" class="b-link-green">MXQ</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/04/30/ssd-lun-wen-yue-du-ji-he-xin-dai-ma-jie-xi/" class="b-link-green">SSD论文阅读及核心代码解析</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: null,
+        id: '2019-04-30T16-50-20',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2019/04/30/ssd-lun-wen-yue-du-ji-he-xin-dai-ma-jie-xi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="SSD论文阅读及核心代码解析">
+                        
+                        <span class="card-title">SSD论文阅读及核心代码解析</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">SSD:Single Shot MultiBox Detector
+作者Wei Liu
+内容在本文中,作者提出了一种使用单个神经网络进行目标检测的框架,该框架的特点如下:
+
+将网络的bounding boxes的输出空间划分为default</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/深度学习/" class="post-category" target="_blank">
+                                    深度学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/深度学习/" target="_blank">
+                        <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/目标检测/" target="_blank">
+                        <span class="chip bg-color">目标检测</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/04/30/resnet-lun-wen-jie-du/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="ResNet论文解读">
+                        
+                        <span class="card-title">ResNet论文解读</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">Deep Residual Learning for Image Recogition
+作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun
+何凯明大佬
+
+
+
+内容这篇论文</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/深度学习/" class="post-category" target="_blank">
+                                    深度学习
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/论文阅读/" target="_blank">
+                        <span class="chip bg-color">论文阅读</span>
+                    </a>
+                    
+                    <a href="/tags/深度学习/" target="_blank">
+                        <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: MXQ<br />'
+            + '作者: MXQ<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+    <a href="mailto:xiangqianma@outlook.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=245552116" class="tooltipped" data-tooltip="QQ联系我: 245552116" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>
