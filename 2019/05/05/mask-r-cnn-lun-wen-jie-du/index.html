@@ -4,8 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="Hello World, MXQ">
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex">
+    <meta name="keywords" content="Mask R-CNN论文解读, MXQ">
+    <meta name="description" content="Mask R-CNN作者何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick
+内容在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Hello World | MXQ</title>
+    <title>Mask R-CNN论文解读 | MXQ</title>
     <link rel="icon" type="image/png" href="/my_favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -257,13 +258,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Hello World
+                        Mask R-CNN论文解读
                     </div>
                 </div>
             </div>
@@ -372,12 +373,33 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/论文阅读/" target="_blank">
+                                <span class="chip bg-color">论文阅读</span>
+                            </a>
+                        
+                            <a href="/tags/深度学习/" target="_blank">
+                                <span class="chip bg-color">深度学习</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/深度学习/" class="post-category" target="_blank">
+                                深度学习
+                            </a>
+                        
+                            <a href="/categories/深度学习/实例分割/" class="post-category" target="_blank">
+                                实例分割
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -385,7 +407,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-01-27
+                    2019-05-05
                 </div>
 
                 
@@ -401,19 +423,74 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span>
-</code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server
-</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate
-</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy
-</code></pre>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+                <h1 id="Mask-R-CNN"><a href="#Mask-R-CNN" class="headerlink" title="Mask R-CNN"></a>Mask R-CNN</h1><h2 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h2><p>何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick</p>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。</p>
+<h2 id="目标检测、目标实例分割、语义分割"><a href="#目标检测、目标实例分割、语义分割" class="headerlink" title="目标检测、目标实例分割、语义分割"></a>目标检测、目标实例分割、语义分割</h2><p>如下图所示：</p>
+<center><br><img src="https://img-blog.csdn.net/20171121232307984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlhbWVudGluZ3Rhbw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""><br><br></center>
+
+<ul>
+<li>图片分类<br>仅需要识别出一张图片中存在哪几类目标即可。</li>
+<li>目标检测<br>需要给出图片中目标的类别和具体位置。</li>
+<li>语义分割<br>对图片中的目标进行像素级分割，但只需要区分不同类别目标即可，统一类别的目标不需要区分。</li>
+<li>实例分割<br>对图片中的目标进行像素级分割，但需要区分不同的实例，同一类别的不同个体同样需要进行区分。</li>
+</ul>
+<h2 id="Mask-R-CNN-解决实例分割问题"><a href="#Mask-R-CNN-解决实例分割问题" class="headerlink" title="Mask R-CNN:解决实例分割问题"></a>Mask R-CNN:解决实例分割问题</h2><p><strong>R-CNN的网络结构：</strong></p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/5d9736d2-0b1a-43fa-912a-60be077b0387.jpg"><br></center>
+
+<p><strong>Fast R-CNN的网络结构：</strong></p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/b65ae552-1ac7-478c-91d8-82ae6e23d285.jpg"><br><br></center>
+
+<p><strong>Faster R-CNN的网络结构</strong></p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/b19b660d-8e82-48cf-817d-1429475f15be.jpg"><br><br></center>
+
+<p><strong>Mask R-CNN的总体框架如图所示：</strong></p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/27847427-802c-4928-8626-e535429eae7a.jpg"><br><br></center><br><center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/d1f5ad89-4152-4cf0-b22b-6b307397dee6.jpg"><br><br></center>
+
+<p>作者在Faster R-CNN原有的用于预测目标bounding boxes的子网络的基础上，添加用于预测mask的分支，使用FCN(全卷积网络)对每一个RoI分别进行预测。Faster R-CNN并不是为网络输入与输出之间的像素级的匹配而设计的，这一问题主要是由RoIPool层的空间量化操作所导致的。为了解决这一问题，作者提出了一种简单的、无需量化的层，即RoIAlign，该层的引入极大地保证了空间位置地准确性。RoIAlign层对最终的检测结果有着极大的影响。<br>除此之外，作者发现很有必要对mask预测和类别预测进行解耦和。针对每一类分别预测一层mask，类别之间不存在竞争关系，将类别预测任务交给RoI的分类分支。</p>
+<h3 id="RoIAlign"><a href="#RoIAlign" class="headerlink" title="RoIAlign"></a>RoIAlign</h3><p>给定特征图如下所示：</p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/ee623a5f-c1f5-4a2a-98f7-4c94fa379a3a.jpg"><br><br></center>
+
+<p>传统的RoIPool层针对每一个RoI分别产生一层小的特征图。RoIPool的步骤如下：</p>
+<ol>
+<li>首先对RoI的浮点坐标、大小参数进行量化，将其对应到特征图中。<br><center><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/bf8dcd4c-4274-44c7-ab9d-0ed1ebea64fa.jpg">
+</center></li>
+</ol>
+<p></p>
+<ol start="2">
+<li>接着经过量化的RoI将被划分为格子，针对每一个格子内部进行池化操作，进而得到固定大小的特征图。<br><center><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/82c99a99-edf8-4c09-9e5c-b7f9ea190722.jpg">
+</center></li>
+</ol>
+<p></p>
+<p>在上述操作中，共存在两步取整操作，一个是将RoI对应至特征图时，一个是对量化后的RoI进行划分。这两步取整量化操作会导致原始RoI与抽取出的特征图在空间位置上不匹配。这一问题不会对目标的分类造成大的影响，但会对mask预测造成极大的负面影响。</p>
+<p>为了解决这一问题，作者提出了RoIAlign层，RoIAlign去除了量化取整操作，使得抽取的特征图与输入图片有着精确的位置对应。对于RoI中的每一个格子，使用双线性插值法计算其对应的值，双线性插值法需要的原始值来自于格子四角位置上的值。如下图所示：</p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/86330610-af9b-4205-9736-3240e2bcadb2.jpg"><br><br></center><br>整体步骤如下：<br>1. 使用浮点运算，将RoI对应至特征图的相应位置<br><center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/2e9be7aa-3b8d-4bc1-ab91-c7a24239e866.jpg"><br><br></center>
+
+<ol start="2">
+<li>将每一个格子划分为四个小格子<br><center><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/6424cdaa-67a6-4774-8d71-662bbba20f6c.jpg">
+</center></li>
+</ol>
+<p></p>
+<ol start="3">
+<li>使用双线性插值法计算每一个格子的值，取四角的值为原始值<br><center>
+</center></li>
+</ol>
+<p></p>
+<ol start="4">
+<li>对每一个格子进行池化操作，得到最终结果<br><center>
+</center></li>
+</ol>
+<p></p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>损失函数由类别损失、边框回归损失、mask损失三部分构成，与其他方法不同，计算mask损失时，对预测的各个类别的mask分别使用sigmoid函数进行激活（而不是使用softmax函数对所有类别的mask进行激活），接着使用二维交叉熵计算损失。</p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><p>用于预测mask的子网络的结构如图所示：</p>
+<center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/e0da9a7e-36b8-468e-8860-db023a099a91.jpg"><br><br></center>
+
+<p>左侧使用resnet-c4作为前面的卷积网络，将rpn生成的roi映射到C4的输出，并进行roi pooling，最后进行分叉预测三个目标。右侧即使用Faster R-CNN加FPN的结构。</p>
+<h3 id="对比实验"><a href="#对比实验" class="headerlink" title="对比实验"></a>对比实验</h3><p>与FCIS+++的对比，如下图所示：</p>
+<p><center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/170fbc97-7e4f-44bd-bf89-dbeae157b64a.jpg"></center></p>
+<p><br>在FCIS++的预测中会在目标重合位置出现一条直线，而Mask R-CNN的预测结果则没有。</p>
+<p><strong>消融实验</strong><br>结果如图所示：</p>
+<p><center><br><img src="/2019/05/05/mask-r-cnn-lun-wen-jie-du/3095a77a-a0f9-4b7f-9482-42fde3b002fd.jpg"></center></p>
+<p><br>作者分别给出了不同backbone、多任务和独立任务、使用RoIAligh和不使用、使用FPN进行结果预测和使用全连接层的对比结果。</p>
 
             </div>
             <hr>
@@ -561,7 +638,7 @@
                     </span>
                     <a href="http://xiangqianma.github.io" class="b-link-green">MXQ</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/01/27/hello-world/" class="b-link-green">Hello World</a>
+                    <a href="/2019/05/05/mask-r-cnn-lun-wen-jie-du/" class="b-link-green">Mask R-CNN论文解读</a>
                 </p>
             </div>
         </div>
@@ -583,7 +660,7 @@
         repo: '',
         owner: '',
         admin: null,
-        id: '2019-01-27T20-11-27',
+        id: '2019-05-05T14-56-28',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -606,29 +683,25 @@
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2019/04/30/resnet-lun-wen-jie-du/">
+                <a href="/2019/05/05/mask-r-cnn-lun-wen-jie-du/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="ResNet论文解读">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Mask R-CNN论文解读">
                         
-                        <span class="card-title">ResNet论文解读</span>
+                        <span class="card-title">Mask R-CNN论文解读</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary block-with-text">Deep Residual Learning for Image Recogition
-作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun
-何凯明大佬
-
-
-
-内容这篇论文</div>
+                    <div class="summary block-with-text">Mask R-CNN作者何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick
+内容在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-30
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-05
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -637,14 +710,15 @@
                                     深度学习
                                 </a>
                             
-                            <a href="/categories/深度学习/经典网络结构/" class="post-category" target="_blank">
-                                    经典网络结构
+                            <a href="/categories/深度学习/实例分割/" class="post-category" target="_blank">
+                                    实例分割
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -664,33 +738,56 @@
         
         <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="fa fa-dot-circle-o"></i>
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/01/27/hello-world/">
+                <a href="/2019/04/30/ssd-lun-wen-yue-du-ji-he-xin-dai-ma-jie-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="SSD论文阅读及核心代码解析">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">SSD论文阅读及核心代码解析</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary block-with-text">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex</div>
+                    <div class="summary block-with-text">SSD:Single Shot MultiBox Detector
+作者Wei Liu
+内容在本文中,作者提出了一种使用单个神经网络进行目标检测的框架,该框架的特点如下:
+
+将网络的bounding boxes的输出空间划分为default</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-27
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-30
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            MXQ
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/深度学习/" class="post-category" target="_blank">
+                                    深度学习
+                                </a>
+                            
+                            <a href="/categories/深度学习/目标检测/" class="post-category" target="_blank">
+                                    目标检测
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/深度学习/" target="_blank">
+                        <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/目标检测/" target="_blank">
+                        <span class="chip bg-color">目标检测</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
