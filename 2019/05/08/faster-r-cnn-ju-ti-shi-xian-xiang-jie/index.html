@@ -4,8 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
-    <meta name="keywords" content="使用R-CNN进行目标检测与分类, MXQ">
-    <meta name="description" content="Faster R-CNN具体实现详解图像预处理在将图片送入网络之前首先执行如下的网络预处理步骤。在训练和前向传播过程中，以下步骤必须一致。均值向量（大小$1* 3$，每一个图像通道一个均值）并非当前图像像素值的均值，而是针对所有训练和测试图">
+    <meta name="keywords" content="Faster R-CNN具体实现详解, MXQ">
+    <meta name="description" content="Faster R-CNN具体实现详解本文翻译自：原文
+图像预处理在将图片送入网络之前首先执行如下的网络预处理步骤。在训练和前向传播过程中，以下步骤必须一致。均值向量（大小$1* 3$，每一个图像通道一个均值）并非当前图像像素值的均值，而是针">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>使用R-CNN进行目标检测与分类 | MXQ</title>
+    <title>Faster R-CNN具体实现详解 | MXQ</title>
     <link rel="icon" type="image/png" href="/my_favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -257,13 +258,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        使用R-CNN进行目标检测与分类
+                        Faster R-CNN具体实现详解
                     </div>
                 </div>
             </div>
@@ -422,7 +423,8 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Faster-R-CNN具体实现详解"><a href="#Faster-R-CNN具体实现详解" class="headerlink" title="Faster R-CNN具体实现详解"></a>Faster R-CNN具体实现详解</h2><h3 id="图像预处理"><a href="#图像预处理" class="headerlink" title="图像预处理"></a>图像预处理</h3><p>在将图片送入网络之前首先执行如下的网络预处理步骤。在训练和前向传播过程中，以下步骤必须一致。均值向量（大小$1* 3$，每一个图像通道一个均值）并非当前图像像素值的均值，而是针对所有训练和测试图片所设置的一个统一的初始值。图像预处理流程如下：</p>
+                <h2 id="Faster-R-CNN具体实现详解"><a href="#Faster-R-CNN具体实现详解" class="headerlink" title="Faster R-CNN具体实现详解"></a>Faster R-CNN具体实现详解</h2><p>本文翻译自：<a href="http://www.telesens.co/2018/03/11/object-detection-and-classification-using-r-cnns/" target="_blank" rel="noopener">原文</a></p>
+<h3 id="图像预处理"><a href="#图像预处理" class="headerlink" title="图像预处理"></a>图像预处理</h3><p>在将图片送入网络之前首先执行如下的网络预处理步骤。在训练和前向传播过程中，以下步骤必须一致。均值向量（大小$1* 3$，每一个图像通道一个均值）并非当前图像像素值的均值，而是针对所有训练和测试图片所设置的一个统一的初始值。图像预处理流程如下：</p>
 <center><br><img src="/2019/05/08/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5aa46e9e0bbd7-1024x421.png"><br></center>
 
 <p>$tatgetSize$和$maxSize$分别为600，1000.</p>
@@ -793,7 +795,7 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
                     </span>
                     <a href="http://xiangqianma.github.io" class="b-link-green">MXQ</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/05/08/faster-r-cnn-ju-ti-shi-xian-xiang-jie/" class="b-link-green">使用R-CNN进行目标检测与分类</a>
+                    <a href="/2019/05/08/faster-r-cnn-ju-ti-shi-xian-xiang-jie/" class="b-link-green">Faster R-CNN具体实现详解</a>
                 </p>
             </div>
         </div>
@@ -845,13 +847,14 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="使用R-CNN进行目标检测与分类">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Faster R-CNN具体实现详解">
                         
-                        <span class="card-title">使用R-CNN进行目标检测与分类</span>
+                        <span class="card-title">Faster R-CNN具体实现详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary block-with-text">Faster R-CNN具体实现详解图像预处理在将图片送入网络之前首先执行如下的网络预处理步骤。在训练和前向传播过程中，以下步骤必须一致。均值向量（大小$1* 3$，每一个图像通道一个均值）并非当前图像像素值的均值，而是针对所有训练和测试图</div>
+                    <div class="summary block-with-text">Faster R-CNN具体实现详解本文翻译自：原文
+图像预处理在将图片送入网络之前首先执行如下的网络预处理步骤。在训练和前向传播过程中，以下步骤必须一致。均值向量（大小$1* 3$，每一个图像通道一个均值）并非当前图像像素值的均值，而是针</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-08
