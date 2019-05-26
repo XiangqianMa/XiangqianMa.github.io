@@ -431,7 +431,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="AP、mAP的计算"><a href="#AP、mAP的计算" class="headerlink" title="AP、mAP的计算"></a>AP、mAP的计算</h2><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>当我们完成目标检测模型的训练之后，需要合适的指标对模型的性能进行度量，常用的指标有AP、mAP两种。要了解AP和mAP，需要首先了解精度和召回率的概念，所谓精度指的是所有分类为正的样本中，真的为正的样本所占得比例；召回率指的是分类为正的样本占所有正样本的比例，即原始的正样本中有多少被模型正确地划分为正，形象的解释可以理解为下图：</p>
-<p><center><br><img src="https://img-blog.csdn.net/20160312110912648" alt=""><br></center><br>图中false表示模型的划分结果为错，positive表示模型将样本划分为正样本，精度和召回率如图下部分所示。<br>以分类器为例，精度和召回率一般是无法同时满足的，精度高那么召回率便会降低。假设将所有的样本都划分为正样本，此时精度会很低，而召回率为1，即所有的正样本都被正确划分。单纯使用精度或者召回率是很难完整地度量一个模型的性能的，为了解决这一问题，便提出了AP(average precision)的概念。那么何为AP，将AP定义为精度、召回率曲线下的面积，如下图所示，以二分类问题为例。</p>
+<p><center><br><img src="/2019/05/26/mu-biao-jian-ce-ping-jie-zhi-biao-ap-map/精度-召回率示意.png" title="精度-召回率示意"><br></center><br>图中false表示模型的划分结果为错，positive表示模型将样本划分为正样本，精度和召回率如图下部分所示。<br>以分类器为例，精度和召回率一般是无法同时满足的，精度高那么召回率便会降低。假设将所有的样本都划分为正样本，此时精度会很低，而召回率为1，即所有的正样本都被正确划分。单纯使用精度或者召回率是很难完整地度量一个模型的性能的，为了解决这一问题，便提出了AP(average precision)的概念。那么何为AP，将AP定义为精度、召回率曲线下的面积，如下图所示，以二分类问题为例。</p>
 <p><center><br><img src="https://arleyzhang.github.io/articles/c521a01c/1527520824881-1542379892017.png" alt=""><br></center></p>
 <h2 id="AP的计算"><a href="#AP的计算" class="headerlink" title="AP的计算"></a>AP的计算</h2><p>由精度-召回率（RP）曲线可知，每一个召回率对应一个精度，那么如何得到不同的召回率和精度呢？</p>
 <p><strong>1. 统计为TP的预测</strong><br>首先需要知道如何计算召回率和精度，在目标检测中，对于每一个样本图像，模型会给出多个预测框。我们需要首先统计出所给出的预测框中为TruePositive的预测框。一个预测框被判定为TruePositive需要满足的条件是：</p>

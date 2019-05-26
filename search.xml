@@ -8,7 +8,7 @@
       <link href="/2019/05/26/mu-biao-jian-ce-ping-jie-zhi-biao-ap-map/"/>
       <url>/2019/05/26/mu-biao-jian-ce-ping-jie-zhi-biao-ap-map/</url>
       
-        <content type="html"><![CDATA[<h2 id="AP、mAP的计算"><a href="#AP、mAP的计算" class="headerlink" title="AP、mAP的计算"></a>AP、mAP的计算</h2><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>当我们完成目标检测模型的训练之后，需要合适的指标对模型的性能进行度量，常用的指标有AP、mAP两种。要了解AP和mAP，需要首先了解精度和召回率的概念，所谓精度指的是所有分类为正的样本中，真的为正的样本所占得比例；召回率指的是分类为正的样本占所有正样本的比例，即原始的正样本中有多少被模型正确地划分为正，形象的解释可以理解为下图：</p><p><center><br><img src="https://img-blog.csdn.net/20160312110912648" alt=""><br></center><br>图中false表示模型的划分结果为错，positive表示模型将样本划分为正样本，精度和召回率如图下部分所示。<br>以分类器为例，精度和召回率一般是无法同时满足的，精度高那么召回率便会降低。假设将所有的样本都划分为正样本，此时精度会很低，而召回率为1，即所有的正样本都被正确划分。单纯使用精度或者召回率是很难完整地度量一个模型的性能的，为了解决这一问题，便提出了AP(average precision)的概念。那么何为AP，将AP定义为精度、召回率曲线下的面积，如下图所示，以二分类问题为例。</p><p><center><br><img src="https://arleyzhang.github.io/articles/c521a01c/1527520824881-1542379892017.png" alt=""><br></center></p><h2 id="AP的计算"><a href="#AP的计算" class="headerlink" title="AP的计算"></a>AP的计算</h2><p>由精度-召回率（RP）曲线可知，每一个召回率对应一个精度，那么如何得到不同的召回率和精度呢？</p><p><strong>1. 统计为TP的预测</strong><br>首先需要知道如何计算召回率和精度，在目标检测中，对于每一个样本图像，模型会给出多个预测框。我们需要首先统计出所给出的预测框中为TruePositive的预测框。一个预测框被判定为TruePositive需要满足的条件是：</p><blockquote><p>该预测框和与之匹配的ground truth（在所有的ground truth中具有最大的重合度，即IoU）的IoU大于给定的重合度阈值。</p></blockquote><p>对于模型给出的所有预测框，按照该条件找出其中所有为TruePositive的预测框。<br><strong>2. 得到精度-召回率曲线</strong><br>经过第一步的计算，所有的预测框都被打上了是否为TruePositive的标签，为了得到精度-召回率曲线，我们必须得到多个不同的召回率和精度。在VOC的计算方式中，是依据预测框所对应的置信度值进行计算。首先，针对某一个特定的类别，挑选出属于该类的预测框；然后在挑选得到的预测框中，给定一个置信度阈值，大于该阈值的被标记为TruePositive的预测框将被最终记作TruePositive，剩余的预测框将被标记为FalsePositive。设定不同的置信度阈值就会得到不同个数的TruePositive预测框，使用这些TruePositive预测框依据下述公式便可以分别计算得到该类别精度和召回率，每一个置信度对应一对精度、召回率值。</p><p><center><br>$Precision = \frac{TP}{TP+FP}$<br></center></p><p><center><br>$Recall = \frac{TP}{TP+FN}$<br></center><br>在实际编程实现时，可以首先按照置信度对预测框进行降序排列，然后从高到低依次对TruePositive的数目进行累加，这样相当于设定了0-1的置信度阈值，进而可以计算得到一系列的精度、召回率值。<br><strong>3. 对精度-召回率曲线下的面积进行积分得到AP</strong><br>经过第二步的计算，对于不同的类别，我们已经得到了相对应的精度-召回率曲线，接下来就是计算曲线下的面积，这里，我们采用积分的方式计算面积。在计算机中是无法精确计算得到曲线的积分值的，只能使用数值积分的方式。<br>采用近似AP的方式计算，公式如下：</p><p><center><br>$AP=\sum_{k=1}^N P(k) \Delta r(k)$<br></center><br>其中：</p><p><center><br>$\Delta r(k)=r(k)-r(k-1)$<br></center><br>以二分类问题得到的曲线为例，取相邻两点之间较大的精度为积分点。</p><p><center><br><img src="https://arleyzhang.github.io/articles/c521a01c/1527520902790.png" alt=""><br></center><br><strong>4. 计算得到mAP</strong><br>经过第三步的计算，我们可以针对所有类别，分别得到各自的AP，接着，只需要对对所有类别的AP进行求和，除以类别数目便可得到mAP。</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="AP、mAP的计算"><a href="#AP、mAP的计算" class="headerlink" title="AP、mAP的计算"></a>AP、mAP的计算</h2><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>当我们完成目标检测模型的训练之后，需要合适的指标对模型的性能进行度量，常用的指标有AP、mAP两种。要了解AP和mAP，需要首先了解精度和召回率的概念，所谓精度指的是所有分类为正的样本中，真的为正的样本所占得比例；召回率指的是分类为正的样本占所有正样本的比例，即原始的正样本中有多少被模型正确地划分为正，形象的解释可以理解为下图：</p><p><center><br><img src="/2019/05/26/mu-biao-jian-ce-ping-jie-zhi-biao-ap-map/精度-召回率示意.png" title="精度-召回率示意"><br></center><br>图中false表示模型的划分结果为错，positive表示模型将样本划分为正样本，精度和召回率如图下部分所示。<br>以分类器为例，精度和召回率一般是无法同时满足的，精度高那么召回率便会降低。假设将所有的样本都划分为正样本，此时精度会很低，而召回率为1，即所有的正样本都被正确划分。单纯使用精度或者召回率是很难完整地度量一个模型的性能的，为了解决这一问题，便提出了AP(average precision)的概念。那么何为AP，将AP定义为精度、召回率曲线下的面积，如下图所示，以二分类问题为例。</p><p><center><br><img src="https://arleyzhang.github.io/articles/c521a01c/1527520824881-1542379892017.png" alt=""><br></center></p><h2 id="AP的计算"><a href="#AP的计算" class="headerlink" title="AP的计算"></a>AP的计算</h2><p>由精度-召回率（RP）曲线可知，每一个召回率对应一个精度，那么如何得到不同的召回率和精度呢？</p><p><strong>1. 统计为TP的预测</strong><br>首先需要知道如何计算召回率和精度，在目标检测中，对于每一个样本图像，模型会给出多个预测框。我们需要首先统计出所给出的预测框中为TruePositive的预测框。一个预测框被判定为TruePositive需要满足的条件是：</p><blockquote><p>该预测框和与之匹配的ground truth（在所有的ground truth中具有最大的重合度，即IoU）的IoU大于给定的重合度阈值。</p></blockquote><p>对于模型给出的所有预测框，按照该条件找出其中所有为TruePositive的预测框。<br><strong>2. 得到精度-召回率曲线</strong><br>经过第一步的计算，所有的预测框都被打上了是否为TruePositive的标签，为了得到精度-召回率曲线，我们必须得到多个不同的召回率和精度。在VOC的计算方式中，是依据预测框所对应的置信度值进行计算。首先，针对某一个特定的类别，挑选出属于该类的预测框；然后在挑选得到的预测框中，给定一个置信度阈值，大于该阈值的被标记为TruePositive的预测框将被最终记作TruePositive，剩余的预测框将被标记为FalsePositive。设定不同的置信度阈值就会得到不同个数的TruePositive预测框，使用这些TruePositive预测框依据下述公式便可以分别计算得到该类别精度和召回率，每一个置信度对应一对精度、召回率值。</p><p><center><br>$Precision = \frac{TP}{TP+FP}$<br></center></p><p><center><br>$Recall = \frac{TP}{TP+FN}$<br></center><br>在实际编程实现时，可以首先按照置信度对预测框进行降序排列，然后从高到低依次对TruePositive的数目进行累加，这样相当于设定了0-1的置信度阈值，进而可以计算得到一系列的精度、召回率值。<br><strong>3. 对精度-召回率曲线下的面积进行积分得到AP</strong><br>经过第二步的计算，对于不同的类别，我们已经得到了相对应的精度-召回率曲线，接下来就是计算曲线下的面积，这里，我们采用积分的方式计算面积。在计算机中是无法精确计算得到曲线的积分值的，只能使用数值积分的方式。<br>采用近似AP的方式计算，公式如下：</p><p><center><br>$AP=\sum_{k=1}^N P(k) \Delta r(k)$<br></center><br>其中：</p><p><center><br>$\Delta r(k)=r(k)-r(k-1)$<br></center><br>以二分类问题得到的曲线为例，取相邻两点之间较大的精度为积分点。</p><p><center><br><img src="https://arleyzhang.github.io/articles/c521a01c/1527520902790.png" alt=""><br></center><br><strong>4. 计算得到mAP</strong><br>经过第三步的计算，我们可以针对所有类别，分别得到各自的AP，接着，只需要对对所有类别的AP进行求和，除以类别数目便可得到mAP。</p>]]></content>
       
       
       <categories>
@@ -84,9 +84,9 @@
       
         <tags>
             
-            <tag> 深度学习 </tag>
-            
             <tag> 论文阅读 </tag>
+            
+            <tag> 深度学习 </tag>
             
         </tags>
       
@@ -142,9 +142,9 @@
       
         <tags>
             
-            <tag> 深度学习 </tag>
-            
             <tag> 论文阅读 </tag>
+            
+            <tag> 深度学习 </tag>
             
         </tags>
       
