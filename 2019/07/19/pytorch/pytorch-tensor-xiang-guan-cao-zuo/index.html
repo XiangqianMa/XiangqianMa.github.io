@@ -104,12 +104,10 @@
 <meta property="og:site_name" content="MXQ">
 <meta property="og:description" content="Tensor及使用tensor.requires_grad在创建张量后，如果未进行特殊指定，默认不对该张量进行梯度计算。需要注意的是，只有当一个张量的所有输入都不需要进行梯度计算时，该张量才不需要进行梯度计算。在网络模型中，其中间参数是默认进行求导的，因而网络的输出也默认是需要求导的。在写代码的过程中，不要把网络的输入和 Ground Truth 的 requires_grad 设置为 True。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-7a79e86e8006918808455318cf425d61_hd.jpg">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.663Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pytorch-tensor相关操作">
 <meta name="twitter:description" content="Tensor及使用tensor.requires_grad在创建张量后，如果未进行特殊指定，默认不对该张量进行梯度计算。需要注意的是，只有当一个张量的所有输入都不需要进行梯度计算时，该张量才不需要进行梯度计算。在网络模型中，其中间参数是默认进行求导的，因而网络的输出也默认是需要求导的。在写代码的过程中，不要把网络的输入和 Ground Truth 的 requires_grad 设置为 True。">
-<meta name="twitter:image" content="https://pic2.zhimg.com/80/v2-7a79e86e8006918808455318cf425d61_hd.jpg">
 
 
 
@@ -506,6 +504,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -525,107 +530,111 @@
 
       
         <h1 id="Tensor及使用"><a href="#Tensor及使用" class="headerlink" title="Tensor及使用"></a>Tensor及使用</h1><h2 id="tensor-requires-grad"><a href="#tensor-requires-grad" class="headerlink" title="tensor.requires_grad"></a>tensor.requires_grad</h2><p>在创建张量后，如果未进行特殊指定，默认不对该张量进行梯度计算。需要注意的是，只有当一个张量的所有输入都不需要进行梯度计算时，该张量才不需要进行梯度计算。<br>在网络模型中，其中间参数是默认进行求导的，因而网络的输出也默认是需要求导的。<br>在写代码的过程中，<strong>不要</strong>把网络的输入和 Ground Truth 的 <code>requires_grad</code> 设置为 True。虽然这样设置不会影响反向传播，但是需要额外计算网络的输入和 Ground Truth 的导数，增大了计算量和内存占用不说，这些计算出来的导数结果也没啥用。因为我们只需要神经网络中的参数的导数，用来更新网络，其余的导数都不需要。<br>通过使用该方法，可以将模型的部分参数设置为不需要进行求导。这一做法常被用于迁移学习中，对模型的一部分参数进行冻结，只更新其余的参数，官方例子如下。</p>
-<pre class="line-numbers language-python"><code class="language-python">model <span class="token operator">=</span> torchvision<span class="token punctuation">.</span>models<span class="token punctuation">.</span>resnet18<span class="token punctuation">(</span>pretrained<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> param <span class="token keyword">in</span> model<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    param<span class="token punctuation">.</span>requires_grad <span class="token operator">=</span> <span class="token boolean">False</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">model = torchvision.models.resnet18(pretrained=True)
+for param in model.parameters():
+    param.requires_grad = False
 
-<span class="token comment" spellcheck="true"># 用一个新的 fc 层来取代之前的全连接层</span>
-<span class="token comment" spellcheck="true"># 因为新构建的 fc 层的参数默认 requires_grad=True</span>
-model<span class="token punctuation">.</span>fc <span class="token operator">=</span> nn<span class="token punctuation">.</span>Linear<span class="token punctuation">(</span><span class="token number">512</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+# 用一个新的 fc 层来取代之前的全连接层
+# 因为新构建的 fc 层的参数默认 requires_grad=True
+model.fc = nn.Linear(512, 100)
 
-<span class="token comment" spellcheck="true"># 只更新 fc 层的参数</span>
-optimizer <span class="token operator">=</span> optim<span class="token punctuation">.</span>SGD<span class="token punctuation">(</span>model<span class="token punctuation">.</span>fc<span class="token punctuation">.</span>parameters<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> lr<span class="token operator">=</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">,</span> momentum<span class="token operator">=</span><span class="token number">0.9</span><span class="token punctuation">)</span>
+# 只更新 fc 层的参数
+optimizer = optim.SGD(model.fc.parameters(), lr=1e-2, momentum=0.9)
 
-<span class="token comment" spellcheck="true"># 通过这样，我们就冻结了 resnet 前边的所有层，</span>
-<span class="token comment" spellcheck="true"># 在训练过程中只更新最后的 fc 层中的参数。</span>
+# 通过这样，我们就冻结了 resnet 前边的所有层，
+# 在训练过程中只更新最后的 fc 层中的参数。
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="torch-no-grad"><a href="#torch-no-grad" class="headerlink" title="torch.no_grad()"></a>torch.no_grad()</h2><p>虽然可以使用第一条所介绍的<code>requires_grad</code>方法对单个张量进行梯度设置，但一个模型中存在大量的张量，逐个进行张量的设置会非常麻烦。这时就使用这一方法，对张量进行批量管理。<br>在我们对已训练完成的模型进行评估时，出来使用<code>model.eval()</code>将模型设置为评估模式之外，如果为了节省内存、显存，可以使用<code>torch.no_grad()</code>将模型中的所有参数设置为不进行梯度计算的模式。</p>
-<pre class="line-numbers language-python"><code class="language-python">x <span class="token operator">=</span> torch<span class="token punctuation">.</span>randn<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> requires_grad <span class="token operator">=</span> <span class="token boolean">True</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>requires_grad<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># True</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>requires_grad<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># True</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">x = torch.randn(3, requires_grad = True)
+print(x.requires_grad)
+# True
+print((x ** 2).requires_grad)
+# True
 
-<span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>requires_grad<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># False</span>
+with torch.no_grad():
+    print((x ** 2).requires_grad)
+    # False
 
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>requires_grad<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># True</span>
+print((x ** 2).requires_grad)
+# True
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="tensor-data"><a href="#tensor-data" class="headerlink" title="tensor.data"></a>tensor.data</h2><p>在0.4版本之后，<code>Variable</code>被取消，统一使用<code>tensor</code>代替，<code>.data</code>本来是被用来从<code>Variable</code>中获取<code>tensor</code>的，现在被用来从<code>tensor</code>中获取一个具有同样的数据和不进行梯度计算的版本，两者共享内存空间，也就是说修改两者中的任意一个都会导致另一个值被修改。</p>
 <h2 id="tensor-detach"><a href="#tensor-detach" class="headerlink" title="tensor.detach()"></a>tensor.detach()</h2><p>Pytorch的自动求导系统不会跟踪<code>tensor.data</code>的变化，因而可能会导致求导结果出错。而<code>torch.detach()</code>会被自动求导系统追踪。如下例所示：</p>
-<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> requires_grad<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-b <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">2</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># tensor([9., 2., 2.], grad_fn=&lt;AddBackward0>)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = torch.tensor([7., 0, 0], requires_grad=True)
+b = a + 2
+print(b)
+# tensor([9., 2., 2.], grad_fn=<addbackward0>)
 
-loss <span class="token operator">=</span> torch<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>b <span class="token operator">*</span> b<span class="token punctuation">)</span>
+loss = torch.mean(b * b)
 
-b_ <span class="token operator">=</span> b<span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span>
-b_<span class="token punctuation">.</span>zero_<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># tensor([0., 0., 0.], grad_fn=&lt;AddBackward0>)</span>
-<span class="token comment" spellcheck="true"># 储存空间共享，修改 b_ , b 的值也变了</span>
+b_ = b.detach()
+b_.zero_()
+print(b)
+# tensor([0., 0., 0.], grad_fn=<addbackward0>)
+# 储存空间共享，修改 b_ , b 的值也变了
 
-loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+loss.backward()
+# RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></addbackward0></addbackward0></code></pre>
 <p>在上述例子中，pytorch的自动求导系统进行了报错，出错的原因在于，b的值在进行反向传播之前被修改，这一修改会导致求导出错。<code>.detach()</code>之后的修改会被追踪，但当我们使用<code>.data</code>时，pytorch不会进行报错。</p>
-<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> requires_grad<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-b <span class="token operator">=</span> a <span class="token operator">+</span> <span class="token number">2</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># tensor([9., 2., 2.], grad_fn=&lt;AddBackward0>)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = torch.tensor([7., 0, 0], requires_grad=True)
+b = a + 2
+print(b)
+# tensor([9., 2., 2.], grad_fn=<addbackward0>)
 
-loss <span class="token operator">=</span> torch<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>b <span class="token operator">*</span> b<span class="token punctuation">)</span>
+loss = torch.mean(b * b)
 
-b_ <span class="token operator">=</span> b<span class="token punctuation">.</span>data
-b_<span class="token punctuation">.</span>zero_<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># tensor([0., 0., 0.], grad_fn=&lt;AddBackward0>)</span>
+b_ = b.data
+b_.zero_()
+print(b)
+# tensor([0., 0., 0.], grad_fn=<addbackward0>)
 
-loss<span class="token punctuation">.</span>backward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+loss.backward()
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>grad<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># tensor([0., 0., 0.])</span>
+print(a.grad)
+# tensor([0., 0., 0.])
 
-<span class="token comment" spellcheck="true"># 其实正确的结果应该是：</span>
-<span class="token comment" spellcheck="true"># tensor([6.0000, 1.3333, 1.3333])</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+# 其实正确的结果应该是：
+# tensor([6.0000, 1.3333, 1.3333])
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></addbackward0></addbackward0></code></pre>
 <h2 id="设备的切换"><a href="#设备的切换" class="headerlink" title="设备的切换"></a>设备的切换</h2><p>在0.4之前，一般使用<code>.cuda()</code>方法将张量或模型移动至GPU中，在需要进行设备的切换时，这一做法显得比较麻烦。0.4之后增加了<code>.to(device)</code>操作，这样，只需要在程序的开始指定所使用的设备即可。</p>
-<pre class="line-numbers language-python"><code class="language-python">device <span class="token operator">=</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cuda"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> torch<span class="token punctuation">.</span>device<span class="token punctuation">(</span><span class="token string">"cpu"</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
-a <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 干其他的活</span>
-b <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 干其他的活</span>
-c <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">(</span>device<span class="token punctuation">)</span>
+a = torch.rand([3,3]).to(device)
+# 干其他的活
+b = torch.rand([3,3]).to(device)
+# 干其他的活
+c = torch.rand([3,3]).to(device)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="GPU-Tensor-gt-Numpy"><a href="#GPU-Tensor-gt-Numpy" class="headerlink" title="GPU Tensor -&gt; Numpy"></a>GPU Tensor -&gt; Numpy</h4><p>在我们想把 GPU tensor 转换成 Numpy 变量的时候，需要先将 tensor 转换到 CPU 中去，因为 Numpy 是 CPU-only 的。其次，如果 tensor 需要求导的话，还需要加一步 detach（防止求导出错），再转成 Numpy 。</p>
-<pre class="line-numbers language-python"><code class="language-python">x  <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> device<span class="token operator">=</span><span class="token string">'cuda'</span><span class="token punctuation">)</span>
-x_ <span class="token operator">=</span> x<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">x  = torch.rand([3,3], device='cuda')
+x_ = x.cpu().numpy()
 
-y  <span class="token operator">=</span> torch<span class="token punctuation">.</span>rand<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> requires_grad<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> device<span class="token operator">=</span><span class="token string">'cuda'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
-y_ <span class="token operator">=</span> y<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># y_ = y.detach().cpu().numpy() 也可以</span>
-<span class="token comment" spellcheck="true"># 二者好像差别不大？我们来比比时间：</span>
-start_t <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    y_ <span class="token operator">=</span> y<span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start_t<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 1.1049120426177979</span>
+y  = torch.rand([3,3], requires_grad=True, device='cuda').
+y_ = y.cpu().detach().numpy()
+# y_ = y.detach().cpu().numpy() 也可以
+# 二者好像差别不大？我们来比比时间：
+start_t = time.time()
+for i in range(10000):
+    y_ = y.cpu().detach().numpy()
+print(time.time() - start_t)
+# 1.1049120426177979
 
-start_t <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    y_ <span class="token operator">=</span> y<span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start_t<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 1.115112543106079</span>
-<span class="token comment" spellcheck="true"># 时间差别不是很大，当然，这个速度差别可能和电脑配置</span>
-<span class="token comment" spellcheck="true"># （比如 GPU 很贵，CPU 却很烂）有关。</span>
+start_t = time.time()
+for i in range(10000):
+    y_ = y.detach().cpu().numpy()
+print(time.time() - start_t)
+# 1.115112543106079
+# 时间差别不是很大，当然，这个速度差别可能和电脑配置
+# （比如 GPU 很贵，CPU 却很烂）有关。
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="tensor-item"><a href="#tensor-item" class="headerlink" title="tensor.item()"></a>tensor.item()</h2><p>该方法只适用于tensor中包含单个值的情况，使用该方法会直接得到该tensor中所包含的值。当tensor中包含多个元素时，可以使用<code>tensor.tolist()</code>。</p>
 <hr>
-<center><br><br><img src="https://pic2.zhimg.com/80/v2-7a79e86e8006918808455318cf425d61_hd.jpg" alt=""><br><br></center>
+<center>
+
+![](https://pic2.zhimg.com/80/v2-7a79e86e8006918808455318cf425d61_hd.jpg)
+
+</center>
       
     </div>
 
@@ -918,7 +927,7 @@ start_t <span class="token operator">=</span> time<span class="token punctuation
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -949,6 +958,32 @@ start_t <span class="token operator">=</span> time<span class="token punctuation
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1042,7 +1077,93 @@ start_t <span class="token operator">=</span> time<span class="token punctuation
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1059,47 +1180,5 @@ start_t <span class="token operator">=</span> time<span class="token punctuation
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

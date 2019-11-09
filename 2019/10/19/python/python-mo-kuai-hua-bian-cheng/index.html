@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -517,7 +524,7 @@
       
         <h1 id="Python模块化编程"><a href="#Python模块化编程" class="headerlink" title="Python模块化编程"></a>Python模块化编程</h1><h2 id="包与模块的导入"><a href="#包与模块的导入" class="headerlink" title="包与模块的导入"></a>包与模块的导入</h2><h3 id="包对应的from语句和import语句"><a href="#包对应的from语句和import语句" class="headerlink" title="包对应的from语句和import语句"></a>包对应的from语句和import语句</h3><p>import语句和包一起使用时，有些不方便，因为你必须经常在程序中重新输入路径。因此，让包使用from语句，来避免每次读取时都得重新输入路径，并且当目录树结构发生改变时，只需要在程序中更新一次路径即可。</p>
 <p>实际中需要包导入的场合，就是解决当多个同名程序文件安装在同一个机器上时，所引发的模糊性。假设目录结构如下：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">system1\
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">system1\
 
     utilities.py
 
@@ -526,7 +533,7 @@
     other.py
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>与<code>system1</code>位于同一父目录下存在另一目录：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">system2\
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">system2\
 
     utilities.py
 
@@ -537,7 +544,7 @@
 <p>Python总是先搜索主目录，也就是包含顶层文件的目录，例如，在<code>system1/main.py</code>中使用导入语句<code>import utilities</code>，导入会先搜索<code>system1</code>，只有在跨目录进行导入时才需要模块搜索路径的设置。</p>
 <p>但是在第三个目录下导入另两个目录中的同名文件时就会发生错误，例如在第三个目录的程序文件中使用<code>import utilities</code>，便会产生模糊性，解释器会先搜索位于搜索路径左侧的<code>utilities.py</code>，这样做很容易出错，当然，我们可以使用<code>sys.path</code>对路径进行修改，但很容易出错。</p>
 <p><strong>使用包便可以解决模块查找的模糊性</strong>，不要在单独的目录内把文件安装成单纯的文件列表，而是将它们打包，在共同的根目录下，以子目录的方式进行组织，如下所示：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">root\
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">root\
     system1\
         __init__.py
         utilities.py
@@ -553,11 +560,11 @@
         myfile.py
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在<code>myfile.py</code>中可以使用import语句进行导入：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> system1<span class="token punctuation">.</span>utilities
-impott system2<span class="token punctuation">.</span>utilities
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import system1.utilities
+impott system2.utilities
 
-system1<span class="token punctuation">.</span>utilities<span class="token punctuation">.</span>function<span class="token punctuation">(</span><span class="token string">'spam'</span><span class="token punctuation">)</span>
-system2<span class="token punctuation">.</span>utilities<span class="token punctuation">.</span>function<span class="token punctuation">(</span><span class="token string">'eggs'</span><span class="token punctuation">)</span>
+system1.utilities.function('spam')
+system2.utilities.function('eggs')
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>注意</strong>：当读取两个或两个以上路径内的同名属性时，必须使用 <code>import</code>，不能使用<code>from</code>。</p>
 <h3 id="包相对导入"><a href="#包相对导入" class="headerlink" title="包相对导入"></a>包相对导入</h3><p>上述导入方式都是针对从包的外部导入包文件而言的，在包自身的内部，包文件的导入可以使用和外部导入相同的路径语法。但是，也存在特殊的包内搜索规则来简化导入语句，也就是说，<strong>包内的导入可能相对于包，而不是列出包导入路径</strong>。</p>
@@ -574,7 +581,7 @@ system2<span class="token punctuation">.</span>utilities<span class="token punct
 <li>在python2.6中，包的代码中的常规导入默认为先相对再绝对。而在Python3.0中在一个包中导入默认是绝对的。</li>
 </ul>
 <p>使用两个点表示在文件所在的包的父目录的相对导入，如：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">import</span> spam
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from .. import spam
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>表示从与spam所在包的父目录开始进行相对导入，假设目录结构如下。</p>
 <pre><code>A\
@@ -585,59 +592,58 @@ system2<span class="token punctuation">.</span>utilities<span class="token punct
 |         |_ _ X
 |_ _ E\
      |_ _X
-
 </code></pre><blockquote>
 <p><strong>注意：A目录下有<code>__init__.py</code>文件，也就是说A是一个包，如果没有<code>__init__.py</code></strong> ，则会出现以下错误：</p>
 </blockquote>
-<pre class="line-numbers language-shell"><code class="language-shell">ImportError: attempted relative import with no known parent package
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">ImportError: attempted relative import with no known parent package
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>该错误说明，解释器在从当前文件向上查找包时，超出了包的范围。</p>
 <p>在该目录结构下，<code>myfile.py</code>有如下导入方式：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> <span class="token punctuation">.</span> <span class="token keyword">import</span> D <span class="token comment" spellcheck="true"># 导入A.B.D</span>
-<span class="token keyword">from</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">import</span> E <span class="token comment" spellcheck="true"># 导入 A.E</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from . import D # 导入A.B.D
+from .. import E # 导入 A.E
 
-<span class="token keyword">from</span> <span class="token punctuation">.</span>D <span class="token keyword">import</span> X <span class="token comment" spellcheck="true"># 导入A.B.D.X</span>
-<span class="token keyword">from</span> <span class="token punctuation">.</span><span class="token punctuation">.</span>E <span class="token keyword">import</span> X <span class="token comment" spellcheck="true"># 导入A.E.X</span>
+from .D import X # 导入A.B.D.X
+from ..E import X # 导入A.E.X
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="使用相对导入要注意以下几点"><a href="#使用相对导入要注意以下几点" class="headerlink" title="使用相对导入要注意以下几点"></a>使用相对导入要注意以下几点</h3><ul>
 <li>相对导入只适用于包内导入。</li>
 <li>相对导入只适用于from语句。</li>
 </ul>
 <h3 id="可选导入"><a href="#可选导入" class="headerlink" title="可选导入"></a>可选导入</h3><p>如果你希望优先使用某个模块或包，但是同时也想在没有这个模块或包的情况下有备选，你就可以使用可选导入这种方式。这样做可以导入支持某个软件的多种版本或者实现性能提升。以<a href="http://pythonhosted.org/github2/_modules/github2/request.html" target="_blank" rel="noopener">github2包</a>中的代码为例：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># For Python 3</span>
-    <span class="token keyword">from</span> http<span class="token punctuation">.</span>client <span class="token keyword">import</span> responses
-<span class="token keyword">except</span> ImportError<span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># For Python 2.5-2.7</span>
-    <span class="token keyword">try</span><span class="token punctuation">:</span>
-        <span class="token keyword">from</span> httplib <span class="token keyword">import</span> responses  <span class="token comment" spellcheck="true"># NOQA</span>
-    <span class="token keyword">except</span> ImportError<span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># For Python 2.4</span>
-        <span class="token keyword">from</span> BaseHTTPServer <span class="token keyword">import</span> BaseHTTPRequestHandler <span class="token keyword">as</span> _BHRH
-        responses <span class="token operator">=</span> dict<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> v<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token keyword">in</span> _BHRH<span class="token punctuation">.</span>responses<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">try:
+    # For Python 3
+    from http.client import responses
+except ImportError:  # For Python 2.5-2.7
+    try:
+        from httplib import responses  # NOQA
+    except ImportError:  # For Python 2.4
+        from BaseHTTPServer import BaseHTTPRequestHandler as _BHRH
+        responses = dict([(k, v[0]) for k, v in _BHRH.responses.items()])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>lxml</code>包也有使用可选导入方式：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span>
-    <span class="token keyword">from</span> urlparse <span class="token keyword">import</span> urljoin
-    <span class="token keyword">from</span> urllib2 <span class="token keyword">import</span> urlopen
-<span class="token keyword">except</span> ImportError<span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># Python 3</span>
-    <span class="token keyword">from</span> urllib<span class="token punctuation">.</span>parse <span class="token keyword">import</span> urljoin
-    <span class="token keyword">from</span> urllib<span class="token punctuation">.</span>request <span class="token keyword">import</span> urlopen
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">try:
+    from urlparse import urljoin
+    from urllib2 import urlopen
+except ImportError:
+    # Python 3
+    from urllib.parse import urljoin
+    from urllib.request import urlopen
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>正如以上示例所示，<strong>可选导入的使用很常见，是一个值得掌握的技巧</strong>。</p>
 <h3 id="局部导入"><a href="#局部导入" class="headerlink" title="局部导入"></a>局部导入</h3><p>当你在局部作用域中导入模块时，你执行的就是局部导入。如果你在Python脚本文件的顶部导入一个模块，那么你就是在将该模块导入至全局作用域，这意味着之后的任何函数或方法都可能访问该模块。例如：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> sys  <span class="token comment" spellcheck="true"># global scope</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import sys  # global scope
 
-<span class="token keyword">def</span> <span class="token function">square_root</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># This import is into the square_root functions local scope</span>
-    <span class="token keyword">import</span> math
-    <span class="token keyword">return</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+def square_root(a):
+    # This import is into the square_root functions local scope
+    import math
+    return math.sqrt(a)
 
-<span class="token keyword">def</span> <span class="token function">my_pow</span><span class="token punctuation">(</span>base_num<span class="token punctuation">,</span> power<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> math<span class="token punctuation">.</span>pow<span class="token punctuation">(</span>base_num<span class="token punctuation">,</span> power<span class="token punctuation">)</span>
+def my_pow(base_num, power):
+    return math.pow(base_num, power)
 
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>square_root<span class="token punctuation">(</span><span class="token number">49</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>my_pow<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+if __name__ == '__main__':
+    print(square_root(49))
+    print(my_pow(2, 3))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这里，我们将<code>sys</code>模块导入至全局作用域，但我们并没有使用这个模块。然后，在<code>square_root</code>函数中，我们将<code>math</code>模块导入至该函数的局部作用域，这意味着<code>math</code>模块只能在<code>square_root</code>函数内部使用。如果我们试图在<code>my_pow</code>函数中使用<code>math</code>，会引发<code>NameError</code>。</p>
 <p>使用局部作用域的好处之一，是你使用的模块可能需要很长时间才能导入，如果是这样的话，将其放在某个不经常调用的函数中或许更加合理，而不是直接在全局作用域中导入。</p>
@@ -649,17 +655,17 @@ system2<span class="token punctuation">.</span>utilities<span class="token punct
 </ul>
 <p>先来看看循环导入。</p>
 <h3 id="循环导入"><a href="#循环导入" class="headerlink" title="循环导入"></a>循环导入</h3><p>如果你创建两个模块，二者相互导入对方，那么就会出现循环导入。例如：</p>
-<pre class="line-numbers language-python"><code class="language-python">a<span class="token punctuation">.</span>py
-<span class="token keyword">import</span> b
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">a.py
+import b
 
-<span class="token keyword">def</span> <span class="token function">a_test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"in a_test"</span><span class="token punctuation">)</span>
-    b<span class="token punctuation">.</span>b_test<span class="token punctuation">(</span><span class="token punctuation">)</span>
+def a_test():
+    print("in a_test")
+    b.b_test()
 
-a_test<span class="token punctuation">(</span><span class="token punctuation">)</span>
+a_test()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>然后在同个文件夹中创建另一个模块，将其命名为<code>b.py</code>。</p>
-<pre class="line-numbers language-Python"><code class="language-Python">import a
+<pre class="line-numbers language-lang-Python"><code class="language-lang-Python">import a
 
 def b_test():
     print('In test_b"')
@@ -669,15 +675,15 @@ b_test()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果你运行任意一个模块，都会引发<code>AttributeError</code>。这是因为这两个模块都在试图导入对方。简单来说，模块<code>a</code>想要导入模块<code>b</code>，但是因为模块<code>b</code>也在试图导入模块<code>a</code>（这时正在执行），模块<code>a</code>将无法完成模块<code>b</code>的导入。一般来说，<strong>修改方法是重构代码，避免发生这种情况</strong>。</p>
 <h4 id="覆盖导入"><a href="#覆盖导入" class="headerlink" title="覆盖导入"></a>覆盖导入</h4><p>当你创建的模块与标准库中的模块同名时，如果你导入这个模块，就会出现覆盖导入。举个例子，创建一个名叫<code>math.py</code>的文件，在其中写入如下代码：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> math
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import math
 
-<span class="token keyword">def</span> <span class="token function">square_root</span><span class="token punctuation">(</span>number<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>number<span class="token punctuation">)</span>
+def square_root(number):
+    return math.sqrt(number)
 
-square_root<span class="token punctuation">(</span><span class="token number">72</span><span class="token punctuation">)</span>
+square_root(72)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>试着运行这个文件，你会得到以下回溯信息（traceback）：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">Traceback (most recent call last):
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">Traceback (most recent call last):
   File "math.py", line 1, in <module>
     import math
   File "/Users/michael/Desktop/math.py", line 6, in <module>
@@ -690,7 +696,7 @@ AttributeError: module 'math' has no attribute 'sqrt'
 <h2 id="项目模块化"><a href="#项目模块化" class="headerlink" title="项目模块化"></a>项目模块化</h2><p>在Linux系统中，每一个文件都有一个绝对路径，以<code>\</code>开头，来表示从根目录到叶子结点的路径，这种方法叫做绝对路径。另外，对于任意两个文件，都存在从一个文件到另一个文件的路径，如：<code>../../Downloads/example.json</code>，该路径称为相对路径。</p>
 <p>在大型工程中应该尽可能使用绝对位置，而非相对位置，对于一个独立的项目，所有的模块的追寻方式都最好从项目的根目录开始，称为相对的绝对路径。</p>
 <p>例如，有一个项目的结构如下：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">
 .
 ├── proto
 │   ├── mat.py
@@ -700,67 +706,67 @@ AttributeError: module 'math' has no attribute 'sqrt'
     └── main.py
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>各个文件中的代码如下：</p>
-<pre class="line-numbers language-python"><code class="language-python">
-<span class="token comment" spellcheck="true"># proto/mat.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+# proto/mat.py
 
-<span class="token keyword">class</span> <span class="token class-name">Matrix</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>data <span class="token operator">=</span> data
-        self<span class="token punctuation">.</span>n <span class="token operator">=</span> len<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>m <span class="token operator">=</span> len<span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+class Matrix(object):
+    def __init__(self, data):
+        self.data = data
+        self.n = len(data)
+        self.m = len(data[0])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python">
-<span class="token comment" spellcheck="true"># proto/mat.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+# proto/mat.py
 
-<span class="token keyword">class</span> <span class="token class-name">Matrix</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>data <span class="token operator">=</span> data
-        self<span class="token punctuation">.</span>n <span class="token operator">=</span> len<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>m <span class="token operator">=</span> len<span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+class Matrix(object):
+    def __init__(self, data):
+        self.data = data
+        self.n = len(data)
+        self.m = len(data[0])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python">
-<span class="token comment" spellcheck="true"># utils/mat_mul.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+# utils/mat_mul.py
 
-<span class="token keyword">from</span> proto<span class="token punctuation">.</span>mat <span class="token keyword">import</span> Matrix
+from proto.mat import Matrix
 
-<span class="token keyword">def</span> <span class="token function">mat_mul</span><span class="token punctuation">(</span>matrix_1<span class="token punctuation">:</span> Matrix<span class="token punctuation">,</span> matrix_2<span class="token punctuation">:</span> Matrix<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">assert</span> matrix_1<span class="token punctuation">.</span>m <span class="token operator">==</span> matrix_2<span class="token punctuation">.</span>n
-    n<span class="token punctuation">,</span> m<span class="token punctuation">,</span> s <span class="token operator">=</span> matrix_1<span class="token punctuation">.</span>n<span class="token punctuation">,</span> matrix_1<span class="token punctuation">.</span>m<span class="token punctuation">,</span> matrix_2<span class="token punctuation">.</span>m
-    result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">]</span>
-    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">for</span> k <span class="token keyword">in</span> range<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">:</span>
-                result<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">+=</span> matrix_1<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">*</span> matrix_2<span class="token punctuation">.</span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span>
+def mat_mul(matrix_1: Matrix, matrix_2: Matrix):
+    assert matrix_1.m == matrix_2.n
+    n, m, s = matrix_1.n, matrix_1.m, matrix_2.m
+    result = [[0 for _ in range(n)] for _ in range(s)]
+    for i in range(n):
+        for j in range(s):
+            for k in range(m):
+                result[i][k] += matrix_1.data[i][j] * matrix_2.data[j][k]
 
-    <span class="token keyword">return</span> Matrix<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+    return Matrix(result)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python">
-<span class="token comment" spellcheck="true"># src/main.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+# src/main.py
 
-<span class="token keyword">from</span> proto<span class="token punctuation">.</span>mat <span class="token keyword">import</span> Matrix
-<span class="token keyword">from</span> utils<span class="token punctuation">.</span>mat_mul <span class="token keyword">import</span> mat_mul
+from proto.mat import Matrix
+from utils.mat_mul import mat_mul
 
 
-a <span class="token operator">=</span> Matrix<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-b <span class="token operator">=</span> Matrix<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+a = Matrix([[1, 2], [3, 4]])
+b = Matrix([[5, 6], [7, 8]])
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>mat_mul<span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+print(mat_mul(a, b).data)
 
-<span class="token comment" spellcheck="true">########## 输出 ##########</span>
+########## 输出 ##########
 
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+[[19, 22], [43, 50]]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>观察上述代码，在<code>utils/mat_mul.py</code>文件中，导入<code>Matrix</code>的方式是从工程的目录开始导入<code>from proto.mat import Matrix</code>，而不是使用<code>..</code>从上一级目录导入。</p>
 <p>在<code>Pycharm</code>中，上述代码可以被成功运行，但是如果在命令行中，无论是进入<code>src</code>文件夹输入<code>python main.py</code>还是退回上一级目录，输入<code>python src/main.py</code>，都会出现找不到包<code>proto</code>的错误。</p>
 <p>实际上，正如上文中所示，Python解释器在导入模块时，会在一个特定的列表中查找模块，如下：</p>
-<pre class="line-numbers language-python"><code class="language-python">
-<span class="token keyword">import</span> sys  
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+import sys  
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>path<span class="token punctuation">)</span>
+print(sys.path)
 
-<span class="token comment" spellcheck="true">########## 输出 ##########</span>
+########## 输出 ##########
 
-<span class="token punctuation">[</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token string">'/usr/lib/python36.zip'</span><span class="token punctuation">,</span> <span class="token string">'/usr/lib/python3.6'</span><span class="token punctuation">,</span> <span class="token string">'/usr/lib/python3.6/lib-dynload'</span><span class="token punctuation">,</span> <span class="token string">'/usr/local/lib/python3.6/dist-packages'</span><span class="token punctuation">,</span> <span class="token string">'/usr/lib/python3/dist-packages'</span><span class="token punctuation">]</span>
+['', '/usr/lib/python36.zip', '/usr/lib/python3.6', '/usr/lib/python3.6/lib-dynload', '/usr/local/lib/python3.6/dist-packages', '/usr/lib/python3/dist-packages']
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>对于Pycharm来说，当它运行程序时，会首先将上述列表的第一项设置为项目的根目录。因而，无论如何运行<code>main.py</code>，导入模块时都会首先从项目的根目录中寻找对应的包和模块。</p>
 <p>为了在命令函中也能达到无论如何运行<code>main.py</code>也能正确找到包和模块的目的，有以下两种方法：</p>
@@ -769,56 +775,56 @@ b <span class="token operator">=</span> Matrix<span class="token punctuation">(<
 </li>
 <li><p>修改<code>PYTHONHOME</code>。Python存在一个虚拟运行环境，提倡每一个项目最好都有一个对立的运行环境来保持包和模块的纯洁性。</p>
 <p>可以直接在Virtual Environment中的activate文件中加入：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">export PYTHONPATH="/home/ubuntu/workspace/your_projects"
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">export PYTHONPATH="/home/ubuntu/workspace/your_projects"
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 </ul>
 <h2 id="if-name-‘main‘"><a href="#if-name-‘main‘" class="headerlink" title="if name == ‘main‘"></a>if <strong>name</strong> == ‘<strong>main</strong>‘</h2><p>C++、Java等语言需要显式提供入口函数<code>main()</code>，但Python不用。那么，<code>if __name__ == __main__</code>的作用是什么？</p>
 <p>有项目结构如下：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">.
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">.
 ├── utils.py
 ├── utils_with_main.py
 ├── main.py
 └── main_2.py
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># utils.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># utils.py
 
-<span class="token keyword">def</span> <span class="token function">get_sum</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> a <span class="token operator">+</span> b
+def get_sum(a, b):
+    return a + b
 
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'testing'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{} + {} = {}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> get_sum<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+print('testing')
+print('{} + {} = {}'.format(1, 2, get_sum(1, 2)))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># utils_with_main.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># utils_with_main.py
 
-<span class="token keyword">def</span> <span class="token function">get_sum</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> a <span class="token operator">+</span> b
+def get_sum(a, b):
+    return a + b
 
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'testing'</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{} + {} = {}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> get_sum<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+if __name__ == '__main__':
+    print('testing')
+    print('{} + {} = {}'.format(1, 2, get_sum(1, 2)))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># main.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># main.py
 
-<span class="token keyword">from</span> utils <span class="token keyword">import</span> get_sum
+from utils import get_sum
 
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'get_sum: '</span><span class="token punctuation">,</span> get_sum<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+print('get_sum: ', get_sum(1, 2))
 
-<span class="token comment" spellcheck="true">########## 输出 ##########</span>
+########## 输出 ##########
 
 testing
-<span class="token number">1</span> <span class="token operator">+</span> <span class="token number">2</span> <span class="token operator">=</span> <span class="token number">3</span>
-get_sum<span class="token punctuation">:</span> <span class="token number">3</span>
+1 + 2 = 3
+get_sum: 3
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># main_2.py</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># main_2.py
 
-<span class="token keyword">from</span> utils_with_main <span class="token keyword">import</span> get_sum
+from utils_with_main import get_sum
 
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'get_sum: '</span><span class="token punctuation">,</span> get_sum<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+print('get_sum: ', get_sum(1, 2))
 
-<span class="token comment" spellcheck="true">########## 输出 ##########</span>
+########## 输出 ##########
 
-get_sum_2<span class="token punctuation">:</span> <span class="token number">3</span>
+get_sum_2: 3
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>import</code>在导入模块时会自动将文件中的暴露代码执行一遍，对于模块的测试代码，如果我们不想在导入模块的时候执行这些代码，就要将这些代码放在<code>if __name__ == __main__</code>之下。</p>
 
@@ -1114,7 +1120,7 @@ get_sum_2<span class="token punctuation">:</span> <span class="token number">3</
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -1145,6 +1151,32 @@ get_sum_2<span class="token punctuation">:</span> <span class="token number">3</
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1238,7 +1270,93 @@ get_sum_2<span class="token punctuation">:</span> <span class="token number">3</
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1255,47 +1373,5 @@ get_sum_2<span class="token punctuation">:</span> <span class="token number">3</
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

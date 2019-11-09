@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -516,7 +523,7 @@
 
       
         <h2 id="模板和泛型编程"><a href="#模板和泛型编程" class="headerlink" title="模板和泛型编程"></a>模板和泛型编程</h2><p>模板是c++泛型编程的基础。</p>
-<h3 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h3><h4 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h4><pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+<h3 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h3><h4 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h4><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
 int compare(const T &v1, const T &v2)
 {
     if (v1 < v2) return -1;
@@ -549,7 +556,7 @@ int compare(const T &v1, const T &v2)
 <p>保证传递给模板的实参支持模板所要求的操作，以及这些操作在模板中能够正确工作，是调用者的责任。</p>
 </blockquote>
 <h3 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h3><p>类模板作为类的蓝图，与函数模板不同，编译器无法为类模板推断模板参数类型，在使用类模板时，我们必须在类模板名后的尖括号内提供额外信息。</p>
-<h4 id="类模板的定义"><a href="#类模板的定义" class="headerlink" title="类模板的定义"></a>类模板的定义</h4><pre class="line-numbers language-c++"><code class="language-c++">template <typename t=""> class Blob{
+<h4 id="类模板的定义"><a href="#类模板的定义" class="headerlink" title="类模板的定义"></a>类模板的定义</h4><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t=""> class Blob{
 public:
     typedef T value_type;
     typedef typename std::vector<t>::size_type size_type;
@@ -574,14 +581,14 @@ private:
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></std::vector<t></t></t></typename></code></pre>
 <p>在定义中有下面一句代码：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">typedef typename std::vector<t>::size_type size_type;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">typedef typename std::vector<t>::size_type size_type;
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></t></code></pre>
 <p>其中，<code>typename</code>的作用是，在实例化模板之前，编译器不清楚<code>std::vector&lt;T&gt;</code>的具体类型，使用<code>typename</code>告诉编译器后者是一个类型。</p>
 <p>在上述类模板的构造函数中，使用了如下的格式：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">Blob(std::initializer_list<t> i1);
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Blob(std::initializer_list<t> i1);
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></t></code></pre>
 <p>在上述语句中使用了标准库中的<code>initializer_list</code>类模板，该类可以使得我们使用下述语句对类进行初始化：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">Blob<int> ia2 = {0,1,2,3,4};
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Blob<int> ia2 = {0,1,2,3,4};
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></int></code></pre>
 <h4 id="实例化类模板"><a href="#实例化类模板" class="headerlink" title="实例化类模板"></a>实例化类模板</h4><p>当编译器从Blob模板实例化出一个类时，它会重写Blob模板，将模板参数T的每个实例替换为给定的模板实参。</p>
 <p>一个类模板的每个实例都形成一个独立的类。</p>
@@ -590,11 +597,11 @@ private:
 <p>无论何时使用模板都必须提供模板实参，提供给类模板中的模板的模板实参就是使用它的类模板的模板参数。</p>
 <h4 id="类模板的成员函数"><a href="#类模板的成员函数" class="headerlink" title="类模板的成员函数"></a>类模板的成员函数</h4><p>类模板的成员函数具有和类模板相同的模板参数，因而，定义在类模板之外的成员函数就必须以关键字template开始，后接类模板参数列表。</p>
 <p>在类外定义一个成员时，必须说明成员属于哪个类。而且，从一个模板生成的类的名字中必须包含其模板实参。当我们定义一个成员函数时，模板实参与模板形参相同。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
 ret-type Blob<t>::member-name(parm-list);
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></t></typename></code></pre>
 <p>例如，上述类模板的check成员。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
 void Blob<t>::check(size_type i, const std::string &msg) const
 {
     if (i >= data->size())
@@ -602,14 +609,13 @@ void Blob<t>::check(size_type i, const std::string &msg) const
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></t></typename></code></pre>
 <h4 id="类模板的构造函数"><a href="#类模板的构造函数" class="headerlink" title="类模板的构造函数"></a>类模板的构造函数</h4><p>与其他的在外部的类模板的普通成员函数一样，构造函数的定义要以模板参数开始。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
 Blob<t>::Blob():data(std::make_shared<std::vector<t>>()) {}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></std::vector<t></t></typename></code></pre>
 <h4 id="类模板成员函数的实例化"><a href="#类模板成员函数的实例化" class="headerlink" title="类模板成员函数的实例化"></a>类模板成员函数的实例化</h4><p>一个类模板的成员函数只有当程序用到它时才进行实例化。如果一个成员函数没有被使用，则它不会被实例化，这一特性使得即使某种类型不能完全符合模板操作的要求。</p>
-<p>####　在类代码内简化模板类名的使用</p>
-<p>在类模板自己的作用域内，可以直接使用模板名而不提供模板实参。当我们处于一个类模板的作用域中时，编译器处理模板自身引用时就好像我们已经提供了模板参数匹配的实参一样。</p>
+<h4 id="在类代码内简化模板类名的使用"><a href="#在类代码内简化模板类名的使用" class="headerlink" title="　在类代码内简化模板类名的使用"></a>　在类代码内简化模板类名的使用</h4><p>在类模板自己的作用域内，可以直接使用模板名而不提供模板实参。当我们处于一个类模板的作用域中时，编译器处理模板自身引用时就好像我们已经提供了模板参数匹配的实参一样。</p>
 <h4 id="在类模板外使用类模板名"><a href="#在类模板外使用类模板名" class="headerlink" title="在类模板外使用类模板名"></a>在类模板外使用类模板名</h4><p>当我们在类模板为定义其成员时，必须记住，我们并不在类的作用域内，只有遇到类名才表示进入类的作用域。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
 BlobPtr<t> BlobPtr<t>::operator++(int)
 {
     BlobPtr ret = *this; // 保存当前状态
@@ -627,7 +633,7 @@ BlobPtr<t> BlobPtr<t>::operator++(int)
 <blockquote>
 <p>为了引用（类或函数）模板的一个特定实例，我们必须首先声明模板自身。一个模板的声明包括模板参数列表。</p>
 </blockquote>
-<pre class="line-numbers language-c++"><code class="language-c++">// 前置声明在Blob中声明友元所需
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 前置声明在Blob中声明友元所需
 template <typename t=""> class BlobPtr;
 template <typename t=""> calss Blob; // 运算符==中的参数需要
 template <typename t="">
@@ -642,7 +648,7 @@ template <typename t=""> class Blob{
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></t></t></t></t></typename></t></t></typename></typename></typename></code></pre>
 <p>在上述代码中，<strong>友元的声明用Blob的模板形参作为它们自己的模板实参</strong>。因此，友好关系<strong>被限定</strong>在用相同类型实例化的Blob与BlobPtr相等运算符之间。</p>
 <h5 id="通用和特定的模板友好关系"><a href="#通用和特定的模板友好关系" class="headerlink" title="通用和特定的模板友好关系"></a>通用和特定的模板友好关系</h5><p>一个类可以将另一个模板的每个实例都声明为自己的友元，也可以限定特定的实例为友元。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t=""> class Pal;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t=""> class Pal;
 class C{
     friend class Pal<c>;// 用类C实例化的Pal是C的一个友元
     template <typename t=""> friend class Pal2; // 模板类Pal2的所有实例都是C的友元，这种情况无需前置声明
@@ -659,10 +665,10 @@ template <typename t=""> class C2{
 <blockquote>
 <p>为了让所有实例成为友元，友元声明中必须使用与类模板本身不同的模板参数</p>
 </blockquote>
-<h5 id="模板类型别名"><a href="#模板类型别名" class="headerlink" title="模板类型别名"></a>模板类型别名</h5><pre class="line-numbers language-c++"><code class="language-c++">typedef Blob<string> StrBlob;
+<h5 id="模板类型别名"><a href="#模板类型别名" class="headerlink" title="模板类型别名"></a>模板类型别名</h5><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">typedef Blob<string> StrBlob;
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></string></code></pre>
 <h5 id="类模板的static成员"><a href="#类模板的static成员" class="headerlink" title="类模板的static成员"></a>类模板的static成员</h5><p>类模板可以声明static成员.。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t=""> class Foo{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t=""> class Foo{
 public:
     static std::size_t count() { return ctr; }
 private:
@@ -671,7 +677,7 @@ private:
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></code></pre>
 <p>类模板的不同实例有其各自的static成员实例。所有<code>Foo&lt;X&gt;</code>类型的对象共享相同的<code>ctr</code>对象和<code>count</code>函数。</p>
 <p>模板类的每个static数据成员都有且仅有一个定义，但是，类模板的每个实例都有一个独有的static对象，因而，将类模板的static数据成员也定义为模板:</p>
-<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
 size_t Foo<t>::ctr = 0;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></t></typename></code></pre>
 
@@ -926,7 +932,7 @@ size_t Foo<t>::ctr = 0;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板和泛型编程"><span class="nav-number">1.</span> <span class="nav-text">模板和泛型编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义模板"><span class="nav-number">1.1.</span> <span class="nav-text">定义模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数模板"><span class="nav-number">1.1.1.</span> <span class="nav-text">函数模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板类型参数"><span class="nav-number">1.1.2.</span> <span class="nav-text">模板类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非类型模板参数"><span class="nav-number">1.1.3.</span> <span class="nav-text">非类型模板参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板编译"><span class="nav-number">1.1.4.</span> <span class="nav-text">模板编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大多数编译错误在实例化期间报告"><span class="nav-number">1.1.5.</span> <span class="nav-text">大多数编译错误在实例化期间报告</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板"><span class="nav-number">1.2.</span> <span class="nav-text">类模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的定义"><span class="nav-number">1.2.1.</span> <span class="nav-text">类模板的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例化类模板"><span class="nav-number">1.2.2.</span> <span class="nav-text">实例化类模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在模板作用域中引用模板类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">在模板作用域中引用模板类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的成员函数"><span class="nav-number">1.2.4.</span> <span class="nav-text">类模板的成员函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的构造函数"><span class="nav-number">1.2.5.</span> <span class="nav-text">类模板的构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板成员函数的实例化"><span class="nav-number">1.2.6.</span> <span class="nav-text">类模板成员函数的实例化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在类模板外使用类模板名"><span class="nav-number">1.2.7.</span> <span class="nav-text">在类模板外使用类模板名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板和友元"><span class="nav-number">1.2.8.</span> <span class="nav-text">类模板和友元</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一对一友好关系"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">一对一友好关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通用和特定的模板友好关系"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">通用和特定的模板友好关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模板类型别名"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">模板类型别名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类模板的static成员"><span class="nav-number">1.2.8.4.</span> <span class="nav-text">类模板的static成员</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板和泛型编程"><span class="nav-number">1.</span> <span class="nav-text">模板和泛型编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义模板"><span class="nav-number">1.1.</span> <span class="nav-text">定义模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数模板"><span class="nav-number">1.1.1.</span> <span class="nav-text">函数模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板类型参数"><span class="nav-number">1.1.2.</span> <span class="nav-text">模板类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非类型模板参数"><span class="nav-number">1.1.3.</span> <span class="nav-text">非类型模板参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板编译"><span class="nav-number">1.1.4.</span> <span class="nav-text">模板编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大多数编译错误在实例化期间报告"><span class="nav-number">1.1.5.</span> <span class="nav-text">大多数编译错误在实例化期间报告</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板"><span class="nav-number">1.2.</span> <span class="nav-text">类模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的定义"><span class="nav-number">1.2.1.</span> <span class="nav-text">类模板的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例化类模板"><span class="nav-number">1.2.2.</span> <span class="nav-text">实例化类模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在模板作用域中引用模板类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">在模板作用域中引用模板类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的成员函数"><span class="nav-number">1.2.4.</span> <span class="nav-text">类模板的成员函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的构造函数"><span class="nav-number">1.2.5.</span> <span class="nav-text">类模板的构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板成员函数的实例化"><span class="nav-number">1.2.6.</span> <span class="nav-text">类模板成员函数的实例化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在类代码内简化模板类名的使用"><span class="nav-number">1.2.7.</span> <span class="nav-text">　在类代码内简化模板类名的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在类模板外使用类模板名"><span class="nav-number">1.2.8.</span> <span class="nav-text">在类模板外使用类模板名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板和友元"><span class="nav-number">1.2.9.</span> <span class="nav-text">类模板和友元</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一对一友好关系"><span class="nav-number">1.2.9.1.</span> <span class="nav-text">一对一友好关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通用和特定的模板友好关系"><span class="nav-number">1.2.9.2.</span> <span class="nav-text">通用和特定的模板友好关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模板类型别名"><span class="nav-number">1.2.9.3.</span> <span class="nav-text">模板类型别名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类模板的static成员"><span class="nav-number">1.2.9.4.</span> <span class="nav-text">类模板的static成员</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -967,7 +973,7 @@ size_t Foo<t>::ctr = 0;
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -998,6 +1004,32 @@ size_t Foo<t>::ctr = 0;
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1091,7 +1123,93 @@ size_t Foo<t>::ctr = 0;
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1108,47 +1226,5 @@ size_t Foo<t>::ctr = 0;
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

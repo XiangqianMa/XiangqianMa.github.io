@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -536,13 +543,13 @@
 <blockquote>
 <p>  建议初始化所有指针，并且在可能的情况下，在定义了对象之后再定义指向它的指针。</p>
 </blockquote>
-<ol start="3">
+<ol>
 <li>空指针不指向任何对象，使用字面值nullptr初始化指针。</li>
 </ol>
 <p><strong>void指针</strong> 该类型的指针所指向的地址中存放的对象的类型并不确定。</p>
 <h3 id="4-const限定符"><a href="#4-const限定符" class="headerlink" title="4 const限定符"></a>4 const限定符</h3><p>const对象的值一旦创建后其值就不能再改变，所以const对象必须进行初始化。</p>
 <p>在<strong>默认状态下，const对象仅在文件内有效</strong>，当多个文件中出现了同名的const对象时，其实等同于在不同文件中分别定义了独立的变量。当我们希望在不同文件之间使用同一const对象时（只在一个文件中定义const，而在多个文件中声明并使用它），则需要添加<code>extern</code>关键字，如。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">// file_1.cc定义并初始化一个常量，该常量可被其他文件访问
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// file_1.cc定义并初始化一个常量，该常量可被其他文件访问
 
 extern const int bufSize = fcn();
 
@@ -552,7 +559,7 @@ extern const int bufSize;// 与file_1.cc中定义的bufSize是同一个。
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>定义对const的引用后，不允许使用引用去改变它所绑定的对象。</p>
 <h4 id="4-1-指针和const"><a href="#4-1-指针和const" class="headerlink" title="4.1 指针和const"></a>4.1 指针和const</h4><h5 id="指向常量的指针"><a href="#指向常量的指针" class="headerlink" title="指向常量的指针"></a>指向常量的指针</h5><p>指向常量的指针不能用于改变其所指对象的值，只能使用指向常量的指针存放常量对象的地址。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">const double pi = 3.14;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">const double pi = 3.14;
 
 const double *cptr = &pi;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -561,7 +568,7 @@ const double *cptr = &pi;
 <p>和常量引用一样，指向常量的指针没有规定其所指向的对象必须是一个常量，只是限定不能使用指针（通过<strong>解引用符</strong>（操作符*））更改对象的值。</p>
 </blockquote>
 <h5 id="常量指针（const-pointer）"><a href="#常量指针（const-pointer）" class="headerlink" title="常量指针（const pointer）"></a>常量指针（const pointer）</h5><p>指针本身是常量，const修饰符修饰的是指针本身。意味着，初始化之后指针所存储的地址值不能被改变。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">int errNumb = 0;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int errNumb = 0;
 
 int j;
 
@@ -570,19 +577,19 @@ int *const curErr = &errNumb;// 从右往左进行解读，const说明curErr是�
 curErr = &j;// 错误，改变了常量指针所存储的地址值。
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-2-顶层const（top-level-const）"><a href="#4-2-顶层const（top-level-const）" class="headerlink" title="4.2 顶层const（top-level const）"></a>4.2 顶层const（top-level const）</h4><p>指针本身是常量，或者说对象本身是不可变的。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">int i = 0;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int i = 0;
 
 int *const p1 = &i;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-3-底层const（low-level-const）"><a href="#4-3-底层const（low-level-const）" class="headerlink" title="4.3 底层const（low-level const）"></a>4.3 底层const（low-level const）</h4><p>指针所指向的对象是常量。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">const int ci = 42;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">const int ci = 42;
 
 const int *p2 = &ci;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-4-区分顶层const和底层const的作用"><a href="#4-4-区分顶层const和底层const的作用" class="headerlink" title="4.4 区分顶层const和底层const的作用"></a>4.4 区分顶层const和底层const的作用</h4><ol>
 <li>赋值操作存在限制,不能将底层const赋值给非底层const。</li>
 </ol>
-<pre class="line-numbers language-c++"><code class="language-c++">int num_c = 3;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int num_c = 3;
 
 const int *p_c = &num_c;  //p_c为底层const的指针
 
@@ -590,10 +597,10 @@ int *p_d = p_c;  //错误，不能将底层const指针赋值给非底层const指
 
 const int *p_d = p_c; //正确，可以将底层const指针复制给底层const指针
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="2">
+<ol>
 <li>使用命名的强制类型转换函数const_cast时，需要能够分辨底层const和顶层const，因为const_cast只能改变运算对象的底层const。</li>
 </ol>
-<pre class="line-numbers language-c++"><code class="language-c++">int num_e = 4;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int num_e = 4;
 
 const int *p_e = &num_e;
 
@@ -632,7 +639,7 @@ cout << num_e;  //输出5
 <p><code>#ifndef</code> 当且仅当变量未定义时为真</p>
 <p>注意：当检查状态为真时，执行后续操作直到<code>#endif</code>指令为止。</p>
 <p>使用头文件保护符防止重复包含头文件的例子：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">#ifndef SALES_DATA_H
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">#ifndef SALES_DATA_H
 #define SALES_DATA_H
 #include <string.h>
 
@@ -943,7 +950,7 @@ struct Sales_data{
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -974,6 +981,32 @@ struct Sales_data{
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1067,7 +1100,93 @@ struct Sales_data{
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1084,47 +1203,5 @@ struct Sales_data{
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

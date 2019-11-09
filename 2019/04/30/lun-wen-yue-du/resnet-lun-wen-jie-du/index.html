@@ -96,15 +96,14 @@
 
 
 
-  <meta name="description" content="Deep Residual Learning for Image Recogition 作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun 何凯明大佬    内容这篇论文主要用于解决网络层数加深时,模型的训练问题. 深度网络的退化问题如下图所示,为历年ISLVRC竞赛中取得冠军的各个网络结构,观察该图片可知,随着网络层数的增加,">
+  <meta name="description" content="Deep Residual Learning for Image Recogition 作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun 何凯明大佬   ![](http://kaiminghe.com/img/me.jpg)     内容这篇论文主要用于解决网络层数加深时,模型的训练问题. 深度网络的退化问题如下图所示,为历">
 <meta name="keywords" content="深度学习,论文阅读">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ResNet论文解读">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Deep Residual Learning for Image Recogition 作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun 何凯明大佬    内容这篇论文主要用于解决网络层数加深时,模型的训练问题. 深度网络的退化问题如下图所示,为历年ISLVRC竞赛中取得冠军的各个网络结构,观察该图片可知,随着网络层数的增加,">
+<meta property="og:description" content="Deep Residual Learning for Image Recogition 作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun 何凯明大佬   ![](http://kaiminghe.com/img/me.jpg)     内容这篇论文主要用于解决网络层数加深时,模型的训练问题. 深度网络的退化问题如下图所示,为历">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://kaiminghe.com/img/me.jpg">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/ISLVRC冠军结构.jpg">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/模型退化问题.jpg">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差模块.jpg">
@@ -116,8 +115,8 @@
 <meta property="og:updated_time" content="2019-11-09T13:46:21.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ResNet论文解读">
-<meta name="twitter:description" content="Deep Residual Learning for Image Recogition 作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun 何凯明大佬    内容这篇论文主要用于解决网络层数加深时,模型的训练问题. 深度网络的退化问题如下图所示,为历年ISLVRC竞赛中取得冠军的各个网络结构,观察该图片可知,随着网络层数的增加,">
-<meta name="twitter:image" content="http://kaiminghe.com/img/me.jpg">
+<meta name="twitter:description" content="Deep Residual Learning for Image Recogition 作者Kaiming He    Xiangyu Zhang       Shaoqing Ren    Jian Sun 何凯明大佬   ![](http://kaiminghe.com/img/me.jpg)     内容这篇论文主要用于解决网络层数加深时,模型的训练问题. 深度网络的退化问题如下图所示,为历">
+<meta name="twitter:image" content="http://xiangqianma.github.io/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/ISLVRC冠军结构.jpg">
 
 
 
@@ -507,6 +506,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -528,17 +534,27 @@
         <h2 id="Deep-Residual-Learning-for-Image-Recogition"><a href="#Deep-Residual-Learning-for-Image-Recogition" class="headerlink" title="Deep Residual Learning for Image Recogition"></a>Deep Residual Learning for Image Recogition</h2><hr>
 <h2 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h2><p><strong>Kaiming He</strong>    Xiangyu Zhang       Shaoqing Ren    Jian Sun</p>
 <p><strong>何凯明大佬</strong></p>
-<center><br><br><img src="http://kaiminghe.com/img/me.jpg" alt=""><br><br></center>
+<center>
+
+![](http://kaiminghe.com/img/me.jpg)
+
+</center>
 
 
 <h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>这篇论文主要用于解决网络层数加深时,模型的训练问题.</p>
 <h3 id="深度网络的退化问题"><a href="#深度网络的退化问题" class="headerlink" title="深度网络的退化问题"></a>深度网络的退化问题</h3><p>如下图所示,为历年ISLVRC竞赛中取得冠军的各个网络结构,观察该图片可知,随着网络层数的增加,模型的复杂度不断提升,进而可以提取更为丰富的特征,因而也得到了更好的结果.</p>
-<center><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/ISLVRC冠军结构.jpg" title="ISLVRC冠军结构"><br></center>
+<center>
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/ISLVRC冠军结构.jpg" title="ISLVRC冠军结构">
+</center>
 
 
 
 <p>但事实上,模型的表达能力和模型复杂度并不是成正比关系的,在论文中,作者指出,随着深度的增加,模型出现了退化问题(Degradation problem),如下图所示.</p>
-<center><br><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/模型退化问题.jpg" title="模型退化问题"><br><br></center>
+<center>
+
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/模型退化问题.jpg" title="模型退化问题">
+
+</center>
 
 
 
@@ -546,45 +562,82 @@
 <p>在深层网络存在着梯度消失或者爆炸的问题，这使得深度学习模型很难训练。但是现在已经存在一些技术手段,如BatchNorm来缓解这个问题。因此，出现深度网络的退化问题是非常令人诧异的。</p>
 <h3 id="残差学习"><a href="#残差学习" class="headerlink" title="残差学习"></a>残差学习</h3><p>深度网络的退化问题至少说明深度网络不容易训练。但是我们考虑这样一个事实：现在你有一个浅层网络，你想通过向上堆积新层来建立深层网络，一个极端情况是这些增加的层什么也不学习，仅仅复制浅层网络的特征，即这样新层是恒等映射（Identity mapping）。在这种情况下，深层网络应该至少和浅层网络性能一样，不应该出现退化现象。</p>
 <p>为了解决这一问题,在本文中作者提出了残差学习的思想.对于一个堆积层结构（几层堆积而成）当输入为$x$时其学习到的特征记为$H(x)$，现在我们希望其可以学习到残差$F(x)=H(x)-x$，这样其实原始的学习特征是$F(x)+x$。之所以这样是因为残差学习相比原始特征直接学习更容易。当残差为0时，此时堆积层仅仅做了恒等映射，至少网络性能不会下降，实际上残差不会为0，这也会使得堆积层在输入特征基础上学习到新的特征，从而拥有更好的性能。残差学习的结构如下图所示。这有点类似与电路中的“短路”，所以是一种短路连接（shortcut connection）。</p>
-<center><br><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差模块.jpg" title="残差模块"><br><br></center>
+<center>
+
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差模块.jpg" title="残差模块">
+
+</center>
 
 
 
 <p>从数学角度解释残差学习更为容易的原因.</p>
 <p>将残差单元表示为:</p>
-<center><br><br>$y_l=h(x_l)+F(x_l, W_l)$<br><br>$x_{l+1}=f(y_l)$<br><br></center>
+<center>
+
+$y_l=h(x_l)+F(x_l, W_l)$
+
+$x_{l+1}=f(y_l)$
+
+</center>
 
 <p>其中,$h(x_l)$表示恒等映射,$F(x_l, W_l)$表示残差映射,$f$为ReLU激活函数,那么从浅层$l$到深层$L$的特征为:</p>
-<center><br><br>$x_L=x_l+\sum_{i=l}^{L-1}F(x_i, W_i)$<br><br></center>
+<center>
+
+$x_L=x_l+\sum_{i=l}^{L-1}F(x_i, W_i)$
+
+</center>
 
 <p>使用链式求导法则可以得到损失相对于第$x_l$层的梯度为:</p>
-<center><br><br>$\frac{\partial loss}{\partial x_l} = \frac{\partial loss}{partial x_L} \cdot \frac{\partial x_L}{\partial x_l} =  \frac{\partial loss}{\partial x_L} \cdot (1 + \frac{\partial}{\partial x_l} \sum_{i=l}^{L-1}F(x_i, W_i))$<br><br></center>
+<center>
+
+$\frac{\partial loss}{\partial x_l} = \frac{\partial loss}{partial x_L} \cdot \frac{\partial x_L}{\partial x_l} =  \frac{\partial loss}{\partial x_L} \cdot (1 + \frac{\partial}{\partial x_l} \sum_{i=l}^{L-1}F(x_i, W_i))$
+
+</center>
 
 
 
 <p>由上式我们可以发现,小括号中的1表明短路机制可以无损地传播梯度，而另外一项残差梯度则需要经过带有weights的层，梯度不是直接传递过来的。残差梯度不会那么巧全为-1，而且就算其比较小，有1的存在也不会导致梯度消失。所以残差学习会更容易(上面的推导并不是严格的证明)。</p>
 <h3 id="ResNet的网络结构"><a href="#ResNet的网络结构" class="headerlink" title="ResNet的网络结构"></a>ResNet的网络结构</h3><p>ResNet网络是参考了VGG19网络，在其基础上进行了修改，并通过短路机制加入了残差单元，如图所示。变化主要体现在ResNet直接使用stride=2的卷积做下采样，并且用global average pool层替换了全连接层。ResNet的一个重要设计原则是：<strong>当feature map大小降低一半时，feature map的数量增加一倍</strong>，这保持了网络层的复杂度。从图中可以看到，ResNet相比普通网络每两层间增加了短路机制，这就形成了残差学习，其中虚线表示feature map数量发生了改变。图中展示的34-layer的ResNet，还可以构建更深的网络如表所示。从表中可以看到，对于18-layer和34-layer的ResNet，其进行的两层间的残差学习，当网络更深时，其进行的是三层间的残差学习，三层卷积核分别是1x1，3x3和1x1，一个值得注意的是隐含层的feature map数量是比较小的，并且是输出feature map数量的1/4。</p>
-<center><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/resnet结构.jpg" title="resnet结构"><br>ResNet网络结构<br><br></center>
+<center>
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/resnet结构.jpg" title="resnet结构">
+ResNet网络结构
+
+</center>
 
 
 
-<center><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/不同的resnet结构.jpg" title="不同的resnet结构"><br>不同的ResNet网络结构<br><br></center>
+<center>
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/不同的resnet结构.jpg" title="不同的resnet结构">
+不同的ResNet网络结构
+
+</center>
 
 
 
 <h4 id="残差单元"><a href="#残差单元" class="headerlink" title="残差单元"></a>残差单元</h4><p>ResNet使用两种残差单元，如图所示。左图对应的是浅层网络，而右图对应的是深层网络。对于短路连接，当输入和输出维度一致时，可以直接将输入加到输出上。但是当维度不一致时（对应的是维度增加一倍），这就不能直接相加。有两种策略：（1）采用zero-padding增加维度，此时一般要先做一个downsample，可以采用strde=2的pooling，这样不会增加参数；（2）采用新的映射（projection shortcut），一般采用1x1的卷积(可以改变维度)，这样会增加参数，也会增加计算量。短路连接除了直接使用恒等映射，当然都可以采用projection shortcut。</p>
-<center><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差单元.jpg" title="残差单元"><br>残差单元示意图(左侧为浅层网络使用的残差单元,右侧为深层网络)<br><br></center>
+<center>
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差单元.jpg" title="残差单元">
+残差单元示意图(左侧为浅层网络使用的残差单元,右侧为深层网络)
+
+</center>
 
 
 
 <h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>如图所示,左侧为不使用残差模块的普通深度网络,右侧为ResNet.</p>
-<center><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/结果对比.jpg" title="结果对比"><br>结果示意图<br><br></center>
+<center>
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/结果对比.jpg" title="结果对比">
+结果示意图
+
+</center>
 
 
 
 <p>从图中我们可以看出,在左侧,未使用残差模块的网络明显出现了退化现象,而右侧则无此问题.</p>
 <h2 id="一种更为优秀的残差模块"><a href="#一种更为优秀的残差模块" class="headerlink" title="一种更为优秀的残差模块"></a>一种更为优秀的残差模块</h2><p>采用前置激活可以提升残差模块的性能,如图所示:</p>
-<center><br><img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差模块改进.jpg" title="残差模块改进"><br><br></center>
+<center>
+<img src="/2019/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/04/30/lun-wen-yue-du/resnet-lun-wen-jie-du/残差模块改进.jpg" title="残差模块改进">
+
+</center>
 
 
 
@@ -877,7 +930,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -908,6 +961,32 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1001,7 +1080,93 @@
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1018,47 +1183,5 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

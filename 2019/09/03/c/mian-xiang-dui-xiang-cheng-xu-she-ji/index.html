@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -526,7 +533,7 @@
 <p>基类负责定义在层次关系中所有类共同拥有的成员，而每个派生类定义各自特有的成员。</p>
 <p>基类将类型相关的函数与派生类不做任何改变直接继承的函数区分对待。对于某些函数，基类希望它的派生类各自定义适合自身的版本，此时基类就将这些函数声明为<strong>。</strong></p>
 <h3 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h3><p>有时我们希望使用同一段代码同时处理具有继承关系的类的对象，这时就需要用到<strong>动态绑定</strong>。例如如下一段代码：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">double print_total(Ostream &os, const Quote &item, size_t n)
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">double print_total(Ostream &os, const Quote &item, size_t n)
 {
     // 根据传入的形参item的具体类型决定调用Quote::net_price或者Bulk_quote::net_price
     double ret = item.net_price(n);
@@ -536,7 +543,7 @@
 <p>在C++语言中，当我们<strong>使用基类的引用（或指针）调用一个虚函数</strong>时将发生动态绑定。</p>
 </blockquote>
 <h3 id="定义基类"><a href="#定义基类" class="headerlink" title="定义基类"></a>定义基类</h3><p>定义基类如下：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Quote {
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Quote {
 public:
     Quote() = default; // 默认构造函数
     Quote(const std::string &book, double sales_price):bookNo(book), price(sales_price){}
@@ -568,7 +575,7 @@ protected:
 </ol>
 <h3 id="访问控制和继承"><a href="#访问控制和继承" class="headerlink" title="访问控制和继承"></a>访问控制和继承</h3><p>派生类有权访问基类的公有成员，而不能访问私有成员。除了公有成员和私有成员之外，基类还有一种受保护成员，这一类成员只允许基类的派生类访问，而不允许其他用户访问。</p>
 <h3 id="定义派生类"><a href="#定义派生类" class="headerlink" title="定义派生类"></a>定义派生类</h3><p>派生类必须将其继承而来的成员函数中需要覆盖的那些函数重新声明。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Bulk_quote : Quote {
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Bulk_quote : Quote {
 public:
     Bulk_quote() = default;
     Bulk_quote(const std::string &, double, std::size_t, double);
@@ -606,7 +613,7 @@ private:
 </blockquote>
 <h4 id="类型转换注意点"><a href="#类型转换注意点" class="headerlink" title="类型转换注意点"></a>类型转换注意点</h4><ol>
 <li><p>不存在从基类向派生类的隐式类型转换。因为一个基类的对象可能是派生类对象的一部分，也可能不是。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">Quote base;
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Quote base;
 Bulk_quote* bulkP = &base; //错误：不能将基类转换为派生类
 Bulk_quote& bulkRef = base; //错误：不能将基类转换为派生类
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -615,7 +622,7 @@ Bulk_quote& bulkRef = base; //错误：不能将基类转换为派生类
 </li>
 </ol>
 <h4 id="派生类构造函数"><a href="#派生类构造函数" class="headerlink" title="派生类构造函数"></a>派生类构造函数</h4><p><strong>对于从基类中继承而来的成员，派生类也必须使用基类的构造函数对这些部分进行初始化</strong>。类似于初始化成员的过程，派生类构造函数同样时通过构造函数初始化列表来将实参传递给基类构造函数的。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">// 在派生类的构造函数中，需要调用基类的构造函数对基类部分进行初始化
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 在派生类的构造函数中，需要调用基类的构造函数对基类部分进行初始化
 Bulk_quote::Bulk_quote(const std::string &book, double p, std::size_t qyt, double disc):
                         Quote(book, p), min_qty(qyt), discount(disc){}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -632,14 +639,8 @@ Bulk_quote::Bulk_quote(const std::string &book, double p, std::size_t qyt, doubl
 <p>当我们通过一个具有普通类型（非引用或指针）的表达式调用虚函数时，在编译时就会将所调用的函数版本确定下来。</p>
 <blockquote>
 <p><strong>C++的多态性</strong></p>
-</blockquote>
-<blockquote>
 <p>面向对象编程的核心思想是多态性。我们把具有继承关系的多个类型成为多态类型，因为我们能使用这些类型的“多种形式”而无须在意它们的差异。<strong>引用或指针的静态类型和动态类型不同这一事实正是C++语言支持多态性的根本所在</strong>。</p>
-</blockquote>
-<blockquote>
 <p>当我们使用基类的引用或指针调用基类中定义的一个函数时，我们并不知道该函数真正作用的对象是什么类型，可能是基类对象也可能是派生类对象。如果该函数是虚函数，则直到运行时才决定到底执行哪个版本。</p>
-</blockquote>
-<blockquote>
 <p>而对非虚函数的调用在编译时进行绑定。类似的，通过对象进行的函数（无论虚函数或非虚函数）调用也在编译时绑定。因为对象的静态类型和动态类型是完全一致的，因而所调用的函数版本必定是确定的。</p>
 </blockquote>
 <h4 id="派生类中的虚函数"><a href="#派生类中的虚函数" class="headerlink" title="派生类中的虚函数"></a>派生类中的虚函数</h4><p>一个函数一旦被声明为虚函数，则其在所有派生类中都是虚函数。当派生类覆盖了某个虚函数时，该函数在基类中的形参必须与派生类中的形参严格匹配，如果函数名相同，但形参或返回值不匹配，则会产生新的函数。这一错误会给编程造成较大的麻烦，我们可以在派生类中使用override关键字来要求强制覆盖基类中的虚函数，此时如果参数不匹配，则编译器会报错。</p>
@@ -649,14 +650,14 @@ Bulk_quote::Bulk_quote(const std::string &book, double p, std::size_t qyt, doubl
 <p>如果虚函数使用默认实参，则基类和派生类中定义的默认实参最好一致。</p>
 </blockquote>
 <h4 id="回避虚函数的机制"><a href="#回避虚函数的机制" class="headerlink" title="回避虚函数的机制"></a>回避虚函数的机制</h4><p>有时，我们希望调用特定版本的虚函数，则可以使用作用域运算符：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">double undiscounted = baseP->Quote::net_price(42);
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">double undiscounted = baseP->Quote::net_price(42);
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>什么时候需要回避虚函数的默认机制？通常是当一个派生类的虚函数调用它覆盖的基类的虚函数版本时。</p>
 <blockquote>
 <p>如果一个派生类虚函数需要调用它的基类版本，但是没有使用作用域运算符，则在运行时该调用将被解析为对派生类版本自身的调用，从而导致无限递归。</p>
 </blockquote>
 <h3 id="抽象基类"><a href="#抽象基类" class="headerlink" title="抽象基类"></a>抽象基类</h3><p>有时，不希望用户创建某个类的对象，该类只是一种通用的概念，不存在某种具体的含义。此时，我们可以将该类中的虚函数定义为<strong>纯虚函数</strong>，纯虚函数是没有实际意义的。和普通的虚函数不同，纯虚函数无须定义，在函数体的位置（声明语句的分号之前）书写<code>=0</code>即可将一个虚函数说明为纯虚函数，<code>=0</code>只能出现在类内部的虚函数声明语句处。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Disc_quote : public Quote() {
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Disc_quote : public Quote() {
 public:
     Disc_quote() = defalue;
     Disc_quote(const std::string& book, double price, std::size_t qyt, double disc):
@@ -678,7 +679,7 @@ protected:
 <li>和公有成员类似，受保护的成员对于派生类的成员和友元来说是可访问的。</li>
 <li>但要注意，派生类的成员和友元只能通过派生类的对象对受保护的成员进行访问，派生类本身是无法访问受保护成员的。</li>
 </ol>
-<pre class="line-numbers language-c++"><code class="language-c++">class Base{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Base{
 protected:
     int prot_mem; //受保护的成员
 };
@@ -704,7 +705,7 @@ void clobber(Base &b) { b.prot_mem = 0;}
 <p>不考虑继承的情况下，可以认为一个类有两个不同的用户，一个是普通用户，一个是类的实现者。普通用户编写的代码使用类的对象，这部分代码只能访问类的公有成员；类的实现者则负责编写类的成员和友元，成员和友元既能访问类的公有部分，也可以访问类的私有部分。</p>
 <p>在普通用户和类的实现者之间存在第三种用户，即派生类，基类将希望派生类使用而不希望普通用户使用的成员声明为受保护的。普通用户不能访问受保护部分，派生类的成员和友元不能访问私有部分。</p>
 <h4 id="改变个别成员的可访问性"><a href="#改变个别成员的可访问性" class="headerlink" title="改变个别成员的可访问性"></a>改变个别成员的可访问性</h4><p>有时，我们需要改变派生类继承的某个名字的访问级别，通过使用<code>using</code>声明可以达到这一目的：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Base{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Base{
 public:
     std::size_t size() const { return n; }
 protected:
@@ -728,7 +729,7 @@ protected:
 </blockquote>
 <p>如果一个名字在派生类的作用域内无法正确解析，则编译器将继续在外层的基类作用域中寻找该名字的定义。</p>
 <h4 id="在编译时进行名字查找"><a href="#在编译时进行名字查找" class="headerlink" title="在编译时进行名字查找"></a>在编译时进行名字查找</h4><p>一个对象、引用或指针的静态类型决定该对象的那些类型可见，静态类型在编译时就已经确定。对于派生类中的对象，使用基类的指针指向它，那么无法使用基类指针访问派生类中新增的成员。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Disc_quote : public Quote {
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Disc_quote : public Quote {
 public:
     std::pair<size_t, double=""> discount_policy() const
         { return {quantity, discount}; }
@@ -766,7 +767,7 @@ itemP->discount_policy();  //错误：itemP的类型是Quote*
 <h3 id="构造函数与拷贝控制"><a href="#构造函数与拷贝控制" class="headerlink" title="构造函数与拷贝控制"></a>构造函数与拷贝控制</h3><p>位于继承体系中的类也需要控制当其对象执行一系列操作时发生什么样的行为，包括创建、拷贝、移动、赋值和销毁。</p>
 <h4 id="虚析构函数"><a href="#虚析构函数" class="headerlink" title="虚析构函数"></a>虚析构函数</h4><p>基类通常应该定义一个虚析构函数，以对继承体系中的对象进行动态分配。</p>
 <p>delete一个动态分配的对象的指针时将执行析构函数。如果该动态指针指向继承体系中的某个类型，则有可能出现指针的静态类型与被删除对象的动态类型不符的情况。这时，如果使用静态类型的析构函数删除动态类型的对象，将会出现未定义的情况。为了避免这一情况，在基类中将析构函数定义为虚函数以确保执行正确的析构函数版本。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Quote{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Quote{
 public:
     // 如果我们删除的是一个指向派生类对象的基类指针，则需要虚析构函数
     virtual ~Quote() = default;
@@ -1078,7 +1079,7 @@ public:
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -1109,6 +1110,32 @@ public:
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1202,7 +1229,93 @@ public:
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1219,47 +1332,5 @@ public:
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

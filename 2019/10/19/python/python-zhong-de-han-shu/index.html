@@ -499,6 +499,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -521,73 +528,73 @@
 <p>该博客主要记录Python中函数的一些高级用法，例如函数变量作用域、闭包、固定函数的部分参数等。该博客的大部分内容来自《Python Cookbook》。</p>
 <h2 id="函数变量作用域"><a href="#函数变量作用域" class="headerlink" title="函数变量作用域"></a>函数变量作用域</h2><p>Python函数中变量的作用域和其它语言类似。如果变量是在函数内部定义的，就称为局部变量，只在函数内部有效。一旦函数执行完毕，局部变量就会被回收，无法访问。</p>
 <p>而全局变量是定义在整个文件层次上的，如果局部变量和全局或者外部变量同名，局部变量会覆盖全局或者外部变量。但这里要注意的一点是我们不能直接在函数中改变全局变量的值，如下述代码：</p>
-<pre class="line-numbers language-python"><code class="language-python">MIN_VALUE <span class="token operator">=</span> <span class="token number">1</span>
-MAX_VALUE <span class="token operator">=</span> <span class="token number">10</span>
-<span class="token keyword">def</span> <span class="token function">validation_check</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    MIN_VALUE <span class="token operator">+=</span> <span class="token number">1</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-validation_check<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">MIN_VALUE = 1
+MAX_VALUE = 10
+def validation_check(value):
+    ...
+    MIN_VALUE += 1
+    ...
+validation_check(5)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>会引发以下错误：</p>
-<pre class="line-numbers language-python"><code class="language-python">UnboundLocalError<span class="token punctuation">:</span> local variable <span class="token string">'MIN_VALUE'</span> referenced before assignment
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">UnboundLocalError: local variable 'MIN_VALUE' referenced before assignment
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>因为，Python的解释器会默认函数内部的变量为局部变量，但是局部变量尚未被声明，因而无法执行相关操作。所有，如果我们一定要在函数内部改变全局变量的值，必须加上<code>global</code>声明：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 变量作用域</span>
-MIN_VALUE <span class="token operator">=</span> <span class="token number">1</span>
-<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">global</span> MIN_VALUE 
-    MIN_VALUE <span class="token operator">=</span> <span class="token number">3</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Inner value: %d"</span> <span class="token operator">%</span> MIN_VALUE<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 变量作用域
+MIN_VALUE = 1
+def func():
+    global MIN_VALUE 
+    MIN_VALUE = 3
+    print("Inner value: %d" % MIN_VALUE)
 
-func<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Outer value: %d'</span> <span class="token operator">%</span> MIN_VALUE<span class="token punctuation">)</span>
+func()
+print('Outer value: %d' % MIN_VALUE)
 
-<span class="token comment" spellcheck="true"># 结果</span>
-Inner value<span class="token punctuation">:</span> <span class="token number">3</span>
-Outer value<span class="token punctuation">:</span> <span class="token number">3</span>
+# 结果
+Inner value: 3
+Outer value: 3
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果我们在函数中重新声明一个同名的局部变量，那么在函数内部局部变量会覆盖全局变量，无论对内部局部变量进行何种操作都不会影响到外部的全局变量：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># %%</span>
-<span class="token comment" spellcheck="true"># 变量作用域</span>
-MIN_VALUE <span class="token operator">=</span> <span class="token number">1</span>
-<span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    MIN_VALUE <span class="token operator">=</span> <span class="token number">3</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Inner value: %d"</span> <span class="token operator">%</span> MIN_VALUE<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># %%
+# 变量作用域
+MIN_VALUE = 1
+def func():
+    MIN_VALUE = 3
+    print("Inner value: %d" % MIN_VALUE)
 
-func<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Outer value: %d'</span> <span class="token operator">%</span> MIN_VALUE<span class="token punctuation">)</span>
+func()
+print('Outer value: %d' % MIN_VALUE)
 
-<span class="token comment" spellcheck="true"># 结果</span>
-Inner value<span class="token punctuation">:</span> <span class="token number">3</span>
-Outer value<span class="token punctuation">:</span> <span class="token number">1</span>
+# 结果
+Inner value: 3
+Outer value: 1
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>类似，对于嵌套函数来说，内部函数是无法改变外部函数定义的变量的，如果要修改就需要加上<code>nonlocal</code>关键字：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    x <span class="token operator">=</span> <span class="token string">"local"</span>
-    <span class="token keyword">def</span> <span class="token function">inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        nonlocal x <span class="token comment" spellcheck="true"># nonlocal 关键字表示这里的 x 就是外部函数 outer 定义的变量 x</span>
-        x <span class="token operator">=</span> <span class="token string">'nonlocal'</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"inner:"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-    inner<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"outer:"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-outer<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 输出</span>
-inner<span class="token punctuation">:</span> nonlocal
-outer<span class="token punctuation">:</span> nonlocal
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def outer():
+    x = "local"
+    def inner():
+        nonlocal x # nonlocal 关键字表示这里的 x 就是外部函数 outer 定义的变量 x
+        x = 'nonlocal'
+        print("inner:", x)
+    inner()
+    print("outer:", x)
+outer()
+# 输出
+inner: nonlocal
+outer: nonlocal
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果没有<code>nonlocal</code>关键字，内部的变量会覆盖外部变量：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    x <span class="token operator">=</span> <span class="token string">"local"</span>
-    <span class="token keyword">def</span> <span class="token function">inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        x <span class="token operator">=</span> <span class="token string">'nonlocal'</span> <span class="token comment" spellcheck="true"># 这里的 x 是 inner 这个函数的局部变量</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"inner:"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-    inner<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"outer:"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-outer<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 输出</span>
-inner<span class="token punctuation">:</span> nonlocal
-outer<span class="token punctuation">:</span> local
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def outer():
+    x = "local"
+    def inner():
+        x = 'nonlocal' # 这里的 x 是 inner 这个函数的局部变量
+        print("inner:", x)
+    inner()
+    print("outer:", x)
+outer()
+# 输出
+inner: nonlocal
+outer: local
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>总的来说，如果我们想要在函数作用域里面修改函数外部的变量的值，就必须使用相应的关键字进行提前声明。</p>
 <h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>该部分参考<a href="https://foofish.net/python-closure.html" target="_blank" rel="noopener">Python之禅-一步一步教你认识Python闭包</a>。</p>
@@ -596,17 +603,17 @@ outer<span class="token punctuation">:</span> local
 <p>在计算机科学中，闭包（Closure）是词法闭包（Lexical Closure）的简称，是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。</p>
 </blockquote>
 <p>以下述代码为例：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">print_msg</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># print_msg 是外围函数</span>
-    msg <span class="token operator">=</span> <span class="token string">"zen of python"</span>
-    <span class="token keyword">def</span> <span class="token function">printer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># printer 是嵌套函数</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> printer
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def print_msg():
+    # print_msg 是外围函数
+    msg = "zen of python"
+    def printer():
+        # printer 是嵌套函数
+        print(msg)
+    return printer
 
-another <span class="token operator">=</span> print_msg<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 输出 zen of python</span>
-another<span class="token punctuation">(</span><span class="token punctuation">)</span>
+another = print_msg()
+# 输出 zen of python
+another()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这里的<code>another</code>就是一个闭包，闭包本质上是一个函数，由两部分组成：<code>printer</code>函数和变量<code>msg</code>。闭包的作用是使得变量始终被保存在内存中。</p>
 <blockquote>
@@ -614,153 +621,153 @@ another<span class="token punctuation">(</span><span class="token punctuation">)
 </blockquote>
 <p>除此之外，如果一个函数被反复调用，且在这个函数的开始会调用一些类型检查、参数初始化的语句时，就可以使用闭包来实现。</p>
 <h2 id="使用函数替代只有单个方法的类"><a href="#使用函数替代只有单个方法的类" class="headerlink" title="使用函数替代只有单个方法的类"></a>使用函数替代只有单个方法的类</h2><p>有时，我们需要在执行函数的过程中保存其中的一些状态变量。一种最简单的方法是定义一个类，使用类的属性保存变量，但这种做法未免过于冗余。为了简单起见，我们可以使用闭包技术将其转换为一个函数。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用类保存状态</span>
-<span class="token keyword">from</span> urllib<span class="token punctuation">.</span>request <span class="token keyword">import</span> urlopen
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用类保存状态
+from urllib.request import urlopen
 
-<span class="token keyword">class</span> <span class="token class-name">UrlTemplate</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> template<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>template <span class="token operator">=</span> template
+class UrlTemplate:
+    def __init__(self, template):
+        self.template = template
 
-    <span class="token keyword">def</span> <span class="token function">open</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> urlopen<span class="token punctuation">(</span>self<span class="token punctuation">.</span>template<span class="token punctuation">.</span>format_map<span class="token punctuation">(</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-
-yahoo <span class="token operator">=</span> UrlTemplate<span class="token punctuation">(</span><span class="token string">'http://finance.yahoo.com/d/quotes.csv?s={names}&amp;f={fields}'</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> line <span class="token keyword">in</span> yahoo<span class="token punctuation">.</span>open<span class="token punctuation">(</span>names<span class="token operator">=</span><span class="token string">'IBM,AAPL,FB'</span><span class="token punctuation">,</span> fields<span class="token operator">=</span><span class="token string">'sllclv'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    def open(self, **kwargs):
+        return urlopen(self.template.format_map(kwargs))
 
 
-<span class="token comment" spellcheck="true"># 使用闭包</span>
-<span class="token keyword">def</span> <span class="token function">urltemplate</span><span class="token punctuation">(</span>template<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">opener</span><span class="token punctuation">(</span><span class="token operator">**</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> urlopen<span class="token punctuation">(</span>template<span class="token punctuation">.</span>format_map<span class="token punctuation">(</span>kwargs<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> opener
+yahoo = UrlTemplate('http://finance.yahoo.com/d/quotes.csv?s={names}&f={fields}')
+for line in yahoo.open(names='IBM,AAPL,FB', fields='sllclv'):
+    print(line.decode('utf-8'))
 
 
-yahoo <span class="token operator">=</span> urltemplate<span class="token punctuation">(</span><span class="token string">'http://finance.yahoo.com/d/quotes.csv?s={names}&amp;f={fields}'</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> line <span class="token keyword">in</span> yahoo<span class="token punctuation">(</span>names<span class="token operator">=</span><span class="token string">'IBM,AAPL,FB'</span><span class="token punctuation">,</span> fields<span class="token operator">=</span><span class="token string">'sllclv'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+# 使用闭包
+def urltemplate(template):
+    def opener(**kwargs):
+        return urlopen(template.format_map(kwargs))
+    return opener
+
+
+yahoo = urltemplate('http://finance.yahoo.com/d/quotes.csv?s={names}&f={fields}')
+for line in yahoo(names='IBM,AAPL,FB', fields='sllclv'):
+    print(line.decode('utf-8'))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>相比于使用只有单个方法的类，使用闭包会更加简洁优雅。闭包的核心就是它可以记住定义闭包时的环境。无论何时，当在编写代码时遇到需要附加额外的状态给函数时，请考虑闭包。</p>
 <h2 id="在回调函数中携带额外的状态"><a href="#在回调函数中携带额外的状态" class="headerlink" title="在回调函数中携带额外的状态"></a>在回调函数中携带额外的状态</h2><p>在实际项目中，我们会编写许多需要回调函数的代码，有时我们需要在回调函数中保存额外的状态。与上一小节类似，我们可以考虑使用类来实现这一功能。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用类保存额外的状态</span>
-<span class="token keyword">class</span> <span class="token class-name">ResultHandler</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>sequence <span class="token operator">=</span> <span class="token number">0</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用类保存额外的状态
+class ResultHandler:
+    def __init__(self):
+        self.sequence = 0
 
-    <span class="token keyword">def</span> <span class="token function">handler</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>sequence <span class="token operator">+=</span> <span class="token number">1</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'[{}] Got: {}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>self<span class="token punctuation">.</span>sequence<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-
-<span class="token keyword">def</span> <span class="token function">apply_async</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> args<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    result <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># 调用回调函数</span>
-    callback<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+    def handler(self, result):
+        self.sequence += 1
+        print('[{}] Got: {}'.format(self.sequence, result))
 
 
-<span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> x <span class="token operator">+</span> y
+def apply_async(func, args, *, callback):
+    result = func(*args)
+    # 调用回调函数
+    callback(result)
 
 
-r <span class="token operator">=</span> ResultHandler<span class="token punctuation">(</span><span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>r<span class="token punctuation">.</span>handler<span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>r<span class="token punctuation">.</span>handler<span class="token punctuation">)</span>
+def add(x, y):
+    return x + y
+
+
+r = ResultHandler()
+apply_async(add, (2, 3), callback=r.handler)
+apply_async(add, ('hello', 'world'), callback=r.handler)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>运行结果如下：</p>
-<pre class="line-numbers language-shell"><code class="language-shell">[1] Got: 5
+<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">[1] Got: 5
 [2] Got: helloworld
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>同样，我们也可以使用闭包来捕获状态：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用闭包</span>
-<span class="token keyword">def</span> <span class="token function">make_handler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    sequence <span class="token operator">=</span> <span class="token number">0</span>
-    <span class="token keyword">def</span> <span class="token function">handler</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># nonlocal声明用于表明变量sequence是在回调函数中修改的</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用闭包
+def make_handler():
+    sequence = 0
+    def handler(result):
+        # nonlocal声明用于表明变量sequence是在回调函数中修改的
         nonlocal sequence
-        sequence <span class="token operator">+=</span> <span class="token number">1</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'[{}] Got: {}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>sequence<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        sequence += 1
+        print('[{}] Got: {}'.format(sequence, result))
 
-    <span class="token keyword">return</span> handler
+    return handler
 
 
-handler <span class="token operator">=</span> make_handler<span class="token punctuation">(</span><span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>handler<span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>handler<span class="token punctuation">)</span>
+handler = make_handler()
+apply_async(add, (2, 3), callback=handler)
+apply_async(add, ('hello', 'world'), callback=handler)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>除此之外，还可以使用<strong>协程</strong>来携带状态：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 使用协程的方式在回调函数中携带状态</span>
-<span class="token keyword">def</span> <span class="token function">apply_async</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> args<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    result <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># 调用回调函数</span>
-    callback<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用协程的方式在回调函数中携带状态
+def apply_async(func, args, *, callback):
+    result = func(*args)
+    # 调用回调函数
+    callback(result)
 
 
-<span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> x <span class="token operator">+</span> y
+def add(x, y):
+    return x + y
 
 
-<span class="token keyword">def</span> <span class="token function">make_handler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    sequence <span class="token operator">=</span> <span class="token number">0</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        result <span class="token operator">=</span> <span class="token keyword">yield</span>
-        sequence <span class="token operator">+=</span> <span class="token number">1</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'[{}] Got: {}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>sequence<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+def make_handler():
+    sequence = 0
+    while(True):
+        result = yield
+        sequence += 1
+        print('[{}] Got: {}'.format(sequence, result))
 
 
-handler <span class="token operator">=</span> make_handler<span class="token punctuation">(</span><span class="token punctuation">)</span>
-next<span class="token punctuation">(</span>handler<span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>handler<span class="token punctuation">.</span>send<span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>handler<span class="token punctuation">.</span>send<span class="token punctuation">)</span>
+handler = make_handler()
+next(handler)
+apply_async(add, (2, 3), callback=handler.send)
+apply_async(add, ('hello', 'world'), callback=handler.send)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>最后，也可以使用额外的参数在回调函数中携带状态：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> partial
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from functools import partial
 
 
-<span class="token keyword">def</span> <span class="token function">apply_async</span><span class="token punctuation">(</span>func<span class="token punctuation">,</span> args<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    result <span class="token operator">=</span> func<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span>
-    <span class="token comment" spellcheck="true"># 调用回调函数</span>
-    callback<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+def apply_async(func, args, *, callback):
+    result = func(*args)
+    # 调用回调函数
+    callback(result)
 
 
-<span class="token keyword">def</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> x <span class="token operator">+</span> y
+def add(x, y):
+    return x + y
 
 
-<span class="token keyword">class</span> <span class="token class-name">SequenceNo</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>sequence <span class="token operator">=</span> <span class="token number">0</span>
+class SequenceNo:
+    def __init__(self):
+        self.sequence = 0
 
 
-<span class="token keyword">def</span> <span class="token function">handler</span><span class="token punctuation">(</span>result<span class="token punctuation">,</span> seq<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    seq<span class="token punctuation">.</span>sequence <span class="token operator">+=</span> <span class="token number">1</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'[{}] Got: {}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>seq<span class="token punctuation">.</span>sequence<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+def handler(result, seq):
+    seq.sequence += 1
+    print('[{}] Got: {}'.format(seq.sequence, result))
 
 
-seq <span class="token operator">=</span> SequenceNo<span class="token punctuation">(</span><span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>partial<span class="token punctuation">(</span>handler<span class="token punctuation">,</span> seq<span class="token operator">=</span>seq<span class="token punctuation">)</span><span class="token punctuation">)</span>
-apply_async<span class="token punctuation">(</span>add<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> callback<span class="token operator">=</span>partial<span class="token punctuation">(</span>handler<span class="token punctuation">,</span> seq<span class="token operator">=</span>seq<span class="token punctuation">)</span><span class="token punctuation">)</span>
+seq = SequenceNo()
+apply_async(add, (2, 3), callback=partial(handler, seq=seq))
+apply_async(add, ('hello', 'world'), callback=partial(handler, seq=seq))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在上述代码中，因为要传入额外的参数来保存状态，因而回调函数会多出一个参数。同时，在调用回调函数时，只能传入一个参数，因而需要使用<code>partial</code>函数来解决这一问题。</p>
 <h2 id="访问定义在闭包内的变量"><a href="#访问定义在闭包内的变量" class="headerlink" title="访问定义在闭包内的变量"></a>访问定义在闭包内的变量</h2><p>希望通过函数来扩展闭包，使得在闭包内层定义的变量可以被访问或修改。一般来说，在闭包内层定义的变量对于外界来说是完全隔离的，但是可以通过编写存取函数，并将它们作为函数属性附加到闭包上来提供对内层变量的访问机制。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">sample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    n <span class="token operator">=</span> <span class="token number">0</span>
-    <span class="token comment" spellcheck="true"># Closure function</span>
-    <span class="token keyword">def</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'n='</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def sample():
+    n = 0
+    # Closure function
+    def func():
+        print('n=', n)
 
-    <span class="token comment" spellcheck="true"># Accessor methods for n</span>
-    <span class="token keyword">def</span> <span class="token function">get_n</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> n
+    # Accessor methods for n
+    def get_n():
+        return n
 
-    <span class="token keyword">def</span> <span class="token function">set_n</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    def set_n(value):
         nonlocal n
-        n <span class="token operator">=</span> value
+        n = value
 
-    <span class="token comment" spellcheck="true"># Attach as function attributes</span>
-    func<span class="token punctuation">.</span>get_n <span class="token operator">=</span> get_n
-    func<span class="token punctuation">.</span>set_n <span class="token operator">=</span> set_n
-    <span class="token keyword">return</span> func
+    # Attach as function attributes
+    func.get_n = get_n
+    func.set_n = set_n
+    return func
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>nolocal</code>关键字使得我们可以编写函数来修改内部变量的值；函数属性允许我们用一种简单的方式将方法绑定到闭包函数上。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
@@ -1059,7 +1066,7 @@ apply_async<span class="token punctuation">(</span>add<span class="token punctua
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -1090,6 +1097,32 @@ apply_async<span class="token punctuation">(</span>add<span class="token punctua
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1183,7 +1216,93 @@ apply_async<span class="token punctuation">(</span>add<span class="token punctua
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1200,47 +1319,5 @@ apply_async<span class="token punctuation">(</span>add<span class="token punctua
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

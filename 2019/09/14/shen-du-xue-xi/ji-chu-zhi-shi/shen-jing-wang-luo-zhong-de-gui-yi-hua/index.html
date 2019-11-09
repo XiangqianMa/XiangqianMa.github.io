@@ -96,13 +96,13 @@
 
 
 
-  <meta name="description" content="神经网络中的归一化操作内部协变量偏移（Internal Covariate Shift）在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：$$p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})$$所谓协变量偏移指的是：源领域和目标领域的输入">
+  <meta name="description" content="神经网络中的归一化操作内部协变量偏移（Internal Covariate Shift）在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：  p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})所谓协变量偏移指的是：源领域和目标领域的输入边际">
 <meta name="keywords" content="深度学习,基础知识,常见知识">
 <meta property="og:type" content="article">
 <meta property="og:title" content="神经网络中的归一化操作">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/09/14/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="神经网络中的归一化操作内部协变量偏移（Internal Covariate Shift）在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：$$p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})$$所谓协变量偏移指的是：源领域和目标领域的输入">
+<meta property="og:description" content="神经网络中的归一化操作内部协变量偏移（Internal Covariate Shift）在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：  p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})所谓协变量偏移指的是：源领域和目标领域的输入边际">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/09/14/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/1568275983687.png">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/09/14/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/1568276150912.png">
@@ -110,7 +110,7 @@
 <meta property="og:updated_time" content="2019-11-09T13:46:21.671Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络中的归一化操作">
-<meta name="twitter:description" content="神经网络中的归一化操作内部协变量偏移（Internal Covariate Shift）在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：$$p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})$$所谓协变量偏移指的是：源领域和目标领域的输入">
+<meta name="twitter:description" content="神经网络中的归一化操作内部协变量偏移（Internal Covariate Shift）在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：  p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})所谓协变量偏移指的是：源领域和目标领域的输入边际">
 <meta name="twitter:image" content="http://xiangqianma.github.io/2019/09/14/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/1568275983687.png">
 
 
@@ -501,6 +501,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -519,7 +526,9 @@
       
 
       
-        <h1 id="神经网络中的归一化操作"><a href="#神经网络中的归一化操作" class="headerlink" title="神经网络中的归一化操作"></a>神经网络中的归一化操作</h1><h2 id="内部协变量偏移（Internal-Covariate-Shift）"><a href="#内部协变量偏移（Internal-Covariate-Shift）" class="headerlink" title="内部协变量偏移（Internal Covariate Shift）"></a>内部协变量偏移（Internal Covariate Shift）</h2><p>在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：<br>$$<br>p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})<br>$$<br>所谓协变量偏移指的是：源领域和目标领域的输入边际分布不同$p_{S}(\mathbf{x}) \neq p_{T}(\mathbf{x})$，但两者的后验分布相同$p_{S}(y | \mathbf{x})=p_{T}(y | \mathbf{x})$，即学习任务相同。</p>
+        <h1 id="神经网络中的归一化操作"><a href="#神经网络中的归一化操作" class="headerlink" title="神经网络中的归一化操作"></a>神经网络中的归一化操作</h1><h2 id="内部协变量偏移（Internal-Covariate-Shift）"><a href="#内部协变量偏移（Internal-Covariate-Shift）" class="headerlink" title="内部协变量偏移（Internal Covariate Shift）"></a>内部协变量偏移（Internal Covariate Shift）</h2><p>在介绍归一化操作之前，我们需要了解什么是内部协变量偏移。首先，协变量偏移是数据分布不一致性的一种表现。已知贝叶斯公式：</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x}, y)=p(\mathbf{x} | y) p(y)=p(y | \mathbf{x}) p(\mathbf{x})</script><p>所谓协变量偏移指的是：源领域和目标领域的输入边际分布不同$p_{S}(\mathbf{x}) \neq p_{T}(\mathbf{x})$，但两者的后验分布相同$p_{S}(y | \mathbf{x})=p_{T}(y | \mathbf{x})$，即学习任务相同。</p>
 <p>而在深度神经网络中，中间某一层的输入是其之前的神经层的输出。因此，其之前的神经层的参数变化会导致其输入的分布发生较大的差异。在使用随机梯 度下降来训练网络时，每次参数更新都会导致网络中间每一层的输入的分布发 生改变。越深的层，其输入的分布会改变得越明显。就像一栋高楼，低楼层发生一个较小的偏移，都会导致高楼层较大的偏移。</p>
 <p>从机器学习的角度来看，如果某一层网络的输入的分布发生了变化，那么其参数就需要重新学习，我们将这种现象称为内部协变量偏移。归一化便是一种被用来解决内部协变量偏移的方法。归一化方法的引入可以使得每一个神经层的输入的分布在训练过程中保持一致。</p>
 <h2 id="梯度弥散问题"><a href="#梯度弥散问题" class="headerlink" title="梯度弥散问题"></a>梯度弥散问题</h2><p>所谓梯度弥散，指的是，梯度在反向传播过程中由于网络太深或者网络激活值位于激活函数的饱和区而消失，深层的梯度无法顺利传播到神经网络的浅层，进而导致神经网络无法正常训练。</p>
@@ -528,30 +537,46 @@
 <p><img src="/2019/09/14/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/1568276150912.png" alt="归一化对激活函数的影响"></p>
 <p>通过使用归一化操作便可以达到这一目的。对网络层的输入进行归一化后，输入的数值便被限制在较小的区间进而保证了输入不会进入激活函数的饱和区。</p>
 <p>以下为几种常用的逐层归一化方法，所谓逐层归一化指的是可以被应用在深度神经网络的任何一个中间层。<strong>在实际应用中，并不需要对所有的网络层进行归一化</strong>。</p>
-<h2 id="批量归一化（Batch-Normalization-BN）"><a href="#批量归一化（Batch-Normalization-BN）" class="headerlink" title="批量归一化（Batch Normalization, BN）"></a>批量归一化（Batch Normalization, BN）</h2><p>批量归一化方法由$[Ioffe \ and\ Szegedy, 2015]$提出，是一种有效的逐层归一化方法。对于一个深层神经网络，令第$l$层的净输入为$z^{(l)}$，神经元的输出为$a^{l}$，即：<br>$$<br>\mathbf{a}^{(l)}=f\left(\mathbf{z}^{(l)}\right)=f\left(W \mathbf{a}^{(l-1)}+\mathbf{b}\right)<br>$$<br>其中$f()$是激活函数，$W$和$b$为可学习参数。</p>
+<h2 id="批量归一化（Batch-Normalization-BN）"><a href="#批量归一化（Batch-Normalization-BN）" class="headerlink" title="批量归一化（Batch Normalization, BN）"></a>批量归一化（Batch Normalization, BN）</h2><p>批量归一化方法由$[Ioffe \ and\ Szegedy, 2015]$提出，是一种有效的逐层归一化方法。对于一个深层神经网络，令第$l$层的净输入为$z^{(l)}$，神经元的输出为$a^{l}$，即：</p>
+<script type="math/tex; mode=display">
+\mathbf{a}^{(l)}=f\left(\mathbf{z}^{(l)}\right)=f\left(W \mathbf{a}^{(l-1)}+\mathbf{b}\right)</script><p>其中$f()$是激活函数，$W$和$b$为可学习参数。</p>
 <p>为了解决内部协变量偏移问题，就要使得网络层的净输入$z{(l)}$的分布一致。在实际应用中，归一化操作常应用在仿射变换之后，激活函数之前，这么做的原因在于输入的分布性质不如净输入稳定。</p>
-<p>逐层归一化需要在中间层进行，因而需要有较高的效率，不适合使用复杂度较高的归一化方法，一般使用标准归一化方法，将净输入$z{(l)}$的<strong>每一个维度</strong>都归一化到标准正态分布。<br>$$<br>\hat{\mathbf{z}}^{(l)}=\frac{\mathbf{z}^{(l)}-\mathbb{E}\left[\mathbf{z}^{(l)}\right]}{\sqrt{\operatorname{var}\left(\mathbf{z}^{(l)}\right)+\epsilon}}<br>$$<br>其中的均值$\mathbb{E}\left[\mathbf{z}^{(l)}\right]$和方差$var(z^{(l)})$是在当前网络参数下，$z^{(l)}$的每一维在整个训练集上的期望和方差。但实际上，我们是无法计算整个数据集上的统计量的，<strong>只能使用当前小批量数据集的均值和方差进行估计</strong>。给定包含$K$个样本的小批量样本集合，计算第$l$层神经元的净输入$z^{(1,l)},…,z^{(K,l)}$的均值和方差：<br>$$<br>\begin{aligned} \mu_{\mathcal{B}} &amp;=\frac{1}{K} \sum_{k=1}^{K} \mathbf{z}^{(k, l)} \end{aligned}<br>$$<br>$$<br>\sigma_{\mathcal{B}}^{2} =\frac{1}{K} \sum_{k=1}^{K}\left(\mathbf{z}^{(k, l)}-\mu_{\mathcal{B}}\right) \odot\left(\mathbf{z}^{(k, l)}-\mu_{\mathcal{B}}\right)<br>$$</p>
-<p>但是，直接将网络层的净输入归一化到$[-1,1]$区间会使得激活函数的取值区间限制在线性变换区间内，减弱了神经网络的非线性性质。因此，为了使得归一化不对网络的表示能力造成负面影响，可以通过一个附加的缩放和平移变换改变取值区间。<br>$$<br>\begin{aligned} \hat{\mathbf{z}}^{(l)} &amp;=\frac{\mathbf{z}^{(l)}-\mu_{\mathcal{B}}}{\sqrt{\sigma_{\mathcal{B}}^{2}+\epsilon}} \odot \gamma+\beta \ &amp; \triangleq \mathrm{BN}_{\gamma, \beta}\left(\mathbf{z}^{(l)}\right) \end{aligned}<br>$$<br>其中$\gamma$和$\beta$分别表示缩放因子和平移因子。在实际应用中，这两个参数常被设置为可学习参数。</p>
-<p>我们可以将批量归一化层看作一个特殊的神经层，加载每一层非线性激活函数之前：<br>$$<br>\mathbf{a}^{(l)}=f \left(\mathrm{BN}_{\gamma, \beta}\left(\mathbf{z}^{(l)}\right)\right)<br>$$</p>
-<p>$$<br>\mathbf{z^{(l)}}=f\left(\mathrm{BN}_{\gamma, \beta} \left(W \mathbf{a}^{(l-1)}\right)\right)<br>$$</p>
-<p>这里有一个很重要的性质:</p>
+<p>逐层归一化需要在中间层进行，因而需要有较高的效率，不适合使用复杂度较高的归一化方法，一般使用标准归一化方法，将净输入$z{(l)}$的<strong>每一个维度</strong>都归一化到标准正态分布。</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{z}}^{(l)}=\frac{\mathbf{z}^{(l)}-\mathbb{E}\left[\mathbf{z}^{(l)}\right]}{\sqrt{\operatorname{var}\left(\mathbf{z}^{(l)}\right)+\epsilon}}</script><p>其中的均值$\mathbb{E}\left[\mathbf{z}^{(l)}\right]$和方差$var(z^{(l)})$是在当前网络参数下，$z^{(l)}$的每一维在整个训练集上的期望和方差。但实际上，我们是无法计算整个数据集上的统计量的，<strong>只能使用当前小批量数据集的均值和方差进行估计</strong>。给定包含$K$个样本的小批量样本集合，计算第$l$层神经元的净输入$z^{(1,l)},…,z^{(K,l)}$的均值和方差：</p>
+<script type="math/tex; mode=display">
+\begin{aligned} \mu_{\mathcal{B}} &=\frac{1}{K} \sum_{k=1}^{K} \mathbf{z}^{(k, l)} \end{aligned}</script><script type="math/tex; mode=display">
+\sigma_{\mathcal{B}}^{2} =\frac{1}{K} \sum_{k=1}^{K}\left(\mathbf{z}^{(k, l)}-\mu_{\mathcal{B}}\right) \odot\left(\mathbf{z}^{(k, l)}-\mu_{\mathcal{B}}\right)</script><p>但是，直接将网络层的净输入归一化到$[-1,1]$区间会使得激活函数的取值区间限制在线性变换区间内，减弱了神经网络的非线性性质。因此，为了使得归一化不对网络的表示能力造成负面影响，可以通过一个附加的缩放和平移变换改变取值区间。</p>
+<script type="math/tex; mode=display">
+\begin{aligned} \hat{\mathbf{z}}^{(l)} &=\frac{\mathbf{z}^{(l)}-\mu_{\mathcal{B}}}{\sqrt{\sigma_{\mathcal{B}}^{2}+\epsilon}} \odot \gamma+\beta \\ & \triangleq \mathrm{BN}_{\gamma, \beta}\left(\mathbf{z}^{(l)}\right) \end{aligned}</script><p>其中$\gamma$和$\beta$分别表示缩放因子和平移因子。在实际应用中，这两个参数常被设置为可学习参数。</p>
+<p>我们可以将批量归一化层看作一个特殊的神经层，加载每一层非线性激活函数之前：</p>
+<script type="math/tex; mode=display">
+\mathbf{a}^{(l)}=f \left(\mathrm{BN}_{\gamma, \beta}\left(\mathbf{z}^{(l)}\right)\right)</script><script type="math/tex; mode=display">
+\mathbf{z^{(l)}}=f\left(\mathrm{BN}_{\gamma, \beta} \left(W \mathbf{a}^{(l-1)}\right)\right)</script><p>这里有一个很重要的性质:</p>
 <blockquote>
 <p>因为批量归一化层本身有平移变化参数，因而仿射变化可以不加偏置参数。</p>
 </blockquote>
 <h3 id="实际计算细节"><a href="#实际计算细节" class="headerlink" title="实际计算细节"></a>实际计算细节</h3><p>各种归一化方法的区别在于，按照特征图的哪一个维度计算均值和方差。</p>
-<h4 id="批量归一化（Batch-Normalization-BN）-1"><a href="#批量归一化（Batch-Normalization-BN）-1" class="headerlink" title="批量归一化（Batch Normalization, BN）"></a>批量归一化（Batch Normalization, BN）</h4><p>在卷积神经网络中，设一个层的特征图的大小为$x\in R^{N\times C \times H \times W}$，包含$N$个样本，每个样本有$C$个通道、高为$H$、宽为$W$。现在，我们要对该特征图求均值和方差，<strong>计算方式为按照通道$C$分别计算各个通道的均值和方差</strong>，计算完成后对于该层特征图，将得到$C$个均值和$C$个方差。<br>$$<br>\begin{array}{c}{\mu_{c}(x)=\frac{1}{N H W} \sum_{n=1}^{N} \sum_{h=1}^{H} \sum_{w=1}^{W} x_{n c h w}}\end{array}<br>$$<br>$$<br>{\sigma_{c}(x)=\sqrt{\frac{1}{N H W} \sum_{n=1}^{N} \sum_{h=1}^{H} \sum_{w=1}^{W}\left(x_{n c h w}-\mu_{c}(x)\right)^{2}+\epsilon}}<br>$$</p>
-<p>表示如下图所示：</p>
+<h4 id="批量归一化（Batch-Normalization-BN）-1"><a href="#批量归一化（Batch-Normalization-BN）-1" class="headerlink" title="批量归一化（Batch Normalization, BN）"></a>批量归一化（Batch Normalization, BN）</h4><p>在卷积神经网络中，设一个层的特征图的大小为$x\in R^{N\times C \times H \times W}$，包含$N$个样本，每个样本有$C$个通道、高为$H$、宽为$W$。现在，我们要对该特征图求均值和方差，<strong>计算方式为按照通道$C$分别计算各个通道的均值和方差</strong>，计算完成后对于该层特征图，将得到$C$个均值和$C$个方差。</p>
+<script type="math/tex; mode=display">
+\begin{array}{c}{\mu_{c}(x)=\frac{1}{N H W} \sum_{n=1}^{N} \sum_{h=1}^{H} \sum_{w=1}^{W} x_{n c h w}}\end{array}</script><script type="math/tex; mode=display">
+{\sigma_{c}(x)=\sqrt{\frac{1}{N H W} \sum_{n=1}^{N} \sum_{h=1}^{H} \sum_{w=1}^{W}\left(x_{n c h w}-\mu_{c}(x)\right)^{2}+\epsilon}}</script><p>表示如下图所示：</p>
 <p><img src="/2019/09/14/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/v2-cc921c4c597e89a862785a842b0c4293_1200x500.jpg" alt="批量归一化示意图"></p>
 <p>正如上图中的Batch Norm所示，<strong>通道之间独立计算</strong>是批量归一化的核心。</p>
 <h4 id="层归一化（Layer-Normalization-LN）"><a href="#层归一化（Layer-Normalization-LN）" class="headerlink" title="层归一化（Layer Normalization, LN）"></a>层归一化（Layer Normalization, LN）</h4><p>正如上一小节所述，每一个通道的均值和方差需要使用mini-batch中的所有样本的对应通道的值计算得到，当batch-size较小时，各个通道的均值和方差的偏差将比较大。且当训练样本的大小不同（例如RNN模型）时，无法进行合理计算。为了解决这一问题，提出了层归一化方法。</p>
-<p>所谓层归一化，即<strong>按照样本数$N$分别计算各个样本的均值和方差</strong>，计算完成后，对于该层特征图将得到$N$个均值和$N$个方差。<br>$$<br>\begin{array}{c}{\mu_{n}(x)=\frac{1}{C H W} \sum_{c=1}^{C} \sum_{h=1}^{H} \sum_{w=1}^{W} x_{n c h w}}\end{array}<br>$$<br>$$<br> {\sigma_{n}(x)=\sqrt{\frac{1}{C H W} \sum_{c=1}^{C} \sum_{h=1}^{H} \sum_{w=1}^{W}\left(x_{n c h w}-\mu_{n}(x)\right)^{2}+\epsilon}}<br>$$</p>
-<p>同样参考之前的示意图，<strong>样本之间独立计算</strong>是层归一化的核心。</p>
-<h4 id="实例归一化（Instance-Normalization-IN）"><a href="#实例归一化（Instance-Normalization-IN）" class="headerlink" title="实例归一化（Instance Normalization, IN）"></a>实例归一化（Instance Normalization, IN）</h4><p>所谓实例归一化，即按照单个样本的单个通道进行计算，计算对象为单层特征图的$N \times W$个值，最终将分别得到$N\times C$个均值和方差。<br>$$<br>\begin{array}{c}{\mu_{n c}(x)=\frac{1}{H W} \sum_{h=1}^{H} \sum_{w=1}^{W} x_{n c h w}}\end{array}<br>$$<br>$$<br>{\sigma_{n c}(x)=\sqrt{\frac{1}{H W} \sum_{h=1}^{H} \sum_{w=1}^{W}\left(x_{n c h w}-\mu_{n c}(x)\right)^{2}+\epsilon}}<br>$$</p>
-<p>同样参考之前的示意图，<strong>所有样本的各个通道之间独立计算</strong>是实例归一化的核心。</p>
+<p>所谓层归一化，即<strong>按照样本数$N$分别计算各个样本的均值和方差</strong>，计算完成后，对于该层特征图将得到$N$个均值和$N$个方差。</p>
+<script type="math/tex; mode=display">
+\begin{array}{c}{\mu_{n}(x)=\frac{1}{C H W} \sum_{c=1}^{C} \sum_{h=1}^{H} \sum_{w=1}^{W} x_{n c h w}}\end{array}</script><script type="math/tex; mode=display">
+ {\sigma_{n}(x)=\sqrt{\frac{1}{C H W} \sum_{c=1}^{C} \sum_{h=1}^{H} \sum_{w=1}^{W}\left(x_{n c h w}-\mu_{n}(x)\right)^{2}+\epsilon}}</script><p>同样参考之前的示意图，<strong>样本之间独立计算</strong>是层归一化的核心。</p>
+<h4 id="实例归一化（Instance-Normalization-IN）"><a href="#实例归一化（Instance-Normalization-IN）" class="headerlink" title="实例归一化（Instance Normalization, IN）"></a>实例归一化（Instance Normalization, IN）</h4><p>所谓实例归一化，即按照单个样本的单个通道进行计算，计算对象为单层特征图的$N \times W$个值，最终将分别得到$N\times C$个均值和方差。</p>
+<script type="math/tex; mode=display">
+\begin{array}{c}{\mu_{n c}(x)=\frac{1}{H W} \sum_{h=1}^{H} \sum_{w=1}^{W} x_{n c h w}}\end{array}</script><script type="math/tex; mode=display">
+{\sigma_{n c}(x)=\sqrt{\frac{1}{H W} \sum_{h=1}^{H} \sum_{w=1}^{W}\left(x_{n c h w}-\mu_{n c}(x)\right)^{2}+\epsilon}}</script><p>同样参考之前的示意图，<strong>所有样本的各个通道之间独立计算</strong>是实例归一化的核心。</p>
 <h4 id="分组归一化（Group-Normalization-GN）"><a href="#分组归一化（Group-Normalization-GN）" class="headerlink" title="分组归一化（Group Normalization, GN）"></a>分组归一化（Group Normalization, GN）</h4><p>分组归一化适用于需要大量显存的任务，对于一些任务，我们无法设置较大的batch size，因而无法使用批量归一化。为了缓和这一问题，提出了分组归一化，这里的分组对象是单个样本的通道。</p>
-<p>在计算均值和方差时，将每一个样本的特征图的通道划分为$G$组，每组将有$C/G$个通道，将各个通道组内的元素求均值和方差，作为通道组内各个通道的均值和方差，最终将得到$N\times G$个均值和方差。<br>$$<br>\begin{array}{c}{\mu_{n g}(x)=\frac{1}{(C/G)H W} \sum_{C=gC/G}^{(g+1)C/G} \sum_{h=1}^{H}\sum_{w=1}^{W} x_{n c h w}}\end{array}<br>$$</p>
-<p>$$<br>{\sigma_{n g}(x)=\sqrt{\frac{1}{(C/G)H W} \sum_{c=gC/G}^{(g+1)C/G} \sum_{h=1}{H}\sum_{w=1}^{W}\left(x_{n c h w}-\mu_{n g}(x)\right)^{2}+\epsilon}}<br>$$</p>
-<p>可以将分组归一化看作层归一化和实例归一化的中间状态，分组为1时就是层归一化，分组为通道数$C$时就是实例归一化。</p>
+<p>在计算均值和方差时，将每一个样本的特征图的通道划分为$G$组，每组将有$C/G$个通道，将各个通道组内的元素求均值和方差，作为通道组内各个通道的均值和方差，最终将得到$N\times G$个均值和方差。</p>
+<script type="math/tex; mode=display">
+\begin{array}{c}{\mu_{n g}(x)=\frac{1}{(C/G)H W} \sum_{C=gC/G}^{(g+1)C/G} \sum_{h=1}^{H}\sum_{w=1}^{W} x_{n c h w}}\end{array}</script><script type="math/tex; mode=display">
+{\sigma_{n g}(x)=\sqrt{\frac{1}{(C/G)H W} \sum_{c=gC/G}^{(g+1)C/G} \sum_{h=1}{H}\sum_{w=1}^{W}\left(x_{n c h w}-\mu_{n g}(x)\right)^{2}+\epsilon}}</script><p>可以将分组归一化看作层归一化和实例归一化的中间状态，分组为1时就是层归一化，分组为通道数$C$时就是实例归一化。</p>
 <p>分组归一化的核心就是，<strong>单个样本的不同通道组之间</strong>独立计算。</p>
 <p>总的来说，使用不同的计算对象便可以得到不同的归一化方式。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
@@ -852,7 +877,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -883,6 +908,32 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -976,7 +1027,93 @@
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -993,47 +1130,5 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -521,63 +528,63 @@
 </blockquote>
 <p>那么，类就是一群具有相同属性和函数的对象的集合。</p>
 <h2 id="抽象类和抽象函数"><a href="#抽象类和抽象函数" class="headerlink" title="抽象类和抽象函数"></a>抽象类和抽象函数</h2><p>假设有以下代码，有一个父类和两个子类。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Entity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> object_type<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'parent class init called'</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>object_type <span class="token operator">=</span> object_type
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">class Entity():
+    def __init__(self, object_type):
+        print('parent class init called')
+        self.object_type = object_type
 
-    <span class="token keyword">def</span> <span class="token function">get_context_length</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">raise</span> Exception<span class="token punctuation">(</span><span class="token string">'get_context_length not implemented'</span><span class="token punctuation">)</span>
+    def get_context_length(self):
+        raise Exception('get_context_length not implemented')
 
-    <span class="token keyword">def</span> <span class="token function">print_title</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>title<span class="token punctuation">)</span>
+    def print_title(self):
+        print(self.title)
 
-<span class="token keyword">class</span> <span class="token class-name">Document</span><span class="token punctuation">(</span>Entity<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> title<span class="token punctuation">,</span> author<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Document class init called'</span><span class="token punctuation">)</span>
-        Entity<span class="token punctuation">.</span>__init__<span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token string">'document'</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>title <span class="token operator">=</span> title
-        self<span class="token punctuation">.</span>author <span class="token operator">=</span> author
-        self<span class="token punctuation">.</span>__context <span class="token operator">=</span> context
+class Document(Entity):
+    def __init__(self, title, author, context):
+        print('Document class init called')
+        Entity.__init__(self, 'document')
+        self.title = title
+        self.author = author
+        self.__context = context
 
-    <span class="token keyword">def</span> <span class="token function">get_context_length</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>__context<span class="token punctuation">)</span>
+    def get_context_length(self):
+        return len(self.__context)
 
-<span class="token keyword">class</span> <span class="token class-name">Video</span><span class="token punctuation">(</span>Entity<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> title<span class="token punctuation">,</span> author<span class="token punctuation">,</span> video_length<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Video class init called'</span><span class="token punctuation">)</span>
-        Entity<span class="token punctuation">.</span>__init__<span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token string">'video'</span><span class="token punctuation">)</span>
-        self<span class="token punctuation">.</span>title <span class="token operator">=</span> title
-        self<span class="token punctuation">.</span>author <span class="token operator">=</span> author
-        self<span class="token punctuation">.</span>__video_length <span class="token operator">=</span> video_length
+class Video(Entity):
+    def __init__(self, title, author, video_length):
+        print('Video class init called')
+        Entity.__init__(self, 'video')
+        self.title = title
+        self.author = author
+        self.__video_length = video_length
 
-    <span class="token keyword">def</span> <span class="token function">get_context_length</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__video_length
+    def get_context_length(self):
+        return self.__video_length
 
-harry_potter_book <span class="token operator">=</span> Document<span class="token punctuation">(</span><span class="token string">'Harry Potter(Book)'</span><span class="token punctuation">,</span> <span class="token string">'J. K. Rowling'</span><span class="token punctuation">,</span> <span class="token string">'... Forever Do not believe any thing is capable of thinking independently ...'</span><span class="token punctuation">)</span>
-harry_potter_movie <span class="token operator">=</span> Video<span class="token punctuation">(</span><span class="token string">'Harry Potter(Movie)'</span><span class="token punctuation">,</span> <span class="token string">'J. K. Rowling'</span><span class="token punctuation">,</span> <span class="token number">120</span><span class="token punctuation">)</span>
+harry_potter_book = Document('Harry Potter(Book)', 'J. K. Rowling', '... Forever Do not believe any thing is capable of thinking independently ...')
+harry_potter_movie = Video('Harry Potter(Movie)', 'J. K. Rowling', 120)
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>harry_potter_book<span class="token punctuation">.</span>object_type<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>harry_potter_movie<span class="token punctuation">.</span>object_type<span class="token punctuation">)</span>
+print(harry_potter_book.object_type)
+print(harry_potter_movie.object_type)
 
-harry_potter_book<span class="token punctuation">.</span>print_title<span class="token punctuation">(</span><span class="token punctuation">)</span>
-harry_potter_movie<span class="token punctuation">.</span>print_title<span class="token punctuation">(</span><span class="token punctuation">)</span>
+harry_potter_book.print_title()
+harry_potter_movie.print_title()
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>harry_potter_book<span class="token punctuation">.</span>get_context_length<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>harry_potter_movie<span class="token punctuation">.</span>get_context_length<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+print(harry_potter_book.get_context_length())
+print(harry_potter_movie.get_context_length())
 
-<span class="token comment" spellcheck="true">########## 输出 ##########</span>
+########## 输出 ##########
 
-Document <span class="token keyword">class</span> <span class="token class-name">init</span> called
-parent <span class="token keyword">class</span> <span class="token class-name">init</span> called
-Video <span class="token keyword">class</span> <span class="token class-name">init</span> called
-parent <span class="token keyword">class</span> <span class="token class-name">init</span> called
+Document class init called
+parent class init called
+Video class init called
+parent class init called
 document
 video
-Harry Potter<span class="token punctuation">(</span>Book<span class="token punctuation">)</span>
-Harry Potter<span class="token punctuation">(</span>Movie<span class="token punctuation">)</span>
-<span class="token number">77</span>
-<span class="token number">120</span>
+Harry Potter(Book)
+Harry Potter(Movie)
+77
+120
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在上述代码中的<code>Entity</code>类本身没有什么作用，只是提供了一些<code>Document</code>和<code>Video</code>的基本元素。因而，我们不需要生成<code>Entity</code>的对象。那么，如何防止生成<code>Entity</code>的对象呢？</p>
 <p>这里需要引入<strong>抽象类</strong>和<strong>抽象函数</strong>的概念：</p>
@@ -585,44 +592,44 @@ Harry Potter<span class="token punctuation">(</span>Movie<span class="token punc
 <p>所谓抽象类是一种特殊的类，该类的作用就是作为父类存在的，一旦对其进行对象化就会产生错误。同样，抽象函数定义在抽象类中，子类必须重写该函数才能被使用。抽象函数使用装饰器<code>@abstractmethod</code>来表示。</p>
 </blockquote>
 <p>如下代码：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> abc <span class="token keyword">import</span> ABCMeta<span class="token punctuation">,</span> abstractmethod
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">from abc import ABCMeta, abstractmethod
 
-<span class="token keyword">class</span> <span class="token class-name">Entity</span><span class="token punctuation">(</span>metaclass<span class="token operator">=</span>ABCMeta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+class Entity(metaclass=ABCMeta):
     @abstractmethod
-    <span class="token keyword">def</span> <span class="token function">get_title</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">pass</span>
+    def get_title(self):
+        pass
 
     @abstractmethod
-    <span class="token keyword">def</span> <span class="token function">set_title</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> title<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">pass</span>
+    def set_title(self, title):
+        pass
 
-<span class="token keyword">class</span> <span class="token class-name">Document</span><span class="token punctuation">(</span>Entity<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">get_title</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>title
+class Document(Entity):
+    def get_title(self):
+        return self.title
 
-    <span class="token keyword">def</span> <span class="token function">set_title</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> title<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        self<span class="token punctuation">.</span>title <span class="token operator">=</span> title
+    def set_title(self, title):
+        self.title = title
 
-document <span class="token operator">=</span> Document<span class="token punctuation">(</span><span class="token punctuation">)</span>
-document<span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">'Harry Potter'</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span>get_title<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+document = Document()
+document.set_title('Harry Potter')
+print(document.get_title())
 
-entity <span class="token operator">=</span> Entity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+entity = Entity()
 
-<span class="token comment" spellcheck="true">########## 输出 ##########</span>
+########## 输出 ##########
 
 Harry Potter
 
-<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-TypeError                                 Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span>
-<span class="token operator">&lt;</span>ipython<span class="token operator">-</span>input<span class="token number">-7</span><span class="token operator">-</span><span class="token number">266b2aa47bad</span><span class="token operator">></span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-     <span class="token number">21</span> <span class="token keyword">print</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span>get_title<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-     <span class="token number">22</span> 
-<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span> <span class="token number">23</span> entity <span class="token operator">=</span> Entity<span class="token punctuation">(</span><span class="token punctuation">)</span>
-     <span class="token number">24</span> entity<span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">'Test'</span><span class="token punctuation">)</span>
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-7-266b2aa47bad> in <module>()
+     21 print(document.get_title())
+     22 
+---> 23 entity = Entity()
+     24 entity.set_title('Test')
 
-TypeError<span class="token punctuation">:</span> Can't instantiate abstract <span class="token keyword">class</span> <span class="token class-name">Entity</span> <span class="token keyword">with</span> abstract methods get_title<span class="token punctuation">,</span> set_title
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+TypeError: Can't instantiate abstract class Entity with abstract methods get_title, set_title
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></module></ipython-input-7-266b2aa47bad></code></pre>
 <p>在上述代码中，我们直接声明了抽象类<code>Entity</code>的对象，引发了类型错误。我们必须使用子类对其进行继承才能正常使用。</p>
 <p>抽象类的作用就是定义接口，是一种自上而下的设计方法。只需要使用少量的代码对需要做的事情进行描述，定义好接口，然后分发给不同的开发人员进行开发和对接。</p>
 
@@ -914,7 +921,7 @@ TypeError<span class="token punctuation">:</span> Can't instantiate abstract <sp
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -945,6 +952,32 @@ TypeError<span class="token punctuation">:</span> Can't instantiate abstract <sp
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1038,7 +1071,93 @@ TypeError<span class="token punctuation">:</span> Can't instantiate abstract <sp
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1055,47 +1174,5 @@ TypeError<span class="token punctuation">:</span> Can't instantiate abstract <sp
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

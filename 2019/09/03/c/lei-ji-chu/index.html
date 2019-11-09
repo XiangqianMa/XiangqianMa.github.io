@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -519,7 +526,7 @@
 <p>指向非常量的常量指针无法被绑定至常量</p>
 </blockquote>
 <p>在默认情况下，类的this指针的类型是指向类类型非常量版本的常量指针，这一设定意味着我们无法将this指针绑定至类类型的常量上。也就是说我们无法使用常量对象调用普通的成员对象，为了提高程序的兼容性，可以将this声明为指向常量的常量指针，为了达到之一目的可以在成员函数的参数列表之后加入<code>const</code>关键字，表示this指向常量，称这样的成员函数为常量成员函数。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">std::string isbn() const { return bookNo; }
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">std::string isbn() const { return bookNo; }
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>类通过一个或几个特殊的成员函数控制其对象的初始化过程，这些函数称为构造函数。构造函数初始化类对象的数据成员，只要有类的对象被创建，就会指向构造函数。</p>
 <blockquote>
@@ -541,7 +548,7 @@
 <p><strong>当我们定义了其他构造函数时，也必须定义一个默认构造函数</strong>。</p>
 </blockquote>
 <p>如果没有在构造函数的初始值列表中显示地初始化成员，则该成员将在构造函数体之前执行默认初始化。有时候，在构造函数中不使用初始化列表，而是在函数体中使用赋值操作。这一做法有时是没有问题的，但对于有些必须进行初始化的类型而言，这一做法便不可取。例如，当成员为const或者引用时，就必须对其进行初始化，而不能采用赋值操作为其赋值。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class COnstRef
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class COnstRef
 {
 public:
     ConstRef(int ii);
@@ -559,7 +566,7 @@ ConstRef::COnstRef(int ii)
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>初始化const或者引用类型的数据成员的唯一机会就是通过构造函数初始值，因而该构造函数的正确形式为：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">ConstRef::ConstRef(int ii): i(ii), ci(ii), ri(i) {}
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">ConstRef::ConstRef(int ii): i(ii), ci(ii), ri(i) {}
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <blockquote>
 <p>如果成员是const、引用个、或者属于某种未提供默认构造函数的类类型，我们必须通过构造函数初始值列表为这些成员提供初值。</p>
@@ -582,8 +589,7 @@ ConstRef::COnstRef(int ii)
 </ol>
 </li>
 </ol>
-<p>##　拷贝、赋值和析构</p>
-<p>类还需要控制拷贝、赋值和销毁对象时发生的行为。当我们初始化变量、以值的方式传递或返回一个参数时会发生对象的拷贝操作；使用赋值运算符时会发生对象的赋值操作；当对象不在存在时会发生销毁操作。</p>
+<h2 id="拷贝、赋值和析构"><a href="#拷贝、赋值和析构" class="headerlink" title="　拷贝、赋值和析构"></a>　拷贝、赋值和析构</h2><p>类还需要控制拷贝、赋值和销毁对象时发生的行为。当我们初始化变量、以值的方式传递或返回一个参数时会发生对象的拷贝操作；使用赋值运算符时会发生对象的赋值操作；当对象不在存在时会发生销毁操作。</p>
 <h2 id="类的访问控制与封装"><a href="#类的访问控制与封装" class="headerlink" title="类的访问控制与封装"></a>类的访问控制与封装</h2><p>封装的作用就是限制用户对于类的接口的控制，我们使用<strong>访问说明符</strong>加强类的封装性。</p>
 <ul>
 <li><strong>public</strong>：该说明符之后的成员可以在整个程序内被访问，通常将类的接口定义为public；</li>
@@ -594,7 +600,7 @@ ConstRef::COnstRef(int ii)
 <p>为了解决这一问题，类可以允许其他类或者函数访问它的非公有成员，方法是令其他类或者函数成为它的友元，增加一条以friend关键字开头的函数声明语句即可。</p>
 <p>友元在类内的具体为知不限，也不受其所在区域的访问控制级别的限制，但一般，最好在类定义的开始或结束前的位置集中声明友元。</p>
 <p>我们可以将一个类声明为另一类的友元，这样第一个类将可以访问第二个类的所有成员。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Screen{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Screen{
     friend class Window_mgr;
 };
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -602,7 +608,7 @@ ConstRef::COnstRef(int ii)
 <p>需要特别注意：友元关系不存在传递性。</p>
 </blockquote>
 <p>也可以只将类的某一个成员函数声明为友元，需明确指出该成员函数所属的类：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">class Screen{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Screen{
     friend void Window_mgr::clear(ScreenIndex);
 };
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -614,7 +620,7 @@ ConstRef::COnstRef(int ii)
 </ul>
 <p>友元声明的作用仅仅是影响访问权限，不具有函数声明的作用，在对一个友元函数进行声明之前是无法对其进行调用的，这一点要特别注意。即使在类的内部定义了该友元函数，也必须在类的外部提供该函数的声明。</p>
 <p>不要求类和非成员函数的声明必须在它们的友元之前。</p>
-<pre class="line-numbers language-c++"><code class="language-c++">struce X{
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">struce X{
     friend void f() {/*可以直接在类的内部对友元函数进行定义*/}
     X() {f();} //错误，f()尚未声明
     void g();
@@ -623,18 +629,17 @@ ConstRef::COnstRef(int ii)
 void X::g() {return f();}//错误，f()尚未声明
 void f();
 void X::h() {return f();}//正确，f()已声明
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="类的可变数据成员"><a href="#类的可变数据成员" class="headerlink" title="类的可变数据成员"></a>类的可变数据成员</h2><p>我们希望能够修改类的某个数据成员，即使在一个const成员函数内，可以通过在变量的声明中加入<strong>mutable</strong>关键字完成。</p>
 <h2 id="返回-this的成员函数"><a href="#返回-this的成员函数" class="headerlink" title="返回*this的成员函数"></a>返回*this的成员函数</h2><p>当我们将成员函数的返回类型定义为引用时，同时该成员函数返回<code>*this</code>时，那么该成员函数的返回值为调用该成员函数的对象本身，如下所示：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">Screen &Screen::set(char c)
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Screen &Screen::set(char c)
 {
     contents[cursor] = c;
     return *this; //将this对象作为左值返回
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果我们把一系列这样的操作连接成一条表达式：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">myScreen.move(4, 0).set("#");
+<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">myScreen.move(4, 0).set("#");
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这些操作将在同一个对象上进行。</p>
 <p>从const成员函数返回<code>*this</code>时，意味着该成员函数返回的是一个常量对象，那么我们将不能随意地将该成员函数嵌入一组动作的序列中去。</p>
@@ -892,7 +897,7 @@ void X::h() {return f();}//正确，f()已声明
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.</span> <span class="nav-text">const成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造函数的作用"><span class="nav-number">2.1.</span> <span class="nav-text">默认构造函数的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的访问控制与封装"><span class="nav-number">3.</span> <span class="nav-text">类的访问控制与封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class和struct关键字"><span class="nav-number">4.</span> <span class="nav-text">class和struct关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#友元"><span class="nav-number">5.</span> <span class="nav-text">友元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的可变数据成员"><span class="nav-number">6.</span> <span class="nav-text">类的可变数据成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回-this的成员函数"><span class="nav-number">7.</span> <span class="nav-text">返回*this的成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于const关键字进行区分的重载"><span class="nav-number">8.</span> <span class="nav-text">基于const关键字进行区分的重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的作用域"><span class="nav-number">9.</span> <span class="nav-text">类的作用域</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.</span> <span class="nav-text">const成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造函数的作用"><span class="nav-number">2.1.</span> <span class="nav-text">默认构造函数的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝、赋值和析构"><span class="nav-number">3.</span> <span class="nav-text">　拷贝、赋值和析构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的访问控制与封装"><span class="nav-number">4.</span> <span class="nav-text">类的访问控制与封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class和struct关键字"><span class="nav-number">5.</span> <span class="nav-text">class和struct关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#友元"><span class="nav-number">6.</span> <span class="nav-text">友元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的可变数据成员"><span class="nav-number">7.</span> <span class="nav-text">类的可变数据成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回-this的成员函数"><span class="nav-number">8.</span> <span class="nav-text">返回*this的成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于const关键字进行区分的重载"><span class="nav-number">9.</span> <span class="nav-text">基于const关键字进行区分的重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的作用域"><span class="nav-number">10.</span> <span class="nav-text">类的作用域</span></a></li></ol></div>
             
 
           </div>
@@ -933,7 +938,7 @@ void X::h() {return f();}//正确，f()已声明
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -964,6 +969,32 @@ void X::h() {return f();}//正确，f()已声明
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1057,7 +1088,93 @@ void X::h() {return f();}//正确，f()已声明
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1074,47 +1191,5 @@ void X::h() {return f();}//正确，f()已声明
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

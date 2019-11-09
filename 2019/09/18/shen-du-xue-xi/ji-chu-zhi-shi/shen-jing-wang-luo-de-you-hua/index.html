@@ -515,6 +515,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -571,14 +578,18 @@
 <ol>
 <li><p><strong>分段常数衰减</strong>（Piecewise Constant Decay）：每经过$T_1,T_2,…T_m$次训练迭代，分别将学习率衰减为原来的$\beta_1, \beta_2,…,\beta_m$倍，也称为步衰减（Step Decay）。</p>
 </li>
-<li><p><strong>逆时衰减</strong>（Inverse Time Decay）：<br>$$<br>\alpha_{t}=\alpha_{0} \frac{1}{1+\beta \times t}<br>$$</p>
-</li>
-<li><p><strong>指数衰减</strong>（Exponential Decay）：<br>$$<br>\alpha_{t}=\alpha_{0} \beta^{t},\ \ \ \beta&lt;1<br>$$</p>
-</li>
-<li><p><strong>自然指数衰减</strong>（Natural Exponential Decay）：<br>$$<br>\alpha_{t}=\alpha_{0} \beta^{t}<br>$$</p>
-</li>
-<li><p><strong>余弦衰减</strong>（Cosine Decay）：<br>$$<br>\alpha_{t}=\alpha_{0} \exp (-\beta \times t)<br>$$</p>
-</li>
+<li><p><strong>逆时衰减</strong>（Inverse Time Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \frac{1}{1+\beta \times t}</script></li>
+<li><p><strong>指数衰减</strong>（Exponential Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \beta^{t},\ \ \ \beta<1</script></li>
+<li><p><strong>自然指数衰减</strong>（Natural Exponential Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \beta^{t}</script></li>
+<li><p><strong>余弦衰减</strong>（Cosine Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \exp (-\beta \times t)</script></li>
 </ol>
 <p>不同的学习率衰减方法的示意图如下所示：</p>
 </li>
@@ -595,10 +606,12 @@
 <h4 id="AdaGrad算法"><a href="#AdaGrad算法" class="headerlink" title="AdaGrad算法"></a>AdaGrad算法</h4><p>在标准的梯度下降算法中，每个参数在每次迭代时都使用相同的学习率。但实际上，对于每个参数来说，在每一迭代中是具有不同的梯度的，因而统一采用相同的学习率并不合适。自适应学习率调整方法便是被用来解决这一问题的。</p>
 <p>AdaGrad（Adaptive Gradient）算法[Duchi et al.，2011]借鉴$l_2$正则化思想，<strong>在每次迭代时自适应地调整每个参数的学习率</strong>：</p>
 <ol>
-<li><p>在第$t$次迭代时，首先计算每一个参数各自的梯度平方的累积和：<br>$$<br>G_{t}=\sum_{\tau=1}^{t} g_{\tau} \odot g_{\tau}<br>$$</p>
-</li>
-<li><p>接着，依据各个参数各自的梯度平方累计和的大小计算当前迭代所使用的梯度：<br>$$<br>\Delta \theta_t=-\frac{\alpha}{\sqrt{G_t+\epsilon}}\odot g_t<br>$$</p>
-</li>
+<li><p>在第$t$次迭代时，首先计算每一个参数各自的梯度平方的累积和：</p>
+<script type="math/tex; mode=display">
+G_{t}=\sum_{\tau=1}^{t} g_{\tau} \odot g_{\tau}</script></li>
+<li><p>接着，依据各个参数各自的梯度平方累计和的大小计算当前迭代所使用的梯度：</p>
+<script type="math/tex; mode=display">
+\Delta \theta_t=-\frac{\alpha}{\sqrt{G_t+\epsilon}}\odot g_t</script></li>
 </ol>
 <p>在AdaGrad算法中，如果某个参数的偏导数累计比较大，其学习率相对较小；相反，如果其偏导数较小，其学习率相对较大。但整体上，各个参数的学习率随着迭代次数的增加而逐渐减小。</p>
 <p>该算法的缺点是，在经过一定次数的迭代后，如果仍旧没有找到最优点，由于此时的学习率非常小，很难再继续找到最优点。</p>
@@ -609,10 +622,16 @@
 <p><img src="/2019/09/18/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568687091725.png" alt=""></p>
 <p>该算法与AdaGrad的区别在于，$G_t$的计算方式由平方累计和变为了指数衰减移动平均。</p>
 <h4 id="AdaDelta算法"><a href="#AdaDelta算法" class="headerlink" title="AdaDelta算法"></a>AdaDelta算法</h4><p>该算法也属于AdaGrad算法的一个改进，该算法除了使用梯度的指数衰减移动平均来调整学习率之外，还引入了每次参数更新的差值$\Delta \theta$的指数衰减移动平均。</p>
-<p>在第$t$次迭代时，每次参数更新差$\Delta \theta_\tau$，$1\leq \tau \geq t-1$的平方的指数衰减权移动平均为：<br>$$<br>\Delta X_{t-1}^2=\beta_1\Delta X_{t-2}^2+(1-\beta_1)\Delta \theta_{t-1} \odot \Delta \theta_{t-1}<br>$$<br>其中$\beta_1$为衰减率。在此基础上，参数的更新差值为：<br>$$<br>\Delta \theta_t=-\frac{\sqrt{\Delta X_{t-1}^2}+\epsilon}{\sqrt{G_t}+\epsilon}g_t<br>$$<br>AdaDelta算法将RMSprop算法中的初始学习率改为动态计算，在一定程度上抑制了学习率的波动。</p>
+<p>在第$t$次迭代时，每次参数更新差$\Delta \theta_\tau$，$1\leq \tau \geq t-1$的平方的指数衰减权移动平均为：</p>
+<script type="math/tex; mode=display">
+\Delta X_{t-1}^2=\beta_1\Delta X_{t-2}^2+(1-\beta_1)\Delta \theta_{t-1} \odot \Delta \theta_{t-1}</script><p>其中$\beta_1$为衰减率。在此基础上，参数的更新差值为：</p>
+<script type="math/tex; mode=display">
+\Delta \theta_t=-\frac{\sqrt{\Delta X_{t-1}^2}+\epsilon}{\sqrt{G_t}+\epsilon}g_t</script><p>AdaDelta算法将RMSprop算法中的初始学习率改为动态计算，在一定程度上抑制了学习率的波动。</p>
 <h3 id="更新方向的优化"><a href="#更新方向的优化" class="headerlink" title="更新方向的优化"></a>更新方向的优化</h3><p>除了对学习率进行优化之外，我们还可以对参数的更新方向即梯度进行优化。为了缓解在样本数量较少时所导致的梯度震荡问题，可以使用最近一段时间的平均梯度来替代当前时刻的梯度，并提高优化速度，即<strong>动量法</strong>。</p>
 <h4 id="动量法"><a href="#动量法" class="headerlink" title="动量法"></a>动量法</h4><p>所谓动量，指的是物理中一个物体在其运动方向上保持运动的趋势，是物体的质量和速度的乘积。所谓动量法（Momentum Method）是用之前积累动量来替代真正的梯度，每次迭代的梯度可以看作加速度。</p>
-<p>在第t次迭代时，计算<strong>负梯度</strong>的“加权移动平均”作为当前参数的更新方向：<br>$$<br>\Delta\theta_t=\rho\Delta\theta_{t-1}-\alpha g_t=-\alpha \sum_\tau^t\rho^{t-\tau}g_{\tau}<br>$$<br>这样，每个参数的实际更新差值取决于最近一段时间内梯度的加权平均值。当某个参数在最近一段时间内的梯度方向不一致时，其真实的参数更新幅度变小；相反，当在最近一段时间内的梯度方向都一致时，其真实的参数更新幅度变大，起到加速作用。一般而言，在迭代初期，梯度方向都比较一致，动量法会起到加速作用，可以更快地到达最优点。在迭代后期，梯度方向会不一致，在收敛值附近震荡，动量法会起到减速作用，增加稳定性。</p>
+<p>在第t次迭代时，计算<strong>负梯度</strong>的“加权移动平均”作为当前参数的更新方向：</p>
+<script type="math/tex; mode=display">
+\Delta\theta_t=\rho\Delta\theta_{t-1}-\alpha g_t=-\alpha \sum_\tau^t\rho^{t-\tau}g_{\tau}</script><p>这样，每个参数的实际更新差值取决于最近一段时间内梯度的加权平均值。当某个参数在最近一段时间内的梯度方向不一致时，其真实的参数更新幅度变小；相反，当在最近一段时间内的梯度方向都一致时，其真实的参数更新幅度变大，起到加速作用。一般而言，在迭代初期，梯度方向都比较一致，动量法会起到加速作用，可以更快地到达最优点。在迭代后期，梯度方向会不一致，在收敛值附近震荡，动量法会起到减速作用，增加稳定性。</p>
 <h4 id="Nesterov加速梯度"><a href="#Nesterov加速梯度" class="headerlink" title="Nesterov加速梯度"></a>Nesterov加速梯度</h4><p>Nesterov加速梯度法是对动量法的一种改进，在动量法中，实际的参数更新方向$\Delta\theta_t$可以被拆分为两步，第一步是先根据$\Delta\theta_{t-1}$更新一次得到参数$\hat \theta$，再使用$g_t$进行更新：</p>
 <p><img src="/2019/09/18/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773120967.png" alt=""></p>
 <p>在第二步更新中，梯度$g_t$为$\theta_{t-1}$上的梯度，按照梯度下降法来说，应该是$\hat \theta$上的梯度。依照这种思路，合并后的更新方向为：</p>
@@ -944,7 +963,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -975,6 +994,32 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1068,7 +1113,93 @@
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1085,47 +1216,5 @@
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

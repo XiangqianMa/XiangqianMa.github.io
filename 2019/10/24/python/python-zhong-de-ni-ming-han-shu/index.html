@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -516,37 +523,36 @@
 
       
         <h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><h2 id="什么是匿名函数"><a href="#什么是匿名函数" class="headerlink" title="什么是匿名函数"></a>什么是匿名函数</h2><p>匿名函数的格式如下：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">lambda</span> argument1<span class="token punctuation">,</span> argument2<span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> argumentN <span class="token punctuation">:</span> expression
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">lambda argument1, argument2,... argumentN : expression
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>匿名函数的关键字为<code>lambda</code>，用法如下：</p>
-<pre class="line-numbers language-python"><code class="language-python">square <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">**</span><span class="token number">2</span>
-square<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">square = lambda x: x**2
+square(3)
 
-<span class="token number">9</span>
+9
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其对应的常规函数形式为：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">square</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> x<span class="token operator">**</span><span class="token number">2</span>
-square<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
+    return x**2
+square(3)
 
-<span class="token number">9</span>
+9
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>匿名函数和常规函数一样，返回的都是函数对象（function object）,不同之处有以下几点：</p>
 <ul>
 <li><p><code>lambda</code>是一个表达式，而不是一个语句</p>
 <p>所谓表达式就是用一系列“公式”去表达一个东西，如x+2、x**2等；所谓语句就是完成了某些功能，如果赋值语句完成赋值，比较语句完成比较等。</p>
 <p><code>lambda</code>表达式可以用在一些常规函数不能使用的地方，如：列表内部：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">*</span>x<span class="token punctuation">)</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token comment" spellcheck="true"># 输出</span>
-<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token number">49</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">81</span><span class="token punctuation">]</span>
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">[(lambda x: x*x)(x) for x in range(10)]
+# 输出
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>被用作某些函数的参数，而常规函数不能：</p>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-l<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 按列表中元祖的第二个元素排序</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true"># 输出</span>
-<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [(1, 20), (3, 0), (9, 10), (2, -1)]
+l.sort(key=lambda x: x[1]) # 按列表中元祖的第二个元素排序
+print(l)
+# 输出
+[(2, -1), (3, 0), (9, 10), (1, 20)]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>常规函数必须通过其函数名被调用，因而必须首先被定义。但是<code>lambda</code>是一个表达式，返回的函数对象不需要名字。</p>
 </li>
@@ -562,28 +568,28 @@ l<span class="token punctuation">.</span>sort<span class="token punctuation">(</
 </ul>
 <p>但当我们只需要一个函数，这个函数非常简短，只需要一行；同时在程序中只调用一次，此时，我们就不需要给它一个定义和名字。</p>
 <p>例如，需要对一个列表中的所有元素求平方和，且该程序只需要运行一次，用匿名函数可以写成：</p>
-<pre class="line-numbers language-python"><code class="language-python">squared <span class="token operator">=</span> map<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">squared = map(lambda x: x**2, [1, 2, 3, 4, 5])
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>用常规函数需要写成：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">square</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> x<span class="token operator">**</span><span class="token number">2</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
+    return x**2
 
-squared <span class="token operator">=</span> map<span class="token punctuation">(</span>square<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+squared = map(square, [1, 2, 3, 4, 5])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>很明显，匿名函数更为简洁。</p>
 <h2 id="Python函数式编程"><a href="#Python函数式编程" class="headerlink" title="Python函数式编程"></a>Python函数式编程</h2><p>所谓函数式编程，是指代码中每一块都是不可变的，都由纯函数组成。纯函数是指函数本身相互独立、互不影响，对于相同的输入，总会有相同的输出，没有任何副作用。</p>
 <p>例如，将一个列表中的元素值都变成原来的两倍，如下：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">multiply_2</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">for</span> index <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        l<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">*=</span> <span class="token number">2</span>
-    <span class="token keyword">return</span> l
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2(l):
+    for index in range(0, len(l)):
+        l[index] *= 2
+    return l
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述代码不是一个纯函数，因为输入列表的值发生了改变，多次调用该函数将会得到不同的值。修改成如下形式：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">multiply_2_pure</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    new_list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-    <span class="token keyword">for</span> item <span class="token keyword">in</span> l<span class="token punctuation">:</span>
-        new_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>item <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> new_list
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2_pure(l):
+    new_list = []
+    for item in l:
+        new_list.append(item * 2)
+    return new_list
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>新建列表并返回，这就是一个纯函数。</p>
 <p>函数式编程的优点是其纯函数和不可变的特性使得程序更加健壮，易于调试和测试；缺点是限制多、程序编写难度高。Python不是一门函数式编程语言，但是提供了相关特性，主要有以下函数<code>map()</code>，<code>filter()</code>，<code>reduce()</code>，这几个函数通常和匿名函数一起使用。</p>
@@ -593,15 +599,15 @@ squared <span class="token operator">=</span> map<span class="token punctuation"
 </li>
 <li><p><code>filter(function, iterable)</code></p>
 <p><code>filter()</code>函数对<code>iterable</code>中的每个元素都使用<code>function</code>进行判断，返回<code>True</code>或<code>False</code>，将<code>True</code>对应的元素组成一个新的可遍历的集合。</p>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
-new_list <span class="token operator">=</span> filter<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># [2, 4]</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
+new_list = filter(lambda x: x % 2 == 0, l) # [2, 4]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 </li>
 <li><p><code>reduce(function, iterable)</code></p>
 <p>该函数通常用来对一个集合做一些累积操作。<code>function()</code>函数同样是一个函数对象，它有两个函数，表示对<code>iterable</code>中的每个元素以及上一次调用后的结构运用<code>function</code>进行计算，最后返回的是一个单独的值。</p>
 <p>例如，计算某个列表元素的乘积：</p>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
-product <span class="token operator">=</span> reduce<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">,</span> y<span class="token punctuation">:</span> x <span class="token operator">*</span> y<span class="token punctuation">,</span> l<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 1*2*3*4*5 = 120</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
+product = reduce(lambda x, y: x * y, l) # 1*2*3*4*5 = 120
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 </li>
 </ul>
@@ -612,12 +618,12 @@ product <span class="token operator">=</span> reduce<span class="token punctuati
 </ul>
 <p>当操作比较复杂时，使用<code>for</code>循环。</p>
 <h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>对一个字典根据其值从高到低进行排列。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 匿名函数</span>
-d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'mike'</span><span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'lucy'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'ben'</span><span class="token punctuation">:</span> <span class="token number">30</span><span class="token punctuation">}</span>
-e <span class="token operator">=</span> sorted<span class="token punctuation">(</span>d<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span> x<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> reverse<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 匿名函数
+d = {'mike': 10, 'lucy': 2, 'ben': 30}
+e = sorted(d.items(), key=lambda x: x[1], reverse=True)
 e
 
-Out<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'ben'</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'mike'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'lucy'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://time.geekbang.org/column/article/98411" target="_blank" rel="noopener">Python核心技术与实战-景霄</a></li>
@@ -915,7 +921,7 @@ Out<span class="token punctuation">[</span><span class="token number">15</span><
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -946,6 +952,32 @@ Out<span class="token punctuation">[</span><span class="token number">15</span><
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1039,7 +1071,93 @@ Out<span class="token punctuation">[</span><span class="token number">15</span><
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1056,47 +1174,5 @@ Out<span class="token punctuation">[</span><span class="token number">15</span><
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

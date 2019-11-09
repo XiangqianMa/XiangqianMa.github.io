@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -517,126 +524,126 @@
       
         <h1 id="Python中的比较和拷贝"><a href="#Python中的比较和拷贝" class="headerlink" title="Python中的比较和拷贝"></a>Python中的比较和拷贝</h1><h2 id="‘-’和’is’"><a href="#‘-’和’is’" class="headerlink" title="‘==’和’is’"></a>‘==’和’is’</h2><p>’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。</p>
 <p>在Python中，可以使用<code>id(object)</code>函数获得每个对象的身份表示。因此，<code>is</code>操作符相当于比较对象之间的ID是否相等：</p>
-<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token number">10</span>
-b <span class="token operator">=</span> <span class="token number">10</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = 10
+b = 10
 
-a <span class="token operator">==</span> b
-<span class="token boolean">True</span>
+a == b
+True
 
-id<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
-<span class="token number">4427562448</span>
+id(a)
+4427562448
 
-id<span class="token punctuation">(</span>b<span class="token punctuation">)</span>
-<span class="token number">4427562448</span>
+id(b)
+4427562448
 
-a <span class="token keyword">is</span> b
-<span class="token boolean">True</span>
+a is b
+True
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>a</code>和<code>b</code>指向同一片内存的原因在于，Python会首先给10分配一块内存区域，接着将<code>a</code>和<code>b</code>都指向这块内存。因此，两者的值和内存地址都相同。</p>
 <p>但是当整型数据不在[-5,256]范围内时，结果会是值相同而内存不相同，这一差异是由Python的内存管理机制导致的。</p>
-<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token number">257</span>
-b <span class="token operator">=</span> <span class="token number">257</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = 257
+b = 257
 
-a <span class="token operator">==</span> b
-<span class="token boolean">True</span>
+a == b
+True
 
-id<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
-<span class="token number">4473417552</span>
+id(a)
+4473417552
 
-id<span class="token punctuation">(</span>b<span class="token punctuation">)</span>
-<span class="token number">4473417584</span>
+id(b)
+4473417584
 
-a <span class="token keyword">is</span> b
-<span class="token boolean">False</span>
+a is b
+False
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>实际操作时，更多使用<code>==</code>来比较两个对象的值是否相同，<code>is</code>操作符常用于比较一个变量与一个单例：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">if</span> a <span class="token keyword">is</span> None<span class="token punctuation">:</span>
-      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">if a is None:
+      ...
 
-<span class="token keyword">if</span> a <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>
-      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+if a is not None:
+      ...
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>is</code>操作符的效率高于<code>==</code>，因为<code>is</code>操作符不会被重载。而<code>==</code>操作是通过执行对象的<code>a.__eq__(b)</code>函数来执行比较操作的，不同的类会重载不同的<code>__eq__()</code>函数，因而效率相对低一点。</p>
 <h2 id="浅拷贝和深度拷贝"><a href="#浅拷贝和深度拷贝" class="headerlink" title="浅拷贝和深度拷贝"></a>浅拷贝和深度拷贝</h2><p>常见的浅拷贝是使用数据类型本身的构造器：</p>
-<pre class="line-numbers language-python"><code class="language-python">l1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-l2 <span class="token operator">=</span> list<span class="token punctuation">(</span>l1<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l1 = [1, 2, 3]
+l2 = list(l1)
 
 l2
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+[1, 2, 3]
 
-l1 <span class="token operator">==</span> l2
-<span class="token boolean">True</span>
+l1 == l2
+True
 
-l1 <span class="token keyword">is</span> l2
-<span class="token boolean">False</span>
+l1 is l2
+False
 
-s1 <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-s2 <span class="token operator">=</span> set<span class="token punctuation">(</span>s1<span class="token punctuation">)</span>
+s1 = set([1, 2, 3])
+s2 = set(s1)
 
 s2
-<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span>
+{1, 2, 3}
 
-s1 <span class="token operator">==</span> s2
-<span class="token boolean">True</span>
+s1 == s2
+True
 
-s1 <span class="token keyword">is</span> s2
-<span class="token boolean">False</span>
+s1 is s2
+False
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可以使用<code>copy.copy()</code>函数进行浅拷贝操作。但是对于元组，使用<code>tuple()</code>或者切片操作符<code>:</code>不会创建一份浅拷贝，而是返回一个指向相同元组的引用：</p>
-<pre class="line-numbers language-python"><code class="language-python">t1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
-t2 <span class="token operator">=</span> tuple<span class="token punctuation">(</span>t1<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">t1 = (1, 2, 3)
+t2 = tuple(t1)
 
-t1 <span class="token operator">==</span> t2
-<span class="token boolean">True</span>
+t1 == t2
+True
 
-t1 <span class="token keyword">is</span> t2
-<span class="token boolean">True</span>
+t1 is t2
+True
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>那么，浅拷贝就指的是重新分配一片内存，创建一个新的对象，里面的元素是原对象中的元素的引用。如果原始对象的元素不可变，影响不大；但如果元素可变，通常会带来一些副作用：</p>
-<pre class="line-numbers language-python"><code class="language-python">l1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-l2 <span class="token operator">=</span> list<span class="token punctuation">(</span>l1<span class="token punctuation">)</span>
-l1<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
-l1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l1 = [[1, 2], (30, 40)]
+l2 = list(l1)
+l1.append(100)
+l1[0].append(3)
 
 l1
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span>
+[[1, 2, 3], (30, 40), 100]
 
 l2
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+[[1, 2, 3], (30, 40)]
 
-l1<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">)</span>
+l1[1] += (50, 60)
 l1
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span>
+[[1, 2, 3], (30, 40, 50, 60), 100]
 
 l2
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+[[1, 2, 3], (30, 40)]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果向避免上面的副作用就需要使用深度拷贝。</p>
 <p>深度拷贝指的是：重新分配一块内存，创建一个新的对象，并对原对象中的元素以递归的方式创建新的子对象拷贝到新对象中，因而，<strong>新对象和原对象没有任何关联</strong>。</p>
 <p>深度拷贝的实现方式如下：</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> copy
-l1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-l2 <span class="token operator">=</span> copy<span class="token punctuation">.</span>deepcopy<span class="token punctuation">(</span>l1<span class="token punctuation">)</span>
-l1<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
-l1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import copy
+l1 = [[1, 2], (30, 40)]
+l2 = copy.deepcopy(l1)
+l1.append(100)
+l1[0].append(3)
 
 l1
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span>
+[[1, 2, 3], (30, 40), 100]
 
 l2 
-<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+[[1, 2], (30, 40)]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但如果原始对象中存在到自身的引用，在使用深度拷贝时很容易出现无限循环。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> copy
-x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
-x<span class="token punctuation">.</span>append<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import copy
+x = [1]
+x.append(x)
 
 x
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+[1, [...]]
 
-y <span class="token operator">=</span> copy<span class="token punctuation">.</span>deepcopy<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+y = copy.deepcopy(x)
 y
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+[1, [...]]
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但在执行时并未出现溢出的现象，这时应为深度拷贝函数会在拷贝的同时维持一个列表记录已经被拷贝的对象和其ID，遇到已经拷贝过的对象，会直接从字典中返回。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
@@ -935,7 +942,7 @@ y
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -966,6 +973,32 @@ y
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1059,7 +1092,93 @@ y
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1076,47 +1195,5 @@ y
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

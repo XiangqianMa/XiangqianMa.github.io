@@ -520,6 +520,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -556,23 +563,23 @@
 <p>R-CNN使用预训练网络（例如ResNet）的前几层从输入图片中提取特征，这一做法由迁移学习理论作为支持（将在一个数据集上训练得到的网络用于不同的问题是可能的）。网络的前几层检测一些通用的特征（如，边、颜色块等在不同的问题中都具有较好的区分性的特征）,而后几层学习到的更多是与特定问题相关的高层特征。在我们搭建的网路中，可以直接将后面几层移除或者在反向传播过程中对其参数进行更新。这些从预训练的网络的前几层迁移过来的层构成了”head”网络。</p>
 <p>由”head”网络产生的卷积特征图将被送入RPN网络中，RPN网络使用一系列的卷积层和全连接层产生可能存在前景目标的RoI区域。接着将使用这些RoI区域从”head”网络产生的特征图中裁剪出相应的特征图区域，称为“crop pooling”.由裁剪池化得到的特征图区域将被送入分类网络，进而经过学习得到该RoI区域所包含的目标种类。</p>
 <p>另一方面，ResNet的权重也可以使用如下方式进行初始化：</p>
-<pre class="line-numbers language-python"><code class="language-python">n <span class="token operator">=</span> m<span class="token punctuation">.</span>kernel_size<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> m<span class="token punctuation">.</span>kernel_size<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">*</span> m<span class="token punctuation">.</span>out_channels
-m<span class="token punctuation">.</span>weight<span class="token punctuation">.</span>data<span class="token punctuation">.</span>normal_<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">.</span> <span class="token operator">/</span> n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+m.weight.data.normal_(0, math.sqrt(2. / n))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>下图分别展示了上述几种不同的网络模块，图中给出了每一层网络输出和输入特征的大小，这将有助于理解网络中的特征是如何进行转换的，$w,h$表示经过预测后的图片的大小。</p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5a9ffec911c19.png" alt=""></p>
 <h3 id="实现细节：训练"><a href="#实现细节：训练" class="headerlink" title="实现细节：训练"></a>实现细节：训练</h3><p>在本节将详细介绍训练R-CNN所涉及到的步骤。一旦理解了训练的流程，理解推理过程将很容易，因为推理只用到了训练过程的一个子集。训练的目标是调整RPN、分类网络以及Head的权重。RPN的任务是产生RoIs区域，分类网络的任务是对每一个RoI给定一个类别分数。为了训练这些网络，我们需要得到相应的ground truths（即图片中所出现的目标的bounding boxes的坐标以及这些目标的类别）。这些信息已经由数据集的标定文件给出，这里有一些常用的通用数据集：</p>
 <ol>
 <li>PASCAL VOC: The <a href="http://host.robots.ox.ac.uk/pascal/VOC/voc2007/index.html" target="_blank" rel="noopener">VOC 2007 </a>database contains 9963 training/validation/test images with 24,640 annotations for 20 object classes.<ul>
-<li><em>Person:</em> person</li>
-<li><em>Animal:</em> bird, cat, cow, dog, horse, sheep</li>
-<li><em>Vehicle:</em> aeroplane, bicycle, boat, bus, car, motorbike, train</li>
-<li><em>Indoor:</em> bottle, chair, dining table, potted plant, sofa, tv/monitor<br>如下图：</li>
+<li>_Person:_ person</li>
+<li>_Animal:_ bird, cat, cow, dog, horse, sheep</li>
+<li>_Vehicle:_ aeroplane, bicycle, boat, bus, car, motorbike, train</li>
+<li>_Indoor:_ bottle, chair, dining table, potted plant, sofa, tv/monitor<br>如下图：</li>
 </ul>
 </li>
 </ol>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/person_06-1568626159382.jpg" alt=""></p>
-<ol start="2">
+<ol>
 <li>COCO (Common Objects in Context): The <a href="http://cocodataset.org/#home" target="_blank" rel="noopener">COCO</a> dataset is much larger. It contains &gt; 200K labelled images with 90 object categories.</li>
 </ol>
 <p>在本次实现中，使用VOC2007数据集。</p>
@@ -580,10 +587,10 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
 <ol>
 <li><strong>Bounding Boxes Regression Coefficients</strong>(也称为regression coefficients或regression targets)<br>R-CNN的目标之一就是产生与目标边界尽可能匹配的bounding boxes。R-CNN通过使用回归系数对给定的bounding boxes（给定左上角坐标、宽、高）进行调整来得到匹配的bounding boxes。回归系数由如下方式得出：<br>分别将目标bounding boxes和原始bounding boxes的左上角坐标表示为：$T_x, T_y, O_x, O_y$，width/height表示为$T_w, T_h, O_w, O_h$。那么回归目标（将原始boxes转换为目标boxes的方程的系数）计算如下：</li>
 </ol>
-<p>$$<br>t _ { x } = \frac { \left( T _ { x } - O _ { x } \right) } { O _ { w } } , t _ { y } = \frac { \left( T _ { y } - O _ { y } \right) } { O _ { h } } , t _ { w } = \log \left( \frac { T _ { w } } { O _ { w } } \right) , t _ { h } = \log \left( \frac { T _ { h } } { O _ { h } } \right)<br>$$</p>
-<p>上述方程是可翻转的，给定回归系数以及原始boxes的左上角坐标、宽和高，便可以计算得到目标boxes的左上角坐标、宽和高。这一系数对无切仿射变换具有不变性，这一性质在计算分类损失时非常重要。因为目标的回归系数在原始比例的图片上计算得到的，而分类网络输出的回归系数是在由RoI池化所得到的正方形特征图上计算得到的。</p>
+<script type="math/tex; mode=display">
+t _ { x } = \frac { \left( T _ { x } - O _ { x } \right) } { O _ { w } } , t _ { y } = \frac { \left( T _ { y } - O _ { y } \right) } { O _ { h } } , t _ { w } = \log \left( \frac { T _ { w } } { O _ { w } } \right) , t _ { h } = \log \left( \frac { T _ { h } } { O _ { h } } \right)</script><p>上述方程是可翻转的，给定回归系数以及原始boxes的左上角坐标、宽和高，便可以计算得到目标boxes的左上角坐标、宽和高。这一系数对无切仿射变换具有不变性，这一性质在计算分类损失时非常重要。因为目标的回归系数在原始比例的图片上计算得到的，而分类网络输出的回归系数是在由RoI池化所得到的正方形特征图上计算得到的。</p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5bac3708478ce-1024x479.png" alt=""></p>
-<ol start="2">
+<ol>
 <li><p><strong>Intersection over Union (IoU) Overlap</strong><br> 我们需要一种度量给定得bounding boxes与另一bounding boxes得接近程度（与所使用的度量bounding boxes大小的单位无关）。这一度量方法需要满足，当两个bounding boxes完全重合时，结果为1，当两个bounding boxes完全不重合时，结果为0,同时要易于计算。常用的度量方式为交并比，计算方式如下所示：</p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5aa6f44a0a9c7-1568628026330.png" alt=""></p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5aa6f476535f7-300x292.png" alt=""></p>
@@ -639,8 +646,9 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
 <p>RPN损失可以看作分类损失和边框回归损失之和。分类损失使用交叉熵损失对未被正确分类的boxes进行惩罚，边框回归损失使用真实边框回归系数（使用与前景anchor boxes最为匹配的ground truth boxes计算得到）与预测的边框回归系数（由RPN网络结构中的rpn_bbox_pred_net给出）之间的距离函数计算得出。</p>
 <p>RPN损失如下：</p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/quicklatex.com-142d5b70256748a64605bfc6e2f30ea9_l3.svg" alt=""></p>
-<p><strong>Classification Loss:</strong><br>$$<br>cross_entropy(predicted_class, actual_class)<br>$$</p>
-<p><strong>Bounding Box Regression Loss:</strong></p>
+<p><strong>Classification Loss:</strong></p>
+<script type="math/tex; mode=display">
+cross\_entropy(predicted\_class, actual\_class)</script><p><strong>Bounding Box Regression Loss:</strong></p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/quicklatex.com-79e8cbe4b5682f6abc719c54d768a4ae_l3.svg" alt=""></p>
 <p>将所有前景anchor boxes的回归损失相加。不计算背景anchor boxes的回归损失，因为不存在ground truths与背景anchor boxes匹配。回归损失计算如下：</p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/quicklatex.com-f26b9d082be79d08e06cdbeb5cfc1e3a_l3.svg" alt=""></p>
@@ -725,7 +733,7 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5aa402baba3a1-1-1568626801970.png" alt=""></p>
 <p>裁剪池化涉及以下两个步骤：</p>
 <ol>
-<li><p>对一个集合的目标坐标应用仿射变换，得到一个方格的源坐标。仿射变换的公式为：$\left[ \begin{array} { c } { x _ { i } ^ { s } } \ { y _ { i } ^ { s } } \end{array} \right] = \left[ \begin{array} { l l l } { \theta _ { 11 } } &amp; { \theta _ { 12 } } &amp; { \theta _ { 13 } } \ { \theta _ { 21 } } &amp; { \theta _ { 22 } } &amp; { \theta _ { 23 } } \end{array} \right] \left[ \begin{array} { l } { x _ { i } ^ { t } } \ { y _ { i } ^ { t } } \ { 1 } \end{array} \right]$，其中，$x _ { i } ^ { s } , y _ { i } ^ { s } , x _ { i } ^ { t } , y _ { i } ^ { t }$都是各自使用width/height归一化的坐标，因而$- 1 \leq x _ { i } ^ { s } , y _ { i } ^ { s } , x _ { i } ^ { t } , y _ { i } ^ { t } \leq 1$。</p>
+<li><p>对一个集合的目标坐标应用仿射变换，得到一个方格的源坐标。仿射变换的公式为：$\left[ \begin{array} { c } { x _ { i } ^ { s } } \\ { y _ { i } ^ { s } } \end{array} \right] = \left[ \begin{array} { l l l } { \theta _ { 11 } } &amp; { \theta _ { 12 } } &amp; { \theta _ { 13 } } \\ { \theta _ { 21 } } &amp; { \theta _ { 22 } } &amp; { \theta _ { 23 } } \end{array} \right] \left[ \begin{array} { l } { x _ { i } ^ { t } } \\ { y _ { i } ^ { t } } \\ { 1 } \end{array} \right]$，其中，$x _ { i } ^ { s } , y _ { i } ^ { s } , x _ { i } ^ { t } , y _ { i } ^ { t }$都是各自使用width/height归一化的坐标，因而$- 1 \leq x _ { i } ^ { s } , y _ { i } ^ { s } , x _ { i } ^ { t } , y _ { i } ^ { t } \leq 1$。</p>
 </li>
 <li><p>第二步，使用第一步产生的源坐标对输入（source）特征图进行采样得到目标（destination）特征图。每一对$\left( x _ { i } ^ { S } , y _ { i } ^ { s } \right)$都对应输入特征图中的一个空间位置，接着使用采样核（如双线性采样核）对该位置进行采样，最终得到输出图像上相对应的特定位置的值。</p>
 </li>
@@ -1044,7 +1052,7 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -1075,6 +1083,32 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1168,7 +1202,93 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1185,47 +1305,5 @@ m<span class="token punctuation">.</span>weight<span class="token punctuation">.
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>

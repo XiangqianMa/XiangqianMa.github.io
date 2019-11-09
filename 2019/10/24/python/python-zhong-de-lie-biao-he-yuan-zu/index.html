@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="列表和元组基础 列表和元组都是可以放置任意数据类型的有序集合。  l = [1, 2, &apos;hello&apos;, &apos;world&apos;] # 列表中同时含有 int 和 string 类型的元素 l [1, 2, &apos;hello&apos;, &apos;world&apos;]  tup = (&apos;jason&apos;, 22) # 元组中同时含有 int 和 string 类型的元素 tup (&apos;jason&apos;, 22)   两者的区别如下：  列表">
+  <meta name="description" content="列表和元组基础 列表和元组都是可以放置任意数据类型的有序集合。  l = [1, 2, &apos;hello&apos;, &apos;world&apos;] # 列表中同时含有 int 和 string 类型的元素 l [1, 2, &apos;hello&apos;, &apos;world&apos;]  tup = (&apos;jason&apos;, 22) # 元组中同时含有 int 和 string 类型的元素 tup (&apos;jason&apos;, 22)  两者的区别如下：  列表是">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python中的列表和数组">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-lie-biao-he-yuan-zu/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="列表和元组基础 列表和元组都是可以放置任意数据类型的有序集合。  l = [1, 2, &apos;hello&apos;, &apos;world&apos;] # 列表中同时含有 int 和 string 类型的元素 l [1, 2, &apos;hello&apos;, &apos;world&apos;]  tup = (&apos;jason&apos;, 22) # 元组中同时含有 int 和 string 类型的元素 tup (&apos;jason&apos;, 22)   两者的区别如下：  列表">
+<meta property="og:description" content="列表和元组基础 列表和元组都是可以放置任意数据类型的有序集合。  l = [1, 2, &apos;hello&apos;, &apos;world&apos;] # 列表中同时含有 int 和 string 类型的元素 l [1, 2, &apos;hello&apos;, &apos;world&apos;]  tup = (&apos;jason&apos;, 22) # 元组中同时含有 int 和 string 类型的元素 tup (&apos;jason&apos;, 22)  两者的区别如下：  列表是">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的列表和数组">
-<meta name="twitter:description" content="列表和元组基础 列表和元组都是可以放置任意数据类型的有序集合。  l = [1, 2, &apos;hello&apos;, &apos;world&apos;] # 列表中同时含有 int 和 string 类型的元素 l [1, 2, &apos;hello&apos;, &apos;world&apos;]  tup = (&apos;jason&apos;, 22) # 元组中同时含有 int 和 string 类型的元素 tup (&apos;jason&apos;, 22)   两者的区别如下：  列表">
+<meta name="twitter:description" content="列表和元组基础 列表和元组都是可以放置任意数据类型的有序集合。  l = [1, 2, &apos;hello&apos;, &apos;world&apos;] # 列表中同时含有 int 和 string 类型的元素 l [1, 2, &apos;hello&apos;, &apos;world&apos;]  tup = (&apos;jason&apos;, 22) # 元组中同时含有 int 和 string 类型的元素 tup (&apos;jason&apos;, 22)  两者的区别如下：  列表是">
 
 
 
@@ -497,6 +497,13 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
           
 
@@ -518,71 +525,68 @@
         <h2 id="列表和元组基础"><a href="#列表和元组基础" class="headerlink" title="列表和元组基础"></a>列表和元组基础</h2><blockquote>
 <p>列表和元组都是可以放置任意数据类型的有序集合。</p>
 </blockquote>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">]</span> <span class="token comment" spellcheck="true"># 列表中同时含有 int 和 string 类型的元素</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 'hello', 'world'] # 列表中同时含有 int 和 string 类型的元素
 l
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">]</span>
+[1, 2, 'hello', 'world']
 
-tup <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'jason'</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 元组中同时含有 int 和 string 类型的元素</span>
+tup = ('jason', 22) # 元组中同时含有 int 和 string 类型的元素
 tup
-<span class="token punctuation">(</span><span class="token string">'jason'</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">)</span>
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+('jason', 22)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>两者的区别如下：</p>
 <ul>
 <li>列表是动态的，长度大小不固定，可以随意增加、删除或者更改元素（mutable）。</li>
 <li>元组是动态的，长度大小固定，无法增加删除或者改变（immutable）。</li>
 </ul>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
-l<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">40</span> <span class="token comment" spellcheck="true"># 和很多语言类似，python 中索引同样从 0 开始，l[3] 表示访问列表的第四个元素</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4]
+l[3] = 40 # 和很多语言类似，python 中索引同样从 0 开始，l[3] 表示访问列表的第四个元素
 l
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">]</span>
+[1, 2, 3, 40]
 
-tup <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
-tup<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">40</span>
-Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
-  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
-TypeError<span class="token punctuation">:</span> <span class="token string">'tuple'</span> object does <span class="token operator">not</span> support item assignment
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+tup = (1, 2, 3, 4)
+tup[3] = 40
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></module></stdin></code></pre>
 <p>如果我们想修改元组中的元素，就需要重新申请一片内存，但对于列表，我们就可以直接插入新的元素：</p>
-<pre class="line-numbers language-python"><code class="language-python">tup <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
-new_tup <span class="token operator">=</span> tup <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 创建新的元组 new_tup，并依次填充原元组的值</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">tup = (1, 2, 3, 4)
+new_tup = tup + (5, ) # 创建新的元组 new_tup，并依次填充原元组的值
 new _tup
-<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+(1, 2, 3, 4, 5)
 
-l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
-l<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 添加元素 5 到原列表的末尾</span>
+l = [1, 2, 3, 4]
+l.append(5) # 添加元素 5 到原列表的末尾
 l
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+[1, 2, 3, 4, 5]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="列表和元组的存储方式"><a href="#列表和元组的存储方式" class="headerlink" title="列表和元组的存储方式"></a>列表和元组的存储方式</h2><p>列表是动态的，元组是静态的，这一差别会影响其存储方式：</p>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token number">64</span>
-tup <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
-tup<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token number">48</span>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3]
+l.__sizeof__()
+64
+tup = (1, 2, 3)
+tup.__sizeof__()
+48
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由于列表要存储可变长度的元素，所以需要额外的指针来存储下一个元素的位置（int型的指针占8个字节）；除此之外，还需要存储已经分配的长度大小（8个字节），因而相对于元组来说，列表要消耗更多的内存。对于列表来说，当空间不足时会重新分配新的空间。</p>
-<pre class="line-numbers language-python"><code class="language-python">l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">//</span> 空列表的存储空间为 <span class="token number">40</span> 字节
-<span class="token number">40</span>
-l<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span> 
-<span class="token number">72</span> <span class="token operator">//</span> 加入了元素 <span class="token number">1</span> 之后，列表为其分配了可以存储 <span class="token number">4</span> 个元素的空间 <span class="token punctuation">(</span><span class="token number">72</span> <span class="token operator">-</span> <span class="token number">40</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">8</span> <span class="token operator">=</span> <span class="token number">4</span>
-l<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> 
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token number">72</span> <span class="token operator">//</span> 由于之前分配了空间，所以加入元素 <span class="token number">2</span>，列表空间不变
-l<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span> 
-<span class="token number">72</span> <span class="token operator">//</span> 同上
-l<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span> 
-<span class="token number">72</span> <span class="token operator">//</span> 同上
-l<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
-l<span class="token punctuation">.</span>__sizeof__<span class="token punctuation">(</span><span class="token punctuation">)</span> 
-<span class="token number">104</span> <span class="token operator">//</span> 加入元素 <span class="token number">5</span> 之后，列表的空间不足，所以又额外分配了可以存储 <span class="token number">4</span> 个元素的空间
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = []
+l.__sizeof__() // 空列表的存储空间为 40 字节
+40
+l.append(1)
+l.__sizeof__() 
+72 // 加入了元素 1 之后，列表为其分配了可以存储 4 个元素的空间 (72 - 40)/8 = 4
+l.append(2) 
+l.__sizeof__()
+72 // 由于之前分配了空间，所以加入元素 2，列表空间不变
+l.append(3)
+l.__sizeof__() 
+72 // 同上
+l.append(4)
+l.__sizeof__() 
+72 // 同上
+l.append(5)
+l.__sizeof__() 
+104 // 加入元素 5 之后，列表的空间不足，所以又额外分配了可以存储 4 个元素的空间
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>为了减少每次插入元素时反复申请空间所带来的额外开销，Python会给列表分配额外的空间，这样的机制称为（Over-allocating）。而对于元组来说，由于存储的数目不可变，因而空间大小固定。</p>
 <p>两者的存储差距在面对巨量的数据规模时会更加明显。</p>
@@ -890,7 +894,7 @@ l<span class="token punctuation">.</span>__sizeof__<span class="token punctuatio
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">53.6k</span> 字
+      博客全站共： <span class="post-count">50.8k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -921,6 +925,32 @@ l<span class="token punctuation">.</span>__sizeof__<span class="token punctuatio
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -1014,7 +1044,93 @@ l<span class="token punctuation">.</span>__sizeof__<span class="token punctuatio
   
 
 
-  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1031,47 +1147,5 @@ l<span class="token punctuation">.</span>__sizeof__<span class="token punctuatio
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-
-  
-
-
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
