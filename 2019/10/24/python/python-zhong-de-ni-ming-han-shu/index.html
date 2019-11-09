@@ -701,6 +701,10 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
           
 
   
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
 
 
 
@@ -1077,6 +1081,32 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
 
   
 
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
 
   
 
