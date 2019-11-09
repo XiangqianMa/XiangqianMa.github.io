@@ -42,7 +42,7 @@ highlight:
   enable: false
   line_number: true
   auto_detect: false
-  tab_replace:
+  tab_replace: 4
   
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -50,7 +50,7 @@ highlight:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 6
+  per_page: 12
   order_by: -date
   
 # Category & Tag
@@ -75,8 +75,8 @@ pagination_dir: page
 
 prism_plugin:
   mode: 'preprocess'    # realtime/preprocess
-  theme: 'tomorrow'
-  line_number: false    # default false
+  theme: 'hopscotch'
+  line_number: true    # default false
   custom_css:
 
 search:
@@ -96,11 +96,17 @@ wordCount:
 ## Themes: https://hexo.io/themes/
 theme: hexo-theme-matery
 
+mathjax:
+  enable: true
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
+- type: git
   repository: https://github.com/XiangqianMa/xiangqianma.github.io.git
+  branch: master
+- type: git
+  repository: root@182.92.117.174:/usr/local/blogRepo/pub
   branch: master
 
 live2d:

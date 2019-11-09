@@ -108,7 +108,7 @@ toc:
 # Whether the code is broken.
 # 代码是否折行
 code:
-  break: true
+  break: false
 
 # 是否激活文章末尾的打赏功能，默认激活（你替换为的你自己的微信、支付宝二维码图片、或者使用网络图片也可以）.
 reward:
@@ -154,8 +154,8 @@ clicklove:
 # 在”关于”页面中配置个人信息，包括头像、职业和个人介绍.
 profile:
   avatar: /medias/avatar.jpg
-  career: Software Engineer
-  introduction: If you wish to succeed, you should use persistence as your good friend, experience as your reference, prudence as your brother and hope as your sentry.
+  career: Machine Learning & Computer Vision
+  introduction: 认真工作、快乐学习.
 
 # config my projects informations in about page.
 # If you don't want to display this `My Projects` content, you can deactivate or delete this configuration.
@@ -222,12 +222,12 @@ postCalendar: true
 # Gitalk 评论模块的配置，默认为不激活
 gitalk:
   enable: true
-  owner:
-  repo:
+  owner: XiangqianMa
+  repo: GitTalk
   oauth:
-    clientId:
-    clientSecret:
-  admin:
+    clientId: 7cf4fc787f067d6dee7f
+    clientSecret: a2a33207ac87439208ed09d72fd8a3c485c9e6e7
+  admin: "['XiangqianMa']"
 
 # the Gitment config，default disabled
 # Gitment 评论模块的配置，默认为不激活
@@ -249,7 +249,7 @@ disqus:
 # Livere 来必力评论模块的配置，默认为不激活
 livere:
   enable: false
-  uid:
+  uid: MTAyMC80NjkwMS8yMzQwMg==
 
 # The configuration of the Valine comment module is not activated by default.
 # To use it, activate the configuration item and set appId and appKey.
@@ -268,7 +268,7 @@ valine:
 # Whether to display fork me on github icon and link, default true, You can change it to your repo address
 # 配置是否在 header 中显示 fork me on github 的图标，默认为true，你可以修改为你的仓库地址.
 githubLink:
-  enable: true
+  enable: false
   url: https://github.com/blinkfox/hexo-theme-matery
   title: Fork Me
 
