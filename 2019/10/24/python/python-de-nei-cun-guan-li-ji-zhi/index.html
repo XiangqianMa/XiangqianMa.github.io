@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： a = 1  其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
+<meta name="keywords" content="编程基础,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的内存管理机制">
+<meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： a = 1  其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568789682133.png">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104016583.gif">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104112461.gif">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568792629558.png">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568792969372.png">
+<meta property="og:updated_time" content="2019-11-09T13:46:21.662Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的内存管理机制">
+<meta name="twitter:description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： a = 1  其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
+<meta name="twitter:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568789682133.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python的内存管理机制 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的内存管理机制
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-24 12:09:20" itemprop="dateCreated datePublished" datetime="2019-10-24T12:09:20+08:00">2019-10-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-09 21:46:21" itemprop="dateModified" datetime="2019-11-09T21:46:21+08:00">2019-11-09</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/编程语言/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Python的内存管理机制"><a href="#Python的内存管理机制" class="headerlink" title="Python的内存管理机制"></a>Python的内存管理机制</h1><h2 id="Python中与内存相关的基本概念"><a href="#Python中与内存相关的基本概念" class="headerlink" title="Python中与内存相关的基本概念"></a>Python中与内存相关的基本概念</h2><h3 id="变量、对象及引用"><a href="#变量、对象及引用" class="headerlink" title="变量、对象及引用"></a>变量、对象及引用</h3><p>在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下：</p>
+<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中<code>a</code>被称为变量，而<code>1</code>则是对象，<code>a</code>的数据类型由<code>1</code>决定，即整型<code>int</code>，当我们将变量<code>a</code>指向另一个数据类型的对象时，<code>a</code>的类型也将随着其所指向的对象类型而发生改变。</p>
+<p>在 Python 中 <code>a = something</code> 应该理解为给 <code>something</code> 贴上了一个标签 <code>a</code>。当再赋值给 <code>a</code> 的时候，就好象把<code>a</code> 这个标签从原来的 <code>something</code>上拿下来，贴到其他对象上，建立新的引用。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token operator">>></span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> b <span class="token operator">=</span> a
+<span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span> <span class="token operator">//</span>赋新的值给 a
+<span class="token operator">>></span><span class="token operator">></span> a
+<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> b
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># a 的值改变后，a更换了对象，b 并没有随着 a 变</span>
+
+<span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> b <span class="token operator">=</span> a
+<span class="token operator">>></span><span class="token operator">></span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token operator">//</span>改变原来 list 中的元素
+<span class="token operator">>></span><span class="token operator">></span> a
+<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> b
+<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># a 的值改变后，b 随着 a 变了</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在python中，对象拥有真正的内存资源与相应的取值，变量只是对象的一个引用。一个变量引用一个对象，而一个对象可以被多个变量引用。正是因为一个对象可以被多个变量引用，所以<strong>只有在某个对象的引用个数为0时，python才会对该对象的内存进行回收</strong>，有点类似于C++中的智能指针的内存回收机制。</p>
+<h3 id="存储机制"><a href="#存储机制" class="headerlink" title="存储机制"></a>存储机制</h3><p>总的来说，python在存储对象时存在<strong>三个存储区域</strong>：</p>
+<ol>
+<li>事先分配的静态内存，这一部分内存的大小以及对应的取值固定，需要某个对象时在相应位置取值即可。</li>
+<li>事先分配的可重复利用内存，这一部分内存的大小固定，但在需要的时候才对这一部分内存进行赋值，这一部分的内存可以重复利用。</li>
+<li>使用<code>malloc</code>和<code>free</code>管理的自由内存，这一部分的内存是动态申请和释放的。</li>
+</ol>
+<p>首先来看整型对象的存储，该类型的存储区域可分为两部分：对小整数<code>[-5, 256]</code>事先分配静态内存、对大整数（其他部分）事先分配可重复利用的内存。比如如下的代码：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> y <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        x <span class="token operator">+=</span> <span class="token number">1</span>
+        y <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> x <span class="token keyword">is</span> y<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d is %d'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Attention! %d is not %d'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+
+    x <span class="token operator">=</span> y <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        x <span class="token operator">-=</span> <span class="token number">1</span>
+        y <span class="token operator">-=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> x <span class="token keyword">is</span> y<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'%d is %d'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Attention! %d is not %d'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其运行结果如下图所示：</p>
+<p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568789682133.png" alt=""></p>
+<p>出现这一现象的原因便是Python的静态内存机制，当整数的大小位于[-5,256]范围内时，在任何需要引用这些对象的地方，都不再重新创建新的对象，而是直接引用缓存中的对象。而当整数的大小不在这一范围内时，便会新建新的对象，这时即使值是一样的，也属于不同的对象（对应不同的内存地址）。</p>
+<p>还有另外一种情况，如下代码所示：</p>
+<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> <span class="token number">257</span>
+
+
+<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    b <span class="token operator">=</span> <span class="token number">257</span>  <span class="token comment" spellcheck="true"># 第6行</span>
+    c <span class="token operator">=</span> <span class="token number">257</span>  <span class="token comment" spellcheck="true"># 第7行</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>b <span class="token keyword">is</span> c<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># True</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>a <span class="token keyword">is</span> b<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># False</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>a <span class="token keyword">is</span> c<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># False</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其运行结果如注释所示，看上去<code>a</code>、<code>b</code>和<code>c</code>的值都是一样的，但是<code>is</code>运算的结果却不一样。为什么会出现这样的结果，首先需要理解Python程序中的代码块的概念。</p>
+<blockquote>
+<p>所谓<strong>代码块</strong>是程序的一个最小的基本执行单位，一个模块文件、一个函数体、一个类、交互式命令中的单行代码都叫做一个代码块。</p>
+</blockquote>
+<p>上面的代码由两个代码块构成，<code>a = 257</code>是一个代码块，<code>main</code>函数是另外一个代码块。Python内部为了进一步提高性能，凡是在一个代码块中创建的整数对象，如果值不在<code>small_ints</code>（[-5,256]）缓存范围之内，但在同一个代码块中已经存在一个值与其相同的整数对象了，那么就直接引用该对象，否则创建一个新的对象出来，<strong>这条规则对不在<code>small_ints</code>范围的负数并不适用，对负数值浮点数也不适用，但对非负浮点数和字符串都是适用的</strong>，这一点读者可以自行证明。所以 <code>b is c</code>返回了<code>True</code>，而<code>a</code>和<code>b</code>不在同一个代码块中，虽然值都是257，但却是两个不同的对象，<code>is</code>运算的结果自然是<code>False</code>了。</p>
+<p>而对于<code>string</code>类型，同样也划分为静态内存和可重复利用内存。</p>
+<h2 id="Python的内存管理机制-1"><a href="#Python的内存管理机制-1" class="headerlink" title="Python的内存管理机制"></a>Python的内存管理机制</h2><p>在C++语言中，允许我们直接对内存进行管理，这样做的好处在于我们可以很灵活地对内存进行申请释放，缺点在于内存管理较为复杂、容易出错。在Python中，其本质上也是使用<code>malloc</code>和<code>free</code>等进行内存的管理，但区别在于Python本身完成了对内存的自动管理，有一套完整的内存管理机制，只向程序员提供了少量的接口。</p>
+<p>Python的内存管理机制总体上可以划分为两个部分：</p>
+<h3 id="引用计数机制"><a href="#引用计数机制" class="headerlink" title="引用计数机制"></a>引用计数机制</h3><p>引用计数机制的主要作用为：依据对象的被引用次数决定该对象是否应该被释放。</p>
+<blockquote>
+<p>针对可以重复利用的内存缓冲区和内存，python使用了一种引用计数的方式来控制和判断某快内存是否已经没有再被使用。即每个对象都有一个计数器count，记住了有多少个变量指向这个对象，当这个对象的引用计数器为0时，假如这个对象在缓冲区内，那么它地址空间不会被释放，而是等待下一次被使用，而非缓冲区的该释放就释放</p>
+</blockquote>
+<p>当出现以下情况时，某一对象的引用个数将增加：</p>
+<ul>
+<li><p>对象被创建<code>p = Person()</code>，增加1；</p>
+</li>
+<li><p>对象被引用<code>p1 = p</code>，增加1；</p>
+</li>
+<li>对象被当作参数传入函数<code>func(object)</code>，增加2，原因是函数中有两个属性在引用该对象；</li>
+<li>对象存储到容器对象中<code>l = [p]</code>，增加1</li>
+</ul>
+<p>当出现以下情况时，某一对象的引用个数将减少：</p>
+<ul>
+<li>对象的别名被销毁<code>del p</code>，减少1；</li>
+<li>对象的别名被赋予其他对象，减少1；</li>
+<li>对象离开自己的作用域，如<code>getrefcount(object)</code>方法，每次用完后，其对对象的那个引用就会被销毁，减少1；</li>
+<li>对象从容器对象中删除，或者容器对象被销毁，减少1。</li>
+</ul>
+<p>###　垃圾回收机制</p>
+<p>垃圾回收机制的主要作用为：用于解决引用计数机制无法释放的循环引用问题，同时提供了手动释放内存的接口。</p>
+<p>python提供了<code>del</code>方法来删除某个变量，它的作用是让某个对象引用数减少1。当某个对象引用数变为0时并不是直接将它从内存空间中清除掉，而是采用垃圾回收机制<code>gc</code>模块，当这些引用数为0的变量规模达到一定规模，就自动启动垃圾回收，将那些引用数为0的对象所占的内存空间释放。</p>
+<p><code>gc</code>模块采用了<strong>分代回收</strong>方法，将对象根据存活的时间分为<strong>三代</strong>:</p>
+<ol>
+<li>所有新建的对象都是0代，当0代对象经过一次自动垃圾回收，没有被释放的对象会被归入1代，</li>
+<li>同理1代归入2代。</li>
+<li>每次当0代对象中引用数为0的对象超过700个时，启动一次0代对象扫描垃圾回收;</li>
+<li>经过10次的0代回收，就进行一次0代和1代回收;</li>
+<li>1代回收次数超过10次，就会进行一次0代、1代和2代回收。而这里的几个值是通过查询<code>get_threshold()</code>返回(700,10,10)得到的。此外，<code>gc</code>模块还提供了手动回收的函数，即<code>gc.collect()</code>。</li>
+</ol>
+<p>上述内容参考自<a href="https://chenrudan.github.io/blog/2016/04/23/pythonmemorycontrol.html" target="_blank" rel="noopener">内存管理</a></p>
+<p>而垃圾回收还有一个重要功能是，解决循环引用的问题，通常发生在某个变量<code>a</code>引用了自己或者变量<code>a</code>与<code>b</code>互相引用。考虑引用自己的情况，可以从下面的例子中看到，<code>a</code>所指向的内存对象有3个引用，但是实际上只有两个变量，假如把这两个变量都<code>del</code>掉，对象引用个数还是1，没有变成0，这种情况下，如果只有引用计数的机制，那么这块没有用的内存会一直无法释放掉。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> b <span class="token operator">=</span> a
+<span class="token operator">>></span><span class="token operator">></span> getrefcount<span class="token punctuation">(</span>b<span class="token punctuation">)</span>
+<span class="token number">3</span>
+<span class="token operator">>></span><span class="token operator">></span> a<span class="token punctuation">.</span>append<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> getrefcount<span class="token punctuation">(</span>b<span class="token punctuation">)</span>
+<span class="token number">4</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">del</span> a
+<span class="token operator">>></span><span class="token operator">></span> getrefcount<span class="token punctuation">(</span>b<span class="token punctuation">)</span>
+<span class="token number">3</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">del</span> b
+<span class="token operator">>></span><span class="token operator">></span> unreachable <span class="token operator">=</span> gc<span class="token punctuation">.</span>collect<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> unreachable
+<span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Python的<code>gc</code>模块便可以被用来处理这种情况。</p>
+<h2 id="Python中的拷贝"><a href="#Python中的拷贝" class="headerlink" title="Python中的拷贝"></a>Python中的拷贝</h2><p>在Python中，如果直接使用<code>a=b</code>的方式，其实是新增了对象的引用，变量<code>a</code>和<code>b</code>指向同一个对象，因而对两个变量中的任何一个进行修改都会导致原始对象的修改。</p>
+<p>为了使用拷贝，我们需要使用<code>copy</code>模块，在Python中将拷贝分为浅拷贝（<code>copy</code>）和深拷贝（<code>deepcopy</code>），对于一般的对象来说，浅拷贝和深拷贝不存在区别。但对于一些较为复杂的对象，例如嵌套的<code>list</code>将会产生区别。</p>
+<p>当对嵌套<code>list</code>使用浅拷贝时，实际上拷贝的时<code>list</code>里各个对象的引用，将<code>list</code>中各个<strong>对象的引用</strong>存放到了新的内存地址，浅拷贝示意如下：</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">import</span> copy
+<span class="token operator">>></span><span class="token operator">></span> origin <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> cop1 <span class="token operator">=</span> copy<span class="token punctuation">.</span>copy<span class="token punctuation">(</span>origin<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> cop2 <span class="token operator">=</span> copy<span class="token punctuation">.</span>deepcopy<span class="token punctuation">(</span>origin<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> cop1 <span class="token operator">==</span> cop2
+<span class="token boolean">True</span>
+<span class="token operator">>></span><span class="token operator">></span> cop1 <span class="token keyword">is</span> cop2
+<span class="token boolean">False</span> 
+<span class="token comment" spellcheck="true"># cop2和cop1处于不同的内存地址，是不同的对象</span>
+<span class="token operator">>></span><span class="token operator">></span> origin<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"hey!"</span> 
+<span class="token operator">>></span><span class="token operator">></span> origin
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'hey!'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> cop1
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'hey!'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># 浅拷贝拷贝的是list中的各个对象的引用，改变一个会影响另一个</span>
+<span class="token operator">>></span><span class="token operator">></span> cop2
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># 深拷贝拷贝的是list中的各个对象的值，改变一个不会影响另一个</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>copy</code>对于一个<strong>复杂对象的子对象</strong>并不会完全复制，什么是复杂对象的子对象呢？就比如序列里的嵌套序列，字典里的嵌套序列等都是复杂对象的子对象。对于子对象，python会把它当作一个公共镜像存储起来，所有对他的复制都被当成一个<strong>引用</strong>，所以说当其中一个引用将镜像改变了之后另一个引用使用镜像的时候镜像已经被改变了，如下图所示，子对象指向的是同一个公共镜像。</p>
+<p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104016583.gif" alt="è¿éåå¾çæè¿°"></p>
+<p>而对于深拷贝<code>deepcopy</code>而言，会将对象中的每一层复制为一个单独的个体，因而复制之后得到的对象和原始对象互不影响，如下图所示，各个子对象指向的是一个独立的个体。</p>
+<p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104112461.gif" alt="è¿éåå¾çæè¿°"></p>
+<h2 id="嵌套列表的坑"><a href="#嵌套列表的坑" class="headerlink" title="嵌套列表的坑"></a>嵌套列表的坑</h2><p>以下内容转自<a href="[https://github.com/jackfrued/Python-100-Days/blob/master/%E9%82%A3%E4%BA%9B%E5%B9%B4%E6%88%91%E4%BB%AC%E8%B8%A9%E8%BF%87%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91.md](https://github.com/jackfrued/Python-100-Days/blob/master/那些年我们踩过的那些坑.md">那些年我们踩过的坑</a>)</p>
+<p>Python中有一种内置的数据类型叫列表，它是一种容器，可以用来承载其他的对象（准确的说是其他对象的引用），列表中的对象可以称为列表的元素，很明显我们可以把列表作为列表中的元素，这就是所谓的嵌套列表。嵌套列表可以模拟出现实中的表格、矩阵、2D游戏的地图（如植物大战僵尸的花园）、棋盘（如国际象棋、黑白棋）等。但是在使用嵌套的列表时可能会出现一些问题：</p>
+<pre class="line-numbers language-python"><code class="language-python">names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'关羽'</span><span class="token punctuation">,</span> <span class="token string">'张飞'</span><span class="token punctuation">,</span> <span class="token string">'赵云'</span><span class="token punctuation">,</span> <span class="token string">'马超'</span><span class="token punctuation">,</span> <span class="token string">'黄忠'</span><span class="token punctuation">]</span>
+subjs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'语文'</span><span class="token punctuation">,</span> <span class="token string">'数学'</span><span class="token punctuation">,</span> <span class="token string">'英语'</span><span class="token punctuation">]</span>
+scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">5</span>
+<span class="token keyword">for</span> row<span class="token punctuation">,</span> name <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>names<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'请输入%s的成绩'</span> <span class="token operator">%</span> name<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> col<span class="token punctuation">,</span> subj <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>subjs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        scores<span class="token punctuation">[</span>row<span class="token punctuation">]</span><span class="token punctuation">[</span>col<span class="token punctuation">]</span> <span class="token operator">=</span> float<span class="token punctuation">(</span>input<span class="token punctuation">(</span>subj <span class="token operator">+</span> <span class="token string">': '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>scores<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们希望录入5个学生3门课程的成绩，于是定义了一个有5个元素的列表，而列表中的每个元素又是一个由3个元素构成的列表，这样一个列表的列表刚好跟一个表格是一致的，相当于有5行3列，接下来我们通过嵌套的for-in循环输入每个学生3门课程的成绩。程序执行完成后我们发现，每个学生3门课程的成绩是一模一样的，而且就是最后录入的那个学生的成绩。</p>
+<p>要想把这个坑填平，我们首先要区分对象和对象的引用这两个概念，而要区分这两个概念，还得先说说内存中的栈和堆。我们经常会听人说起“<strong>堆栈</strong>”这个词，但实际上“堆”和“栈”是两个不同的概念。众所周知，一个程序运行时需要占用一些内存空间来存储数据和代码，那么这些内存从逻辑上又可以做进一步的划分。对底层语言（如C语言）有所了解的程序员大都知道，程序中可以使用的内存从逻辑上可以为五个部分，按照地址从高到低依次是：栈（stack）、堆（heap）、数据段（data segment）、只读数据段（static area）和代码段（code segment）。其中，栈用来存储局部、临时变量，以及函数调用时保存现场和恢复现场需要用到的数据，这部分内存在代码块开始执行时自动分配，代码块执行结束时自动释放，通常由编译器自动管理；堆的大小不固定，可以动态的分配和回收，因此如果程序中有大量的数据需要处理，这些数据通常都放在堆上，如果堆空间没有正确的被释放会引发内存泄露的问题，而像Python、Java等编程语言都使用了垃圾回收机制来实现自动化的内存管理（自动回收不再使用的堆空间）。</p>
+<p>所以下面的代码中，变量<code>a</code>并不是真正的对象，它是对象的引用，相当于记录了对象在堆空间的地址，通过这个地址我们可以访问到对应的对象；同理，变量<code>b</code>是列表容器的引用，它引用了堆空间上的列表容器，而列表容器中并没有保存真正的对象，它保存的也仅仅是对象的引用。</p>
+<pre class="line-numbers language-python"><code class="language-python">a <span class="token operator">=</span> object<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token string">'pitaya'</span><span class="token punctuation">,</span> <span class="token string">'grape'</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>知道了这一点，我们可以回过头看看刚才的程序，我们对列表进行<code>[[0] * 3] * 5</code>操作时，仅仅是将<code>[0, 0, 0]</code>这个列表的地址进行了复制，并没有创建新的列表对象，所以容器中虽然有5个元素，但是这5个元素引用了同一个列表对象，这一点可以通过<code>id</code>函数检查<code>scores[0]</code>和<code>scores[1]</code>的地址得到证实。</p>
+<pre class="line-numbers language-shell"><code class="language-shell">scores[0]: 212a5f1f8c8, scores[1]: 212a5f1f8c8
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python"><code class="language-python">scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">5</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这句代码所创建的内存的分布如下图所示：</p>
+<p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568792629558.png" alt=""></p>
+<p>所以正确的代码应该按照如下的方式进行修改。</p>
+<pre class="line-numbers language-python"><code class="language-python">names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'关羽'</span><span class="token punctuation">,</span> <span class="token string">'张飞'</span><span class="token punctuation">,</span> <span class="token string">'赵云'</span><span class="token punctuation">,</span> <span class="token string">'马超'</span><span class="token punctuation">,</span> <span class="token string">'黄忠'</span><span class="token punctuation">]</span>
+subjs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'语文'</span><span class="token punctuation">,</span> <span class="token string">'数学'</span><span class="token punctuation">,</span> <span class="token string">'英语'</span><span class="token punctuation">]</span>
+scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">5</span>
+<span class="token keyword">for</span> row<span class="token punctuation">,</span> name <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>names<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'请输入%s的成绩'</span> <span class="token operator">%</span> name<span class="token punctuation">)</span>
+    scores<span class="token punctuation">[</span>row<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">3</span>
+    <span class="token keyword">for</span> col<span class="token punctuation">,</span> subj <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>subjs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        scores<span class="token punctuation">[</span>row<span class="token punctuation">]</span><span class="token punctuation">[</span>col<span class="token punctuation">]</span> <span class="token operator">=</span> float<span class="token punctuation">(</span>input<span class="token punctuation">(</span>subj <span class="token operator">+</span> <span class="token string">': '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>scores<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>内存分布方式如下：</p>
+<p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568792969372.png" alt="1568792969372"></p>
+<p>在上述代码中，最外层列表的每一个元素所引用的列表都是在运行时重新分配的。</p>
+<p>或者：</p>
+<pre class="line-numbers language-python"><code class="language-python">names <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'关羽'</span><span class="token punctuation">,</span> <span class="token string">'张飞'</span><span class="token punctuation">,</span> <span class="token string">'赵云'</span><span class="token punctuation">,</span> <span class="token string">'马超'</span><span class="token punctuation">,</span> <span class="token string">'黄忠'</span><span class="token punctuation">]</span>
+subjs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'语文'</span><span class="token punctuation">,</span> <span class="token string">'数学'</span><span class="token punctuation">,</span> <span class="token string">'英语'</span><span class="token punctuation">]</span>
+scores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">3</span> <span class="token keyword">for</span> _ <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> row<span class="token punctuation">,</span> name <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>names<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'请输入%s的成绩'</span> <span class="token operator">%</span> name<span class="token punctuation">)</span>
+    scores<span class="token punctuation">[</span>row<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">3</span>
+    <span class="token keyword">for</span> col<span class="token punctuation">,</span> subj <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>subjs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        scores<span class="token punctuation">[</span>row<span class="token punctuation">]</span><span class="token punctuation">[</span>col<span class="token punctuation">]</span> <span class="token operator">=</span> float<span class="token punctuation">(</span>input<span class="token punctuation">(</span>subj <span class="token operator">+</span> <span class="token string">': '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>scores<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这一做法其实和上一个做法相同，都是在运行时分配对象内存。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://blog.csdn.net/u010712012/article/details/79754132" target="_blank" rel="noopener">python中copy()和deepcopy()详解</a></li>
+<li><a href="https://chenrudan.github.io/blog/2016/04/23/pythonmemorycontrol.html" target="_blank" rel="noopener">Python内存管理</a></li>
+<li><a href="[https://github.com/jackfrued/Python-100-Days/blob/master/%E9%82%A3%E4%BA%9B%E5%B9%B4%E6%88%91%E4%BB%AC%E8%B8%A9%E8%BF%87%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91.md](https://github.com/jackfrued/Python-100-Days/blob/master/那些年我们踩过的那些坑.md">那些年我们踩过的坑</a>)</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/19/python/python-zhong-de-han-shu/" rel="next" title="Python中的函数">
+                <i class="fa fa-chevron-left"></i> Python中的函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/24/python/python-zhong-de-bi-jiao-he-kao-bei/" rel="prev" title="Python中的比较和拷贝">
+                Python中的比较和拷贝 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python的内存管理机制"><span class="nav-number">1.</span> <span class="nav-text">Python的内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中与内存相关的基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">Python中与内存相关的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变量、对象及引用"><span class="nav-number">1.1.1.</span> <span class="nav-text">变量、对象及引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储机制"><span class="nav-number">1.1.2.</span> <span class="nav-text">存储机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python的内存管理机制-1"><span class="nav-number">1.2.</span> <span class="nav-text">Python的内存管理机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用计数机制"><span class="nav-number">1.2.1.</span> <span class="nav-text">引用计数机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的拷贝"><span class="nav-number">1.3.</span> <span class="nav-text">Python中的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌套列表的坑"><span class="nav-number">1.4.</span> <span class="nav-text">嵌套列表的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">53.6k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

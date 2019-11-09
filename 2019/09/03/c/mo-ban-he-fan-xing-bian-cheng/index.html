@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板template  int compare(const T &amp;v1, const T &amp;v2) {     if (v1 &amp;lt; v2) return -1;     if (v1 &amp;gt; v2) return 1;     return 0; }  模板定义以关键字template开始，后跟一个模板参数列表，模板参数列表不能为空。 模板参数表示">
+<meta name="keywords" content="编程基础,C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++基础-模板和泛型编程">
+<meta property="og:url" content="http://xiangqianma.github.io/2019/09/03/c/mo-ban-he-fan-xing-bian-cheng/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板template  int compare(const T &amp;v1, const T &amp;v2) {     if (v1 &amp;lt; v2) return -1;     if (v1 &amp;gt; v2) return 1;     return 0; }  模板定义以关键字template开始，后跟一个模板参数列表，模板参数列表不能为空。 模板参数表示">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-09T13:46:21.660Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++基础-模板和泛型编程">
+<meta name="twitter:description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板template  int compare(const T &amp;v1, const T &amp;v2) {     if (v1 &amp;lt; v2) return -1;     if (v1 &amp;gt; v2) return 1;     return 0; }  模板定义以关键字template开始，后跟一个模板参数列表，模板参数列表不能为空。 模板参数表示">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/2019/09/03/c/mo-ban-he-fan-xing-bian-cheng/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>C++基础-模板和泛型编程 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/09/03/c/mo-ban-he-fan-xing-bian-cheng/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++基础-模板和泛型编程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 22:37:20" itemprop="dateCreated datePublished" datetime="2019-09-03T22:37:20+08:00">2019-09-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-09 21:46:21" itemprop="dateModified" datetime="2019-11-09T21:46:21+08:00">2019-11-09</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/编程语言/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="模板和泛型编程"><a href="#模板和泛型编程" class="headerlink" title="模板和泛型编程"></a>模板和泛型编程</h2><p>模板是c++泛型编程的基础。</p>
+<h3 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h3><h4 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h4><pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+int compare(const T &v1, const T &v2)
+{
+    if (v1 < v2) return -1;
+    if (v1 > v2) return 1;
+    return 0;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></code></pre>
+<p>模板定义以关键字template开始，后跟一个<strong>模板参数列表</strong>，模板参数列表不能为空。</p>
+<p>模板参数表示在类或函数定义中用到的类型或值。当使用模板时，我们（显式或者隐式地）指定模板参数，将其绑定到模板参数上。</p>
+<p>当我们调用一个函数模板时，编译器通常用函数实参来为我们推断模板实参。即，编译器使用实参的类型来确定绑定到模板实参T的类型。</p>
+<p>编译器用推断出的模板参数来实例化出一个特定版本的函数，该特定版本的函数称为模板的<strong>实例</strong>。</p>
+<h4 id="模板类型参数"><a href="#模板类型参数" class="headerlink" title="模板类型参数"></a>模板类型参数</h4><p>在模板参数列表中用于定义类型的参数称为模板类型参数。</p>
+<p>可以将类型参数看做类型说明符，就像内置类型或类类型说明符一样使用。类型参数可以用来指定返回类型或函数的参数类型，以及在函数体内用于变量声明或类型转换。</p>
+<p>类型参数前必须使用关键字class或typename，在模板参数列表中，这两个关键字的含义相同，可以互换使用。</p>
+<h4 id="非类型模板参数"><a href="#非类型模板参数" class="headerlink" title="非类型模板参数"></a>非类型模板参数</h4><p>一个非类型模板参数表示一个值而非一个类型。通过一个特定的类型名而非关键字class或typename来制定非类型参数。</p>
+<p>当一个模板被实例化时，非类型参数被一个用户提供的或编译器推断出的值所替代。这些值必须是常量表达式，从而允许编译器在编译时实例化模板。</p>
+<p>一个非类型参数可以是一个整型，或者是一个指向对象或函数类型的指针或（左值）引用。</p>
+<p>绑定到非类型整型参数的实参必须是一个常量表达式。绑定到指针或引用非类型参数的实参必须具有静态的生存期。</p>
+<p>在模板定义内，模板非类型参数是一个常量值。在需要常量表达式的地方可以使用非类型参数。</p>
+<h4 id="模板编译"><a href="#模板编译" class="headerlink" title="模板编译"></a>模板编译</h4><p>当编译器遇到一个模板定义时，它并不生成代码，只有当我们实例化出模板的一个特定版本时，编译器才会生成代码。</p>
+<p>通常，当我们调用一个函数时，编译器只需要掌握函数的声明。类似的，当我们使用一个类类型的对象时，类定义必须是可用的，但成员函数的定义不必已经出现。因此，我们将类定义和函数声明放在头文件中，而将普通函数和类的成员函数的定义放在源文件中。</p>
+<p><strong>模板不同</strong>，为了生成一个实例化版本，编译器需要掌握函数模板或类模板成员函数的定义，因此，与非模板代码不同，<strong>模板的头文件通常包括声明也包括定义</strong>。</p>
+<h4 id="大多数编译错误在实例化期间报告"><a href="#大多数编译错误在实例化期间报告" class="headerlink" title="大多数编译错误在实例化期间报告"></a>大多数编译错误在实例化期间报告</h4><p>编译器会在三个截断报告错误：</p>
+<ol>
+<li>编译模板本身时。</li>
+<li>编译器遇到模板使用时，该阶段检查模板实参数目是否正确、参数类型是否匹配，可检查的错误很少。</li>
+<li>模板实例化时，只有这个阶段才能发现类型相关的错误。</li>
+</ol>
+<blockquote>
+<p>保证传递给模板的实参支持模板所要求的操作，以及这些操作在模板中能够正确工作，是调用者的责任。</p>
+</blockquote>
+<h3 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h3><p>类模板作为类的蓝图，与函数模板不同，编译器无法为类模板推断模板参数类型，在使用类模板时，我们必须在类模板名后的尖括号内提供额外信息。</p>
+<h4 id="类模板的定义"><a href="#类模板的定义" class="headerlink" title="类模板的定义"></a>类模板的定义</h4><pre class="line-numbers language-c++"><code class="language-c++">template <typename t=""> class Blob{
+public:
+    typedef T value_type;
+    typedef typename std::vector<t>::size_type size_type;
+    // 构造函数
+    Blob();
+    Blob(std::initializer_list<t> i1);
+    // Blob中的元素数目
+    size_type size() const { return data->size(); }
+    bool empty() const { return data->empty; }
+    // 添加和删除元素
+    void push_back(const T &t) { data->push_back(t); }
+    // 移动版本
+    void push_back(T &&t) { data->push_back(std::move(t)); }
+    void pop_back();
+    // 元素访问
+    T &back();
+    T &operator[] (size_type i);
+private:
+    std::shared_ptr<std::vector<t>> data;
+    // 若data[i]无效，则抛出msg
+    void check(size_type i, const std::string &msg) const;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></std::vector<t></t></t></typename></code></pre>
+<p>在定义中有下面一句代码：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">typedef typename std::vector<t>::size_type size_type;
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></t></code></pre>
+<p>其中，<code>typename</code>的作用是，在实例化模板之前，编译器不清楚<code>std::vector&lt;T&gt;</code>的具体类型，使用<code>typename</code>告诉编译器后者是一个类型。</p>
+<p>在上述类模板的构造函数中，使用了如下的格式：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">Blob(std::initializer_list<t> i1);
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></t></code></pre>
+<p>在上述语句中使用了标准库中的<code>initializer_list</code>类模板，该类可以使得我们使用下述语句对类进行初始化：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">Blob<int> ia2 = {0,1,2,3,4};
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></int></code></pre>
+<h4 id="实例化类模板"><a href="#实例化类模板" class="headerlink" title="实例化类模板"></a>实例化类模板</h4><p>当编译器从Blob模板实例化出一个类时，它会重写Blob模板，将模板参数T的每个实例替换为给定的模板实参。</p>
+<p>一个类模板的每个实例都形成一个独立的类。</p>
+<h4 id="在模板作用域中引用模板类型"><a href="#在模板作用域中引用模板类型" class="headerlink" title="在模板作用域中引用模板类型"></a>在模板作用域中引用模板类型</h4><p>类模板的名字不是一个类型名，类模板用来实例化类型，而一个实例化的类型总是包含模板参数的。</p>
+<p>一个类模板中的代码如果使用了另外一个模板，通常不将一个实际类型（或值）的名字用作其模板实参。通常将模板自己的参数当做被使用模板的实参。</p>
+<p>无论何时使用模板都必须提供模板实参，提供给类模板中的模板的模板实参就是使用它的类模板的模板参数。</p>
+<h4 id="类模板的成员函数"><a href="#类模板的成员函数" class="headerlink" title="类模板的成员函数"></a>类模板的成员函数</h4><p>类模板的成员函数具有和类模板相同的模板参数，因而，定义在类模板之外的成员函数就必须以关键字template开始，后接类模板参数列表。</p>
+<p>在类外定义一个成员时，必须说明成员属于哪个类。而且，从一个模板生成的类的名字中必须包含其模板实参。当我们定义一个成员函数时，模板实参与模板形参相同。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+ret-type Blob<t>::member-name(parm-list);
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></t></typename></code></pre>
+<p>例如，上述类模板的check成员。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+void Blob<t>::check(size_type i, const std::string &msg) const
+{
+    if (i >= data->size())
+        throw std::out_of_range(msg);
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></t></typename></code></pre>
+<h4 id="类模板的构造函数"><a href="#类模板的构造函数" class="headerlink" title="类模板的构造函数"></a>类模板的构造函数</h4><p>与其他的在外部的类模板的普通成员函数一样，构造函数的定义要以模板参数开始。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+Blob<t>::Blob():data(std::make_shared<std::vector<t>>()) {}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></std::vector<t></t></typename></code></pre>
+<h4 id="类模板成员函数的实例化"><a href="#类模板成员函数的实例化" class="headerlink" title="类模板成员函数的实例化"></a>类模板成员函数的实例化</h4><p>一个类模板的成员函数只有当程序用到它时才进行实例化。如果一个成员函数没有被使用，则它不会被实例化，这一特性使得即使某种类型不能完全符合模板操作的要求。</p>
+<p>####　在类代码内简化模板类名的使用</p>
+<p>在类模板自己的作用域内，可以直接使用模板名而不提供模板实参。当我们处于一个类模板的作用域中时，编译器处理模板自身引用时就好像我们已经提供了模板参数匹配的实参一样。</p>
+<h4 id="在类模板外使用类模板名"><a href="#在类模板外使用类模板名" class="headerlink" title="在类模板外使用类模板名"></a>在类模板外使用类模板名</h4><p>当我们在类模板为定义其成员时，必须记住，我们并不在类的作用域内，只有遇到类名才表示进入类的作用域。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+BlobPtr<t> BlobPtr<t>::operator++(int)
+{
+    BlobPtr ret = *this; // 保存当前状态
+    ++*this; // 推进一个元素；前置++检车递增是否合法
+    return ret; // 返回保存的状态
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></t></t></typename></code></pre>
+<p>返回类型位于类的作用域之外，因此必须指定模板类型参数。在函数体内，已经进入了类的作用域，因而在定义ret时无需重复模板实参。</p>
+<h4 id="类模板和友元"><a href="#类模板和友元" class="headerlink" title="类模板和友元"></a>类模板和友元</h4><ul>
+<li>如果一个类模板包含一个<strong>非模板友元</strong>，则友元被授权可以访问所有模板实例。</li>
+<li>如果<strong>友元自身是模板</strong>，类可以授权给所有友元模板实例，也可以只授权给特定实例。</li>
+</ul>
+<h5 id="一对一友好关系"><a href="#一对一友好关系" class="headerlink" title="一对一友好关系"></a>一对一友好关系</h5><p>类模板与另一个模板（类模板或函数模板）友好关系的常见形式是建立对应实例及其友元间的友好关系。</p>
+<p>例如，Blob类将BlobPtr类和一个模板版本的Blob相等运算符定义为友元的情况。</p>
+<blockquote>
+<p>为了引用（类或函数）模板的一个特定实例，我们必须首先声明模板自身。一个模板的声明包括模板参数列表。</p>
+</blockquote>
+<pre class="line-numbers language-c++"><code class="language-c++">// 前置声明在Blob中声明友元所需
+template <typename t=""> class BlobPtr;
+template <typename t=""> calss Blob; // 运算符==中的参数需要
+template <typename t="">
+    bool operator==(const Blob<t>&, const Blob<t>&);
+
+template <typename t=""> class Blob{
+    // 每个Blob实例将访问权限授予用相同类型实例化的BlobPtr和相等运算符
+    friend class BlobPtr<t>;
+    friend bool operator==<t>
+            (const Blob<t>&, const Blob<t>&);
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></t></t></t></t></typename></t></t></typename></typename></typename></code></pre>
+<p>在上述代码中，<strong>友元的声明用Blob的模板形参作为它们自己的模板实参</strong>。因此，友好关系<strong>被限定</strong>在用相同类型实例化的Blob与BlobPtr相等运算符之间。</p>
+<h5 id="通用和特定的模板友好关系"><a href="#通用和特定的模板友好关系" class="headerlink" title="通用和特定的模板友好关系"></a>通用和特定的模板友好关系</h5><p>一个类可以将另一个模板的每个实例都声明为自己的友元，也可以限定特定的实例为友元。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t=""> class Pal;
+class C{
+    friend class Pal<c>;// 用类C实例化的Pal是C的一个友元
+    template <typename t=""> friend class Pal2; // 模板类Pal2的所有实例都是C的友元，这种情况无需前置声明
+};
+
+template <typename t=""> class C2{
+    // C2的每个实例将相同实例化的Pal声明为友元，需要前置声明
+    friend class Pal<t>;
+    template <typename x=""> friend class Pal2;// 模板类Pal2的所有实例都是C的友元 
+    // Pal3是非模板类，它是C2所有实例的友元
+    friend class Pal3;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></t></typename></typename></c></typename></code></pre>
+<blockquote>
+<p>为了让所有实例成为友元，友元声明中必须使用与类模板本身不同的模板参数</p>
+</blockquote>
+<h5 id="模板类型别名"><a href="#模板类型别名" class="headerlink" title="模板类型别名"></a>模板类型别名</h5><pre class="line-numbers language-c++"><code class="language-c++">typedef Blob<string> StrBlob;
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></string></code></pre>
+<h5 id="类模板的static成员"><a href="#类模板的static成员" class="headerlink" title="类模板的static成员"></a>类模板的static成员</h5><p>类模板可以声明static成员.。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t=""> class Foo{
+public:
+    static std::size_t count() { return ctr; }
+private:
+    static std::size_t ctr;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></code></pre>
+<p>类模板的不同实例有其各自的static成员实例。所有<code>Foo&lt;X&gt;</code>类型的对象共享相同的<code>ctr</code>对象和<code>count</code>函数。</p>
+<p>模板类的每个static数据成员都有且仅有一个定义，但是，类模板的每个实例都有一个独有的static对象，因而，将类模板的static数据成员也定义为模板:</p>
+<pre class="line-numbers language-c++"><code class="language-c++">template <typename t="">
+size_t Foo<t>::ctr = 0;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></t></typename></code></pre>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/03/c/mian-xiang-dui-xiang-cheng-xu-she-ji/" rel="next" title="C++基础-面向对象程序设计">
+                <i class="fa fa-chevron-left"></i> C++基础-面向对象程序设计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/03/c/bian-liang-he-ji-ben-lei-xing/" rel="prev" title="C++基础-变量和基本类型">
+                C++基础-变量和基本类型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模板和泛型编程"><span class="nav-number">1.</span> <span class="nav-text">模板和泛型编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义模板"><span class="nav-number">1.1.</span> <span class="nav-text">定义模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数模板"><span class="nav-number">1.1.1.</span> <span class="nav-text">函数模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板类型参数"><span class="nav-number">1.1.2.</span> <span class="nav-text">模板类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非类型模板参数"><span class="nav-number">1.1.3.</span> <span class="nav-text">非类型模板参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板编译"><span class="nav-number">1.1.4.</span> <span class="nav-text">模板编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大多数编译错误在实例化期间报告"><span class="nav-number">1.1.5.</span> <span class="nav-text">大多数编译错误在实例化期间报告</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类模板"><span class="nav-number">1.2.</span> <span class="nav-text">类模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的定义"><span class="nav-number">1.2.1.</span> <span class="nav-text">类模板的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例化类模板"><span class="nav-number">1.2.2.</span> <span class="nav-text">实例化类模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在模板作用域中引用模板类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">在模板作用域中引用模板类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的成员函数"><span class="nav-number">1.2.4.</span> <span class="nav-text">类模板的成员函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板的构造函数"><span class="nav-number">1.2.5.</span> <span class="nav-text">类模板的构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板成员函数的实例化"><span class="nav-number">1.2.6.</span> <span class="nav-text">类模板成员函数的实例化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在类模板外使用类模板名"><span class="nav-number">1.2.7.</span> <span class="nav-text">在类模板外使用类模板名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类模板和友元"><span class="nav-number">1.2.8.</span> <span class="nav-text">类模板和友元</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一对一友好关系"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">一对一友好关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通用和特定的模板友好关系"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">通用和特定的模板友好关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模板类型别名"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">模板类型别名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类模板的static成员"><span class="nav-number">1.2.8.4.</span> <span class="nav-text">类模板的static成员</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">53.6k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
