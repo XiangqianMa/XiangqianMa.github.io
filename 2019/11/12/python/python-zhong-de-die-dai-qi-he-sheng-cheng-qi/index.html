@@ -96,25 +96,25 @@
 
 
 
-  <meta name="description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+  <meta name="description" content="Python中的迭代器和生成器 本博客为Python核心技术实战的学习笔记，如需获取全文，请点击链接。  迭代器所有的容器都是可迭代（iterable）的。迭代和枚举不同，进行迭代时，并不知道被迭代对象有的容量是多少，只是每次进行迭代时，被迭代对象都返回一个元素或者迭代完成的标志（StopIteration）。 对于可迭代的对象，可以使用iter()函数得到一个迭代器，再调用next()函数便可以">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python中的匿名函数">
-<meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/index.html">
+<meta property="og:title" content="Python中的迭代器和生成器">
+<meta property="og:url" content="http://xiangqianma.github.io/2019/11/12/python/python-zhong-de-die-dai-qi-he-sheng-cheng-qi/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+<meta property="og:description" content="Python中的迭代器和生成器 本博客为Python核心技术实战的学习笔记，如需获取全文，请点击链接。  迭代器所有的容器都是可迭代（iterable）的。迭代和枚举不同，进行迭代时，并不知道被迭代对象有的容量是多少，只是每次进行迭代时，被迭代对象都返回一个元素或者迭代完成的标志（StopIteration）。 对于可迭代的对象，可以使用iter()函数得到一个迭代器，再调用next()函数便可以">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-09T13:46:21.661Z">
+<meta property="og:updated_time" content="2019-11-13T13:11:25.101Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python中的匿名函数">
-<meta name="twitter:description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+<meta name="twitter:title" content="Python中的迭代器和生成器">
+<meta name="twitter:description" content="Python中的迭代器和生成器 本博客为Python核心技术实战的学习笔记，如需获取全文，请点击链接。  迭代器所有的容器都是可迭代（iterable）的。迭代和枚举不同，进行迭代时，并不知道被迭代对象有的容量是多少，只是每次进行迭代时，被迭代对象都返回一个元素或者迭代完成的标志（StopIteration）。 对于可迭代的对象，可以使用iter()函数得到一个迭代器，再调用next()函数便可以">
 
 
 
 
 
 
-  <link rel="canonical" href="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/">
+  <link rel="canonical" href="http://xiangqianma.github.io/2019/11/12/python/python-zhong-de-die-dai-qi-he-sheng-cheng-qi/">
 
 
 
@@ -124,7 +124,7 @@
   };
 </script>
 
-  <title>Python中的匿名函数 | MXQ</title>
+  <title>Python中的迭代器和生成器 | MXQ</title>
   
 
 
@@ -396,7 +396,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/11/12/python/python-zhong-de-die-dai-qi-he-sheng-cheng-qi/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MXQ">
@@ -413,7 +413,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python中的匿名函数
+          <h1 class="post-title" itemprop="name headline">Python中的迭代器和生成器
 
               
             
@@ -439,7 +439,7 @@
                 
               
 
-              <time title="创建时间：2019-10-24 12:22:20" itemprop="dateCreated datePublished" datetime="2019-10-24T12:22:20+08:00">2019-10-24</time>
+              <time title="创建时间：2019-11-12 10:09:20" itemprop="dateCreated datePublished" datetime="2019-11-12T10:09:20+08:00">2019-11-12</time>
             
 
             
@@ -456,7 +456,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-09 21:46:21" itemprop="dateModified" datetime="2019-11-09T21:46:21+08:00">2019-11-09</time>
+                <time title="修改时间：2019-11-13 21:11:25" itemprop="dateModified" datetime="2019-11-13T21:11:25+08:00">2019-11-13</time>
               
             
           </span>
@@ -522,111 +522,248 @@
       
 
       
-        <h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><h2 id="什么是匿名函数"><a href="#什么是匿名函数" class="headerlink" title="什么是匿名函数"></a>什么是匿名函数</h2><p>匿名函数的格式如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">lambda argument1, argument2,... argumentN : expression
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>匿名函数的关键字为<code>lambda</code>，用法如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">square = lambda x: x**2
-square(3)
-
-9
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其对应的常规函数形式为：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
-    return x**2
-square(3)
-
-9
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>匿名函数和常规函数一样，返回的都是函数对象（function object）,不同之处有以下几点：</p>
-<ul>
-<li><p><code>lambda</code>是一个表达式，而不是一个语句</p>
-<p>所谓表达式就是用一系列“公式”去表达一个东西，如x+2、x**2等；所谓语句就是完成了某些功能，如果赋值语句完成赋值，比较语句完成比较等。</p>
-<p><code>lambda</code>表达式可以用在一些常规函数不能使用的地方，如：列表内部：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">[(lambda x: x*x)(x) for x in range(10)]
-# 输出
-[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>被用作某些函数的参数，而常规函数不能：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [(1, 20), (3, 0), (9, 10), (2, -1)]
-l.sort(key=lambda x: x[1]) # 按列表中元祖的第二个元素排序
-print(l)
-# 输出
-[(2, -1), (3, 0), (9, 10), (1, 20)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>常规函数必须通过其函数名被调用，因而必须首先被定义。但是<code>lambda</code>是一个表达式，返回的函数对象不需要名字。</p>
-</li>
-<li><p><code>lambda</code>表达式是只有一行的简单表达式，并不能扩展成一个多行的代码块。</p>
-<p>Python发明<code>lambda</code>表达式的目的就是让它处理一些简单的任务，较为复杂的任务则由常规函数处理。</p>
-</li>
-</ul>
-<h2 id="为什么使用匿名函数"><a href="#为什么使用匿名函数" class="headerlink" title="为什么使用匿名函数"></a>为什么使用匿名函数</h2><p>在一些情况下，使用匿名函数<code>lambda</code>可以帮助我们降低代码的复杂度，提高代码的可读性。</p>
-<p>我们使用函数的目的有以下几点：</p>
-<ul>
-<li>减少代码的重复性</li>
-<li>模块化代码</li>
-</ul>
-<p>但当我们只需要一个函数，这个函数非常简短，只需要一行；同时在程序中只调用一次，此时，我们就不需要给它一个定义和名字。</p>
-<p>例如，需要对一个列表中的所有元素求平方和，且该程序只需要运行一次，用匿名函数可以写成：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">squared = map(lambda x: x**2, [1, 2, 3, 4, 5])
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>用常规函数需要写成：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
-    return x**2
-
-squared = map(square, [1, 2, 3, 4, 5])
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>很明显，匿名函数更为简洁。</p>
-<h2 id="Python函数式编程"><a href="#Python函数式编程" class="headerlink" title="Python函数式编程"></a>Python函数式编程</h2><p>所谓函数式编程，是指代码中每一块都是不可变的，都由纯函数组成。纯函数是指函数本身相互独立、互不影响，对于相同的输入，总会有相同的输出，没有任何副作用。</p>
-<p>例如，将一个列表中的元素值都变成原来的两倍，如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2(l):
-    for index in range(0, len(l)):
-        l[index] *= 2
-    return l
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上述代码不是一个纯函数，因为输入列表的值发生了改变，多次调用该函数将会得到不同的值。修改成如下形式：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2_pure(l):
-    new_list = []
-    for item in l:
-        new_list.append(item * 2)
-    return new_list
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>新建列表并返回，这就是一个纯函数。</p>
-<p>函数式编程的优点是其纯函数和不可变的特性使得程序更加健壮，易于调试和测试；缺点是限制多、程序编写难度高。Python不是一门函数式编程语言，但是提供了相关特性，主要有以下函数<code>map()</code>，<code>filter()</code>，<code>reduce()</code>，这几个函数通常和匿名函数一起使用。</p>
-<ul>
-<li><p><code>map()</code></p>
-<p><code>map(function, iterable)</code>对<code>iterable</code>中的每个元素都调用<code>function</code>函数，最后返回一个新的可遍历的集合。<code>map()</code>函数直接由C语言写成，运行时不需要Python解释器间接调用，性能高。</p>
-</li>
-<li><p><code>filter(function, iterable)</code></p>
-<p><code>filter()</code>函数对<code>iterable</code>中的每个元素都使用<code>function</code>进行判断，返回<code>True</code>或<code>False</code>，将<code>True</code>对应的元素组成一个新的可遍历的集合。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
-new_list = filter(lambda x: x % 2 == 0, l) # [2, 4]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><p><code>reduce(function, iterable)</code></p>
-<p>该函数通常用来对一个集合做一些累积操作。<code>function()</code>函数同样是一个函数对象，它有两个函数，表示对<code>iterable</code>中的每个元素以及上一次调用后的结构运用<code>function</code>进行计算，最后返回的是一个单独的值。</p>
-<p>例如，计算某个列表元素的乘积：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
-product = reduce(lambda x, y: x * y, l) # 1*2*3*4*5 = 120
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<p>通常来说，当我们需要对集合中的元素进行一些操作时，如果操作非常简单，则有限考虑<code>map()</code>、<code>filter()</code>、<code>reduce()</code>这类或者列表表达式的形式。那么如何在这两种方式中进行选择？</p>
-<ul>
-<li>当数据量非常多时，例如机器学习的应用，倾向于使用函数式编程的表示，效率更高；</li>
-<li>当数据量不多时，为了使得程序更加的Pythonic，可以使用列表表达式。</li>
-</ul>
-<p>当操作比较复杂时，使用<code>for</code>循环。</p>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>对一个字典根据其值从高到低进行排列。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 匿名函数
-d = {'mike': 10, 'lucy': 2, 'ben': 30}
-e = sorted(d.items(), key=lambda x: x[1], reverse=True)
-e
-
-Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
+        <h1 id="Python中的迭代器和生成器"><a href="#Python中的迭代器和生成器" class="headerlink" title="Python中的迭代器和生成器"></a>Python中的迭代器和生成器</h1><blockquote>
+<p>本博客为<a href="https://time.geekbang.org/column/article/101521" target="_blank" rel="noopener">Python核心技术实战</a>的学习笔记，如需获取全文，请点击链接。</p>
+</blockquote>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>所有的容器都是可迭代（iterable）的。迭代和枚举不同，进行迭代时，并不知道被迭代对象有的容量是多少，只是每次进行迭代时，被迭代对象都返回一个元素或者迭代完成的标志（StopIteration）。</p>
+<p>对于可迭代的对象，可以使用<code>iter()</code>函数得到一个迭代器，再调用<code>next()</code>函数便可以实现对可迭代对象的遍历。我们常使用的<code>for</code>循环便是将这一过程隐式化。</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">items = [1, 2 ,3]
+it = iter(items)
+try:
+    print(next(it))
+except StopIteration:
+    print('Stop iteration')
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><h3 id="什么是生成器？"><a href="#什么是生成器？" class="headerlink" title="什么是生成器？"></a>什么是生成器？</h3><p>在C++等语言中都有迭代器的概念，而对于生成器来说，很多语言中则没有对应的实现。</p>
+<blockquote>
+<p>生成器是懒人版本的迭代器。</p>
+</blockquote>
+<p>在迭代器中，如果我们想要对其元素进行枚举，就需要提前生成这些元素。如下述程序：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">import os
+import psutil
+
+# 显示当前 python 程序占用的内存大小
+def show_memory_info(hint):
+    pid = os.getpid()
+    p = psutil.Process(pid)
+
+    info = p.memory_full_info()
+    memory = info.uss / 1024. / 1024
+    print('{} memory used: {} MB'.format(hint, memory))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def test_iterator():
+    show_memory_info('initing iterator')
+    list_1 = [i for i in range(100000000)]
+    show_memory_info('after iterator initiated')
+    print(sum(list_1))
+    show_memory_info('after sum called')
+
+def test_generator():
+    show_memory_info('initing generator')
+    list_2 = (i for i in range(100000000))
+    show_memory_info('after generator initiated')
+    print(sum(list_2))
+    show_memory_info('after sum called')
+
+%time test_iterator()
+%time test_generator()
+
+########## 输出 ##########
+
+initing iterator memory used: 48.9765625 MB
+after iterator initiated memory used: 3920.30078125 MB
+4999999950000000
+after sum called memory used: 3920.3046875 MB
+Wall time: 17 s
+initing generator memory used: 50.359375 MB
+after generator initiated memory used: 50.359375 MB
+4999999950000000
+after sum called memory used: 50.109375 MB
+Wall time: 12.5 s
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在上述程序中可以发现，迭代器提前生成了所有的元素，这会消耗大量的内存。而生成器则不会提前生成所有元素。生成器只有在调用<code>next()</code>函数时才会生成下一个变量，同时生成器在初始化的时候不需要运行一次生成操作，耗时更短。</p>
+<p>在Python中，我们可以使用小括号来初始化一个生成器：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">(i for i in range(100000000))
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="自定义生成器"><a href="#自定义生成器" class="headerlink" title="自定义生成器"></a>自定义生成器</h3><p>首先给出如下代码：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def generator(k):
+    i = 1
+    while True:
+        yield i ** k
+        i += 1
+
+gen_1 = generator(1)
+gen_3 = generator(3)
+print(gen_1)
+print(gen_3)
+
+def get_sum(n):
+    sum_1, sum_3 = 0, 0
+    for i in range(n):
+        next_1 = next(gen_1)
+        next_3 = next(gen_3)
+        print('next_1 = {}, next_3 = {}'.format(next_1, next_3))
+        sum_1 += next_1
+        sum_3 += next_3
+    print(sum_1 * sum_1, sum_3)
+
+get_sum(8)
+
+########## 输出 ##########
+
+<generator object="" generator="" at="" 0x000001e70651c4f8="">
+<generator object="" generator="" at="" 0x000001e70651c390="">
+next_1 = 1, next_3 = 1
+next_1 = 2, next_3 = 8
+next_1 = 3, next_3 = 27
+next_1 = 4, next_3 = 64
+next_1 = 5, next_3 = 125
+next_1 = 6, next_3 = 216
+next_1 = 7, next_3 = 343
+next_1 = 8, next_3 = 512
+1296 1296
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></generator></generator></code></pre>
+<p>在上述代码中，<code>generator()</code>函数即创建了一个生成器。在这个函数中有一个关键字<code>yeild</code>，可以理解为，当程序运行到这一行时会暂停，跳出程序。跳出的目的地是<code>next()</code>函数，<code>yield</code>后跟的<code>i ** k</code>即为<code>next()</code>函数的返回值。</p>
+<p>当每次调用<code>next()</code>函数时，程序将会从上一次暂停的地方继续运行，并且，其中的<code>i</code>变量并未被清除。</p>
+<p>与迭代器的另一个不同之处是，迭代器是一个有限的集合，而生成器可以成为一个无限集。只要调用<code>next()</code>函数，生成器便会执行一次操作。</p>
+<p>下面解决一个常见的问题，给定一个列表，求一个特定的数字在这个列表中的位置。</p>
+<p>常规做法是暴力遍历，如下所示：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+def index_normal(L, target):
+    result = []
+    for i, num in enumerate(L):
+        if num == target:
+            result.append(i)
+    return result
+
+print(index_normal([1, 6, 2, 4, 5, 2, 8, 6, 3, 2], 2))
+
+########## 输出 ##########
+
+[2, 5, 9]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用生成器的做法如下：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+def index_generator(L, target):
+    for i, num in enumerate(L):
+        if num == target:
+            yield i
+
+print(list(index_generator([1, 6, 2, 4, 5, 2, 8, 6, 3, 2], 2)))
+
+########## 输出 ##########
+
+[2, 5, 9]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中使用<code>list()</code>将生成器对象转换为了列表。</p>
+<p>另一个问题，给定两个序列，判定第一个是不是第二个的子序列。子序列指的是：一个列表的元素在第二个列表中按照顺序出现，但是不必要挨在一起。</p>
+<p>最简单的做法是贪心算法，维持两个指针指向两个列表的最开始，对第二个列表进行遍历，当与第一个列表的指针指向的元素匹配时，第一个列表的指针后移一位，然后第二个列表的指针继续从当前位置向后遍历，当第一个列表的指针遍历完所有的元素时，返回<code>True</code>，否则返回<code>False</code>。</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def is_subsequence(a, b):
+    i = 0
+    j = 0
+    while True:
+        if a[i] == b[j]:
+            i += 1
+        j += 1
+        if j == len(b):
+            break
+    if i == len(a):
+        # 第一个列表被遍历完
+        result = True
+    else:
+        result = False
+    return result
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果使用迭代器和生成器，则写法如下：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def is_subsequence(a, b):
+    b = iter(b)
+    return all(i in b for i in a)
+
+print(is_subsequence([1, 3, 5], [1, 2, 3, 4, 5]))
+print(is_subsequence([1, 4, 3], [1, 2, 3, 4, 5]))
+
+########## 输出 ##########
+
+True
+False
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>将上述代码展开：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+def is_subsequence(a, b):
+    b = iter(b)
+    print(b)
+
+    gen = (i for i in a)
+    print(gen)
+
+    for i in gen:
+        print(i)
+
+    gen = ((i in b) for i in a)
+    print(gen)
+
+    for i in gen:
+        print(i)
+
+    return all(((i in b) for i in a))
+
+print(is_subsequence([1, 3, 5], [1, 2, 3, 4, 5]))
+print(is_subsequence([1, 4, 3], [1, 2, 3, 4, 5]))
+
+########## 输出 ##########
+
+<list_iterator object="" at="" 0x000001e7063d0e80="">
+<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C570>
+1
+3
+5
+<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C5E8>
+True
+True
+True
+False
+<list_iterator object="" at="" 0x000001e7063d0d30="">
+<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C5E8>
+1
+4
+3
+<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C570>
+True
+True
+False
+False
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></genexpr></generator></genexpr></generator></list_iterator></genexpr></generator></genexpr></generator></list_iterator></code></pre>
+<p>其中的<code>(i in b)</code>语句，相当于下述代码：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">while True:
+    val = next(b)
+    if val == i:
+        yield True
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先使用<code>iter(b)</code>将<code>b</code>转换为迭代器，这样在<code>next()</code>函数运行时，就可以保存当前运行到的<code>b</code>的值，下一次运行到<code>val = next(b)</code>时会接着上一次的指针继续往下。</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+b = (i for i in range(5))
+
+print(2 in b)
+print(4 in b)
+print(3 in b)
+
+########## 输出 ##########
+
+True
+True
+False
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中，<code>b</code>是一个生成器，第一次调用<code>2 in b</code>生成到2的时候就停止，接着调用<code>4 in b</code>时，生成到4时停止，此时生成器已经消耗完毕，再次调用<code>3 in b</code>便会返回<code>False</code>。</p>
+<ul>
+<li>容器是可迭代对象，可迭代对象调用<code>iter()</code>函数可以得到迭代器。对迭代器调用<code>next()</code>函数可以得到下一个元素。</li>
+<li>生成器是一种特殊的迭代器，使用生成器可以降低内存占用、优化程序结构、提高程序速度。</li>
+<li>对于有限的生成器来说，当遍历完成后，再次调用<code>next()</code>函数会触发<code>raise StopIteration</code>，必须使用<code>iter()</code>对生成器进行复位。</li>
+</ul>
+<blockquote>
+<p>迭代器和生成器都是调用一次<code>next()</code>返回一次值，下次调用会接着上一次的状态继续执行。<code>in</code>和<code>for</code>都可以隐式调用<code>next()</code>函数。</p>
+</blockquote>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://time.geekbang.org/column/article/98411" target="_blank" rel="noopener">Python核心技术与实战-景霄</a></li>
+<li><a href="https://time.geekbang.org/column/article/101521" target="_blank" rel="noopener">Python核心技术实战</a></li>
 </ul>
 
       
@@ -666,8 +803,8 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/24/python/python-zhong-de-bi-jiao-he-kao-bei/" rel="next" title="Python中的比较和拷贝">
-                <i class="fa fa-chevron-left"></i> Python中的比较和拷贝
+              <a href="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/" rel="next" title="常见排序算法总结">
+                <i class="fa fa-chevron-left"></i> 常见排序算法总结
               </a>
             
           </div>
@@ -676,8 +813,8 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/24/python/python-zhong-de-lie-biao-he-yuan-zu/" rel="prev" title="Python中的列表和数组">
-                Python中的列表和数组 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/11/13/python/python-zhuang-shi-qi/" rel="prev" title="Python装饰器">
+                Python装饰器 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -884,7 +1021,7 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#匿名函数"><span class="nav-number">1.</span> <span class="nav-text">匿名函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是匿名函数"><span class="nav-number">1.1.</span> <span class="nav-text">什么是匿名函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么使用匿名函数"><span class="nav-number">1.2.</span> <span class="nav-text">为什么使用匿名函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python函数式编程"><span class="nav-number">1.3.</span> <span class="nav-text">Python函数式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">1.4.</span> <span class="nav-text">练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python中的迭代器和生成器"><span class="nav-number">1.</span> <span class="nav-text">Python中的迭代器和生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代器"><span class="nav-number">1.1.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成器"><span class="nav-number">1.2.</span> <span class="nav-text">生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是生成器？"><span class="nav-number">1.2.1.</span> <span class="nav-text">什么是生成器？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义生成器"><span class="nav-number">1.2.2.</span> <span class="nav-text">自定义生成器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -96,25 +96,25 @@
 
 
 
-  <meta name="description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+  <meta name="description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python中的匿名函数">
-<meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/index.html">
+<meta property="og:title" content="Python装饰器">
+<meta property="og:url" content="http://xiangqianma.github.io/2019/11/13/python/python-zhuang-shi-qi/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+<meta property="og:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-09T13:46:21.661Z">
+<meta property="og:updated_time" content="2019-11-13T13:10:35.491Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python中的匿名函数">
-<meta name="twitter:description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+<meta name="twitter:title" content="Python装饰器">
+<meta name="twitter:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
 
 
 
 
 
 
-  <link rel="canonical" href="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/">
+  <link rel="canonical" href="http://xiangqianma.github.io/2019/11/13/python/python-zhuang-shi-qi/">
 
 
 
@@ -124,7 +124,7 @@
   };
 </script>
 
-  <title>Python中的匿名函数 | MXQ</title>
+  <title>Python装饰器 | MXQ</title>
   
 
 
@@ -396,7 +396,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/11/13/python/python-zhuang-shi-qi/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MXQ">
@@ -413,7 +413,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python中的匿名函数
+          <h1 class="post-title" itemprop="name headline">Python装饰器
 
               
             
@@ -439,24 +439,12 @@
                 
               
 
-              <time title="创建时间：2019-10-24 12:22:20" itemprop="dateCreated datePublished" datetime="2019-10-24T12:22:20+08:00">2019-10-24</time>
+              <time title="创建时间：2019-11-13 21:09:20 / 修改时间：21:10:35" itemprop="dateCreated datePublished" datetime="2019-11-13T21:09:20+08:00">2019-11-13</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-11-09 21:46:21" itemprop="dateModified" datetime="2019-11-09T21:46:21+08:00">2019-11-09</time>
               
             
           </span>
@@ -522,112 +510,305 @@
       
 
       
-        <h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><h2 id="什么是匿名函数"><a href="#什么是匿名函数" class="headerlink" title="什么是匿名函数"></a>什么是匿名函数</h2><p>匿名函数的格式如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">lambda argument1, argument2,... argumentN : expression
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>匿名函数的关键字为<code>lambda</code>，用法如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">square = lambda x: x**2
-square(3)
+        <h1 id="Python装饰器"><a href="#Python装饰器" class="headerlink" title="Python装饰器"></a>Python装饰器</h1><p>本文为<a href="https://time.geekbang.org/column/article/100914" target="_blank" rel="noopener">景霄-Python核心技术与实战</a>的学习笔记，如要查看完整内容请点击链接。</p>
+<h2 id="从函数到装饰器"><a href="#从函数到装饰器" class="headerlink" title="从函数到装饰器"></a>从函数到装饰器</h2><h3 id="回顾函数"><a href="#回顾函数" class="headerlink" title="回顾函数"></a>回顾函数</h3><p>在Python中，函数也是对象，因而我们可以将函数赋予变量：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def func(message):
+    print('Got a message: {}'.format(message))
 
-9
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其对应的常规函数形式为：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
-    return x**2
-square(3)
+send_message = func
+send_message('hello world')
 
-9
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>匿名函数和常规函数一样，返回的都是函数对象（function object）,不同之处有以下几点：</p>
-<ul>
-<li><p><code>lambda</code>是一个表达式，而不是一个语句</p>
-<p>所谓表达式就是用一系列“公式”去表达一个东西，如x+2、x**2等；所谓语句就是完成了某些功能，如果赋值语句完成赋值，比较语句完成比较等。</p>
-<p><code>lambda</code>表达式可以用在一些常规函数不能使用的地方，如：列表内部：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">[(lambda x: x*x)(x) for x in range(10)]
 # 输出
-[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+Got a message: hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可以将函数作为参数，传入另一个函数：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def get_message(message):
+    return 'Got a message: ' + message
+
+
+def root_call(func, message):
+    print(func(message))
+
+root_call(get_message, 'hello world')
+
+# 输出
+Got a message: hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可以进行函数嵌套：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def func(message):
+    def get_message(message):
+        print('Got a message: {}'.format(message))
+    return get_message(message)
+
+func('hello world')
+
+# 输出
+Got a message: hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果在上述嵌套中，返回的对象是函数，那么就构成了闭包：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def func_closure():
+    def get_message(message):
+        print('Got a message: {}'.format(message))
+    return get_message
+
+send_message = func_closure()
+send_message('hello world')
+
+# 输出
+Got a message: hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h3><p>一个较为简单的自定义装饰器实现：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def my_decorator(func):
+    def wrapper():
+        print('wrapper of decorator')
+        func()
+    return wrapper
+
+def greet():
+    print('hello world')
+
+greet = my_decorator(greet)
+greet()
+
+# 输出
+wrapper of decorator
+hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>变量<code>greet</code>指向内部函数<code>wrapper()</code>，内部函数包裹原函数<code>greet()</code>。这里的<code>my_decorator()</code>就是一个装饰器，它将真正需要执行的函数<code>greet()</code>包裹在内，同时改变其行为，但不改变原函数。</p>
+<blockquote>
+<p>所谓装饰器就是通过装饰器函数来修改（添加）原函数的一些功能，而不需要直接对原始函数进行修改。</p>
+<p>Decorators is to modify the behavior of the function through a wrapper so we don’t have to actually modify the function.</p>
+</blockquote>
+<p>在上述代码中，我们自己手动将<code>greet()</code>函数传入<code>my_decorator()</code>函数中，在Python中有着更为简洁的实现：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def my_decorator(func):
+    def wrapper():
+        print('wrapper of decorator')
+        func()
+    return wrapper
+
+@my_decorator
+def greet():
+    print('hello world')
+
+greet()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>@</code>被称为语法糖，<code>@my_decorator</code>相当于<code>greet = my_decorator(greet)</code>语句。</p>
+<h2 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h2><p>如果原函数存在参数，那么如何定义装饰器？</p>
+<ul>
+<li><p>直接在对应的装饰器函数<code>wrapper()</code>上添加相应的参数：</p>
+<p>```python<br>def my_decorator(func):</p>
+<pre><code>def wrapper(message):
+    print(&#39;wrapper of decorator&#39;)
+    func(message)
+return wrapper
+</code></pre></li>
+</ul>
+<p>  @my_decorator<br>  def greet(message):<br>      print(message)</p>
+<p>  greet(‘hello world’)</p>
+<h1 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h1><p>  wrapper of decorator<br>  hello world</p>
+<pre><code>
+  但是如果想把这个装饰器用于另一个具有多个参数的函数时，上述做法就不适用。
+
+* 此时就可以使用`*args`和`**kwargs`，如下所示：
+
+  ```python
+  def my_decorator(func):
+      def wrapper(*args, **kwargs):
+          print(&#39;wrapper of decorator&#39;)
+          func(*args, **kwargs)
+      return wrapper
+</code></pre><h2 id="带有自定义参数的装饰器"><a href="#带有自定义参数的装饰器" class="headerlink" title="带有自定义参数的装饰器"></a>带有自定义参数的装饰器</h2><p>装饰器除了可以接受原函数任意类型和数量的参数外，还可以定义自己接收的参数。</p>
+<p>例如，使用一个参数表示装饰器内部函数被执行的次数：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">def repeat(num):
+    def my_decorator(func):
+        def wrapper(*args, **kwargs):
+            for i in range(num):
+                print('wrapper of decorator')
+                func(*args, **kwargs)
+        return wrapper
+    return my_decorator
+
+
+@repeat(4)
+def greet(message):
+    print(message)
+
+greet('hello world')
+
+# 输出：
+wrapper of decorator
+hello world
+wrapper of decorator
+hello world
+wrapper of decorator
+hello world
+wrapper of decorator
+hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>相当于在之前的<code>my_decorator()</code>之外再添加了一层函数，并且在定义装饰器时首先生成了外层函数的对象，返回<code>my_decorator()</code>。</p>
+<h2 id="原函数发生变化了吗？"><a href="#原函数发生变化了吗？" class="headerlink" title="原函数发生变化了吗？"></a>原函数发生变化了吗？</h2><p>对于上述例子，打印原函数的元信息：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">greet.__name__
+## 输出
+'wrapper'
+
+help(greet)
+# 输出
+Help on function wrapper in module __main__:
+
+wrapper(*args, **kwargs)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>发现，经过装饰器装饰后，原函数的信息发生了变化，变成了<code>wrapper()</code>函数。</p>
+<p>此时，可以使用内置装饰器<code>@functools.wrap</code>来保留原函数的元信息：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+import functools
+
+def my_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print('wrapper of decorator')
+        func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def greet(message):
+    print(message)
+
+greet.__name__
+
+# 输出
+'greet'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h2><p>除了函数可以被用作装饰器外，类也可以被用作装饰器。类装饰器主要通过函数<code>__call__()</code>实现：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+class Count:
+    def __init__(self, func):
+        self.func = func
+        self.num_calls = 0
+
+    def __call__(self, *args, **kwargs):
+        self.num_calls += 1
+        print('num of calls is: {}'.format(self.num_calls))
+        return self.func(*args, **kwargs)
+
+@Count
+def example():
+    print("hello world")
+
+example()
+
+# 输出
+num of calls is: 1
+hello world
+
+example()
+
+# 输出
+num of calls is: 2
+hello world
+
+...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="装饰器的嵌套"><a href="#装饰器的嵌套" class="headerlink" title="装饰器的嵌套"></a>装饰器的嵌套</h2><p>Python支持多个装饰器的嵌套：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">@decorator1
+@decorator2
+@decorator3
+def func():
+    ...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码从里向外执行：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">decorator1(decorator2(decorator3(func)))
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>多层嵌套例子</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+import functools
+
+def my_decorator1(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print('execute decorator1')
+        func(*args, **kwargs)
+    return wrapper
+
+
+def my_decorator2(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print('execute decorator2')
+        func(*args, **kwargs)
+    return wrapper
+
+
+@my_decorator1
+@my_decorator2
+def greet(message):
+    print(message)
+
+
+greet('hello world')
+
+# 输出
+execute decorator1
+execute decorator2
+hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="装饰器的用法"><a href="#装饰器的用法" class="headerlink" title="装饰器的用法"></a>装饰器的用法</h2><p>我们可以将在执行一个函数之前需要做的事情交给装饰器去做，同时不改变原始函数的行为。</p>
+<h3 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h3><p>在进行某个操作前，常需要首先进行身份认证，此时就可以使用装饰器完成，使用装饰器来完成身份验证的任务：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+import functools
+
+def authenticate(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        request = args[0]
+        if check_user_logged_in(request): # 如果用户处于登录状态
+            return func(*args, **kwargs) # 执行函数post_comment() 
+        else:
+            raise Exception('Authentication failed')
+    return wrapper
+
+@authenticate
+def post_comment(request, ...)
+    ...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样，每次在调用<code>post_comment()</code>之前都会调用认证步骤。</p>
+<h3 id="日志记录"><a href="#日志记录" class="headerlink" title="日志记录"></a>日志记录</h3><p>想要统计某段代码的运行耗时，就可以使用装饰器实现：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+import time
+import functools
+
+def log_execution_time(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        res = func(*args, **kwargs)
+        end = time.perf_counter()
+        print('{} took {} ms'.format(func.__name__, (end - start) * 1000))
+        return res
+    return wrapper
+
+@log_execution_time
+def calculate_similarity(items):
+    ...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="输入合理性检查"><a href="#输入合理性检查" class="headerlink" title="输入合理性检查"></a>输入合理性检查</h3><p>在大型公司的机器学习框架中，在调用机器进行模型训练前，常使用装饰器对器输入进行合理性检查，以避免输入错误带来的额外开销：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">
+import functools
+
+def validation_check(input):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs): 
+        ... # 检查输入是否合法
+
+@validation_check
+def neural_network_training(param1, param2, ...):
+    ...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>LRU cache在Python中表示为<code>@lru_cache</code>，该装饰器会缓存进程中的函数参数和结果，当缓存满后，删除最近最久未使用的数据。</p>
+<p>在实际工程中，可以将一些反复调用的函数使用<code>@lru_cache</code>装饰器进行装饰，这样，当调用相同相同的函数对象时便会直接从缓存中获得结果，而不用再次调用函数。</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">@lru_cache
+def check(param1, param2, ...) # 检查用户设备类型，版本号等等
+    ...
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>被用作某些函数的参数，而常规函数不能：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [(1, 20), (3, 0), (9, 10), (2, -1)]
-l.sort(key=lambda x: x[1]) # 按列表中元祖的第二个元素排序
-print(l)
-# 输出
-[(2, -1), (3, 0), (9, 10), (1, 20)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>常规函数必须通过其函数名被调用，因而必须首先被定义。但是<code>lambda</code>是一个表达式，返回的函数对象不需要名字。</p>
-</li>
-<li><p><code>lambda</code>表达式是只有一行的简单表达式，并不能扩展成一个多行的代码块。</p>
-<p>Python发明<code>lambda</code>表达式的目的就是让它处理一些简单的任务，较为复杂的任务则由常规函数处理。</p>
-</li>
-</ul>
-<h2 id="为什么使用匿名函数"><a href="#为什么使用匿名函数" class="headerlink" title="为什么使用匿名函数"></a>为什么使用匿名函数</h2><p>在一些情况下，使用匿名函数<code>lambda</code>可以帮助我们降低代码的复杂度，提高代码的可读性。</p>
-<p>我们使用函数的目的有以下几点：</p>
-<ul>
-<li>减少代码的重复性</li>
-<li>模块化代码</li>
-</ul>
-<p>但当我们只需要一个函数，这个函数非常简短，只需要一行；同时在程序中只调用一次，此时，我们就不需要给它一个定义和名字。</p>
-<p>例如，需要对一个列表中的所有元素求平方和，且该程序只需要运行一次，用匿名函数可以写成：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">squared = map(lambda x: x**2, [1, 2, 3, 4, 5])
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>用常规函数需要写成：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
-    return x**2
-
-squared = map(square, [1, 2, 3, 4, 5])
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>很明显，匿名函数更为简洁。</p>
-<h2 id="Python函数式编程"><a href="#Python函数式编程" class="headerlink" title="Python函数式编程"></a>Python函数式编程</h2><p>所谓函数式编程，是指代码中每一块都是不可变的，都由纯函数组成。纯函数是指函数本身相互独立、互不影响，对于相同的输入，总会有相同的输出，没有任何副作用。</p>
-<p>例如，将一个列表中的元素值都变成原来的两倍，如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2(l):
-    for index in range(0, len(l)):
-        l[index] *= 2
-    return l
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上述代码不是一个纯函数，因为输入列表的值发生了改变，多次调用该函数将会得到不同的值。修改成如下形式：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2_pure(l):
-    new_list = []
-    for item in l:
-        new_list.append(item * 2)
-    return new_list
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>新建列表并返回，这就是一个纯函数。</p>
-<p>函数式编程的优点是其纯函数和不可变的特性使得程序更加健壮，易于调试和测试；缺点是限制多、程序编写难度高。Python不是一门函数式编程语言，但是提供了相关特性，主要有以下函数<code>map()</code>，<code>filter()</code>，<code>reduce()</code>，这几个函数通常和匿名函数一起使用。</p>
-<ul>
-<li><p><code>map()</code></p>
-<p><code>map(function, iterable)</code>对<code>iterable</code>中的每个元素都调用<code>function</code>函数，最后返回一个新的可遍历的集合。<code>map()</code>函数直接由C语言写成，运行时不需要Python解释器间接调用，性能高。</p>
-</li>
-<li><p><code>filter(function, iterable)</code></p>
-<p><code>filter()</code>函数对<code>iterable</code>中的每个元素都使用<code>function</code>进行判断，返回<code>True</code>或<code>False</code>，将<code>True</code>对应的元素组成一个新的可遍历的集合。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
-new_list = filter(lambda x: x % 2 == 0, l) # [2, 4]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><p><code>reduce(function, iterable)</code></p>
-<p>该函数通常用来对一个集合做一些累积操作。<code>function()</code>函数同样是一个函数对象，它有两个函数，表示对<code>iterable</code>中的每个元素以及上一次调用后的结构运用<code>function</code>进行计算，最后返回的是一个单独的值。</p>
-<p>例如，计算某个列表元素的乘积：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
-product = reduce(lambda x, y: x * y, l) # 1*2*3*4*5 = 120
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<p>通常来说，当我们需要对集合中的元素进行一些操作时，如果操作非常简单，则有限考虑<code>map()</code>、<code>filter()</code>、<code>reduce()</code>这类或者列表表达式的形式。那么如何在这两种方式中进行选择？</p>
-<ul>
-<li>当数据量非常多时，例如机器学习的应用，倾向于使用函数式编程的表示，效率更高；</li>
-<li>当数据量不多时，为了使得程序更加的Pythonic，可以使用列表表达式。</li>
-</ul>
-<p>当操作比较复杂时，使用<code>for</code>循环。</p>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>对一个字典根据其值从高到低进行排列。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 匿名函数
-d = {'mike': 10, 'lucy': 2, 'ben': 30}
-e = sorted(d.items(), key=lambda x: x[1], reverse=True)
-e
-
-Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://time.geekbang.org/column/article/98411" target="_blank" rel="noopener">Python核心技术与实战-景霄</a></li>
-</ul>
 
       
     </div>
@@ -666,8 +847,8 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/24/python/python-zhong-de-bi-jiao-he-kao-bei/" rel="next" title="Python中的比较和拷贝">
-                <i class="fa fa-chevron-left"></i> Python中的比较和拷贝
+              <a href="/2019/11/12/python/python-zhong-de-die-dai-qi-he-sheng-cheng-qi/" rel="next" title="Python中的迭代器和生成器">
+                <i class="fa fa-chevron-left"></i> Python中的迭代器和生成器
               </a>
             
           </div>
@@ -675,10 +856,6 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/24/python/python-zhong-de-lie-biao-he-yuan-zu/" rel="prev" title="Python中的列表和数组">
-                Python中的列表和数组 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -884,7 +1061,7 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#匿名函数"><span class="nav-number">1.</span> <span class="nav-text">匿名函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是匿名函数"><span class="nav-number">1.1.</span> <span class="nav-text">什么是匿名函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么使用匿名函数"><span class="nav-number">1.2.</span> <span class="nav-text">为什么使用匿名函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python函数式编程"><span class="nav-number">1.3.</span> <span class="nav-text">Python函数式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">1.4.</span> <span class="nav-text">练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python装饰器"><span class="nav-number">1.</span> <span class="nav-text">Python装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#从函数到装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">从函数到装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回顾函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">回顾函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器"><span class="nav-number">1.1.2.</span> <span class="nav-text">装饰器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有参数的装饰器"><span class="nav-number">1.2.</span> <span class="nav-text">带有参数的装饰器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输出"><span class="nav-number">2.</span> <span class="nav-text">输出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带有自定义参数的装饰器"><span class="nav-number">2.1.</span> <span class="nav-text">带有自定义参数的装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原函数发生变化了吗？"><span class="nav-number">2.2.</span> <span class="nav-text">原函数发生变化了吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类装饰器"><span class="nav-number">2.3.</span> <span class="nav-text">类装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器的嵌套"><span class="nav-number">2.4.</span> <span class="nav-text">装饰器的嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器的用法"><span class="nav-number">2.5.</span> <span class="nav-text">装饰器的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#身份认证"><span class="nav-number">2.5.1.</span> <span class="nav-text">身份认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志记录"><span class="nav-number">2.5.2.</span> <span class="nav-text">日志记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入合理性检查"><span class="nav-number">2.5.3.</span> <span class="nav-text">输入合理性检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">2.5.4.</span> <span class="nav-text">缓存</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
