@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="MXQ">
 <meta property="og:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-13T13:10:35.491Z">
+<meta property="og:updated_time" content="2019-11-13T13:15:19.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python装饰器">
 <meta name="twitter:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
@@ -439,7 +439,7 @@
                 
               
 
-              <time title="创建时间：2019-11-13 21:09:20 / 修改时间：21:10:35" itemprop="dateCreated datePublished" datetime="2019-11-13T21:09:20+08:00">2019-11-13</time>
+              <time title="创建时间：2019-11-13 21:09:20 / 修改时间：21:15:19" itemprop="dateCreated datePublished" datetime="2019-11-13T21:09:20+08:00">2019-11-13</time>
             
 
             
@@ -594,30 +594,32 @@ greet()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>@</code>被称为语法糖，<code>@my_decorator</code>相当于<code>greet = my_decorator(greet)</code>语句。</p>
 <h2 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h2><p>如果原函数存在参数，那么如何定义装饰器？</p>
-<ul>
-<li><p>直接在对应的装饰器函数<code>wrapper()</code>上添加相应的参数：</p>
-<p>```python<br>def my_decorator(func):</p>
-<pre><code>def wrapper(message):
-    print(&#39;wrapper of decorator&#39;)
-    func(message)
-return wrapper
-</code></pre></li>
-</ul>
-<p>  @my_decorator<br>  def greet(message):<br>      print(message)</p>
-<p>  greet(‘hello world’)</p>
-<h1 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h1><p>  wrapper of decorator<br>  hello world</p>
-<pre><code>
-  但是如果想把这个装饰器用于另一个具有多个参数的函数时，上述做法就不适用。
+<p>直接在对应的装饰器函数<code>wrapper()</code>上添加相应的参数：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">  def my_decorator(func):
+      def wrapper(message):
+          print('wrapper of decorator')
+          func(message)
+      return wrapper
 
-* 此时就可以使用`*args`和`**kwargs`，如下所示：
 
-  ```python
-  def my_decorator(func):
+  @my_decorator
+  def greet(message):
+      print(message)
+
+
+  greet('hello world')
+  # 输出
+  wrapper of decorator
+  hello world
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是如果想把这个装饰器用于另一个具有多个参数的函数时，上述做法就不适用。<br>此时就可以使用<code>*args</code>和<code>**kwargs</code>，如下所示：</p>
+<pre class="line-numbers language-lang-python"><code class="language-lang-python">  def my_decorator(func):
       def wrapper(*args, **kwargs):
-          print(&#39;wrapper of decorator&#39;)
+          print('wrapper of decorator')
           func(*args, **kwargs)
       return wrapper
-</code></pre><h2 id="带有自定义参数的装饰器"><a href="#带有自定义参数的装饰器" class="headerlink" title="带有自定义参数的装饰器"></a>带有自定义参数的装饰器</h2><p>装饰器除了可以接受原函数任意类型和数量的参数外，还可以定义自己接收的参数。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="带有自定义参数的装饰器"><a href="#带有自定义参数的装饰器" class="headerlink" title="带有自定义参数的装饰器"></a>带有自定义参数的装饰器</h2><p>装饰器除了可以接受原函数任意类型和数量的参数外，还可以定义自己接收的参数。</p>
 <p>例如，使用一个参数表示装饰器内部函数被执行的次数：</p>
 <pre class="line-numbers language-lang-python"><code class="language-lang-python">def repeat(num):
     def my_decorator(func):
@@ -931,7 +933,7 @@ def check(param1, param2, ...) # 检查用户设备类型，版本号等等
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1061,7 +1063,7 @@ def check(param1, param2, ...) # 检查用户设备类型，版本号等等
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python装饰器"><span class="nav-number">1.</span> <span class="nav-text">Python装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#从函数到装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">从函数到装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回顾函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">回顾函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器"><span class="nav-number">1.1.2.</span> <span class="nav-text">装饰器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有参数的装饰器"><span class="nav-number">1.2.</span> <span class="nav-text">带有参数的装饰器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输出"><span class="nav-number">2.</span> <span class="nav-text">输出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带有自定义参数的装饰器"><span class="nav-number">2.1.</span> <span class="nav-text">带有自定义参数的装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原函数发生变化了吗？"><span class="nav-number">2.2.</span> <span class="nav-text">原函数发生变化了吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类装饰器"><span class="nav-number">2.3.</span> <span class="nav-text">类装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器的嵌套"><span class="nav-number">2.4.</span> <span class="nav-text">装饰器的嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器的用法"><span class="nav-number">2.5.</span> <span class="nav-text">装饰器的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#身份认证"><span class="nav-number">2.5.1.</span> <span class="nav-text">身份认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志记录"><span class="nav-number">2.5.2.</span> <span class="nav-text">日志记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入合理性检查"><span class="nav-number">2.5.3.</span> <span class="nav-text">输入合理性检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">2.5.4.</span> <span class="nav-text">缓存</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python装饰器"><span class="nav-number">1.</span> <span class="nav-text">Python装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#从函数到装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">从函数到装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回顾函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">回顾函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器"><span class="nav-number">1.1.2.</span> <span class="nav-text">装饰器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有参数的装饰器"><span class="nav-number">1.2.</span> <span class="nav-text">带有参数的装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带有自定义参数的装饰器"><span class="nav-number">1.3.</span> <span class="nav-text">带有自定义参数的装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原函数发生变化了吗？"><span class="nav-number">1.4.</span> <span class="nav-text">原函数发生变化了吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类装饰器"><span class="nav-number">1.5.</span> <span class="nav-text">类装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器的嵌套"><span class="nav-number">1.6.</span> <span class="nav-text">装饰器的嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器的用法"><span class="nav-number">1.7.</span> <span class="nav-text">装饰器的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#身份认证"><span class="nav-number">1.7.1.</span> <span class="nav-text">身份认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志记录"><span class="nav-number">1.7.2.</span> <span class="nav-text">日志记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入合理性检查"><span class="nav-number">1.7.3.</span> <span class="nav-text">输入合理性检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">1.7.4.</span> <span class="nav-text">缓存</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -1102,7 +1104,7 @@ def check(param1, param2, ...) # 检查用户设备类型，版本号等等
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">57.9k</span> 字
+      博客全站共： <span class="post-count">60.6k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
