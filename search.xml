@@ -5,17 +5,17 @@
     
     <entry>
       <title>动态数据结构-跳表</title>
-      <link href="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/"/>
-      <url>/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/</url>
+      <link href="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/"/>
+      <url>/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/</url>
       
-        <content type="html"><![CDATA[<h1 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h1><p>对于二分查找算法，其底层依赖支持随机查找特性的数组，一般情况下只能依靠数组来实现。但是，如果数据存储在链表中，是否可以实现二分查找算法呢？</p><p>为此，需要引入一种新型的动态数据结构，跳表（Skip List）。跳表可以支持快速的插入、删除和查找操作，甚至可以替代红黑树。</p><h2 id="什么是跳表？"><a href="#什么是跳表？" class="headerlink" title="什么是跳表？"></a>什么是跳表？</h2><p>对于一个单链表，即使其中存储的数据是有序的，如果我们想要查找特定的值，也只能从头到尾进行遍历，时间复杂度为$O(n)$。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/e18303fcedc068e5a168de04df956f6d.jpg" alt="img" style="zoom: 50%;"></p><p>为了提高查找效率，我们可以使用额外的链表来建立查找索引，每两个结点提取一个结点到上一级，把抽取出来的一级称作<strong>索引</strong>或<strong>索引层</strong>。索引层中的每一个结点有一个down指针，该指针指向其下一级结点。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/14753c824a5ee4a976ea799727adc78e.jpg" alt="img" style="zoom:50%;"></p><p>这样，如果我们要查找特定的值，例如16，便可以首先对第一级索引层进行遍历，当查找到值为13的结点时，发现其下一个结点的值为17，因为数据是有序存储的，那么16肯定在这两个结点之间。此时，只需要通过13结点的down指针转移到原始链表的13结点处，再对原始链表的13到17结点之间的元素进行查找即可很快找到值为16的结点。</p><p>在上述查找过程中，利用第一级索引层，从原先需要遍历10个结点降低为只需要遍历7个结点，跳过了中间的多个结点，查找效率大幅度提高。</p><p>在第一级索引的基础上，还可以继续增加第二级索引，对于第一级索引中的值，每两个结点创建一个结点，如下图所示。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/492206afe5e2fef9f683c7cff83afa65.jpg" alt="img" style="zoom:50%;"></p><p>这样，如果要查找值为16的结点，就只需要遍历6个结点。</p><p>在上述例子中，由于原始结点数目不多，查找效率的提升不明显。但是，当原始结点的数目很大时，查找效率就会得到明显提升。</p><h2 id="使用跳表进行查询的效率"><a href="#使用跳表进行查询的效率" class="headerlink" title="使用跳表进行查询的效率"></a>使用跳表进行查询的效率</h2><p>在单链表中查询某个数据的时间复杂度为$O(n)$。那么，跳表的查询时间复杂度是多少？</p><p>假设链表中有n个结点，按照每两个结点抽取一个结点作为上一级索引的结点，那么第一级索引有$n/2$个结点，第二级索引有$n/4$个结点，即：第k级索引的结点个数是第k-1级索引的结点个数的$1/2$，第k级索引结点的个数为$n/(2^k)$。</p><p>假设索引有$h$级，最高级的索引有两个结点，那么$n/(2^h)=2$，求得$h=log_2n-1$，加上原始链表，整个跳表的高度为$log_2n$。假设，在跳表中查询某个数据时，每一层都需要遍历$m$个结点，那么在跳表中查询一个数据的时间复杂度为$O(m*logn)$。</p><p>如果使用上述的跳表结构，那么在每一级遍历时，最多只需要遍历3个结点。原因在于，当我们从当前级跳转到下一级索引时，当前级的两个结点之间最多只存在3个结点，那么每级最多也只需要遍历3个结点。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/d03bef9a64a0368e6a0d23ace8bd450c.jpg" alt="img" style="zoom:50%;"></p><p>因此，在跳表中查询任意数据的时间复杂度就是$O(logn)$。查找的时间复杂度和二分查找相同。</p><h2 id="跳表的空间复杂度"><a href="#跳表的空间复杂度" class="headerlink" title="跳表的空间复杂度"></a>跳表的空间复杂度</h2><p>跳表的空间复杂度如下所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/100e9d6e5abeaae542cf7841be3f8255.jpg" alt="img" style="zoom:50%;"></p><p>上述等比数列的和为n-2，那么空间复杂度为$O(n)$。也就是说，为包含n个结点的单链表构建多级索引构成跳表，需要额外使用接近n个结点的存储空间。</p><p>如果每三个结点或这五个结点抽取一个结点构成上级索引，如下图所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/0b0680ecf500f9349fc142e1a9eb73f7.jpg" alt="img" style="zoom:50%;"></p><p>空间复杂度的计算方式如下图所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/192c480664e35591360cee96ff2f8395.jpg" alt="img" style="zoom:50%;"></p><p>和为$n/2$，空间复杂度同样是$O(n)$，但是相比于间隔为2，减少了一般的索引结点存储空间。</p><p>在实际工程中，单链表中的每一结点所存储的对象可能很大，此时，在构建索引结点时，只需要存储关键值和指针，不需要存储对象，因而当对象比索引结点大很多时，索引结点所占用的额外空间可以忽略不计。</p><h2 id="高效的动态插入和删除"><a href="#高效的动态插入和删除" class="headerlink" title="高效的动态插入和删除"></a>高效的动态插入和删除</h2><h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><p>跳表除了支持查找操作之外还支持动态的插入、删除操作，插入、删除操作的时间复杂度也是$O(logn)$。</p><p>在单链表中，如果要找到特定的位置并执行插入操作，查找操作比较耗时，而插入的时间复杂度为$O(1)$。而对于跳表来说，查找某个特定的插入位置的时间复杂度为$O(logn)$，找到插入位置后，插入操作的时间复杂度同样为$O(1)$。如下图所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/65379f0651bc3a7cfd13ab8694c4d26c.jpg" alt="img" style="zoom:50%;"></p><h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><p>在进行删除操作时，我们需要考虑的一点时，所删除的结点可能会在索引中出现，此时要同时删除索引中的对应结点。在进行删除操作时，要注意获取被删除结点的前驱结点。</p><h2 id="跳表索引的动态更新"><a href="#跳表索引的动态更新" class="headerlink" title="跳表索引的动态更新"></a>跳表索引的动态更新</h2><p>在往跳表中插入数据时，如果不进行索引的更新操作，会导致某两个索引结点之间的数据非常多，导致在对这一部分结点执行相关操作时效率底下。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/c863074c01c26538cf0134eaf8dc67c5.jpg" alt="img" style="zoom:50%;"></p><p>因而，我们需要一种手段来维护索引和原始链表大小之间的动态平衡。当链表中的数据增多时，就加入更多的索引结点。</p><p>当我们向跳表中插入数据时，可以选择同时将这个数据插入到部分索引层中。通过使用一个随机函数来决定将这个结点插入到哪几级索引中，例如随机函数生成的值为k，那么就将这个结点添加到第一级到第k级这k级索引中。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/a861445d0b53fc842f38919365b004a7.jpg" alt="img" style="zoom:50%;"></p><p>这里要注意的一点是，随机函数应该能够在概率上保证跳表的索引大小和数据大小相平衡。</p><p>在Redis中就使用跳表来实现有序集合，那么为何不使用红黑树呢？</p><p>Redis中的有序集合所支持的核心操作主要有以下几个：</p><ul><li>插入一个数据；</li><li>删除一个数据；</li><li>查找一个数据；</li><li>按照区间查找数据（[100, 356]之间的数据）；</li><li>迭代输出有序序列。</li></ul><p>其中的插入、删除、查找和迭代输出有序序列的操作使用红黑树也可以完成，时间复杂度和跳表一样。但是，按照区间查找数据的操作红黑树没有跳表效率高。</p><p>除此之外，还有跳表代码实现简单、更加灵活的特点。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://time.geekbang.org/column/article/42896" target="_blank" rel="noopener">数据结构与算法之美-王筝</a></li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h1><blockquote><p>本文为<a href="https://time.geekbang.org/column/article/40036" target="_blank" rel="noopener">数据结构与算法之美-王争</a>的学习笔记，如需查看完整内容，请参考链接。</p></blockquote><p>对于二分查找算法，其底层依赖支持随机查找特性的数组，一般情况下只能依靠数组来实现。但是，如果数据存储在链表中，是否可以实现二分查找算法呢？</p><p>为此，需要引入一种新型的动态数据结构，跳表（Skip List）。跳表可以支持快速的插入、删除和查找操作，甚至可以替代红黑树。</p><h2 id="什么是跳表？"><a href="#什么是跳表？" class="headerlink" title="什么是跳表？"></a>什么是跳表？</h2><p>对于一个单链表，即使其中存储的数据是有序的，如果我们想要查找特定的值，也只能从头到尾进行遍历，时间复杂度为$O(n)$。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/e18303fcedc068e5a168de04df956f6d.jpg" alt="img" style="zoom: 50%;"></p><p>为了提高查找效率，我们可以使用额外的链表来建立查找索引，每两个结点提取一个结点到上一级，把抽取出来的一级称作<strong>索引</strong>或<strong>索引层</strong>。索引层中的每一个结点有一个down指针，该指针指向其下一级结点。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/14753c824a5ee4a976ea799727adc78e.jpg" alt="img" style="zoom:50%;"></p><p>这样，如果我们要查找特定的值，例如16，便可以首先对第一级索引层进行遍历，当查找到值为13的结点时，发现其下一个结点的值为17，因为数据是有序存储的，那么16肯定在这两个结点之间。此时，只需要通过13结点的down指针转移到原始链表的13结点处，再对原始链表的13到17结点之间的元素进行查找即可很快找到值为16的结点。</p><p>在上述查找过程中，利用第一级索引层，从原先需要遍历10个结点降低为只需要遍历7个结点，跳过了中间的多个结点，查找效率大幅度提高。</p><p>在第一级索引的基础上，还可以继续增加第二级索引，对于第一级索引中的值，每两个结点创建一个结点，如下图所示。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/492206afe5e2fef9f683c7cff83afa65.jpg" alt="img" style="zoom:50%;"></p><p>这样，如果要查找值为16的结点，就只需要遍历6个结点。</p><p>在上述例子中，由于原始结点数目不多，查找效率的提升不明显。但是，当原始结点的数目很大时，查找效率就会得到明显提升。</p><h2 id="使用跳表进行查询的效率"><a href="#使用跳表进行查询的效率" class="headerlink" title="使用跳表进行查询的效率"></a>使用跳表进行查询的效率</h2><p>在单链表中查询某个数据的时间复杂度为$O(n)$。那么，跳表的查询时间复杂度是多少？</p><p>假设链表中有n个结点，按照每两个结点抽取一个结点作为上一级索引的结点，那么第一级索引有$n/2$个结点，第二级索引有$n/4$个结点，即：第k级索引的结点个数是第k-1级索引的结点个数的$1/2$，第k级索引结点的个数为$n/(2^k)$。</p><p>假设索引有$h$级，最高级的索引有两个结点，那么$n/(2^h)=2$，求得$h=log_2n-1$，加上原始链表，整个跳表的高度为$log_2n$。假设，在跳表中查询某个数据时，每一层都需要遍历$m$个结点，那么在跳表中查询一个数据的时间复杂度为$O(m*logn)$。</p><p>如果使用上述的跳表结构，那么在每一级遍历时，最多只需要遍历3个结点。原因在于，当我们从当前级跳转到下一级索引时，当前级的两个结点之间最多只存在3个结点，那么每级最多也只需要遍历3个结点。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/d03bef9a64a0368e6a0d23ace8bd450c.jpg" alt="img" style="zoom:50%;"></p><p>因此，在跳表中查询任意数据的时间复杂度就是$O(logn)$。查找的时间复杂度和二分查找相同。</p><h2 id="跳表的空间复杂度"><a href="#跳表的空间复杂度" class="headerlink" title="跳表的空间复杂度"></a>跳表的空间复杂度</h2><p>跳表的空间复杂度如下所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/100e9d6e5abeaae542cf7841be3f8255.jpg" alt="img" style="zoom:50%;"></p><p>上述等比数列的和为n-2，那么空间复杂度为$O(n)$。也就是说，为包含n个结点的单链表构建多级索引构成跳表，需要额外使用接近n个结点的存储空间。</p><p>如果每三个结点或这五个结点抽取一个结点构成上级索引，如下图所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/0b0680ecf500f9349fc142e1a9eb73f7.jpg" alt="img" style="zoom:50%;"></p><p>空间复杂度的计算方式如下图所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/192c480664e35591360cee96ff2f8395.jpg" alt="img" style="zoom:50%;"></p><p>和为$n/2$，空间复杂度同样是$O(n)$，但是相比于间隔为2，减少了一般的索引结点存储空间。</p><p>在实际工程中，单链表中的每一结点所存储的对象可能很大，此时，在构建索引结点时，只需要存储关键值和指针，不需要存储对象，因而当对象比索引结点大很多时，索引结点所占用的额外空间可以忽略不计。</p><h2 id="高效的动态插入和删除"><a href="#高效的动态插入和删除" class="headerlink" title="高效的动态插入和删除"></a>高效的动态插入和删除</h2><h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><p>跳表除了支持查找操作之外还支持动态的插入、删除操作，插入、删除操作的时间复杂度也是$O(logn)$。</p><p>在单链表中，如果要找到特定的位置并执行插入操作，查找操作比较耗时，而插入的时间复杂度为$O(1)$。而对于跳表来说，查找某个特定的插入位置的时间复杂度为$O(logn)$，找到插入位置后，插入操作的时间复杂度同样为$O(1)$。如下图所示：</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/65379f0651bc3a7cfd13ab8694c4d26c.jpg" alt="img" style="zoom:50%;"></p><h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><p>在进行删除操作时，我们需要考虑的一点时，所删除的结点可能会在索引中出现，此时要同时删除索引中的对应结点。在进行删除操作时，要注意获取被删除结点的前驱结点。</p><h2 id="跳表索引的动态更新"><a href="#跳表索引的动态更新" class="headerlink" title="跳表索引的动态更新"></a>跳表索引的动态更新</h2><p>在往跳表中插入数据时，如果不进行索引的更新操作，会导致某两个索引结点之间的数据非常多，导致在对这一部分结点执行相关操作时效率底下。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/c863074c01c26538cf0134eaf8dc67c5.jpg" alt="img" style="zoom:50%;"></p><p>因而，我们需要一种手段来维护索引和原始链表大小之间的动态平衡。当链表中的数据增多时，就加入更多的索引结点。</p><p>当我们向跳表中插入数据时，可以选择同时将这个数据插入到部分索引层中。通过使用一个随机函数来决定将这个结点插入到哪几级索引中，例如随机函数生成的值为k，那么就将这个结点添加到第一级到第k级这k级索引中。</p><p><img src="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/a861445d0b53fc842f38919365b004a7.jpg" alt="img" style="zoom:50%;"></p><p>这里要注意的一点是，随机函数应该能够在概率上保证跳表的索引大小和数据大小相平衡。</p><p>在Redis中就使用跳表来实现有序集合，那么为何不使用红黑树呢？</p><p>Redis中的有序集合所支持的核心操作主要有以下几个：</p><ul><li>插入一个数据；</li><li>删除一个数据；</li><li>查找一个数据；</li><li>按照区间查找数据（[100, 356]之间的数据）；</li><li>迭代输出有序序列。</li></ul><p>其中的插入、删除、查找和迭代输出有序序列的操作使用红黑树也可以完成，时间复杂度和跳表一样。但是，按照区间查找数据的操作红黑树没有跳表效率高。</p><p>除此之外，还有跳表代码实现简单、更加灵活的特点。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://time.geekbang.org/column/article/42896" target="_blank" rel="noopener">数据结构与算法之美-王筝</a></li></ul>]]></content>
       
       
       <categories>
           
-          <category> 算法 </category>
-          
           <category> 编程基础 </category>
+          
+          <category> 数据结构 </category>
           
       </categories>
       
@@ -42,9 +42,9 @@
       
       <categories>
           
-          <category> 算法 </category>
-          
           <category> 编程基础 </category>
+          
+          <category> 算法 </category>
           
       </categories>
       
@@ -75,6 +75,8 @@
           
           <category> 编程语言 </category>
           
+          <category> Python </category>
+          
       </categories>
       
       
@@ -104,6 +106,8 @@
           
           <category> 编程语言 </category>
           
+          <category> Python </category>
+          
       </categories>
       
       
@@ -129,9 +133,9 @@
       
       <categories>
           
-          <category> 算法 </category>
-          
           <category> 编程基础 </category>
+          
+          <category> 算法 </category>
           
       </categories>
       
@@ -162,6 +166,8 @@
           
           <category> 编程语言 </category>
           
+          <category> Python </category>
+          
       </categories>
       
       
@@ -190,6 +196,8 @@
           <category> 编程基础 </category>
           
           <category> 编程语言 </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -220,6 +228,8 @@
           
           <category> 编程语言 </category>
           
+          <category> Python </category>
+          
       </categories>
       
       
@@ -248,6 +258,8 @@
           <category> 编程基础 </category>
           
           <category> 编程语言 </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -278,6 +290,8 @@
           
           <category> 编程语言 </category>
           
+          <category> Python </category>
+          
       </categories>
       
       
@@ -306,6 +320,8 @@
           <category> 编程基础 </category>
           
           <category> 编程语言 </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -336,6 +352,8 @@
           
           <category> 编程语言 </category>
           
+          <category> Python </category>
+          
       </categories>
       
       
@@ -361,9 +379,9 @@
       
       <categories>
           
-          <category> 数据结构 </category>
-          
           <category> 编程基础 </category>
+          
+          <category> 数据结构 </category>
           
       </categories>
       
@@ -390,9 +408,9 @@
       
       <categories>
           
-          <category> 算法 </category>
-          
           <category> 编程基础 </category>
+          
+          <category> 算法 </category>
           
       </categories>
       
@@ -512,9 +530,9 @@
       
       <categories>
           
-          <category> 数据结构 </category>
-          
           <category> 编程基础 </category>
+          
+          <category> 数据结构 </category>
           
       </categories>
       
@@ -545,6 +563,8 @@
           
           <category> 编程语言 </category>
           
+          <category> C++ </category>
+          
       </categories>
       
       
@@ -573,6 +593,8 @@
           <category> 编程基础 </category>
           
           <category> 编程语言 </category>
+          
+          <category> C++ </category>
           
       </categories>
       
@@ -603,6 +625,8 @@
           
           <category> 编程语言 </category>
           
+          <category> C++ </category>
+          
       </categories>
       
       
@@ -631,6 +655,8 @@
           <category> 编程基础 </category>
           
           <category> 编程语言 </category>
+          
+          <category> C++ </category>
           
       </categories>
       
@@ -666,9 +692,9 @@
       
         <tags>
             
-            <tag> 深度学习 </tag>
-            
             <tag> 论文阅读 </tag>
+            
+            <tag> 深度学习 </tag>
             
         </tags>
       
@@ -695,40 +721,7 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
-            <tag> 操作系统 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Pytorch-tensor相关操作</title>
-      <link href="/2019/07/19/pytorch/pytorch-tensor-xiang-guan-cao-zuo/"/>
-      <url>/2019/07/19/pytorch/pytorch-tensor-xiang-guan-cao-zuo/</url>
-      
-        <content type="html"><![CDATA[<h1 id="Tensor及使用"><a href="#Tensor及使用" class="headerlink" title="Tensor及使用"></a>Tensor及使用</h1><h2 id="tensor-requires-grad"><a href="#tensor-requires-grad" class="headerlink" title="tensor.requires_grad"></a>tensor.requires_grad</h2><p>在创建张量后，如果未进行特殊指定，默认不对该张量进行梯度计算。需要注意的是，只有当一个张量的所有输入都不需要进行梯度计算时，该张量才不需要进行梯度计算。<br>在网络模型中，其中间参数是默认进行求导的，因而网络的输出也默认是需要求导的。<br>在写代码的过程中，<strong>不要</strong>把网络的输入和 Ground Truth 的 <code>requires_grad</code> 设置为 True。虽然这样设置不会影响反向传播，但是需要额外计算网络的输入和 Ground Truth 的导数，增大了计算量和内存占用不说，这些计算出来的导数结果也没啥用。因为我们只需要神经网络中的参数的导数，用来更新网络，其余的导数都不需要。<br>通过使用该方法，可以将模型的部分参数设置为不需要进行求导。这一做法常被用于迁移学习中，对模型的一部分参数进行冻结，只更新其余的参数，官方例子如下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">model = torchvision.models.resnet18(pretrained=<span class="keyword">True</span>)</span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">    param.requires_grad = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用一个新的 fc 层来取代之前的全连接层</span></span><br><span class="line"><span class="comment"># 因为新构建的 fc 层的参数默认 requires_grad=True</span></span><br><span class="line">model.fc = nn.Linear(<span class="number">512</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只更新 fc 层的参数</span></span><br><span class="line">optimizer = optim.SGD(model.fc.parameters(), lr=<span class="number">1e-2</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过这样，我们就冻结了 resnet 前边的所有层，</span></span><br><span class="line"><span class="comment"># 在训练过程中只更新最后的 fc 层中的参数。</span></span><br></pre></td></tr></table></figure></p><h2 id="torch-no-grad"><a href="#torch-no-grad" class="headerlink" title="torch.no_grad()"></a>torch.no_grad()</h2><p>虽然可以使用第一条所介绍的<code>requires_grad</code>方法对单个张量进行梯度设置，但一个模型中存在大量的张量，逐个进行张量的设置会非常麻烦。这时就使用这一方法，对张量进行批量管理。<br>在我们对已训练完成的模型进行评估时，出来使用<code>model.eval()</code>将模型设置为评估模式之外，如果为了节省内存、显存，可以使用<code>torch.no_grad()</code>将模型中的所有参数设置为不进行梯度计算的模式。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn(<span class="number">3</span>, requires_grad = <span class="keyword">True</span>)</span><br><span class="line">print(x.requires_grad)</span><br><span class="line"><span class="comment"># True</span></span><br><span class="line">print((x ** <span class="number">2</span>).requires_grad)</span><br><span class="line"><span class="comment"># True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    print((x ** <span class="number">2</span>).requires_grad)</span><br><span class="line">    <span class="comment"># False</span></span><br><span class="line"></span><br><span class="line">print((x ** <span class="number">2</span>).requires_grad)</span><br><span class="line"><span class="comment"># True</span></span><br></pre></td></tr></table></figure></p><h2 id="tensor-data"><a href="#tensor-data" class="headerlink" title="tensor.data"></a>tensor.data</h2><p>在0.4版本之后，<code>Variable</code>被取消，统一使用<code>tensor</code>代替，<code>.data</code>本来是被用来从<code>Variable</code>中获取<code>tensor</code>的，现在被用来从<code>tensor</code>中获取一个具有同样的数据和不进行梯度计算的版本，两者共享内存空间，也就是说修改两者中的任意一个都会导致另一个值被修改。</p><h2 id="tensor-detach"><a href="#tensor-detach" class="headerlink" title="tensor.detach()"></a>tensor.detach()</h2><p>Pytorch的自动求导系统不会跟踪<code>tensor.data</code>的变化，因而可能会导致求导结果出错。而<code>torch.detach()</code>会被自动求导系统追踪。如下例所示：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a = torch.tensor([<span class="number">7.</span>, <span class="number">0</span>, <span class="number">0</span>], requires_grad=<span class="keyword">True</span>)</span><br><span class="line">b = a + <span class="number">2</span></span><br><span class="line">print(b)</span><br><span class="line"><span class="comment"># tensor([9., 2., 2.], grad_fn=&lt;AddBackward0&gt;)</span></span><br><span class="line"></span><br><span class="line">loss = torch.mean(b * b)</span><br><span class="line"></span><br><span class="line">b_ = b.detach()</span><br><span class="line">b_.zero_()</span><br><span class="line">print(b)</span><br><span class="line"><span class="comment"># tensor([0., 0., 0.], grad_fn=&lt;AddBackward0&gt;)</span></span><br><span class="line"><span class="comment"># 储存空间共享，修改 b_ , b 的值也变了</span></span><br><span class="line"></span><br><span class="line">loss.backward()</span><br><span class="line"><span class="comment"># RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation</span></span><br></pre></td></tr></table></figure><p>在上述例子中，pytorch的自动求导系统进行了报错，出错的原因在于，b的值在进行反向传播之前被修改，这一修改会导致求导出错。<code>.detach()</code>之后的修改会被追踪，但当我们使用<code>.data</code>时，pytorch不会进行报错。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a = torch.tensor([<span class="number">7.</span>, <span class="number">0</span>, <span class="number">0</span>], requires_grad=<span class="keyword">True</span>)</span><br><span class="line">b = a + <span class="number">2</span></span><br><span class="line">print(b)</span><br><span class="line"><span class="comment"># tensor([9., 2., 2.], grad_fn=&lt;AddBackward0&gt;)</span></span><br><span class="line"></span><br><span class="line">loss = torch.mean(b * b)</span><br><span class="line"></span><br><span class="line">b_ = b.data</span><br><span class="line">b_.zero_()</span><br><span class="line">print(b)</span><br><span class="line"><span class="comment"># tensor([0., 0., 0.], grad_fn=&lt;AddBackward0&gt;)</span></span><br><span class="line"></span><br><span class="line">loss.backward()</span><br><span class="line"></span><br><span class="line">print(a.grad)</span><br><span class="line"><span class="comment"># tensor([0., 0., 0.])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 其实正确的结果应该是：</span></span><br><span class="line"><span class="comment"># tensor([6.0000, 1.3333, 1.3333])</span></span><br></pre></td></tr></table></figure></p><h2 id="设备的切换"><a href="#设备的切换" class="headerlink" title="设备的切换"></a>设备的切换</h2><p>在0.4之前，一般使用<code>.cuda()</code>方法将张量或模型移动至GPU中，在需要进行设备的切换时，这一做法显得比较麻烦。0.4之后增加了<code>.to(device)</code>操作，这样，只需要在程序的开始指定所使用的设备即可。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">"cuda"</span>) <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> torch.device(<span class="string">"cpu"</span>)</span><br><span class="line"></span><br><span class="line">a = torch.rand([<span class="number">3</span>,<span class="number">3</span>]).to(device)</span><br><span class="line"><span class="comment"># 干其他的活</span></span><br><span class="line">b = torch.rand([<span class="number">3</span>,<span class="number">3</span>]).to(device)</span><br><span class="line"><span class="comment"># 干其他的活</span></span><br><span class="line">c = torch.rand([<span class="number">3</span>,<span class="number">3</span>]).to(device)</span><br></pre></td></tr></table></figure><h4 id="GPU-Tensor-gt-Numpy"><a href="#GPU-Tensor-gt-Numpy" class="headerlink" title="GPU Tensor -&gt; Numpy"></a>GPU Tensor -&gt; Numpy</h4><p>在我们想把 GPU tensor 转换成 Numpy 变量的时候，需要先将 tensor 转换到 CPU 中去，因为 Numpy 是 CPU-only 的。其次，如果 tensor 需要求导的话，还需要加一步 detach（防止求导出错），再转成 Numpy 。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">x  = torch.rand([<span class="number">3</span>,<span class="number">3</span>], device=<span class="string">'cuda'</span>)</span><br><span class="line">x_ = x.cpu().numpy()</span><br><span class="line"></span><br><span class="line">y  = torch.rand([<span class="number">3</span>,<span class="number">3</span>], requires_grad=<span class="keyword">True</span>, device=<span class="string">'cuda'</span>).</span><br><span class="line">y_ = y.cpu().detach().numpy()</span><br><span class="line"><span class="comment"># y_ = y.detach().cpu().numpy() 也可以</span></span><br><span class="line"><span class="comment"># 二者好像差别不大？我们来比比时间：</span></span><br><span class="line">start_t = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>):</span><br><span class="line">    y_ = y.cpu().detach().numpy()</span><br><span class="line">print(time.time() - start_t)</span><br><span class="line"><span class="comment"># 1.1049120426177979</span></span><br><span class="line"></span><br><span class="line">start_t = time.time()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>):</span><br><span class="line">    y_ = y.detach().cpu().numpy()</span><br><span class="line">print(time.time() - start_t)</span><br><span class="line"><span class="comment"># 1.115112543106079</span></span><br><span class="line"><span class="comment"># 时间差别不是很大，当然，这个速度差别可能和电脑配置</span></span><br><span class="line"><span class="comment"># （比如 GPU 很贵，CPU 却很烂）有关。</span></span><br></pre></td></tr></table></figure><h2 id="tensor-item"><a href="#tensor-item" class="headerlink" title="tensor.item()"></a>tensor.item()</h2><p>该方法只适用于tensor中包含单个值的情况，使用该方法会直接得到该tensor中所包含的值。当tensor中包含多个元素时，可以使用<code>tensor.tolist()</code>。</p><hr><center>![](https://pic2.zhimg.com/80/v2-7a79e86e8006918808455318cf425d61_hd.jpg)</center>]]></content>
-      
-      
-      <categories>
-          
-          <category> 深度学习 </category>
-          
-          <category> 深度学习框架 </category>
-          
-          <category> Pytorch </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 深度学习 </tag>
-            
-            <tag> 深度学习框架 </tag>
+            <tag> 操作系统,linux </tag>
             
         </tags>
       
@@ -747,8 +740,6 @@
       <categories>
           
           <category> 深度学习 </category>
-          
-          <category> 目标检测 </category>
           
           <category> 评价指标 </category>
           
@@ -817,9 +808,9 @@
       
         <tags>
             
-            <tag> 深度学习 </tag>
-            
             <tag> 论文阅读 </tag>
+            
+            <tag> 深度学习 </tag>
             
         </tags>
       
@@ -875,9 +866,9 @@
       
         <tags>
             
-            <tag> 深度学习 </tag>
-            
             <tag> 论文阅读 </tag>
+            
+            <tag> 深度学习 </tag>
             
         </tags>
       
