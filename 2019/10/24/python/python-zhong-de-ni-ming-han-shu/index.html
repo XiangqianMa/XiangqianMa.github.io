@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+  <meta name="description" content="匿名函数什么是匿名函数匿名函数的格式如下： 1lambda argument1, argument2,... argumentN : expression 匿名函数的关键字为lambda，用法如下： 1234square = lambda x: x**2square(3)9 其对应的常规函数形式为： 12345def square(x):    return x**2square(3) 9 匿名函">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python中的匿名函数">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-ni-ming-han-shu/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+<meta property="og:description" content="匿名函数什么是匿名函数匿名函数的格式如下： 1lambda argument1, argument2,... argumentN : expression 匿名函数的关键字为lambda，用法如下： 1234square = lambda x: x**2square(3)9 其对应的常规函数形式为： 12345def square(x):    return x**2square(3) 9 匿名函">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的匿名函数">
-<meta name="twitter:description" content="匿名函数什么是匿名函数匿名函数的格式如下： lambda argument1, argument2,... argumentN : expression  匿名函数的关键字为lambda，用法如下： square = lambda x: x**2 square(3)  9  其对应的常规函数形式为： def square(x):     return x**2 square(3)  9  匿名函数">
+<meta name="twitter:description" content="匿名函数什么是匿名函数匿名函数的格式如下： 1lambda argument1, argument2,... argumentN : expression 匿名函数的关键字为lambda，用法如下： 1234square = lambda x: x**2square(3)9 其对应的常规函数形式为： 12345def square(x):    return x**2square(3) 9 匿名函">
 
 
 
@@ -523,37 +523,19 @@
 
       
         <h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><h2 id="什么是匿名函数"><a href="#什么是匿名函数" class="headerlink" title="什么是匿名函数"></a>什么是匿名函数</h2><p>匿名函数的格式如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">lambda argument1, argument2,... argumentN : expression
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">lambda</span> argument1, argument2,... argumentN : expression</span><br></pre></td></tr></table></figure>
 <p>匿名函数的关键字为<code>lambda</code>，用法如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">square = lambda x: x**2
-square(3)
-
-9
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">square = <span class="keyword">lambda</span> x: x**<span class="number">2</span></span><br><span class="line">square(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
 <p>其对应的常规函数形式为：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
-    return x**2
-square(3)
-
-9
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x**<span class="number">2</span></span><br><span class="line">square(<span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
 <p>匿名函数和常规函数一样，返回的都是函数对象（function object）,不同之处有以下几点：</p>
 <ul>
 <li><p><code>lambda</code>是一个表达式，而不是一个语句</p>
 <p>所谓表达式就是用一系列“公式”去表达一个东西，如x+2、x**2等；所谓语句就是完成了某些功能，如果赋值语句完成赋值，比较语句完成比较等。</p>
 <p><code>lambda</code>表达式可以用在一些常规函数不能使用的地方，如：列表内部：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">[(lambda x: x*x)(x) for x in range(10)]
-# 输出
-[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[(<span class="keyword">lambda</span> x: x*x)(x) <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>]</span><br></pre></td></tr></table></figure>
 <p>被用作某些函数的参数，而常规函数不能：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [(1, 20), (3, 0), (9, 10), (2, -1)]
-l.sort(key=lambda x: x[1]) # 按列表中元祖的第二个元素排序
-print(l)
-# 输出
-[(2, -1), (3, 0), (9, 10), (1, 20)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">l = [(<span class="number">1</span>, <span class="number">20</span>), (<span class="number">3</span>, <span class="number">0</span>), (<span class="number">9</span>, <span class="number">10</span>), (<span class="number">2</span>, <span class="number">-1</span>)]</span><br><span class="line">l.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>]) <span class="comment"># 按列表中元祖的第二个元素排序</span></span><br><span class="line">print(l)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">[(<span class="number">2</span>, <span class="number">-1</span>), (<span class="number">3</span>, <span class="number">0</span>), (<span class="number">9</span>, <span class="number">10</span>), (<span class="number">1</span>, <span class="number">20</span>)]</span><br></pre></td></tr></table></figure>
 <p>常规函数必须通过其函数名被调用，因而必须首先被定义。但是<code>lambda</code>是一个表达式，返回的函数对象不需要名字。</p>
 </li>
 <li><p><code>lambda</code>表达式是只有一行的简单表达式，并不能扩展成一个多行的代码块。</p>
@@ -568,29 +550,15 @@ print(l)
 </ul>
 <p>但当我们只需要一个函数，这个函数非常简短，只需要一行；同时在程序中只调用一次，此时，我们就不需要给它一个定义和名字。</p>
 <p>例如，需要对一个列表中的所有元素求平方和，且该程序只需要运行一次，用匿名函数可以写成：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">squared = map(lambda x: x**2, [1, 2, 3, 4, 5])
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squared = map(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
 <p>用常规函数需要写成：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def square(x):
-    return x**2
-
-squared = map(square, [1, 2, 3, 4, 5])
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">squared = map(square, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
 <p>很明显，匿名函数更为简洁。</p>
 <h2 id="Python函数式编程"><a href="#Python函数式编程" class="headerlink" title="Python函数式编程"></a>Python函数式编程</h2><p>所谓函数式编程，是指代码中每一块都是不可变的，都由纯函数组成。纯函数是指函数本身相互独立、互不影响，对于相同的输入，总会有相同的输出，没有任何副作用。</p>
 <p>例如，将一个列表中的元素值都变成原来的两倍，如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2(l):
-    for index in range(0, len(l)):
-        l[index] *= 2
-    return l
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiply_2</span><span class="params">(l)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, len(l)):</span><br><span class="line">        l[index] *= <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> l</span><br></pre></td></tr></table></figure>
 <p>上述代码不是一个纯函数，因为输入列表的值发生了改变，多次调用该函数将会得到不同的值。修改成如下形式：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def multiply_2_pure(l):
-    new_list = []
-    for item in l:
-        new_list.append(item * 2)
-    return new_list
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiply_2_pure</span><span class="params">(l)</span>:</span></span><br><span class="line">    new_list = []</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> l:</span><br><span class="line">        new_list.append(item * <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> new_list</span><br></pre></td></tr></table></figure>
 <p>新建列表并返回，这就是一个纯函数。</p>
 <p>函数式编程的优点是其纯函数和不可变的特性使得程序更加健壮，易于调试和测试；缺点是限制多、程序编写难度高。Python不是一门函数式编程语言，但是提供了相关特性，主要有以下函数<code>map()</code>，<code>filter()</code>，<code>reduce()</code>，这几个函数通常和匿名函数一起使用。</p>
 <ul>
@@ -599,16 +567,12 @@ squared = map(square, [1, 2, 3, 4, 5])
 </li>
 <li><p><code>filter(function, iterable)</code></p>
 <p><code>filter()</code>函数对<code>iterable</code>中的每个元素都使用<code>function</code>进行判断，返回<code>True</code>或<code>False</code>，将<code>True</code>对应的元素组成一个新的可遍历的集合。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
-new_list = filter(lambda x: x % 2 == 0, l) # [2, 4]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">l = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">new_list = filter(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, l) <span class="comment"># [2, 4]</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>reduce(function, iterable)</code></p>
 <p>该函数通常用来对一个集合做一些累积操作。<code>function()</code>函数同样是一个函数对象，它有两个函数，表示对<code>iterable</code>中的每个元素以及上一次调用后的结构运用<code>function</code>进行计算，最后返回的是一个单独的值。</p>
 <p>例如，计算某个列表元素的乘积：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l = [1, 2, 3, 4, 5]
-product = reduce(lambda x, y: x * y, l) # 1*2*3*4*5 = 120
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">l = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">product = reduce(<span class="keyword">lambda</span> x, y: x * y, l) <span class="comment"># 1*2*3*4*5 = 120</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>通常来说，当我们需要对集合中的元素进行一些操作时，如果操作非常简单，则有限考虑<code>map()</code>、<code>filter()</code>、<code>reduce()</code>这类或者列表表达式的形式。那么如何在这两种方式中进行选择？</p>
@@ -618,13 +582,7 @@ product = reduce(lambda x, y: x * y, l) # 1*2*3*4*5 = 120
 </ul>
 <p>当操作比较复杂时，使用<code>for</code>循环。</p>
 <h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>对一个字典根据其值从高到低进行排列。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 匿名函数
-d = {'mike': 10, 'lucy': 2, 'ben': 30}
-e = sorted(d.items(), key=lambda x: x[1], reverse=True)
-e
-
-Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 匿名函数</span></span><br><span class="line">d = &#123;<span class="string">'mike'</span>: <span class="number">10</span>, <span class="string">'lucy'</span>: <span class="number">2</span>, <span class="string">'ben'</span>: <span class="number">30</span>&#125;</span><br><span class="line">e = sorted(d.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="keyword">True</span>)</span><br><span class="line">e</span><br><span class="line"></span><br><span class="line">Out[<span class="number">15</span>]: [(<span class="string">'ben'</span>, <span class="number">30</span>), (<span class="string">'mike'</span>, <span class="number">10</span>), (<span class="string">'lucy'</span>, <span class="number">2</span>)]</span><br></pre></td></tr></table></figure>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://time.geekbang.org/column/article/98411" target="_blank" rel="noopener">Python核心技术与实战-景霄</a></li>
 </ul>
@@ -754,7 +712,7 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -925,7 +883,7 @@ Out[15]: [('ben', 30), ('mike', 10), ('lucy', 2)]
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="Python面向对象这篇博客主要介绍Python中面向对象的一些比较高级的用法。 面向对象编程的四要素 类、属性、函数、对象  那么，类就是一群具有相同属性和函数的对象的集合。 抽象类和抽象函数假设有以下代码，有一个父类和两个子类。 class Entity():     def __init__(self, object_type):         print(&apos;parent class in">
+  <meta name="description" content="Python面向对象这篇博客主要介绍Python中面向对象的一些比较高级的用法。 面向对象编程的四要素 类、属性、函数、对象  那么，类就是一群具有相同属性和函数的对象的集合。 抽象类和抽象函数假设有以下代码，有一个父类和两个子类。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python面向对象基础">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-mian-xiang-dui-xiang/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Python面向对象这篇博客主要介绍Python中面向对象的一些比较高级的用法。 面向对象编程的四要素 类、属性、函数、对象  那么，类就是一群具有相同属性和函数的对象的集合。 抽象类和抽象函数假设有以下代码，有一个父类和两个子类。 class Entity():     def __init__(self, object_type):         print(&apos;parent class in">
+<meta property="og:description" content="Python面向对象这篇博客主要介绍Python中面向对象的一些比较高级的用法。 面向对象编程的四要素 类、属性、函数、对象  那么，类就是一群具有相同属性和函数的对象的集合。 抽象类和抽象函数假设有以下代码，有一个父类和两个子类。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.663Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python面向对象基础">
-<meta name="twitter:description" content="Python面向对象这篇博客主要介绍Python中面向对象的一些比较高级的用法。 面向对象编程的四要素 类、属性、函数、对象  那么，类就是一群具有相同属性和函数的对象的集合。 抽象类和抽象函数假设有以下代码，有一个父类和两个子类。 class Entity():     def __init__(self, object_type):         print(&apos;parent class in">
+<meta name="twitter:description" content="Python面向对象这篇博客主要介绍Python中面向对象的一些比较高级的用法。 面向对象编程的四要素 类、属性、函数、对象  那么，类就是一群具有相同属性和函数的对象的集合。 抽象类和抽象函数假设有以下代码，有一个父类和两个子类。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546">
 
 
 
@@ -528,108 +528,14 @@
 </blockquote>
 <p>那么，类就是一群具有相同属性和函数的对象的集合。</p>
 <h2 id="抽象类和抽象函数"><a href="#抽象类和抽象函数" class="headerlink" title="抽象类和抽象函数"></a>抽象类和抽象函数</h2><p>假设有以下代码，有一个父类和两个子类。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">class Entity():
-    def __init__(self, object_type):
-        print('parent class init called')
-        self.object_type = object_type
-
-    def get_context_length(self):
-        raise Exception('get_context_length not implemented')
-
-    def print_title(self):
-        print(self.title)
-
-class Document(Entity):
-    def __init__(self, title, author, context):
-        print('Document class init called')
-        Entity.__init__(self, 'document')
-        self.title = title
-        self.author = author
-        self.__context = context
-
-    def get_context_length(self):
-        return len(self.__context)
-
-class Video(Entity):
-    def __init__(self, title, author, video_length):
-        print('Video class init called')
-        Entity.__init__(self, 'video')
-        self.title = title
-        self.author = author
-        self.__video_length = video_length
-
-    def get_context_length(self):
-        return self.__video_length
-
-harry_potter_book = Document('Harry Potter(Book)', 'J. K. Rowling', '... Forever Do not believe any thing is capable of thinking independently ...')
-harry_potter_movie = Video('Harry Potter(Movie)', 'J. K. Rowling', 120)
-
-print(harry_potter_book.object_type)
-print(harry_potter_movie.object_type)
-
-harry_potter_book.print_title()
-harry_potter_movie.print_title()
-
-print(harry_potter_book.get_context_length())
-print(harry_potter_movie.get_context_length())
-
-########## 输出 ##########
-
-Document class init called
-parent class init called
-Video class init called
-parent class init called
-document
-video
-Harry Potter(Book)
-Harry Potter(Movie)
-77
-120
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Entity</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, object_type)</span>:</span></span><br><span class="line">        print(<span class="string">'parent class init called'</span>)</span><br><span class="line">        self.object_type = object_type</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_context_length</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">'get_context_length not implemented'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_title</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(self.title)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Document</span><span class="params">(Entity)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, title, author, context)</span>:</span></span><br><span class="line">        print(<span class="string">'Document class init called'</span>)</span><br><span class="line">        Entity.__init__(self, <span class="string">'document'</span>)</span><br><span class="line">        self.title = title</span><br><span class="line">        self.author = author</span><br><span class="line">        self.__context = context</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_context_length</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.__context)</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Video</span><span class="params">(Entity)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, title, author, video_length)</span>:</span></span><br><span class="line">        print(<span class="string">'Video class init called'</span>)</span><br><span class="line">        Entity.__init__(self, <span class="string">'video'</span>)</span><br><span class="line">        self.title = title</span><br><span class="line">        self.author = author</span><br><span class="line">        self.__video_length = video_length</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_context_length</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__video_length</span><br><span class="line"></span><br><span class="line">harry_potter_book = Document(<span class="string">'Harry Potter(Book)'</span>, <span class="string">'J. K. Rowling'</span>, <span class="string">'... Forever Do not believe any thing is capable of thinking independently ...'</span>)</span><br><span class="line">harry_potter_movie = Video(<span class="string">'Harry Potter(Movie)'</span>, <span class="string">'J. K. Rowling'</span>, <span class="number">120</span>)</span><br><span class="line"></span><br><span class="line">print(harry_potter_book.object_type)</span><br><span class="line">print(harry_potter_movie.object_type)</span><br><span class="line"></span><br><span class="line">harry_potter_book.print_title()</span><br><span class="line">harry_potter_movie.print_title()</span><br><span class="line"></span><br><span class="line">print(harry_potter_book.get_context_length())</span><br><span class="line">print(harry_potter_movie.get_context_length())</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">Document <span class="class"><span class="keyword">class</span> <span class="title">init</span> <span class="title">called</span></span></span><br><span class="line"><span class="class"><span class="title">parent</span> <span class="title">class</span> <span class="title">init</span> <span class="title">called</span></span></span><br><span class="line"><span class="class"><span class="title">Video</span> <span class="title">class</span> <span class="title">init</span> <span class="title">called</span></span></span><br><span class="line"><span class="class"><span class="title">parent</span> <span class="title">class</span> <span class="title">init</span> <span class="title">called</span></span></span><br><span class="line"><span class="class"><span class="title">document</span></span></span><br><span class="line"><span class="class"><span class="title">video</span></span></span><br><span class="line"><span class="class"><span class="title">Harry</span> <span class="title">Potter</span><span class="params">(Book)</span></span></span><br><span class="line"><span class="class"><span class="title">Harry</span> <span class="title">Potter</span><span class="params">(Movie)</span></span></span><br><span class="line"><span class="class">77</span></span><br><span class="line"><span class="class">120</span></span><br></pre></td></tr></table></figure>
 <p>在上述代码中的<code>Entity</code>类本身没有什么作用，只是提供了一些<code>Document</code>和<code>Video</code>的基本元素。因而，我们不需要生成<code>Entity</code>的对象。那么，如何防止生成<code>Entity</code>的对象呢？</p>
 <p>这里需要引入<strong>抽象类</strong>和<strong>抽象函数</strong>的概念：</p>
 <blockquote>
 <p>所谓抽象类是一种特殊的类，该类的作用就是作为父类存在的，一旦对其进行对象化就会产生错误。同样，抽象函数定义在抽象类中，子类必须重写该函数才能被使用。抽象函数使用装饰器<code>@abstractmethod</code>来表示。</p>
 </blockquote>
 <p>如下代码：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">from abc import ABCMeta, abstractmethod
-
-class Entity(metaclass=ABCMeta):
-    @abstractmethod
-    def get_title(self):
-        pass
-
-    @abstractmethod
-    def set_title(self, title):
-        pass
-
-class Document(Entity):
-    def get_title(self):
-        return self.title
-
-    def set_title(self, title):
-        self.title = title
-
-document = Document()
-document.set_title('Harry Potter')
-print(document.get_title())
-
-entity = Entity()
-
-########## 输出 ##########
-
-Harry Potter
-
----------------------------------------------------------------------------
-TypeError                                 Traceback (most recent call last)
-<ipython-input-7-266b2aa47bad> in <module>()
-     21 print(document.get_title())
-     22 
----> 23 entity = Entity()
-     24 entity.set_title('Test')
-
-TypeError: Can't instantiate abstract class Entity with abstract methods get_title, set_title
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></module></ipython-input-7-266b2aa47bad></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABCMeta, abstractmethod</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Entity</span><span class="params">(metaclass=ABCMeta)</span>:</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_title</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_title</span><span class="params">(self, title)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Document</span><span class="params">(Entity)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_title</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.title</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_title</span><span class="params">(self, title)</span>:</span></span><br><span class="line">        self.title = title</span><br><span class="line"></span><br><span class="line">document = Document()</span><br><span class="line">document.set_title(<span class="string">'Harry Potter'</span>)</span><br><span class="line">print(document.get_title())</span><br><span class="line"></span><br><span class="line">entity = Entity()</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">Harry Potter</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">TypeError                                 Traceback (most recent call last)</span><br><span class="line">&lt;ipython-input<span class="number">-7</span><span class="number">-266</span>b2aa47bad&gt; <span class="keyword">in</span> &lt;module&gt;()</span><br><span class="line">     <span class="number">21</span> print(document.get_title())</span><br><span class="line">     <span class="number">22</span> </span><br><span class="line">---&gt; 23 entity = Entity()</span><br><span class="line">     <span class="number">24</span> entity.set_title(<span class="string">'Test'</span>)</span><br><span class="line"></span><br><span class="line">TypeError: Can<span class="string">'t instantiate abstract class Entity with abstract methods get_title, set_title</span></span><br></pre></td></tr></table></figure>
 <p>在上述代码中，我们直接声明了抽象类<code>Entity</code>的对象，引发了类型错误。我们必须使用子类对其进行继承才能正常使用。</p>
 <p>抽象类的作用就是定义接口，是一种自上而下的设计方法。只需要使用少量的代码对需要做的事情进行描述，定义好接口，然后分发给不同的开发人员进行开发和对接。</p>
 
@@ -758,7 +664,7 @@ TypeError: Can't instantiate abstract class Entity with abstract methods get_tit
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -929,7 +835,7 @@ TypeError: Can't instantiate abstract class Entity with abstract methods get_tit
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

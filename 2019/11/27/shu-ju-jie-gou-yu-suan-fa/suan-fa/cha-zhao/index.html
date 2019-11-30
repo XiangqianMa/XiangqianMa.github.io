@@ -530,60 +530,11 @@
 <p>$O(logn)$被称作<strong>对数时间复杂度</strong>，这是一种非常高效的时间复杂度，在一定情况下比常量级$O(1)$时间复杂度还高效。</p>
 <p>在使用大$O$标记法表示时间复杂度时，会忽略掉常数、系数和低阶，当常量的值很大时，例如$O(1000)$等，常量级的时间复杂度可能就没有$O(logn)$的算法效率高。</p>
 <h3 id="二分查找的简单实现"><a href="#二分查找的简单实现" class="headerlink" title="二分查找的简单实现"></a>二分查找的简单实现</h3><p>假设待查找的数据中不存在重复的数据，最简单的二分查找代码如下：</p>
-<h4 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h4><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int binary_search(vector<int> array, int number) {
-    // 找到则返回对应的下标，否则返回-1
-    int mid = array.size() / 2;
-    int begin = 0;
-    int end = array.size() - 1;
-    while (begin < end){
-        if (array[mid] != number) {
-            if (array[mid] < number)
-                begin = mid + 1;
-            else
-                end = mid - 1;
-        }
-        else
-            return mid;
-        mid = (end - begin) / 2 + begin;
-    }
-    if (array[begin] == number)
-        return begin;
-    else
-        return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></code></pre>
+<h4 id="循环实现"><a href="#循环实现" class="headerlink" title="循环实现"></a>循环实现</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> number)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 找到则返回对应的下标，否则返回-1</span></span><br><span class="line">    <span class="keyword">int</span> mid = <span class="built_in">array</span>.size() / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> end = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (begin &lt; end)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[mid] != number) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &lt; number)</span><br><span class="line">                begin = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                end = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        mid = (end - begin) / <span class="number">2</span> + begin;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[begin] == number)</span><br><span class="line">        <span class="keyword">return</span> begin;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编写上述代码时，要注意<code>while()</code>循环的退出条件和最后的两个<code>retrun</code>语句的搭配，当循环退出时，还剩余一个元素未判断，因而要对该元素进行判断。</p>
 <p>要注意的另一点是<code>mid</code>的更新公式，使用<code>mid = (end - begin) / 2 + begin</code>而不是<code>mid = (end + begin) / 2</code>的原因是<code>end</code>和<code>begin</code>的数值可能比较大，相加会导致数值移除。</p>
 <p>同时还要注意<code>begin</code>和<code>end</code>的更新方式，每一更新都要将<code>mid</code>位置剔除在下一个查找区间之外。</p>
-<h4 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h4><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 二分查找的递归实现
-int binary_search_recursion(vector<int> array, int number){
-    int begin = 0;
-    int end = array.size() - 1;
-    int index = binary_search_inter(array, begin, end, number);
-    return index;
-}
-
-
-int binary_search_inter(vector<int> array, int begin, int end, int number){
-    int index;
-    if (begin == end)
-        if (array[begin] != number) {
-            return -1;
-        }
-        else {
-            return begin;
-        }
-
-    int mid = (end - begin) / 2 + begin;
-    if (array[mid] == number)
-        return mid;
-    else if (array[mid] > number)
-        index = binary_search_inter(array, begin, mid - 1, number);
-    else
-        index = binary_search_inter(array, mid + 1, end, number);
-    return index;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></int></code></pre>
+<h4 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二分查找的递归实现</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search_recursion</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> end = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> index = binary_search_inter(<span class="built_in">array</span>, begin, end, number);</span><br><span class="line">    <span class="keyword">return</span> index;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search_inter</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> begin, <span class="keyword">int</span> end, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">if</span> (begin == end)</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[begin] != number) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> begin;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mid = (end - begin) / <span class="number">2</span> + begin;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[mid] == number)</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &gt; number)</span><br><span class="line">        index = binary_search_inter(<span class="built_in">array</span>, begin, mid - <span class="number">1</span>, number);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        index = binary_search_inter(<span class="built_in">array</span>, mid + <span class="number">1</span>, end, number);</span><br><span class="line">    <span class="keyword">return</span> index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="二分查找的应用场景"><a href="#二分查找的应用场景" class="headerlink" title="二分查找的应用场景"></a>二分查找的应用场景</h3><ul>
 <li>二分查找依赖顺序表结构，不适用于链表等链式存储结构，因为需要使用下标随机访问数组元素，顺序表的随机访问时间复杂度为$O(1)$，而链表的随机访问时间复杂度为$O(n)$。</li>
 <li>二分查找适用于有序数据，数据无序则首先需要排序。排序的时间复杂度最低为$O(nlogn)$，如果数据没有频繁的插入和删除，就只需要进行一次排序；如果数据需要频繁地插入或者删除，则需要反复进行排序。因而，二分查找适用于一次排序，多次查找的场景，适合<strong>静态数据</strong>。</li>
@@ -608,168 +559,26 @@ int binary_search_inter(vector<int> array, int begin, int end, int number){
 <p> <img src="/2019/11/27/shu-ju-jie-gou-yu-suan-fa/suan-fa/cha-zhao/503c572dd0f9d734b55f1bd12765c4f8.jpg" alt="img"> </p>
 <p>使用简单二分查找的思想，我们最终找的的数据将是a[7]位置的8，但是正确的值应该是a[5]位置的8。</p>
 <p>思考，一个元素第一次出现的位置永远在其它出现的位置的左侧，所以当在mid位置找到目标值时，应该继续向左侧查找。一种比较难理解的写法如下：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">public int bsearch(int[] a, int n, int value) {
-  int low = 0;
-  int high = n - 1;
-  while (low <= high)="" {="" int="" mid="low" +="" ((high="" -="" low)="">> 1);
-    if (a[mid] >= value) {
-      high = mid - 1;
-    } else {
-      low = mid + 1;
-    }
-  }
-
-  if (low < n && a[low]==value) return low;
-  else return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> n, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> low = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> high = n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">    <span class="keyword">int</span> mid = low + ((high - low) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (a[mid] &gt;= value) &#123;</span><br><span class="line">      high = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      low = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (low &lt; n &amp;&amp; a[low]==value) <span class="keyword">return</span> low;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码中，high向左侧移动的条件有两个：1. mid的值比目标值大；2. mid的值和目标值匹配，继续向左侧查找。但是这种写法不好理解。</p>
 <p>实际上，当mid的值等于目标值时，由于数组本身是有序的，如果mid的左侧还有值，那么mid左侧紧挨着的那个元素肯定等于mid的值，否则，此时的mid即为第一次出现的位置。</p>
 <p>下面的JAVA代码由课程作者编写：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">
-public int bsearch(int[] a, int n, int value) {
-  int low = 0;
-  int high = n - 1;
-  while (low <= high)="" {="" int="" mid="low" +="" ((high="" -="" low)="">> 1);
-    if (a[mid] > value) {
-      high = mid - 1;
-    } else if (a[mid] < value) {
-      low = mid + 1;
-    } else {
-      if ((mid == 0) || (a[mid - 1] != value)) return mid;
-      else high = mid - 1;
-    }
-  }
-  return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> n, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> low = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> high = n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">    <span class="keyword">int</span> mid =  low + ((high - low) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (a[mid] &gt; value) &#123;</span><br><span class="line">      high = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[mid] &lt; value) &#123;</span><br><span class="line">      low = mid + <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> ((mid == <span class="number">0</span>) || (a[mid - <span class="number">1</span>] != value)) <span class="keyword">return</span> mid;</span><br><span class="line">      <span class="keyword">else</span> high = mid - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面是我自己实现的C++版本：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 二分查找变体，从数组中查找指定元素第一次出现的位置
-int binary_search_first_index(vector<int> array, int number){
-    int begin = 0;
-    int end = array.size() - 1;
-    int mid = begin + (end - begin) / 2;
-    while (begin < end || begin == end){
-        if (array[mid] > number)
-            // 查找左侧区间
-            end = mid - 1;
-        else if (array[mid] < number)
-            // 查找右侧区间
-            begin = mid + 1;
-        else if (array[mid] == number){
-            // mid为0或左侧元素不等mid处的元素时，返回mid，否则继续查找左侧区间
-            if (mid == 0 || array[mid] != array[mid-1])
-                return mid;
-            else
-                end = mid - 1;
-        }
-        // 注意更新中间值
-        mid = begin + (end - begin) / 2;
-    }
-    return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二分查找变体，从数组中查找指定元素第一次出现的位置</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search_first_index</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> end = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span> (begin &lt; end || begin == end)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &gt; number)</span><br><span class="line">            <span class="comment">// 查找左侧区间</span></span><br><span class="line">            end = mid - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &lt; number)</span><br><span class="line">            <span class="comment">// 查找右侧区间</span></span><br><span class="line">            begin = mid + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid] == number)&#123;</span><br><span class="line">            <span class="comment">// mid为0或左侧元素不等mid处的元素时，返回mid，否则继续查找左侧区间</span></span><br><span class="line">            <span class="keyword">if</span> (mid == <span class="number">0</span> || <span class="built_in">array</span>[mid] != <span class="built_in">array</span>[mid<span class="number">-1</span>])</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                end = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 注意更新中间值</span></span><br><span class="line">        mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在进行工程开发时，更需要下面的代码编写方式，<strong>易读易懂</strong>才是重点。</p>
 <h3 id="查找等于给定元素的值中的最后一个元素的位置"><a href="#查找等于给定元素的值中的最后一个元素的位置" class="headerlink" title="查找等于给定元素的值中的最后一个元素的位置"></a>查找等于给定元素的值中的最后一个元素的位置</h3><p>与上一个问题类似，上一个问题找第一个位置，每次都需要向左侧区间查找，当前问题是查找最后一个元素，因而每次都需要向右侧区间查找。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 二分查找变体，从数组中查找指定元素最后一次出现的位置
-int binary_search_last_index(vector<int> array, int number){
-    int begin = 0;
-    int end = array.size() - 1;
-    int mid = begin + (end - begin) / 2;
-    while (begin < end || begin == end){
-        if (array[mid] > number)
-            // 查找左侧区间
-            end = mid - 1;
-        else if (array[mid] < number)
-            // 查找右侧区间
-            begin = mid + 1;
-        else if (array[mid] == number){
-            // mid为0或右侧元素不等于mid处的元素时，返回mid，否则继续查找右侧区间
-            if (mid == array.size() - 1 || array[mid] != array[mid + 1])
-                return mid;
-            else
-                begin = mid + 1;
-        }
-        mid = begin + (end - begin) / 2;
-    }
-    return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二分查找变体，从数组中查找指定元素最后一次出现的位置</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search_last_index</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> end = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span> (begin &lt; end || begin == end)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &gt; number)</span><br><span class="line">            <span class="comment">// 查找左侧区间</span></span><br><span class="line">            end = mid - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &lt; number)</span><br><span class="line">            <span class="comment">// 查找右侧区间</span></span><br><span class="line">            begin = mid + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid] == number)&#123;</span><br><span class="line">            <span class="comment">// mid为0或右侧元素不等于mid处的元素时，返回mid，否则继续查找右侧区间</span></span><br><span class="line">            <span class="keyword">if</span> (mid == <span class="built_in">array</span>.size() - <span class="number">1</span> || <span class="built_in">array</span>[mid] != <span class="built_in">array</span>[mid + <span class="number">1</span>])</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                begin = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="查找第一个大于等于给定值的元素"><a href="#查找第一个大于等于给定值的元素" class="headerlink" title="查找第一个大于等于给定值的元素"></a>查找第一个大于等于给定值的元素</h3><p>在有序数组中，查找第一个大于等于给定值的元素。</p>
 <p>代码实现思路和上述两种类似，下面为作者给出的Java版本的代码：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">
-public int bsearch(int[] a, int n, int value) {
-  int low = 0;
-  int high = n - 1;
-  while (low <= high)="" {="" int="" mid="low" +="" ((high="" -="" low)="">> 1);
-    if (a[mid] >= value) {
-      if ((mid == 0) || (a[mid - 1] < value)) return mid;
-      else high = mid - 1;
-    } else {
-      low = mid + 1;
-    }
-  }
-  return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> n, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> low = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> high = n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">    <span class="keyword">int</span> mid =  low + ((high - low) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (a[mid] &gt;= value) &#123;</span><br><span class="line">      <span class="keyword">if</span> ((mid == <span class="number">0</span>) || (a[mid - <span class="number">1</span>] &lt; value)) <span class="keyword">return</span> mid;</span><br><span class="line">      <span class="keyword">else</span> high = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      low = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面为我实现的C++版本的代码，为了明确边界判断条件，我将每一条条件语句的条件都列了出来：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int binary_search_lager_or_equal(vector<int> array, int number){
-    int begin = 0;
-    int end = array.size() - 1;
-    int mid = begin + (end - begin) >> 1;
-    while (begin < end || begin == end) {
-        if (array[mid] < number) {
-            begin = mid + 1;
-            mid = begin + (end - begin) / 2;
-        } else {
-            if (array[mid - 1] > number || array[mid - 1] == number) {
-                // 只有当左侧的第一个值大于number或等于number时，左侧才有可能出现大于等于number的值
-                end = mid - 1;
-                mid = begin + (end - begin) / 2;
-            } else if (mid == 0 || array[mid - 1] < number)
-                return mid;
-        }
-    }
-    return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search_lager_or_equal</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> end = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> mid = begin + (end - begin) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (begin &lt; end || begin == end) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &lt; number) &#123;</span><br><span class="line">            begin = mid + <span class="number">1</span>;</span><br><span class="line">            mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[mid - <span class="number">1</span>] &gt; number || <span class="built_in">array</span>[mid - <span class="number">1</span>] == number) &#123;</span><br><span class="line">                <span class="comment">// 只有当左侧的第一个值大于number或等于number时，左侧才有可能出现大于等于number的值</span></span><br><span class="line">                end = mid - <span class="number">1</span>;</span><br><span class="line">                mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mid == <span class="number">0</span> || <span class="built_in">array</span>[mid - <span class="number">1</span>] &lt; number)</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="查找最后一个小于等于给定值的元素"><a href="#查找最后一个小于等于给定值的元素" class="headerlink" title="查找最后一个小于等于给定值的元素"></a>查找最后一个小于等于给定值的元素</h3><p>这个问题和上一个问题类似，上一个问题中，当<code>mid</code>处的值满足要求时，我们需要判断左侧是否可能出现满足条件的值，而在这个问题中，我们需要判断右侧是否存在满足条件的值。</p>
 <p>作者给出的Jave版本的代码：</p>
-<pre class="line-numbers language-lang-java"><code class="language-lang-java">
-public int bsearch7(int[] a, int n, int value) {
-  int low = 0;
-  int high = n - 1;
-  while (low <= high)="" {="" int="" mid="low" +="" ((high="" -="" low)="">> 1);
-    if (a[mid] > value) {
-      high = mid - 1;
-    } else {
-      if ((mid == n - 1) || (a[mid + 1] > value)) return mid;
-      else low = mid + 1;
-    }
-  }
-  return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></=></code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">bsearch7</span><span class="params">(<span class="keyword">int</span>[] a, <span class="keyword">int</span> n, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> low = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> high = n - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">    <span class="keyword">int</span> mid =  low + ((high - low) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (a[mid] &gt; value) &#123;</span><br><span class="line">      high = mid - <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> ((mid == n - <span class="number">1</span>) || (a[mid + <span class="number">1</span>] &gt; value)) <span class="keyword">return</span> mid;</span><br><span class="line">      <span class="keyword">else</span> low = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我实现的C++版本的代码：</p>
-<pre class="line-numbers language-lang-C++"><code class="language-lang-C++">int binary_search_smaller_or_equal(vector<int> array, int number){
-    int begin = 0;
-    int end = array.size() - 1;
-    int mid = begin + (end - begin) >> 1;
-    while (begin < end || begin == end) {
-        if (array[mid] > number) {
-            end = mid - 1;
-        } else {
-            if (mid == array.size()-1 || array[mid + 1] > number) {
-                return mid;
-            } else{
-                begin = mid + 1;
-            }
-        }
-        mid = begin + (end - begin) / 2;
-    }
-    return -1;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search_smaller_or_equal</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> end = <span class="built_in">array</span>.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> mid = begin + (end - begin) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (begin &lt; end || begin == end) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &gt; number) &#123;</span><br><span class="line">            end = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (mid == <span class="built_in">array</span>.size()<span class="number">-1</span> || <span class="built_in">array</span>[mid + <span class="number">1</span>] &gt; number) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">                begin = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        mid = begin + (end - begin) / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对于查找IP省份的问题，可以首先将所有IP从小到大进行排序，然后使用二分查找查找最后一个小于等于给定IP的IP。再判断当前IP是否在所查找到的IP所在的区间，如果在则返回对应的归属地，否则返回未找到。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://time.geekbang.org/column/article/42733" target="_blank" rel="noopener">数据结构与算法之美</a></li>
@@ -821,6 +630,10 @@ public int bsearch7(int[] a, int n, int value) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/suan-fa/tiao-biao/" rel="prev" title="动态数据结构-跳表">
+                动态数据结构-跳表 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -896,7 +709,7 @@ public int bsearch7(int[] a, int n, int value) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1067,7 +880,7 @@ public int bsearch7(int[] a, int n, int value) {
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

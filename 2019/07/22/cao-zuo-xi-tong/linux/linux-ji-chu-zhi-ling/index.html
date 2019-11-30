@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="权限控制在Linux中，一个文件存在多种属性，包括r：读、w：写、x：执行等基本权限，以及是否为目录（d）、文件（-）或者连接文件（l）等属性。 可以使用下述属性对文件或文件夹的属性进行修改：  chgrp：修改用户组 chown：修改文件所有者 chmod：修改文件权限  当我们使用ls -l指令列出文件的权限时，一般如下所示： drwxrwxrwx  上述表示方法中，第一个字符表示文件的的属性">
+  <meta name="description" content="权限控制在Linux中，一个文件存在多种属性，包括r：读、w：写、x：执行等基本权限，以及是否为目录（d）、文件（-）或者连接文件（l）等属性。 可以使用下述属性对文件或文件夹的属性进行修改：  chgrp：修改用户组 chown：修改文件所有者 chmod：修改文件权限  当我们使用ls -l指令列出文件的权限时，一般如下所示： 1drwxrwxrwx 上述表示方法中，第一个字符表示文件的的属性">
 <meta name="keywords" content="linux,操作系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux基础指令">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/07/22/cao-zuo-xi-tong/linux/linux-ji-chu-zhi-ling/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="权限控制在Linux中，一个文件存在多种属性，包括r：读、w：写、x：执行等基本权限，以及是否为目录（d）、文件（-）或者连接文件（l）等属性。 可以使用下述属性对文件或文件夹的属性进行修改：  chgrp：修改用户组 chown：修改文件所有者 chmod：修改文件权限  当我们使用ls -l指令列出文件的权限时，一般如下所示： drwxrwxrwx  上述表示方法中，第一个字符表示文件的的属性">
+<meta property="og:description" content="权限控制在Linux中，一个文件存在多种属性，包括r：读、w：写、x：执行等基本权限，以及是否为目录（d）、文件（-）或者连接文件（l）等属性。 可以使用下述属性对文件或文件夹的属性进行修改：  chgrp：修改用户组 chown：修改文件所有者 chmod：修改文件权限  当我们使用ls -l指令列出文件的权限时，一般如下所示： 1drwxrwxrwx 上述表示方法中，第一个字符表示文件的的属性">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.664Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux基础指令">
-<meta name="twitter:description" content="权限控制在Linux中，一个文件存在多种属性，包括r：读、w：写、x：执行等基本权限，以及是否为目录（d）、文件（-）或者连接文件（l）等属性。 可以使用下述属性对文件或文件夹的属性进行修改：  chgrp：修改用户组 chown：修改文件所有者 chmod：修改文件权限  当我们使用ls -l指令列出文件的权限时，一般如下所示： drwxrwxrwx  上述表示方法中，第一个字符表示文件的的属性">
+<meta name="twitter:description" content="权限控制在Linux中，一个文件存在多种属性，包括r：读、w：写、x：执行等基本权限，以及是否为目录（d）、文件（-）或者连接文件（l）等属性。 可以使用下述属性对文件或文件夹的属性进行修改：  chgrp：修改用户组 chown：修改文件所有者 chmod：修改文件权限  当我们使用ls -l指令列出文件的权限时，一般如下所示： 1drwxrwxrwx 上述表示方法中，第一个字符表示文件的的属性">
 
 
 
@@ -530,33 +530,27 @@
 <li>chmod：修改文件权限</li>
 </ul>
 <p>当我们使用<code>ls -l</code>指令列出文件的权限时，一般如下所示：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">drwxrwxrwx
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drwxrwxrwx</span><br></pre></td></tr></table></figure>
 <p>上述表示方法中，第一个字符表示文件的的属性，接下来的字符每三个为一组，分别表示文件所有者、用户组以及其它的属性。</p>
 <h3 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h3><p>可以使用chmod指令修改文件或文件夹的权限，其用法如下：</p>
 <ul>
 <li><p>直接指定相应的权限</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">chmod a=rwx test.txt
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a=rwx test.txt</span><br></pre></td></tr></table></figure>
 <p>指的是：给所有的用户都赋予<code>rwx</code>权限。</p>
 </li>
 <li><p>使用数字表示法</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">chmod 777 test.txt
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 test.txt</span><br></pre></td></tr></table></figure>
 <p>r w x分别对应数字4 2 1，所赋予的权限即为对应数字之和，例如：上述命令表示：拥有者、用户组、其它所对应的使用权限均为rwx。</p>
 </li>
 </ul>
 <h3 id="文件默认权限-umask"><a href="#文件默认权限-umask" class="headerlink" title="文件默认权限 umask"></a>文件默认权限 umask</h3><p>在创建文件时，其默认权限为（-rw-rw-rw-），即默认没有可执行权限，在创建目录时，其默认权限为（drwxrwxrwx），默认为所有权限均开放。</p>
 <p>可以使用指令<code>umask</code>设定所创建的文件或目录的默认权限，需要注意的是：umask的分数指的是“该默认值需要减去的权限”。</p>
 <p><code>umask</code>默认的分数为<code>022</code>，可以直接使用如下指令修改<code>umask</code>的分数：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">umask 002
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umask 002</span><br></pre></td></tr></table></figure>
 <p>新建文件时，若使用了<code>umask</code>指令，则默认权限为：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">(-rw-rw-rw-)-(-----w--w-)==>-rw-r--r--
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(-rw-rw-rw-)-(-----w--w-)==&gt;-rw-r--r--</span><br></pre></td></tr></table></figure>
 <p>新建目录时，默认权限为：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">(drwxrwxrwx)-(d----w--w-)==>drwxr-xr-x
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(drwxrwxrwx)-(d----w--w-)==&gt;drwxr-xr-x</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -683,7 +677,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -854,7 +848,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

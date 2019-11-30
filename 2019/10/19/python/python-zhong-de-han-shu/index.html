@@ -528,74 +528,17 @@
 <p>该博客主要记录Python中函数的一些高级用法，例如函数变量作用域、闭包、固定函数的部分参数等。该博客的大部分内容来自《Python Cookbook》。</p>
 <h2 id="函数变量作用域"><a href="#函数变量作用域" class="headerlink" title="函数变量作用域"></a>函数变量作用域</h2><p>Python函数中变量的作用域和其它语言类似。如果变量是在函数内部定义的，就称为局部变量，只在函数内部有效。一旦函数执行完毕，局部变量就会被回收，无法访问。</p>
 <p>而全局变量是定义在整个文件层次上的，如果局部变量和全局或者外部变量同名，局部变量会覆盖全局或者外部变量。但这里要注意的一点是我们不能直接在函数中改变全局变量的值，如下述代码：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">MIN_VALUE = 1
-MAX_VALUE = 10
-def validation_check(value):
-    ...
-    MIN_VALUE += 1
-    ...
-validation_check(5)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MIN_VALUE = <span class="number">1</span></span><br><span class="line">MAX_VALUE = <span class="number">10</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validation_check</span><span class="params">(value)</span>:</span></span><br><span class="line">    ...</span><br><span class="line">    MIN_VALUE += <span class="number">1</span></span><br><span class="line">    ...</span><br><span class="line">validation_check(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
 <p>会引发以下错误：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">UnboundLocalError: local variable 'MIN_VALUE' referenced before assignment
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UnboundLocalError: local variable <span class="string">'MIN_VALUE'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
 <p>因为，Python的解释器会默认函数内部的变量为局部变量，但是局部变量尚未被声明，因而无法执行相关操作。所有，如果我们一定要在函数内部改变全局变量的值，必须加上<code>global</code>声明：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 变量作用域
-MIN_VALUE = 1
-def func():
-    global MIN_VALUE 
-    MIN_VALUE = 3
-    print("Inner value: %d" % MIN_VALUE)
-
-func()
-print('Outer value: %d' % MIN_VALUE)
-
-# 结果
-Inner value: 3
-Outer value: 3
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 变量作用域</span></span><br><span class="line">MIN_VALUE = <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> MIN_VALUE </span><br><span class="line">    MIN_VALUE = <span class="number">3</span></span><br><span class="line">    print(<span class="string">"Inner value: %d"</span> % MIN_VALUE)</span><br><span class="line"></span><br><span class="line">func()</span><br><span class="line">print(<span class="string">'Outer value: %d'</span> % MIN_VALUE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line">Inner value: <span class="number">3</span></span><br><span class="line">Outer value: <span class="number">3</span></span><br></pre></td></tr></table></figure>
 <p>如果我们在函数中重新声明一个同名的局部变量，那么在函数内部局部变量会覆盖全局变量，无论对内部局部变量进行何种操作都不会影响到外部的全局变量：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># %%
-# 变量作用域
-MIN_VALUE = 1
-def func():
-    MIN_VALUE = 3
-    print("Inner value: %d" % MIN_VALUE)
-
-func()
-print('Outer value: %d' % MIN_VALUE)
-
-# 结果
-Inner value: 3
-Outer value: 1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># %%</span></span><br><span class="line"><span class="comment"># 变量作用域</span></span><br><span class="line">MIN_VALUE = <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    MIN_VALUE = <span class="number">3</span></span><br><span class="line">    print(<span class="string">"Inner value: %d"</span> % MIN_VALUE)</span><br><span class="line"></span><br><span class="line">func()</span><br><span class="line">print(<span class="string">'Outer value: %d'</span> % MIN_VALUE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line">Inner value: <span class="number">3</span></span><br><span class="line">Outer value: <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>类似，对于嵌套函数来说，内部函数是无法改变外部函数定义的变量的，如果要修改就需要加上<code>nonlocal</code>关键字：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def outer():
-    x = "local"
-    def inner():
-        nonlocal x # nonlocal 关键字表示这里的 x 就是外部函数 outer 定义的变量 x
-        x = 'nonlocal'
-        print("inner:", x)
-    inner()
-    print("outer:", x)
-outer()
-# 输出
-inner: nonlocal
-outer: nonlocal
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="string">"local"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> x <span class="comment"># nonlocal 关键字表示这里的 x 就是外部函数 outer 定义的变量 x</span></span><br><span class="line">        x = <span class="string">'nonlocal'</span></span><br><span class="line">        print(<span class="string">"inner:"</span>, x)</span><br><span class="line">    inner()</span><br><span class="line">    print(<span class="string">"outer:"</span>, x)</span><br><span class="line">outer()</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">inner: <span class="keyword">nonlocal</span></span><br><span class="line">outer: <span class="keyword">nonlocal</span></span><br></pre></td></tr></table></figure>
 <p>如果没有<code>nonlocal</code>关键字，内部的变量会覆盖外部变量：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def outer():
-    x = "local"
-    def inner():
-        x = 'nonlocal' # 这里的 x 是 inner 这个函数的局部变量
-        print("inner:", x)
-    inner()
-    print("outer:", x)
-outer()
-# 输出
-inner: nonlocal
-outer: local
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="string">"local"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        x = <span class="string">'nonlocal'</span> <span class="comment"># 这里的 x 是 inner 这个函数的局部变量</span></span><br><span class="line">        print(<span class="string">"inner:"</span>, x)</span><br><span class="line">    inner()</span><br><span class="line">    print(<span class="string">"outer:"</span>, x)</span><br><span class="line">outer()</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">inner: <span class="keyword">nonlocal</span></span><br><span class="line">outer: local</span><br></pre></td></tr></table></figure>
 <p>总的来说，如果我们想要在函数作用域里面修改函数外部的变量的值，就必须使用相应的关键字进行提前声明。</p>
 <h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>该部分参考<a href="https://foofish.net/python-closure.html" target="_blank" rel="noopener">Python之禅-一步一步教你认识Python闭包</a>。</p>
 <p>闭包的作用：使得局部变量在函数外被访问成为可能。闭包返回内部的嵌套函数。</p>
@@ -603,172 +546,28 @@ outer: local
 <p>在计算机科学中，闭包（Closure）是词法闭包（Lexical Closure）的简称，是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体。</p>
 </blockquote>
 <p>以下述代码为例：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def print_msg():
-    # print_msg 是外围函数
-    msg = "zen of python"
-    def printer():
-        # printer 是嵌套函数
-        print(msg)
-    return printer
-
-another = print_msg()
-# 输出 zen of python
-another()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_msg</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># print_msg 是外围函数</span></span><br><span class="line">    msg = <span class="string">"zen of python"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printer</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="comment"># printer 是嵌套函数</span></span><br><span class="line">        print(msg)</span><br><span class="line">    <span class="keyword">return</span> printer</span><br><span class="line"></span><br><span class="line">another = print_msg()</span><br><span class="line"><span class="comment"># 输出 zen of python</span></span><br><span class="line">another()</span><br></pre></td></tr></table></figure>
 <p>这里的<code>another</code>就是一个闭包，闭包本质上是一个函数，由两部分组成：<code>printer</code>函数和变量<code>msg</code>。闭包的作用是使得变量始终被保存在内存中。</p>
 <blockquote>
 <p>闭包，顾名思义，就是一个封闭的包裹，里面包裹着自由变量，就像在类里面定义的属性值一样，自由变量的可见范围随同包裹，哪里可以访问到这个包裹，哪里就可以访问到这个自由变量。</p>
 </blockquote>
 <p>除此之外，如果一个函数被反复调用，且在这个函数的开始会调用一些类型检查、参数初始化的语句时，就可以使用闭包来实现。</p>
 <h2 id="使用函数替代只有单个方法的类"><a href="#使用函数替代只有单个方法的类" class="headerlink" title="使用函数替代只有单个方法的类"></a>使用函数替代只有单个方法的类</h2><p>有时，我们需要在执行函数的过程中保存其中的一些状态变量。一种最简单的方法是定义一个类，使用类的属性保存变量，但这种做法未免过于冗余。为了简单起见，我们可以使用闭包技术将其转换为一个函数。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用类保存状态
-from urllib.request import urlopen
-
-class UrlTemplate:
-    def __init__(self, template):
-        self.template = template
-
-    def open(self, **kwargs):
-        return urlopen(self.template.format_map(kwargs))
-
-
-yahoo = UrlTemplate('http://finance.yahoo.com/d/quotes.csv?s={names}&f={fields}')
-for line in yahoo.open(names='IBM,AAPL,FB', fields='sllclv'):
-    print(line.decode('utf-8'))
-
-
-# 使用闭包
-def urltemplate(template):
-    def opener(**kwargs):
-        return urlopen(template.format_map(kwargs))
-    return opener
-
-
-yahoo = urltemplate('http://finance.yahoo.com/d/quotes.csv?s={names}&f={fields}')
-for line in yahoo(names='IBM,AAPL,FB', fields='sllclv'):
-    print(line.decode('utf-8'))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用类保存状态</span></span><br><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> urlopen</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UrlTemplate</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, template)</span>:</span></span><br><span class="line">        self.template = template</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> urlopen(self.template.format_map(kwargs))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">yahoo = UrlTemplate(<span class="string">'http://finance.yahoo.com/d/quotes.csv?s=&#123;names&#125;&amp;f=&#123;fields&#125;'</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> yahoo.open(names=<span class="string">'IBM,AAPL,FB'</span>, fields=<span class="string">'sllclv'</span>):</span><br><span class="line">    print(line.decode(<span class="string">'utf-8'</span>))</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 使用闭包</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">urltemplate</span><span class="params">(template)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">opener</span><span class="params">(**kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> urlopen(template.format_map(kwargs))</span><br><span class="line">    <span class="keyword">return</span> opener</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">yahoo = urltemplate(<span class="string">'http://finance.yahoo.com/d/quotes.csv?s=&#123;names&#125;&amp;f=&#123;fields&#125;'</span>)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> yahoo(names=<span class="string">'IBM,AAPL,FB'</span>, fields=<span class="string">'sllclv'</span>):</span><br><span class="line">    print(line.decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
 <p>相比于使用只有单个方法的类，使用闭包会更加简洁优雅。闭包的核心就是它可以记住定义闭包时的环境。无论何时，当在编写代码时遇到需要附加额外的状态给函数时，请考虑闭包。</p>
 <h2 id="在回调函数中携带额外的状态"><a href="#在回调函数中携带额外的状态" class="headerlink" title="在回调函数中携带额外的状态"></a>在回调函数中携带额外的状态</h2><p>在实际项目中，我们会编写许多需要回调函数的代码，有时我们需要在回调函数中保存额外的状态。与上一小节类似，我们可以考虑使用类来实现这一功能。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用类保存额外的状态
-class ResultHandler:
-    def __init__(self):
-        self.sequence = 0
-
-    def handler(self, result):
-        self.sequence += 1
-        print('[{}] Got: {}'.format(self.sequence, result))
-
-
-def apply_async(func, args, *, callback):
-    result = func(*args)
-    # 调用回调函数
-    callback(result)
-
-
-def add(x, y):
-    return x + y
-
-
-r = ResultHandler()
-apply_async(add, (2, 3), callback=r.handler)
-apply_async(add, ('hello', 'world'), callback=r.handler)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用类保存额外的状态</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResultHandler</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.sequence = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">(self, result)</span>:</span></span><br><span class="line">        self.sequence += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(self.sequence, result))</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_async</span><span class="params">(func, args, *, callback)</span>:</span></span><br><span class="line">    result = func(*args)</span><br><span class="line">    <span class="comment"># 调用回调函数</span></span><br><span class="line">    callback(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">r = ResultHandler()</span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=r.handler)</span><br><span class="line">apply_async(add, (<span class="string">'hello'</span>, <span class="string">'world'</span>), callback=r.handler)</span><br></pre></td></tr></table></figure>
 <p>运行结果如下：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">[1] Got: 5
-[2] Got: helloworld
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1] Got: 5</span><br><span class="line">[2] Got: helloworld</span><br></pre></td></tr></table></figure>
 <p>同样，我们也可以使用闭包来捕获状态：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用闭包
-def make_handler():
-    sequence = 0
-    def handler(result):
-        # nonlocal声明用于表明变量sequence是在回调函数中修改的
-        nonlocal sequence
-        sequence += 1
-        print('[{}] Got: {}'.format(sequence, result))
-
-    return handler
-
-
-handler = make_handler()
-apply_async(add, (2, 3), callback=handler)
-apply_async(add, ('hello', 'world'), callback=handler)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用闭包</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_handler</span><span class="params">()</span>:</span></span><br><span class="line">    sequence = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">(result)</span>:</span></span><br><span class="line">        <span class="comment"># nonlocal声明用于表明变量sequence是在回调函数中修改的</span></span><br><span class="line">        <span class="keyword">nonlocal</span> sequence</span><br><span class="line">        sequence += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(sequence, result))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> handler</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">handler = make_handler()</span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=handler)</span><br><span class="line">apply_async(add, (<span class="string">'hello'</span>, <span class="string">'world'</span>), callback=handler)</span><br></pre></td></tr></table></figure>
 <p>除此之外，还可以使用<strong>协程</strong>来携带状态：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python"># 使用协程的方式在回调函数中携带状态
-def apply_async(func, args, *, callback):
-    result = func(*args)
-    # 调用回调函数
-    callback(result)
-
-
-def add(x, y):
-    return x + y
-
-
-def make_handler():
-    sequence = 0
-    while(True):
-        result = yield
-        sequence += 1
-        print('[{}] Got: {}'.format(sequence, result))
-
-
-handler = make_handler()
-next(handler)
-apply_async(add, (2, 3), callback=handler.send)
-apply_async(add, ('hello', 'world'), callback=handler.send)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用协程的方式在回调函数中携带状态</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_async</span><span class="params">(func, args, *, callback)</span>:</span></span><br><span class="line">    result = func(*args)</span><br><span class="line">    <span class="comment"># 调用回调函数</span></span><br><span class="line">    callback(result)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_handler</span><span class="params">()</span>:</span></span><br><span class="line">    sequence = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">True</span>):</span><br><span class="line">        result = <span class="keyword">yield</span></span><br><span class="line">        sequence += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(sequence, result))</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">handler = make_handler()</span><br><span class="line">next(handler)</span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=handler.send)</span><br><span class="line">apply_async(add, (<span class="string">'hello'</span>, <span class="string">'world'</span>), callback=handler.send)</span><br></pre></td></tr></table></figure>
 <p>最后，也可以使用额外的参数在回调函数中携带状态：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">from functools import partial
-
-
-def apply_async(func, args, *, callback):
-    result = func(*args)
-    # 调用回调函数
-    callback(result)
-
-
-def add(x, y):
-    return x + y
-
-
-class SequenceNo:
-    def __init__(self):
-        self.sequence = 0
-
-
-def handler(result, seq):
-    seq.sequence += 1
-    print('[{}] Got: {}'.format(seq.sequence, result))
-
-
-seq = SequenceNo()
-apply_async(add, (2, 3), callback=partial(handler, seq=seq))
-apply_async(add, ('hello', 'world'), callback=partial(handler, seq=seq))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_async</span><span class="params">(func, args, *, callback)</span>:</span></span><br><span class="line">    result = func(*args)</span><br><span class="line">    <span class="comment"># 调用回调函数</span></span><br><span class="line">    callback(result)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SequenceNo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.sequence = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">(result, seq)</span>:</span></span><br><span class="line">    seq.sequence += <span class="number">1</span></span><br><span class="line">    print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(seq.sequence, result))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">seq = SequenceNo()</span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=partial(handler, seq=seq))</span><br><span class="line">apply_async(add, (<span class="string">'hello'</span>, <span class="string">'world'</span>), callback=partial(handler, seq=seq))</span><br></pre></td></tr></table></figure>
 <p>在上述代码中，因为要传入额外的参数来保存状态，因而回调函数会多出一个参数。同时，在调用回调函数时，只能传入一个参数，因而需要使用<code>partial</code>函数来解决这一问题。</p>
 <h2 id="访问定义在闭包内的变量"><a href="#访问定义在闭包内的变量" class="headerlink" title="访问定义在闭包内的变量"></a>访问定义在闭包内的变量</h2><p>希望通过函数来扩展闭包，使得在闭包内层定义的变量可以被访问或修改。一般来说，在闭包内层定义的变量对于外界来说是完全隔离的，但是可以通过编写存取函数，并将它们作为函数属性附加到闭包上来提供对内层变量的访问机制。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def sample():
-    n = 0
-    # Closure function
-    def func():
-        print('n=', n)
-
-    # Accessor methods for n
-    def get_n():
-        return n
-
-    def set_n(value):
-        nonlocal n
-        n = value
-
-    # Attach as function attributes
-    func.get_n = get_n
-    func.set_n = set_n
-    return func
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sample</span><span class="params">()</span>:</span></span><br><span class="line">    n = <span class="number">0</span></span><br><span class="line">    <span class="comment"># Closure function</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'n='</span>, n)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Accessor methods for n</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_n</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_n</span><span class="params">(value)</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> n</span><br><span class="line">        n = value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Attach as function attributes</span></span><br><span class="line">    func.get_n = get_n</span><br><span class="line">    func.set_n = set_n</span><br><span class="line">    <span class="keyword">return</span> func</span><br></pre></td></tr></table></figure>
 <p><code>nolocal</code>关键字使得我们可以编写函数来修改内部变量的值；函数属性允许我们用一种简单的方式将方法绑定到闭包函数上。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>Python-Cookbook</li>
@@ -899,7 +698,7 @@ apply_async(add, ('hello', 'world'), callback=partial(handler, seq=seq))
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1070,7 +869,7 @@ apply_async(add, ('hello', 'world'), callback=partial(handler, seq=seq))
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

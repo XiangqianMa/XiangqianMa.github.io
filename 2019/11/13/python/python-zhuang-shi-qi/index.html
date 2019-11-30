@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
+  <meta name="description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： 12345678def func(message):    print(&apos;Got a message: &amp;#123;&amp;#125;&apos;.format(message))    send_message = funcsend">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python装饰器">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/11/13/python/python-zhuang-shi-qi/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
+<meta property="og:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： 12345678def func(message):    print(&apos;Got a message: &amp;#123;&amp;#125;&apos;.format(message))    send_message = funcsend">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-13T13:15:19.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python装饰器">
-<meta name="twitter:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： def func(message):     print(&apos;Got a message: {}&apos;.format(message))  send_message = func send_message(&apos;hello wo">
+<meta name="twitter:description" content="Python装饰器本文为景霄-Python核心技术与实战的学习笔记，如要查看完整内容请点击链接。 从函数到装饰器回顾函数在Python中，函数也是对象，因而我们可以将函数赋予变量： 12345678def func(message):    print(&apos;Got a message: &amp;#123;&amp;#125;&apos;.format(message))    send_message = funcsend">
 
 
 
@@ -512,305 +512,56 @@
       
         <h1 id="Python装饰器"><a href="#Python装饰器" class="headerlink" title="Python装饰器"></a>Python装饰器</h1><p>本文为<a href="https://time.geekbang.org/column/article/100914" target="_blank" rel="noopener">景霄-Python核心技术与实战</a>的学习笔记，如要查看完整内容请点击链接。</p>
 <h2 id="从函数到装饰器"><a href="#从函数到装饰器" class="headerlink" title="从函数到装饰器"></a>从函数到装饰器</h2><h3 id="回顾函数"><a href="#回顾函数" class="headerlink" title="回顾函数"></a>回顾函数</h3><p>在Python中，函数也是对象，因而我们可以将函数赋予变量：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def func(message):
-    print('Got a message: {}'.format(message))
-
-send_message = func
-send_message('hello world')
-
-# 输出
-Got a message: hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(message)</span>:</span></span><br><span class="line">    print(<span class="string">'Got a message: &#123;&#125;'</span>.format(message))</span><br><span class="line">    </span><br><span class="line">send_message = func</span><br><span class="line">send_message(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Got a message: hello world</span><br></pre></td></tr></table></figure>
 <p>也可以将函数作为参数，传入另一个函数：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def get_message(message):
-    return 'Got a message: ' + message
-
-
-def root_call(func, message):
-    print(func(message))
-
-root_call(get_message, 'hello world')
-
-# 输出
-Got a message: hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_message</span><span class="params">(message)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Got a message: '</span> + message</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">root_call</span><span class="params">(func, message)</span>:</span></span><br><span class="line">    print(func(message))</span><br><span class="line">    </span><br><span class="line">root_call(get_message, <span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Got a message: hello world</span><br></pre></td></tr></table></figure>
 <p>也可以进行函数嵌套：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def func(message):
-    def get_message(message):
-        print('Got a message: {}'.format(message))
-    return get_message(message)
-
-func('hello world')
-
-# 输出
-Got a message: hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(message)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_message</span><span class="params">(message)</span>:</span></span><br><span class="line">        print(<span class="string">'Got a message: &#123;&#125;'</span>.format(message))</span><br><span class="line">    <span class="keyword">return</span> get_message(message)</span><br><span class="line"></span><br><span class="line">func(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Got a message: hello world</span><br></pre></td></tr></table></figure>
 <p>如果在上述嵌套中，返回的对象是函数，那么就构成了闭包：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def func_closure():
-    def get_message(message):
-        print('Got a message: {}'.format(message))
-    return get_message
-
-send_message = func_closure()
-send_message('hello world')
-
-# 输出
-Got a message: hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_closure</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_message</span><span class="params">(message)</span>:</span></span><br><span class="line">        print(<span class="string">'Got a message: &#123;&#125;'</span>.format(message))</span><br><span class="line">    <span class="keyword">return</span> get_message</span><br><span class="line"></span><br><span class="line">send_message = func_closure()</span><br><span class="line">send_message(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Got a message: hello world</span><br></pre></td></tr></table></figure>
 <h3 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h3><p>一个较为简单的自定义装饰器实现：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def my_decorator(func):
-    def wrapper():
-        print('wrapper of decorator')
-        func()
-    return wrapper
-
-def greet():
-    print('hello world')
-
-greet = my_decorator(greet)
-greet()
-
-# 输出
-wrapper of decorator
-hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'wrapper of decorator'</span>)</span><br><span class="line">        func()</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line">greet = my_decorator(greet)</span><br><span class="line">greet()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">wrapper of decorator</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
 <p>变量<code>greet</code>指向内部函数<code>wrapper()</code>，内部函数包裹原函数<code>greet()</code>。这里的<code>my_decorator()</code>就是一个装饰器，它将真正需要执行的函数<code>greet()</code>包裹在内，同时改变其行为，但不改变原函数。</p>
 <blockquote>
 <p>所谓装饰器就是通过装饰器函数来修改（添加）原函数的一些功能，而不需要直接对原始函数进行修改。</p>
 <p>Decorators is to modify the behavior of the function through a wrapper so we don’t have to actually modify the function.</p>
 </blockquote>
 <p>在上述代码中，我们自己手动将<code>greet()</code>函数传入<code>my_decorator()</code>函数中，在Python中有着更为简洁的实现：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def my_decorator(func):
-    def wrapper():
-        print('wrapper of decorator')
-        func()
-    return wrapper
-
-@my_decorator
-def greet():
-    print('hello world')
-
-greet()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">'wrapper of decorator'</span>)</span><br><span class="line">        func()</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line">greet()</span><br></pre></td></tr></table></figure>
 <p><code>@</code>被称为语法糖，<code>@my_decorator</code>相当于<code>greet = my_decorator(greet)</code>语句。</p>
 <h2 id="带有参数的装饰器"><a href="#带有参数的装饰器" class="headerlink" title="带有参数的装饰器"></a>带有参数的装饰器</h2><p>如果原函数存在参数，那么如何定义装饰器？</p>
 <p>直接在对应的装饰器函数<code>wrapper()</code>上添加相应的参数：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">  def my_decorator(func):
-      def wrapper(message):
-          print('wrapper of decorator')
-          func(message)
-      return wrapper
-
-
-  @my_decorator
-  def greet(message):
-      print(message)
-
-
-  greet('hello world')
-  # 输出
-  wrapper of decorator
-  hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(message)</span>:</span></span><br><span class="line">        print(<span class="string">'wrapper of decorator'</span>)</span><br><span class="line">        func(message)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">(message)</span>:</span></span><br><span class="line">    print(message)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">greet(<span class="string">'hello world'</span>)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">wrapper of decorator</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
 <p>但是如果想把这个装饰器用于另一个具有多个参数的函数时，上述做法就不适用。<br>此时就可以使用<code>*args</code>和<code>**kwargs</code>，如下所示：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">  def my_decorator(func):
-      def wrapper(*args, **kwargs):
-          print('wrapper of decorator')
-          func(*args, **kwargs)
-      return wrapper
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'wrapper of decorator'</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
 <h2 id="带有自定义参数的装饰器"><a href="#带有自定义参数的装饰器" class="headerlink" title="带有自定义参数的装饰器"></a>带有自定义参数的装饰器</h2><p>装饰器除了可以接受原函数任意类型和数量的参数外，还可以定义自己接收的参数。</p>
 <p>例如，使用一个参数表示装饰器内部函数被执行的次数：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def repeat(num):
-    def my_decorator(func):
-        def wrapper(*args, **kwargs):
-            for i in range(num):
-                print('wrapper of decorator')
-                func(*args, **kwargs)
-        return wrapper
-    return my_decorator
-
-
-@repeat(4)
-def greet(message):
-    print(message)
-
-greet('hello world')
-
-# 输出：
-wrapper of decorator
-hello world
-wrapper of decorator
-hello world
-wrapper of decorator
-hello world
-wrapper of decorator
-hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">repeat</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(num):</span><br><span class="line">                print(<span class="string">'wrapper of decorator'</span>)</span><br><span class="line">                func(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> my_decorator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@repeat(4)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">(message)</span>:</span></span><br><span class="line">    print(message)</span><br><span class="line"></span><br><span class="line">greet(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line">wrapper of decorator</span><br><span class="line">hello world</span><br><span class="line">wrapper of decorator</span><br><span class="line">hello world</span><br><span class="line">wrapper of decorator</span><br><span class="line">hello world</span><br><span class="line">wrapper of decorator</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
 <p>相当于在之前的<code>my_decorator()</code>之外再添加了一层函数，并且在定义装饰器时首先生成了外层函数的对象，返回<code>my_decorator()</code>。</p>
 <h2 id="原函数发生变化了吗？"><a href="#原函数发生变化了吗？" class="headerlink" title="原函数发生变化了吗？"></a>原函数发生变化了吗？</h2><p>对于上述例子，打印原函数的元信息：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">greet.__name__
-## 输出
-'wrapper'
-
-help(greet)
-# 输出
-Help on function wrapper in module __main__:
-
-wrapper(*args, **kwargs)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">greet.__name__</span><br><span class="line"><span class="comment">## 输出</span></span><br><span class="line"><span class="string">'wrapper'</span></span><br><span class="line"></span><br><span class="line">help(greet)</span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">Help on function wrapper <span class="keyword">in</span> module __main__:</span><br><span class="line"></span><br><span class="line">wrapper(*args, **kwargs)</span><br></pre></td></tr></table></figure>
 <p>发现，经过装饰器装饰后，原函数的信息发生了变化，变成了<code>wrapper()</code>函数。</p>
 <p>此时，可以使用内置装饰器<code>@functools.wrap</code>来保留原函数的元信息：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-import functools
-
-def my_decorator(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        print('wrapper of decorator')
-        func(*args, **kwargs)
-    return wrapper
-
-@my_decorator
-def greet(message):
-    print(message)
-
-greet.__name__
-
-# 输出
-'greet'
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'wrapper of decorator'</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line">    </span><br><span class="line"><span class="meta">@my_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">(message)</span>:</span></span><br><span class="line">    print(message)</span><br><span class="line"></span><br><span class="line">greet.__name__</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="string">'greet'</span></span><br></pre></td></tr></table></figure>
 <h2 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h2><p>除了函数可以被用作装饰器外，类也可以被用作装饰器。类装饰器主要通过函数<code>__call__()</code>实现：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-class Count:
-    def __init__(self, func):
-        self.func = func
-        self.num_calls = 0
-
-    def __call__(self, *args, **kwargs):
-        self.num_calls += 1
-        print('num of calls is: {}'.format(self.num_calls))
-        return self.func(*args, **kwargs)
-
-@Count
-def example():
-    print("hello world")
-
-example()
-
-# 输出
-num of calls is: 1
-hello world
-
-example()
-
-# 输出
-num of calls is: 2
-hello world
-
-...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Count</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func)</span>:</span></span><br><span class="line">        self.func = func</span><br><span class="line">        self.num_calls = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        self.num_calls += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'num of calls is: &#123;&#125;'</span>.format(self.num_calls))</span><br><span class="line">        <span class="keyword">return</span> self.func(*args, **kwargs)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Count</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">example</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"hello world"</span>)</span><br><span class="line"></span><br><span class="line">example()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">num of calls <span class="keyword">is</span>: <span class="number">1</span></span><br><span class="line">hello world</span><br><span class="line"></span><br><span class="line">example()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">num of calls <span class="keyword">is</span>: <span class="number">2</span></span><br><span class="line">hello world</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <h2 id="装饰器的嵌套"><a href="#装饰器的嵌套" class="headerlink" title="装饰器的嵌套"></a>装饰器的嵌套</h2><p>Python支持多个装饰器的嵌套：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">@decorator1
-@decorator2
-@decorator3
-def func():
-    ...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorator1</span></span><br><span class="line"><span class="meta">@decorator2</span></span><br><span class="line"><span class="meta">@decorator3</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 <p>上述代码从里向外执行：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">decorator1(decorator2(decorator3(func)))
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decorator1(decorator2(decorator3(func)))</span><br></pre></td></tr></table></figure>
 <p>多层嵌套例子</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-import functools
-
-def my_decorator1(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        print('execute decorator1')
-        func(*args, **kwargs)
-    return wrapper
-
-
-def my_decorator2(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        print('execute decorator2')
-        func(*args, **kwargs)
-    return wrapper
-
-
-@my_decorator1
-@my_decorator2
-def greet(message):
-    print(message)
-
-
-greet('hello world')
-
-# 输出
-execute decorator1
-execute decorator2
-hello world
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator1</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'execute decorator1'</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_decorator2</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'execute decorator2'</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@my_decorator1</span></span><br><span class="line"><span class="meta">@my_decorator2</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">(message)</span>:</span></span><br><span class="line">    print(message)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">greet(<span class="string">'hello world'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">execute decorator1</span><br><span class="line">execute decorator2</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
 <h2 id="装饰器的用法"><a href="#装饰器的用法" class="headerlink" title="装饰器的用法"></a>装饰器的用法</h2><p>我们可以将在执行一个函数之前需要做的事情交给装饰器去做，同时不改变原始函数的行为。</p>
 <h3 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h3><p>在进行某个操作前，常需要首先进行身份认证，此时就可以使用装饰器完成，使用装饰器来完成身份验证的任务：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-import functools
-
-def authenticate(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        request = args[0]
-        if check_user_logged_in(request): # 如果用户处于登录状态
-            return func(*args, **kwargs) # 执行函数post_comment() 
-        else:
-            raise Exception('Authentication failed')
-    return wrapper
-
-@authenticate
-def post_comment(request, ...)
-    ...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">authenticate</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        request = args[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> check_user_logged_in(request): <span class="comment"># 如果用户处于登录状态</span></span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs) <span class="comment"># 执行函数post_comment() </span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">'Authentication failed'</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line">    </span><br><span class="line"><span class="meta">@authenticate</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_comment</span><span class="params">(request, ...)</span></span></span><br><span class="line"><span class="function">    ...</span></span><br></pre></td></tr></table></figure>
 <p>这样，每次在调用<code>post_comment()</code>之前都会调用认证步骤。</p>
 <h3 id="日志记录"><a href="#日志记录" class="headerlink" title="日志记录"></a>日志记录</h3><p>想要统计某段代码的运行耗时，就可以使用装饰器实现：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-import time
-import functools
-
-def log_execution_time(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        res = func(*args, **kwargs)
-        end = time.perf_counter()
-        print('{} took {} ms'.format(func.__name__, (end - start) * 1000))
-        return res
-    return wrapper
-
-@log_execution_time
-def calculate_similarity(items):
-    ...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log_execution_time</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        start = time.perf_counter()</span><br><span class="line">        res = func(*args, **kwargs)</span><br><span class="line">        end = time.perf_counter()</span><br><span class="line">        print(<span class="string">'&#123;&#125; took &#123;&#125; ms'</span>.format(func.__name__, (end - start) * <span class="number">1000</span>))</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line">    </span><br><span class="line"><span class="meta">@log_execution_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_similarity</span><span class="params">(items)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 <h3 id="输入合理性检查"><a href="#输入合理性检查" class="headerlink" title="输入合理性检查"></a>输入合理性检查</h3><p>在大型公司的机器学习框架中，在调用机器进行模型训练前，常使用装饰器对器输入进行合理性检查，以避免输入错误带来的额外开销：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-import functools
-
-def validation_check(input):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs): 
-        ... # 检查输入是否合法
-
-@validation_check
-def neural_network_training(param1, param2, ...):
-    ...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validation_check</span><span class="params">(input)</span>:</span></span><br><span class="line"><span class="meta">    @functools.wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span> </span><br><span class="line">        ... <span class="comment"># 检查输入是否合法</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">@validation_check</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">neural_network_training</span><span class="params">(param1, param2, ...)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 <h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>LRU cache在Python中表示为<code>@lru_cache</code>，该装饰器会缓存进程中的函数参数和结果，当缓存满后，删除最近最久未使用的数据。</p>
 <p>在实际工程中，可以将一些反复调用的函数使用<code>@lru_cache</code>装饰器进行装饰，这样，当调用相同相同的函数对象时便会直接从缓存中获得结果，而不用再次调用函数。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">@lru_cache
-def check(param1, param2, ...) # 检查用户设备类型，版本号等等
-    ...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@lru_cache</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(param1, param2, ...)</span> # 检查用户设备类型，版本号等等</span></span><br><span class="line"><span class="function">    ...</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -937,7 +688,7 @@ def check(param1, param2, ...) # 检查用户设备类型，版本号等等
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1108,7 +859,7 @@ def check(param1, param2, ...) # 检查用户设备类型，版本号等等
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

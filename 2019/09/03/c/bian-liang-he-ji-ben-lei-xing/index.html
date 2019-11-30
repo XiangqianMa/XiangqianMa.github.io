@@ -548,111 +548,29 @@
 </ol>
 <p><strong>void指针</strong> 该类型的指针所指向的地址中存放的对象的类型并不确定。</p>
 <h3 id="4-const限定符"><a href="#4-const限定符" class="headerlink" title="4 const限定符"></a>4 const限定符</h3><p>const对象的值一旦创建后其值就不能再改变，所以const对象必须进行初始化。</p>
-<p>在<strong>默认状态下，const对象仅在文件内有效</strong>，当多个文件中出现了同名的const对象时，其实等同于在不同文件中分别定义了独立的变量。当我们希望在不同文件之间使用同一const对象时（只在一个文件中定义const，而在多个文件中声明并使用它），则需要添加<code>extern</code>关键字，如。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// file_1.cc定义并初始化一个常量，该常量可被其他文件访问
-
-extern const int bufSize = fcn();
-
-// file_1.h头文件
-
-extern const int bufSize;// 与file_1.cc中定义的bufSize是同一个。
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在<strong>默认状态下，const对象仅在文件内有效</strong>，当多个文件中出现了同名的const对象时，其实等同于在不同文件中分别定义了独立的变量。当我们希望在不同文件之间使用同一const对象时（只在一个文件中定义const，而在多个文件中声明并使用它），则需要添加<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```c++</span><br><span class="line">// file_1.cc定义并初始化一个常量，该常量可被其他文件访问</span><br><span class="line"></span><br><span class="line">extern const int bufSize = fcn();</span><br><span class="line"></span><br><span class="line">// file_1.h头文件</span><br><span class="line"></span><br><span class="line">extern const int bufSize;// 与file_1.cc中定义的bufSize是同一个。</span><br></pre></td></tr></table></figure></p>
 <p>定义对const的引用后，不允许使用引用去改变它所绑定的对象。</p>
 <h4 id="4-1-指针和const"><a href="#4-1-指针和const" class="headerlink" title="4.1 指针和const"></a>4.1 指针和const</h4><h5 id="指向常量的指针"><a href="#指向常量的指针" class="headerlink" title="指向常量的指针"></a>指向常量的指针</h5><p>指向常量的指针不能用于改变其所指对象的值，只能使用指向常量的指针存放常量对象的地址。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">const double pi = 3.14;
-
-const double *cptr = &pi;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> pi = <span class="number">3.14</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> *cptr = &amp;pi;</span><br></pre></td></tr></table></figure>
 <p>在初始化指向常量的指针时，既可以使用字面值进行初始化，也可以使用常量、非常量进行初始化。</p>
 <blockquote>
 <p>和常量引用一样，指向常量的指针没有规定其所指向的对象必须是一个常量，只是限定不能使用指针（通过<strong>解引用符</strong>（操作符*））更改对象的值。</p>
 </blockquote>
 <h5 id="常量指针（const-pointer）"><a href="#常量指针（const-pointer）" class="headerlink" title="常量指针（const pointer）"></a>常量指针（const pointer）</h5><p>指针本身是常量，const修饰符修饰的是指针本身。意味着，初始化之后指针所存储的地址值不能被改变。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int errNumb = 0;
-
-int j;
-
-int *const curErr = &errNumb;// 从右往左进行解读，const说明curErr是常量，*说明是常量指针，int说明指向的对象是整形。
-
-curErr = &j;// 错误，改变了常量指针所存储的地址值。
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> errNumb = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> curErr = &amp;errNumb;<span class="comment">// 从右往左进行解读，const说明curErr是常量，*说明是常量指针，int说明指向的对象是整形。</span></span><br><span class="line"></span><br><span class="line">curErr = &amp;j;<span class="comment">// 错误，改变了常量指针所存储的地址值。</span></span><br></pre></td></tr></table></figure>
 <h4 id="4-2-顶层const（top-level-const）"><a href="#4-2-顶层const（top-level-const）" class="headerlink" title="4.2 顶层const（top-level const）"></a>4.2 顶层const（top-level const）</h4><p>指针本身是常量，或者说对象本身是不可变的。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int i = 0;
-
-int *const p1 = &i;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;</span><br></pre></td></tr></table></figure>
 <h4 id="4-3-底层const（low-level-const）"><a href="#4-3-底层const（low-level-const）" class="headerlink" title="4.3 底层const（low-level const）"></a>4.3 底层const（low-level const）</h4><p>指针所指向的对象是常量。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">const int ci = 42;
-
-const int *p2 = &ci;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;</span><br></pre></td></tr></table></figure>
 <h4 id="4-4-区分顶层const和底层const的作用"><a href="#4-4-区分顶层const和底层const的作用" class="headerlink" title="4.4 区分顶层const和底层const的作用"></a>4.4 区分顶层const和底层const的作用</h4><ol>
 <li>赋值操作存在限制,不能将底层const赋值给非底层const。</li>
 </ol>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int num_c = 3;
-
-const int *p_c = &num_c;  //p_c为底层const的指针
-
-int *p_d = p_c;  //错误，不能将底层const指针赋值给非底层const指针
-
-const int *p_d = p_c; //正确，可以将底层const指针复制给底层const指针
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num_c = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p_c = &amp;num_c;  <span class="comment">//p_c为底层const的指针</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *p_d = p_c;  <span class="comment">//错误，不能将底层const指针赋值给非底层const指针</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p_d = p_c; <span class="comment">//正确，可以将底层const指针复制给底层const指针</span></span><br></pre></td></tr></table></figure>
 <ol>
 <li>使用命名的强制类型转换函数const_cast时，需要能够分辨底层const和顶层const，因为const_cast只能改变运算对象的底层const。</li>
 </ol>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">int num_e = 4;
-
-const int *p_e = &num_e;
-
-*p_e = 5;  //错误，不能改变底层const指针指向的内容
-
-int *p_f = const_cast<int *="">(p_e);  //正确，const_cast可以改变运算对象的底层const(这里需要确保num_e不是const)。
-
-*p_f = 5;  //正确，非底层const指针可以改变指向的内容
-
-cout << num_e;  //输出5
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></code></pre>
-<h3 id="5-auto类型说明符"><a href="#5-auto类型说明符" class="headerlink" title="5 auto类型说明符"></a>5 auto类型说明符</h3><p>在编程时，需要把表达式的值赋给变量，则需要知道表达式的值的类型。使用<code>auto</code>可以让编译器分析表达式所属的类型。</p>
-<p>- <code>auto</code>定义的变量必须有初始值。</p>
-<p>- 同一语句中的所有变量的<strong>初始基本数据类型</strong>必须相同。</p>
-<h4 id="5-1-引用与auto"><a href="#5-1-引用与auto" class="headerlink" title="5.1 引用与auto"></a>5.1 引用与auto</h4><p>使用引用的对象的类型作为auto的类型。</p>
-<h4 id="5-2-const与auto"><a href="#5-2-const与auto" class="headerlink" title="5.2 const与auto"></a>5.2 const与auto</h4><p>auto会忽略掉顶层const，而保留底层const。</p>
-<h3 id="6-decltype类型指示符"><a href="#6-decltype类型指示符" class="headerlink" title="6 decltype类型指示符"></a>6 decltype类型指示符</h3><p>希望从表达式的类型推断出要定义的变量的类型，但是不想使用该表达式的值初始化变量，这时就无法使用<code>auto</code>，需要使用<code>decltype</code>。</p>
-<h4 id="6-1-decltype与const"><a href="#6-1-decltype与const" class="headerlink" title="6.1 decltype与const"></a>6.1 decltype与const</h4><p>如果decltype是一个变量，则decltype会返回该变量的类型，而不会忽略任何const。</p>
-<h3 id="7-编写自己的头文件"><a href="#7-编写自己的头文件" class="headerlink" title="7 编写自己的头文件"></a>7 编写自己的头文件</h3><ol>
-<li><p>为了确保各个文件中类的定义一致，类通常被定义在头文件中，而且类所在头文件的名字应与类的名字一样。</p>
-</li>
-<li><p>头文件通常包含那些只能被定义一次的实体，如<code>const constexpr</code>。</p>
-</li>
-</ol>
-<blockquote>
-<p>注意：头文件一旦改变，相关的源文件必须重新编译以获取更新过的声明。</p>
-</blockquote>
-<h4 id="7-1-如何防止头文件的重复包含？"><a href="#7-1-如何防止头文件的重复包含？" class="headerlink" title="7.1 如何防止头文件的重复包含？"></a>7.1 如何防止头文件的重复包含？</h4><p><strong>使用预处理技术</strong></p>
-<blockquote>
-<p><strong>预处理器是在编译之前执行的一段程序，可以部分地改变我们写的程序。</strong></p>
-</blockquote>
-<p><strong>头文件保护符</strong></p>
-<p>头文件保护符属于预处理技术的一种，其状态依赖于预处理变量，预处理变量有两种状态：已定义、未定义。</p>
-<p><code>#define</code> 指令把一个名字设为预处理变量</p>
-<p><code>#ifdef</code> 当且仅当变量已定义时为真</p>
-<p><code>#ifndef</code> 当且仅当变量未定义时为真</p>
-<p>注意：当检查状态为真时，执行后续操作直到<code>#endif</code>指令为止。</p>
-<p>使用头文件保护符防止重复包含头文件的例子：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">#ifndef SALES_DATA_H
-#define SALES_DATA_H
-#include <string.h>
-
-struct Sales_data{
-
-    std::string bookNo;
-
-    unsigned units_sold = 0;
-
-    double revenue = 0.0;
-
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></string.h></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num_e = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p_e = &amp;num_e;</span><br><span class="line"></span><br><span class="line">*p_e = <span class="number">5</span>;  <span class="comment">//错误，不能改变底层const指针指向的内容</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *p_f = <span class="keyword">const_cast</span>&lt;<span class="keyword">int</span> *&gt;(p_e);  <span class="comment">//正确，const_cast可以改变运算对象的底层const(这里需要确保num_e不是const)。</span></span><br><span class="line"></span><br><span class="line">*p_f = <span class="number">5</span>;  <span class="comment">//正确，非底层const指针可以改变指向的内容</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; num_e;  <span class="comment">//输出5</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-auto类型说明符"><a href="#5-auto类型说明符" class="headerlink" title="5 auto类型说明符"></a>5 auto类型说明符</h3><p>在编程时，需要把表达式的值赋给变量，则需要知道表达式的值的类型。使用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">\- ```auto```定义的变量必须有初始值。</span><br><span class="line"></span><br><span class="line">\- 同一语句中的所有变量的**初始基本数据类型**必须相同。</span><br><span class="line"></span><br><span class="line">#### 5.1 引用与auto</span><br><span class="line"></span><br><span class="line">使用引用的对象的类型作为auto的类型。</span><br><span class="line"></span><br><span class="line">#### 5.2 const与auto</span><br><span class="line"></span><br><span class="line">auto会忽略掉顶层const，而保留底层const。</span><br><span class="line"></span><br><span class="line">### 6 decltype类型指示符</span><br><span class="line"></span><br><span class="line">希望从表达式的类型推断出要定义的变量的类型，但是不想使用该表达式的值初始化变量，这时就无法使用```auto```，需要使用```decltype```。</span><br><span class="line"></span><br><span class="line">#### 6.1 decltype与const</span><br><span class="line"></span><br><span class="line">如果decltype是一个变量，则decltype会返回该变量的类型，而不会忽略任何const。</span><br><span class="line"></span><br><span class="line">### 7 编写自己的头文件</span><br><span class="line"></span><br><span class="line">1. 为了确保各个文件中类的定义一致，类通常被定义在头文件中，而且类所在头文件的名字应与类的名字一样。</span><br><span class="line"></span><br><span class="line">2. 头文件通常包含那些只能被定义一次的实体，如```const constexpr```。</span><br><span class="line"></span><br><span class="line">&gt; 注意：头文件一旦改变，相关的源文件必须重新编译以获取更新过的声明。</span><br><span class="line"></span><br><span class="line">#### 7.1 如何防止头文件的重复包含？</span><br><span class="line"></span><br><span class="line">**使用预处理技术**</span><br><span class="line"></span><br><span class="line">&gt; **预处理器是在编译之前执行的一段程序，可以部分地改变我们写的程序。**</span><br><span class="line"></span><br><span class="line">**头文件保护符**</span><br><span class="line"></span><br><span class="line">头文件保护符属于预处理技术的一种，其状态依赖于预处理变量，预处理变量有两种状态：已定义、未定义。</span><br><span class="line"></span><br><span class="line">```#define``` 指令把一个名字设为预处理变量</span><br><span class="line"></span><br><span class="line">```#ifdef``` 当且仅当变量已定义时为真</span><br><span class="line"></span><br><span class="line">```#ifndef``` 当且仅当变量未定义时为真</span><br><span class="line"></span><br><span class="line">注意：当检查状态为真时，执行后续操作直到```#endif```指令为止。</span><br><span class="line"></span><br><span class="line">使用头文件保护符防止重复包含头文件的例子：</span><br><span class="line"></span><br><span class="line">```c++</span><br><span class="line">#ifndef SALES_DATA_H</span><br><span class="line">#define SALES_DATA_H</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">struct Sales_data&#123;</span><br><span class="line"></span><br><span class="line">    std::string bookNo;</span><br><span class="line"></span><br><span class="line">    unsigned units_sold = 0;</span><br><span class="line"></span><br><span class="line">    double revenue = 0.0;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>在其他文件第一次包含<code>Sales_data.h</code>时，程序检查<code>#ifndef SALES_DATA_H</code>为真，则执行后续语句，通过<code>#define SALES_DATA_H</code>定义预处理变量<code>SALES_DATA_H</code>，并将<code>Sales_data.h</code>的内容拷贝至当前程序中。那么当其他文件第二次包含<code>Sales_data.h</code>，程序检查<code>#ifndef SALES_DATA_H</code>为假，则不会执行后续语句，也就不会重复拷贝<code>Sales_data.h</code>头文件。</p>
 <blockquote>
 <p>一般将预处理变量的名称全部大写，并且应该习惯性地加上头文件保护符.</p>
@@ -783,7 +701,7 @@ struct Sales_data{
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -913,7 +831,7 @@ struct Sales_data{
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量和基本类型"><span class="nav-number">1.</span> <span class="nav-text">变量和基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-复合类型"><span class="nav-number">1.1.</span> <span class="nav-text">1 复合类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-引用"><span class="nav-number">1.2.</span> <span class="nav-text">2 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-指针"><span class="nav-number">1.3.</span> <span class="nav-text">3 指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-const限定符"><span class="nav-number">1.4.</span> <span class="nav-text">4 const限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-指针和const"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 指针和const</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#指向常量的指针"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">指向常量的指针</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量指针（const-pointer）"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">常量指针（const pointer）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-顶层const（top-level-const）"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 顶层const（top-level const）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-底层const（low-level-const）"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 底层const（low-level const）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-区分顶层const和底层const的作用"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.4 区分顶层const和底层const的作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-auto类型说明符"><span class="nav-number">1.5.</span> <span class="nav-text">5 auto类型说明符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-引用与auto"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 引用与auto</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-const与auto"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 const与auto</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-decltype类型指示符"><span class="nav-number">1.6.</span> <span class="nav-text">6 decltype类型指示符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-decltype与const"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1 decltype与const</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-编写自己的头文件"><span class="nav-number">1.7.</span> <span class="nav-text">7 编写自己的头文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-如何防止头文件的重复包含？"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.1 如何防止头文件的重复包含？</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量和基本类型"><span class="nav-number">1.</span> <span class="nav-text">变量和基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-复合类型"><span class="nav-number">1.1.</span> <span class="nav-text">1 复合类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-引用"><span class="nav-number">1.2.</span> <span class="nav-text">2 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-指针"><span class="nav-number">1.3.</span> <span class="nav-text">3 指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-const限定符"><span class="nav-number">1.4.</span> <span class="nav-text">4 const限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-指针和const"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 指针和const</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#指向常量的指针"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">指向常量的指针</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量指针（const-pointer）"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">常量指针（const pointer）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-顶层const（top-level-const）"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 顶层const（top-level const）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-底层const（low-level-const）"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3 底层const（low-level const）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-区分顶层const和底层const的作用"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.4 区分顶层const和底层const的作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-auto类型说明符"><span class="nav-number">1.5.</span> <span class="nav-text">5 auto类型说明符</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -954,7 +872,7 @@ struct Sales_data{
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

@@ -574,26 +574,7 @@
 <p>在一次排序操作后，6被正确归位。将这一操作重复6次便可完成排序操作。</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/9246f12cca22e5d872cbfce302ef4d09.jpg" alt="img" style="zoom:50%;"></p>
 <p>实际上，当某次冒泡操作未进行数据交换时，说明已经完成排序操作，便可以跳过接下来的操作。</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">#include <vector>
-#include <iostream>
-using namespace std;
-
-vector<int> bubble_sort(vector<int> array){
-    // 是否有数据交换
-    for (int i=0; i<array.size(); i++){="" bool="" flag="false;" 顶部存放的是已经归位的元素，因而每次交换时跳过顶部的元素="" for="" (int="" j="0;" j<array.size()-i-1;="" j++){="" if="" (array[j]=""> array[j+1]){
-                int temp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = temp;
-                flag = true;
-            }
-        }
-        // 当前迭代没有数据交换，则跳出
-        if (!flag)
-            break;
-    }
-    return array;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></array.size();></int></int></iostream></vector></code></pre>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; bubble_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>)&#123;</span><br><span class="line">    <span class="comment">// 是否有数据交换</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="built_in">array</span>.size(); i++)&#123;</span><br><span class="line">        <span class="keyword">bool</span> flag=<span class="literal">false</span>;</span><br><span class="line">        <span class="comment">// 顶部存放的是已经归位的元素，因而每次交换时跳过顶部的元素</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;<span class="built_in">array</span>.size()-i<span class="number">-1</span>; j++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[j] &gt; <span class="built_in">array</span>[j+<span class="number">1</span>])&#123;</span><br><span class="line">                <span class="keyword">int</span> temp = <span class="built_in">array</span>[j];</span><br><span class="line">                <span class="built_in">array</span>[j] = <span class="built_in">array</span>[j+<span class="number">1</span>];</span><br><span class="line">                <span class="built_in">array</span>[j+<span class="number">1</span>] = temp;</span><br><span class="line">                flag = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当前迭代没有数据交换，则跳出</span></span><br><span class="line">        <span class="keyword">if</span> (!flag)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">array</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>冒泡排序算法是原地排序算法，是稳定的排序算法。</p>
 <h3 id="冒泡排序时间复杂度"><a href="#冒泡排序时间复杂度" class="headerlink" title="冒泡排序时间复杂度"></a>冒泡排序时间复杂度</h3><p>最好情况下，数组已经是有序的，只需要进行一次冒泡操作，时间复杂度为$O(n)$；最坏情况下，数组完全无序（倒序），需要进行n次冒泡操作，时间复杂度为$O(n)^2$。</p>
 <p>因为对于一个数组，其中的元素的排列情况有很多种，而不同的排列情况算法执行的时间肯定不同。为了避免复杂的数学分析，引入“有序度”和“逆序度”两个概念。</p>
@@ -614,19 +595,7 @@ vector<int> bubble_sort(vector<int> array){
 <p>上图中，左侧为已排序区间，右侧为待排序区间。</p>
 <p>插入排序同样包含两种操作，一种是元素的比较，一种是元素的移动。对于待插入元素a，要将其于已排序区间中的元素依次进行比较，找到合适的插入位置；接着将插入位置后的元素向后顺序移动一位，再将元素插入。</p>
 <p>对于不同的查找方法（从前往后和从后往前），元素的比较次数有区别。但对于同一个给定的初始序列，移动操作的次数固定，等于逆序度。</p>
-<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 插入排序（从小到大排序）
-vector<int> insert_sort(vector<int> array){
-    for (int i=1; i<array.size(); i++){="" int="" temp="array[i];" for="" (int="" j="0;" j<i;="" j++){="" 找到合适的插入位置(第一个比当前元素大的元素)，则将插入位置后的元素都后移="" if="" (array[i]="" <="" array[j]){="" move_index="i;">j+1; move_index--){
-                    array[move_index] = array[move_index-1];
-                }
-                array[j] = temp;
-                break;
-            }
-        }
-    }
-    return array;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></array.size();></int></int></code></pre>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插入排序（从小到大排序）</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; insert_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>)&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;<span class="built_in">array</span>.size(); i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="built_in">array</span>[i];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;i; j++)&#123;</span><br><span class="line">            <span class="comment">// 找到合适的插入位置(第一个比当前元素大的元素)，则将插入位置后的元素都后移</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[i] &lt; <span class="built_in">array</span>[j])&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> move_index=i; move_index&gt;j+<span class="number">1</span>; move_index--)&#123;</span><br><span class="line">                    <span class="built_in">array</span>[move_index] = <span class="built_in">array</span>[move_index<span class="number">-1</span>];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">array</span>[j] = temp;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">array</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>插入排序算法是原地排序算法，是稳定的排序算法。</p>
 <h3 id="插入排序时间复杂度"><a href="#插入排序时间复杂度" class="headerlink" title="插入排序时间复杂度"></a>插入排序时间复杂度</h3><p>最好情况下的时间复杂度，当数组是完全有序时，在每次插入操作时，从后往前进行查找，那么只需一次比较操作便可以找到正确的位置，因而最好时间复杂度为$O(n)$。</p>
 <p>最坏情况下的时间复杂度，当数组是完全逆序时，在每次插入操作时都要移动数组的第一个位置后面的所有元素，因而时间复杂度为$O(n^2)$。</p>
@@ -634,21 +603,14 @@ vector<int> insert_sort(vector<int> array){
 <h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>选择排序同样将数组划分为两部分，每一从待排数组中选出最小的元素放在已排序数组的末尾。如下图所示：</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/32371475a0b08f0db9861d102474181d.jpg" alt="img" style="zoom:50%;"></p>
 <p>选择排序未使用额外的存储空间，因而空间复杂度为$O(1)$。其最好、最坏和平均时间复杂度都是$O(n^2)$。选择排序算法不是稳定的算法，因为每次交换待排数组中的最小值时会破坏原始数据的顺序。</p>
-<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 选择排序
-vector<int> selection_sort(vector<int> array){
-    for(int i=0; i<array.size(); i++){="" int="" min="10000;" min_index;="" 找出未排序数组中的最小值和其对应的下标="" for(int="" j="i;" j<array.size();="" j++){="" if="" (array[j]="" <="" min)="" {="" min_index="j;" }="" temp="array[i];" array[i]="min;" array[min_index]="temp;" return="" array;="" <span="" aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></array.size();></int></int></code></pre>
+<h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 选择排序</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; selection_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="built_in">array</span>.size(); i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> min = <span class="number">10000</span>;</span><br><span class="line">        <span class="keyword">int</span> min_index;</span><br><span class="line">        <span class="comment">// 找出未排序数组中的最小值和其对应的下标</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=i; j&lt;<span class="built_in">array</span>.size(); j++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[j] &lt; min) &#123;</span><br><span class="line">                min = <span class="built_in">array</span>[j];</span><br><span class="line">                min_index = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="built_in">array</span>[i];</span><br><span class="line">        <span class="built_in">array</span>[i] = min;</span><br><span class="line">        <span class="built_in">array</span>[min_index] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">array</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="为什么选择插入排序？"><a href="#为什么选择插入排序？" class="headerlink" title="为什么选择插入排序？"></a>为什么选择插入排序？</h2><p>在冒泡排序和插入排序的代码中，冒泡排序需要进行逆序度次数据交换操作，同样插入排序需要逆序度次数据移动操作。但是一次交换操作需要三步，而一次移动操作只需要一步。因而，虽然时间复杂度都是$O(n^2)$，但是在实际情况下，数据量较大时，插入排序优于冒泡排序。</p>
 <p>上述三个排序算法的时间复杂度都是$O(n^2)$，适用于处理小规模的数据。在处理较大规模的数据时就需要用到接下来的两种时间复杂度为$O(nlogn)$的排序算法：归并排序和快速排序。</p>
 <h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>归并排序和快速排序都用到了分治的思想，其中归并排序的思想是：如果要排序一个数组，可以将该数组划分为前后两个部分，再对两个部分分别进行排序，最后再将两个部分进行合并。如下图所示：</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/db7f892d3355ef74da9cd64aa926dc2b.jpg" alt="img" style="zoom:50%;"></p>
 <p>所谓分治就是将大的问题分解为小的问题，小的问题被解决后，大的问题自然就被解决。分治的思想和递归的思想很相似，都是将问题进行拆分。因而自然可以使用递归来实现归并排序。</p>
 <p>归并排序的递归代码的递推公式为：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">递推公式：
-merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+1…r))
-
-终止条件：
-p >= r 不用再继续分解
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">递推公式：</span><br><span class="line">merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+<span class="number">1</span>…r))</span><br><span class="line"></span><br><span class="line">终止条件：</span><br><span class="line">p &gt;= r 不用再继续分解</span><br></pre></td></tr></table></figure>
 <p>简单来说，就是分别对数组的两部分进行归并排序，再将排好序的两部分进行合并。</p>
 <p>在编写合并代码时，有一个重要的前提条件是，此时两部分都是有序的，并且最终合并得到的数组也得是有序的。我们可以使用交替比较的方式进行合并：</p>
 <ul>
@@ -658,74 +620,19 @@ p >= r 不用再继续分解
 </ul>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/95897ade4f7ad5d10af057b1d144a22f.jpg" alt="img" style="zoom:50%;"></p>
 <h3 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h3><p>代码实现如下：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 归并排序
-vector<int> merge(vector<int> part1, vector<int> part2){
-    /*
-     * 将两个有序数组合并为有序数组
-     * */
-    int part1_index = 0;
-    int part2_index = 0;
-    vector<int> merge_array;
-    while(part1_index < part1.size() && part2_index < part2.size()){
-        int num1 = part1[part1_index];
-        int num2 = part2[part2_index];
-        // 将两者中较小的一个放入合并数组中
-        if (num1 < num2 || num1 == num2){
-            merge_array.push_back(num1);
-            part1_index++;
-        } else{
-            merge_array.push_back(num2);
-            part2_index++;
-        }
-    }
-    // 将剩余的部分放入合并数组中
-    if (part1_index == part1.size()){
-        auto start = part2.begin() + part2_index;
-        merge_array.insert(merge_array.end(), start, part2.end());
-    } else{
-        auto start = part1.begin() + part1_index;
-        merge_array.insert(merge_array.end(), start, part1.end());
-    }
-    return merge_array;
-}
-
-
-// 归并排序
-vector<int> merge_sort(vector<int> unsorted_array){
-    if (unsorted_array.size() == 1){
-        return unsorted_array;
-    }
-    vector<int> part1, part2;
-    part1.assign(unsorted_array.begin(), unsorted_array.begin()+unsorted_array.size()/2);
-    part2.assign(unsorted_array.begin()+unsorted_array.size()/2, unsorted_array.end());
-
-    part1 = merge_sort(part1);
-    part2 = merge_sort(part2);
-    return merge(part1, part2);
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></int></int></int></int></int></int></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 归并排序</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; part1, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; part2)&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 将两个有序数组合并为有序数组</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="keyword">int</span> part1_index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> part2_index = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge_array;</span><br><span class="line">    <span class="keyword">while</span>(part1_index &lt; part1.size() &amp;&amp; part2_index &lt; part2.size())&#123;</span><br><span class="line">        <span class="keyword">int</span> num1 = part1[part1_index];</span><br><span class="line">        <span class="keyword">int</span> num2 = part2[part2_index];</span><br><span class="line">        <span class="comment">// 将两者中较小的一个放入合并数组中</span></span><br><span class="line">        <span class="keyword">if</span> (num1 &lt; num2 || num1 == num2)&#123;</span><br><span class="line">            merge_array.push_back(num1);</span><br><span class="line">            part1_index++;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            merge_array.push_back(num2);</span><br><span class="line">            part2_index++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将剩余的部分放入合并数组中</span></span><br><span class="line">    <span class="keyword">if</span> (part1_index == part1.size())&#123;</span><br><span class="line">        <span class="keyword">auto</span> start = part2.begin() + part2_index;</span><br><span class="line">        merge_array.insert(merge_array.end(), start, part2.end());</span><br><span class="line">    &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> start = part1.begin() + part1_index;</span><br><span class="line">        merge_array.insert(merge_array.end(), start, part1.end());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> merge_array;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 归并排序</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; merge_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; unsorted_array)&#123;</span><br><span class="line">    <span class="keyword">if</span> (unsorted_array.size() == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> unsorted_array;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; part1, part2;</span><br><span class="line">    part1.assign(unsorted_array.begin(), unsorted_array.begin()+unsorted_array.size()/<span class="number">2</span>);</span><br><span class="line">    part2.assign(unsorted_array.begin()+unsorted_array.size()/<span class="number">2</span>, unsorted_array.end());</span><br><span class="line"></span><br><span class="line">    part1 = merge_sort(part1);</span><br><span class="line">    part2 = merge_sort(part2);</span><br><span class="line">    <span class="keyword">return</span> merge(part1, part2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>归并排序是不是稳定的算法？归并排序是不是稳定的算法主要取决于<code>merge()</code>函数，当遇到两个相同的值时，如果将左侧的元素先放入合并数组中，那么归并排序就是稳定的算法。</p>
 <h3 id="归并排序时间复杂度"><a href="#归并排序时间复杂度" class="headerlink" title="归并排序时间复杂度"></a>归并排序时间复杂度</h3><p>归并排序是使用递归的方法实现的，分析递归算法的复杂度时会比较复杂。</p>
 <p>递归的思想就是将一个复杂的问题分解为多个子问题进行求解，等子问题求解完成后，再将子问题的结果进行合并。如果定义求解问题a的时间为T(a)，求解问题b、c的时间分别为T(b)和T(c)。其中，问题a可以被分解为b和c。那么：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">T(a) = T(b) + T(c) + K
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T(a) = T(b) + T(c) + K</span><br></pre></td></tr></table></figure>
 <p>其中，k对应合并两个子问题时耗费的时间。也就是说：</p>
 <blockquote>
 <p>不仅递归求解的问题可以写成递推公式，递归代码的时间复杂度也可以写成递推公式。</p>
 </blockquote>
 <p>对于归并排序，假设对n个元素进行归并排序所学的时间为T(n)，那么分解为两个子数组排序的时间是T(n/2)。<code>merge()</code>函数合并两个有序数组的时间复杂度为$O(n)$。那么，套用公式，归并排序的时间复杂度的计算公式为：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
-T(n) = 2*T(n/2) + n； n>1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。</span><br><span class="line">T(n) = 2*T(n/2) + n； n&gt;1</span><br></pre></td></tr></table></figure>
 <p>对上述公式进行分解：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">T(n) = 2*T(n/2) + n
-     = 2*(2*T(n/4) + n/2) + n = 4*T(n/4) + 2*n
-     = 4*(2*T(n/8) + n/4) + 2*n = 8*T(n/8) + 3*n
-     = 8*(2*T(n/16) + n/8) + 3*n = 16*T(n/16) + 4*n
-     ......
-     = 2^k * T(n/2^k) + k * n
-     ......
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T(n) = 2*T(n/2) + n</span><br><span class="line">     = 2*(2*T(n/4) + n/2) + n = 4*T(n/4) + 2*n</span><br><span class="line">     = 4*(2*T(n/8) + n/4) + 2*n = 8*T(n/8) + 3*n</span><br><span class="line">     = 8*(2*T(n/16) + n/8) + 3*n = 16*T(n/16) + 4*n</span><br><span class="line">     ......</span><br><span class="line">     = 2^k * T(n/2^k) + k * n</span><br><span class="line">     ......</span><br></pre></td></tr></table></figure>
 <p>可以将上述的$k$看作二分的次数，最终得到：</p>
 <script type="math/tex; mode=display">
 T(n)=2^k*T(\frac{n}{2^k})+k*n</script><p>令：$\frac{n}{2^k}=1$，得到$k=log_2n$，代回上式得到：</p>
@@ -742,53 +649,23 @@ T(n)=Cn+nlog_2n</script><p>使用大$O$表示法，时间复杂度为$O(nlogn)$�
 <p>分区的思想如下图所示：</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/4d892c3a2e08a17f16097d07ea088a81.jpg" style="zoom:50%;"></p>
 <p>将算法的思想用公式表述，如下：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">递推公式：
-quick_sort(p…r) = quick_sort(p…q-1) + quick_sort(q+1… r)
-
-终止条件：
-p >= r
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">递推公式：</span><br><span class="line">quick_sort(p…r) = quick_sort(p…q-1) + quick_sort(q+1… r)</span><br><span class="line"></span><br><span class="line">终止条件：</span><br><span class="line">p &gt;= r</span><br></pre></td></tr></table></figure>
 <p>在归并排序中比较重要的操作是<code>merge()</code>函数，而在快速排序中，比较重要的操作就是分区操作。</p>
 <p>分区操作简单的实现方式就是，分别维持两个数组，将待分区数组中的元素依次与分区点元素进行比较，大的元素放到一个数组，小的元素放到另一个数组。但是这样一来，每次进行分区操作时都要分配额外的内存空间，进而导致快速排序算法不是原地排序算法。</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/6643bc3cef766f5b3e4526c332c60adc.jpg" alt="img" style="zoom:50%;"></p>
 <p>那么如何实现在原始数组空间上进行分区操作？在选择排序中，我们使用交换的方法将未排序区间中的最小值和未排序区间中的首位值进行交换，以达到将最小值插入已排序数组的目的。这里，我们同样可以借助交换的思想，在原始数组中维持两个部分，左侧为偏小的值的区间。</p>
 <p>对于未比较的元素，将其与分区点处的值进行比较，如果小或等于分区点，就将其交换到偏小的值的区间。因而，在实际程序实现时，我们需要使用一个下标$i$指示偏小值的区间的范围，另一个下标$j$指示当前遍历到的元素的位置。如下图所示：</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/086002d67995e4769473b3f50dd96de7.jpg" alt="img" style="zoom:50%;"></p>
-<h3 id="代码-4"><a href="#代码-4" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 快速排序
-int separate_partition(vector<int>& unsorted_array, int start_index, int end_index){
-    // 注意unsorted_array需要使用引用的方式，因为需要在分区函数中改变数组元素的位置
-    int separate_point = unsorted_array[end_index];
-    int separate_index = start_index;
-    for (int j = start_index; j<end_index; j++){="" 如果当前值小于或等于分区值，则将当前值交换到已整理区间，已整理区间的下标前移="" if="" (unsorted_array[j]="" <="" separate_point){="" swap_numbers(unsorted_array[separate_index],="" unsorted_array[j]);="" separate_index++;="" }="" swap_numbers(unsorted_array[end_index],="" unsorted_array[separate_index]);="" return="" separate_index;="" void="" sub_quick_sort(vector<int=""> &unsorted_array, int start_index, int end_index){
-    if (start_index > end_index || start_index == end_index)
-        return;
-    // 划分分区
-    int separate_index = separate_partition(unsorted_array, start_index, end_index);
-    // 对较小值和较大值区间分别排序
-    sub_quick_sort(unsorted_array, start_index, separate_index-1);
-    sub_quick_sort(unsorted_array, separate_index+1, end_index);
-}
-
-
-vector<int> quick_sort(vector<int> unsorted_array){
-    sub_quick_sort(unsorted_array, 0, unsorted_array.size()-1);
-    return unsorted_array;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></int></int></end_index;></int></code></pre>
+<h3 id="代码-4"><a href="#代码-4" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 快速排序</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">separate_partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; unsorted_array, <span class="keyword">int</span> start_index, <span class="keyword">int</span> end_index)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 注意unsorted_array需要使用引用的方式，因为需要在分区函数中改变数组元素的位置</span></span><br><span class="line">    <span class="keyword">int</span> separate_point = unsorted_array[end_index];</span><br><span class="line">    <span class="keyword">int</span> separate_index = start_index;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = start_index; j&lt;end_index; j++)&#123;</span><br><span class="line">        <span class="comment">// 如果当前值小于或等于分区值，则将当前值交换到已整理区间，已整理区间的下标前移</span></span><br><span class="line">        <span class="keyword">if</span> (unsorted_array[j] &lt; separate_point)&#123;</span><br><span class="line">            swap_numbers(unsorted_array[separate_index], unsorted_array[j]);</span><br><span class="line">            separate_index++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap_numbers(unsorted_array[end_index], unsorted_array[separate_index]);</span><br><span class="line">    <span class="keyword">return</span> separate_index;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sub_quick_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;unsorted_array, <span class="keyword">int</span> start_index, <span class="keyword">int</span> end_index)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (start_index &gt; end_index || start_index == end_index)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">// 划分分区</span></span><br><span class="line">    <span class="keyword">int</span> separate_index = separate_partition(unsorted_array, start_index, end_index);</span><br><span class="line">    <span class="comment">// 对较小值和较大值区间分别排序</span></span><br><span class="line">    sub_quick_sort(unsorted_array, start_index, separate_index<span class="number">-1</span>);</span><br><span class="line">    sub_quick_sort(unsorted_array, separate_index+<span class="number">1</span>, end_index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; quick_sort(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; unsorted_array)&#123;</span><br><span class="line">    sub_quick_sort(unsorted_array, <span class="number">0</span>, unsorted_array.size()<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">return</span> unsorted_array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在编写快排的代码时，要特别注意值传递的方式（因为要在函数内部改变数组的元素位置，所以应该使用引用进行值传递）。除此之外，要注意分区代码的书写，以及区间索引的计算。</p>
 <h3 id="归并排序和快速排序的差别"><a href="#归并排序和快速排序的差别" class="headerlink" title="归并排序和快速排序的差别"></a>归并排序和快速排序的差别</h3><p>从两个排序算法的思想上我们可以看出，归并排序是一种自下而上的排序方法，将未排序数组迭代拆分为两个部分，在对两个部分进行排序，接着使用合并函数将两部分合并为有序的数组；而快速排序是一种自上而下的排序方法，首先将未排序数组依据分区点划分为宏观有序的两个部分，接着再对两个部分依次进行划分，最后每一个小部分都有序，原始数组也就有序。两种排序算法的对比如下：</p>
 <p><img src="/2019/11/09/shu-ju-jie-gou-yu-suan-fa/suan-fa/pai-xu/aa03ae570dace416127c9ccf9db8ac05.jpg" alt="img" style="zoom:50%;"></p>
 <p>归并排序自下而上的排序方法导致其必须再合并函数中使用额外的数组进行合并，是一种非原地的排序算法；而再快速排序算法中，经过特殊设计的分区函数可以再原地完成划分，是一种原地排序算法，<strong>占用的内存更少</strong>。</p>
 <h3 id="快速排序的性能"><a href="#快速排序的性能" class="headerlink" title="快速排序的性能"></a>快速排序的性能</h3><p>快排同样是递归操作，如果每次进行分区时都能够将数组划分为大小相同的两个子数组，那么其时间复杂度的计算公式和归并排序相同。</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
-T(n) = 2*T(n/2) + n； n>1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。</span><br><span class="line">T(n) = 2*T(n/2) + n； n&gt;1</span><br></pre></td></tr></table></figure>
 <p>进而时间复杂度为$O(nlogn)$。</p>
 <p>但是并不是每一次划分都能够将数组划分为大小相同的两个部分。假设每次分区操作都将区间分成大小为$9:1$的区间。那么递归时间复杂度公式为：</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
-
-T(n) = T(n/10) + T(9*n/10) + n； n>1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。</span><br><span class="line"></span><br><span class="line">T(n) = T(n/10) + T(9*n/10) + n； n&gt;1</span><br></pre></td></tr></table></figure>
 <p>该递归公式的求解方式比较复杂，再原文中作者未讲明，只是给出了：</p>
 <p>快速排序在大部分情况下的时间复杂度都是$O(nlogn)$，只有极端情况下才是$O(n^2)$。</p>
 <h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><p>有10个接口访问日志文件，每个日志文件约300MB，每个文件里的日志都按照时间戳从小到大进行排序。要求将这10个日志文件合并为一个日志文件，合并后的日志仍然按照时间戳从小到大进行排序。限定处理该任务的机器只有1Gb内存，如何“快速”将这10个日志文件合并？</p>
@@ -976,7 +853,7 @@ T(n) = T(n/10) + T(9*n/10) + n； n>1
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1147,7 +1024,7 @@ T(n) = T(n/10) + T(9*n/10) + n； n>1
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

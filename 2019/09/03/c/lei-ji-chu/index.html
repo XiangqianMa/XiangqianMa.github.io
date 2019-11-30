@@ -526,8 +526,7 @@
 <p>指向非常量的常量指针无法被绑定至常量</p>
 </blockquote>
 <p>在默认情况下，类的this指针的类型是指向类类型非常量版本的常量指针，这一设定意味着我们无法将this指针绑定至类类型的常量上。也就是说我们无法使用常量对象调用普通的成员对象，为了提高程序的兼容性，可以将this声明为指向常量的常量指针，为了达到之一目的可以在成员函数的参数列表之后加入<code>const</code>关键字，表示this指向常量，称这样的成员函数为常量成员函数。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">std::string isbn() const { return bookNo; }
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo; &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>类通过一个或几个特殊的成员函数控制其对象的初始化过程，这些函数称为构造函数。构造函数初始化类对象的数据成员，只要有类的对象被创建，就会指向构造函数。</p>
 <blockquote>
 <p>类的构造函数不能被声明为const，因为直到构造函数完成初始化过程，对象才能真正获得常量属性，在此之前，我们需要向对象中写入数值。</p>
@@ -548,26 +547,9 @@
 <p><strong>当我们定义了其他构造函数时，也必须定义一个默认构造函数</strong>。</p>
 </blockquote>
 <p>如果没有在构造函数的初始值列表中显示地初始化成员，则该成员将在构造函数体之前执行默认初始化。有时候，在构造函数中不使用初始化列表，而是在函数体中使用赋值操作。这一做法有时是没有问题的，但对于有些必须进行初始化的类型而言，这一做法便不可取。例如，当成员为const或者引用时，就必须对其进行初始化，而不能采用赋值操作为其赋值。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class COnstRef
-{
-public:
-    ConstRef(int ii);
-private:
-    int i;
-    const int ci;
-    int &ri;
-}
-
-ConstRef::COnstRef(int ii)
-{
-    i = ii;
-    ci = ii;//不能向const赋值
-    ri = i;//ri为引用，未被初始化
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">COnstRef</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">4ConstRef(<span class="keyword">int</span> ii);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">4<span class="keyword">int</span> i;</span><br><span class="line">4<span class="keyword">const</span> <span class="keyword">int</span> ci;</span><br><span class="line">4<span class="keyword">int</span> &amp;ri;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ConstRef::COnstRef(<span class="keyword">int</span> ii)</span><br><span class="line">&#123;</span><br><span class="line">4i = ii;</span><br><span class="line">4ci = ii;<span class="comment">//不能向const赋值</span></span><br><span class="line">4ri = i;<span class="comment">//ri为引用，未被初始化</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>初始化const或者引用类型的数据成员的唯一机会就是通过构造函数初始值，因而该构造函数的正确形式为：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">ConstRef::ConstRef(int ii): i(ii), ci(ii), ri(i) {}
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConstRef::ConstRef(<span class="keyword">int</span> ii): i(ii), ci(ii), ri(i) &#123;&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>如果成员是const、引用个、或者属于某种未提供默认构造函数的类类型，我们必须通过构造函数初始值列表为这些成员提供初值。</p>
 </blockquote>
@@ -600,18 +582,12 @@ ConstRef::COnstRef(int ii)
 <p>为了解决这一问题，类可以允许其他类或者函数访问它的非公有成员，方法是令其他类或者函数成为它的友元，增加一条以friend关键字开头的函数声明语句即可。</p>
 <p>友元在类内的具体为知不限，也不受其所在区域的访问控制级别的限制，但一般，最好在类定义的开始或结束前的位置集中声明友元。</p>
 <p>我们可以将一个类声明为另一类的友元，这样第一个类将可以访问第二个类的所有成员。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Screen{
-    friend class Window_mgr;
-};
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>&#123;</span></span><br><span class="line">4<span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Window_mgr</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>需要特别注意：友元关系不存在传递性。</p>
 </blockquote>
 <p>也可以只将类的某一个成员函数声明为友元，需明确指出该成员函数所属的类：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Screen{
-    friend void Window_mgr::clear(ScreenIndex);
-};
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>&#123;</span></span><br><span class="line">4<span class="keyword">friend</span> <span class="keyword">void</span> Window_mgr::clear(ScreenIndex);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>要想令某个成员函数作为友元，必须仔细组织程序的结构以满足声明和定义的彼此依赖关系。</p>
 <ul>
 <li>首先定义Window_mgr类，其中声明clear函数，但不能定义它。因为在clear使用Screen的成员之前，必须首先定义Screen。</li>
@@ -620,27 +596,12 @@ ConstRef::COnstRef(int ii)
 </ul>
 <p>友元声明的作用仅仅是影响访问权限，不具有函数声明的作用，在对一个友元函数进行声明之前是无法对其进行调用的，这一点要特别注意。即使在类的内部定义了该友元函数，也必须在类的外部提供该函数的声明。</p>
 <p>不要求类和非成员函数的声明必须在它们的友元之前。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">struce X{
-    friend void f() {/*可以直接在类的内部对友元函数进行定义*/}
-    X() {f();} //错误，f()尚未声明
-    void g();
-    void h();
-};
-void X::g() {return f();}//错误，f()尚未声明
-void f();
-void X::h() {return f();}//正确，f()已声明
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struce X&#123;</span><br><span class="line">4<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;<span class="comment">/*可以直接在类的内部对友元函数进行定义*/</span>&#125;</span><br><span class="line">4X() &#123;f();&#125; <span class="comment">//错误，f()尚未声明</span></span><br><span class="line">4<span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">4<span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">void</span> X::g() &#123;<span class="keyword">return</span> f();&#125;<span class="comment">//错误，f()尚未声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">void</span> X::h() &#123;<span class="keyword">return</span> f();&#125;<span class="comment">//正确，f()已声明</span></span><br></pre></td></tr></table></figure>
 <h2 id="类的可变数据成员"><a href="#类的可变数据成员" class="headerlink" title="类的可变数据成员"></a>类的可变数据成员</h2><p>我们希望能够修改类的某个数据成员，即使在一个const成员函数内，可以通过在变量的声明中加入<strong>mutable</strong>关键字完成。</p>
 <h2 id="返回-this的成员函数"><a href="#返回-this的成员函数" class="headerlink" title="返回*this的成员函数"></a>返回*this的成员函数</h2><p>当我们将成员函数的返回类型定义为引用时，同时该成员函数返回<code>*this</code>时，那么该成员函数的返回值为调用该成员函数的对象本身，如下所示：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Screen &Screen::set(char c)
-{
-    contents[cursor] = c;
-    return *this; //将this对象作为左值返回
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Screen &amp;Screen::<span class="built_in">set</span>(<span class="keyword">char</span> c)</span><br><span class="line">&#123;</span><br><span class="line">4contents[cursor] = c;</span><br><span class="line">4<span class="keyword">return</span> *<span class="keyword">this</span>; <span class="comment">//将this对象作为左值返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果我们把一系列这样的操作连接成一条表达式：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">myScreen.move(4, 0).set("#");
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myScreen.move(<span class="number">4</span>, <span class="number">0</span>).<span class="built_in">set</span>(<span class="string">"#"</span>);</span><br></pre></td></tr></table></figure>
 <p>这些操作将在同一个对象上进行。</p>
 <p>从const成员函数返回<code>*this</code>时，意味着该成员函数返回的是一个常量对象，那么我们将不能随意地将该成员函数嵌入一组动作的序列中去。</p>
 <h2 id="基于const关键字进行区分的重载"><a href="#基于const关键字进行区分的重载" class="headerlink" title="基于const关键字进行区分的重载"></a>基于const关键字进行区分的重载</h2><p>需要明确一点，<strong>常量对象是无法调用非常量的成员函数的</strong>，因而我们只能在一个常量对象上调用const成员函数。虽然，也可以使用非常量对象调用常量成员函数，但非常量成员函数更为匹配。</p>
@@ -771,7 +732,7 @@ void X::h() {return f();}//正确，f()已声明
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -942,7 +903,7 @@ void X::h() {return f();}//正确，f()已声明
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

@@ -588,45 +588,13 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
 <p>当下一层为全连接层时，假设被移除的通道的特征图大小为$M\times N$，那么全连接层中将有$M \times N$个神经元被移除。</p>
 <p>在本文中，使用权重的$L1$范数对其进行分级。</p>
 <h4 id="使用泰勒准则来对猫狗分类器进行剪枝"><a href="#使用泰勒准则来对猫狗分类器进行剪枝" class="headerlink" title="使用泰勒准则来对猫狗分类器进行剪枝"></a>使用泰勒准则来对猫狗分类器进行剪枝</h4><h5 id="第一步-训练一个大的网络"><a href="#第一步-训练一个大的网络" class="headerlink" title="第一步-训练一个大的网络"></a>第一步-训练一个大的网络</h5><p>使用VGG16，移除全连接层，替换为三层新的全连接层。在训练过程中，冻结卷积层，只对新的全连接层进行训练。在Pytorch中，新的层如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">self.classifier = nn.Sequential(
-        nn.Dropout(),
-        nn.Linear(25088, 4096),
-        nn.ReLU(inplace=True),
-        nn.Dropout(),
-        nn.Linear(4096, 4096),
-        nn.ReLU(inplace=True),
-        nn.Linear(4096, 2))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">self.classifier = nn.Sequential(</span><br><span class="line">4    nn.Dropout(),</span><br><span class="line">4    nn.Linear(<span class="number">25088</span>, <span class="number">4096</span>),</span><br><span class="line">4    nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">4    nn.Dropout(),</span><br><span class="line">4    nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">4    nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">4    nn.Linear(<span class="number">4096</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
 <p>使用数据增强训练20个epoches后，在测试集上得到98.7%的准确率。</p>
 <h5 id="第二步-对卷积核进行分级"><a href="#第二步-对卷积核进行分级" class="headerlink" title="第二步-对卷积核进行分级"></a>第二步-对卷积核进行分级</h5><p>为了计算泰勒准则，我们需要在数据集上（如果数据集太大，可以使用一部分数据集）进行前向传播和反向传播（需要计算梯度）。</p>
 <p>接着，我们需要同时得到军基层的梯度和激活值。在Pytorch中，我们可以在梯度计算中注册一个hook，所以在调用时便会完成相关计算：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">for layer, (name, module) in enumerate(self.model.features._modules.items()):
-    x = module(x)
-    if isinstance(module, torch.nn.modules.conv.Conv2d):
-        x.register_hook(self.compute_rank)
-        self.activations.append(x)
-        self.activation_to_layer[activation_index] = layer
-        activation_index += 1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> layer, (name, module) <span class="keyword">in</span> enumerate(self.model.features._modules.items()):</span><br><span class="line">4x = module(x)</span><br><span class="line">4<span class="keyword">if</span> isinstance(module, torch.nn.modules.conv.Conv2d):</span><br><span class="line">44x.register_hook(self.compute_rank)</span><br><span class="line">44self.activations.append(x)</span><br><span class="line">44self.activation_to_layer[activation_index] = layer</span><br><span class="line">44activation_index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>这样，我们就使用<code>self.activations</code>保存了各层的激活值，当完成梯度的计算时，<code>compute_rank</code>函数便会被调用。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def compute_rank(self, grad):
-    activation_index = len(self.activations) - self.grad_index - 1
-    activation = self.activations[activation_index]
-    values = \
-        torch.sum((activation * grad), dim = 0).\
-            sum(dim=2).sum(dim=3)[0, :, 0, 0].data
-
-    # Normalize the rank by the filter dimensions
-    values = \
-        values / (activation.size(0) * activation.size(2) * activation.size(3))
-
-    if activation_index not in self.filter_ranks:
-        self.filter_ranks[activation_index] = \
-            torch.FloatTensor(activation.size(1)).zero_().cuda()
-
-    self.filter_ranks[activation_index] += values
-    self.grad_index += 1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_rank</span><span class="params">(self, grad)</span>:</span></span><br><span class="line">4activation_index = len(self.activations) - self.grad_index - <span class="number">1</span></span><br><span class="line">4activation = self.activations[activation_index]</span><br><span class="line">4values = \</span><br><span class="line">44torch.sum((activation * grad), dim = <span class="number">0</span>).\</span><br><span class="line">444sum(dim=<span class="number">2</span>).sum(dim=<span class="number">3</span>)[<span class="number">0</span>, :, <span class="number">0</span>, <span class="number">0</span>].data</span><br><span class="line">4</span><br><span class="line">4<span class="comment"># Normalize the rank by the filter dimensions</span></span><br><span class="line">4values = \</span><br><span class="line">44values / (activation.size(<span class="number">0</span>) * activation.size(<span class="number">2</span>) * activation.size(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">4<span class="keyword">if</span> activation_index <span class="keyword">not</span> <span class="keyword">in</span> self.filter_ranks:</span><br><span class="line">44self.filter_ranks[activation_index] = \</span><br><span class="line">444torch.FloatTensor(activation.size(<span class="number">1</span>)).zero_().cuda()</span><br><span class="line"></span><br><span class="line">4self.filter_ranks[activation_index] += values</span><br><span class="line">4self.grad_index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>这一函数对batch中的激活值和其梯度进行点乘，接着对于每一个激活值，在除了输出维度（特征图通道数）之外的所有维度进行求和。</p>
 <p>例如，batch的大小为32，某一激活值的大小为256、空间大小为$112\times 112$，那么该激活值和其梯度的大小为$32\times 256 \times 112 \times 112$，那么其输出为大小为256的向量，向量的每一个元素表示该层中的256个卷积核各自的等级。</p>
 <p>得到各个卷积核的等级之后，使用最小堆来得到$N$个等级最低的卷积核。和原始文章中在每一轮迭代中使用$N=1$不同，为了计算快速，我们使用$N=512$。这意味着，在每次剪枝迭代中，会移除$12%$的卷积核。</p>
@@ -764,7 +732,7 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -935,7 +903,7 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

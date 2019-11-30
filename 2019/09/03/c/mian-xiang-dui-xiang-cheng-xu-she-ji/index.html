@@ -533,37 +533,13 @@
 <p>基类负责定义在层次关系中所有类共同拥有的成员，而每个派生类定义各自特有的成员。</p>
 <p>基类将类型相关的函数与派生类不做任何改变直接继承的函数区分对待。对于某些函数，基类希望它的派生类各自定义适合自身的版本，此时基类就将这些函数声明为<strong>。</strong></p>
 <h3 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h3><p>有时我们希望使用同一段代码同时处理具有继承关系的类的对象，这时就需要用到<strong>动态绑定</strong>。例如如下一段代码：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">double print_total(Ostream &os, const Quote &item, size_t n)
-{
-    // 根据传入的形参item的具体类型决定调用Quote::net_price或者Bulk_quote::net_price
-    double ret = item.net_price(n);
-    os << "ISBN: " << item.isbn() << "# sold: " <<n <="" "total="" due:="" "="" <<="" ret="" endl;="" return="" ret;="" }="" <span="" aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></n></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">print_total</span><span class="params">(Ostream &amp;os, <span class="keyword">const</span> Quote &amp;item, <span class="keyword">size_t</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">4<span class="comment">// 根据传入的形参item的具体类型决定调用Quote::net_price或者Bulk_quote::net_price</span></span><br><span class="line">4<span class="keyword">double</span> ret = item.net_price(n);</span><br><span class="line">4os &lt;&lt; <span class="string">"ISBN: "</span> &lt;&lt; item.isbn() &lt;&lt; <span class="string">"# sold: "</span> &lt;&lt;n &lt; <span class="string">"total due: "</span> &lt;&lt; ret &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">4<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上述代码中，需要注意的地方是，<strong>传入的形参item的类型是基类Quote的引用，且调用的函数为虚函数</strong>。只有这样，才会在运行时进行动态绑定，如果形参的类型为类的具体对象或者调用的函数不是虚函数，就不会发生动态绑定，这时，所调用的函数是确定的。</p>
 <blockquote>
 <p>在C++语言中，当我们<strong>使用基类的引用（或指针）调用一个虚函数</strong>时将发生动态绑定。</p>
 </blockquote>
 <h3 id="定义基类"><a href="#定义基类" class="headerlink" title="定义基类"></a>定义基类</h3><p>定义基类如下：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Quote {
-public:
-    Quote() = default; // 默认构造函数
-    Quote(const std::string &book, double sales_price):bookNo(book), price(sales_price){}
-    std::string isbn() const { return bookNo; }
-
-    // 返回给定数量的书籍的销售总额
-    // 派生类负责改写并使用不同的折扣计算算法
-    virtual double net_price(std::size_t n) const
-    {
-        return n * price;
-    }
-    virtual ~Quote() = default; // 对析构函数进行动态绑定
-
-private:
-    std::string bookNo;
-protected:
-    double price = 0.0;
-
-};
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Quote() = <span class="keyword">default</span>; <span class="comment">// 默认构造函数</span></span><br><span class="line">    Quote(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;book, <span class="keyword">double</span> sales_price):bookNo(book), price(sales_price)&#123;&#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回给定数量的书籍的销售总额</span></span><br><span class="line">    <span class="comment">// 派生类负责改写并使用不同的折扣计算算法</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">double</span> <span class="title">net_price</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span> n)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> n * price;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~Quote() = <span class="keyword">default</span>; <span class="comment">// 对析构函数进行动态绑定</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> bookNo;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">double</span> price = <span class="number">0.0</span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>基类通常都应该定义一个虚析构函数，即使该函数不执行任何实际操作</p>
 </blockquote>
@@ -575,18 +551,7 @@ protected:
 </ol>
 <h3 id="访问控制和继承"><a href="#访问控制和继承" class="headerlink" title="访问控制和继承"></a>访问控制和继承</h3><p>派生类有权访问基类的公有成员，而不能访问私有成员。除了公有成员和私有成员之外，基类还有一种受保护成员，这一类成员只允许基类的派生类访问，而不允许其他用户访问。</p>
 <h3 id="定义派生类"><a href="#定义派生类" class="headerlink" title="定义派生类"></a>定义派生类</h3><p>派生类必须将其继承而来的成员函数中需要覆盖的那些函数重新声明。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Bulk_quote : Quote {
-public:
-    Bulk_quote() = default;
-    Bulk_quote(const std::string &, double, std::size_t, double);
-    // 对基类中的函数进行覆盖    
-    double net_price(std::size_t) const override;
-
-private:
-    std::size_t min_qty = 0;
-    double discount = 0.0;
-};
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> Quote &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Bulk_quote() = <span class="keyword">default</span>;</span><br><span class="line">    Bulk_quote(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;, <span class="keyword">double</span>, <span class="built_in">std</span>::<span class="keyword">size_t</span>, <span class="keyword">double</span>);</span><br><span class="line">    <span class="comment">// 对基类中的函数进行覆盖    </span></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span>)</span> <span class="keyword">const</span> override</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> min_qty = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">double</span> discount = <span class="number">0.0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>在上述代码中，对基类的虚函数进行了覆盖，但有时不需要对虚函数进行覆盖，这时，派生类会直接继承其在基类中的版本。</p>
 <p>在派生类中，可以使用override关键字显示的表示它使用某个成员函数覆盖了它继承的虚函数。</p>
 <h4 id="派生类对象及派生类向基类的类型转换"><a href="#派生类对象及派生类向基类的类型转换" class="headerlink" title="派生类对象及派生类向基类的类型转换"></a>派生类对象及派生类向基类的类型转换</h4><p>可以将一个派生类的对象划分为两个部分：</p>
@@ -613,19 +578,13 @@ private:
 </blockquote>
 <h4 id="类型转换注意点"><a href="#类型转换注意点" class="headerlink" title="类型转换注意点"></a>类型转换注意点</h4><ol>
 <li><p>不存在从基类向派生类的隐式类型转换。因为一个基类的对象可能是派生类对象的一部分，也可能不是。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Quote base;
-Bulk_quote* bulkP = &base; //错误：不能将基类转换为派生类
-Bulk_quote& bulkRef = base; //错误：不能将基类转换为派生类
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Quote base;</span><br><span class="line">Bulk_quote* bulkP = &amp;base; <span class="comment">//错误：不能将基类转换为派生类</span></span><br><span class="line">Bulk_quote&amp; bulkRef = base; <span class="comment">//错误：不能将基类转换为派生类</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在对象之间不存在类型转换。派生类向基类的自动类型转换只对指针或引用类型有效，在派生类类型和基类类型之间不存在这样的转换。在初始化或赋值一个类类型的对象时，实际是在调用某个函数。初始化调用构造函数；赋值调用赋值运算符。这些函数接受引用作为参数，因而我们可以向基类的拷贝/赋值操作传递一个派生类的对象。构造函数和赋值运算符不是虚函数，因而调用的函数是确定的。将派生类对象赋值给基类对象时会调用基类的赋值运算符，因而只会对基类中存在的数据成员进行赋值，而不会赋值派生类中的成员，这与我们所期望的将派生类对象赋值给基类对象的操作是不同的。也就是说，派生类对象不属于基类的部分会被舍弃。</p>
 </li>
 </ol>
 <h4 id="派生类构造函数"><a href="#派生类构造函数" class="headerlink" title="派生类构造函数"></a>派生类构造函数</h4><p><strong>对于从基类中继承而来的成员，派生类也必须使用基类的构造函数对这些部分进行初始化</strong>。类似于初始化成员的过程，派生类构造函数同样时通过构造函数初始化列表来将实参传递给基类构造函数的。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 在派生类的构造函数中，需要调用基类的构造函数对基类部分进行初始化
-Bulk_quote::Bulk_quote(const std::string &book, double p, std::size_t qyt, double disc):
-                        Quote(book, p), min_qty(qyt), discount(disc){}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在派生类的构造函数中，需要调用基类的构造函数对基类部分进行初始化</span></span><br><span class="line">Bulk_quote::Bulk_quote(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;book, <span class="keyword">double</span> p, <span class="built_in">std</span>::<span class="keyword">size_t</span> qyt, <span class="keyword">double</span> disc):</span><br><span class="line">                        Quote(book, p), min_qty(qyt), discount(disc)&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>如果我们没有显式指定初始化基类部分时所使用的构造函数，基类部分会执行默认初始化。可以通过基类名加圆括号内的实参列表的形式为构造函数提供初始值。</p>
 <blockquote>
 <p>首先初始化基类的部分，然后按照声明的顺序依次初始化派生类的成员。</p>
@@ -650,24 +609,13 @@ Bulk_quote::Bulk_quote(const std::string &book, double p, std::size_t qyt, doubl
 <p>如果虚函数使用默认实参，则基类和派生类中定义的默认实参最好一致。</p>
 </blockquote>
 <h4 id="回避虚函数的机制"><a href="#回避虚函数的机制" class="headerlink" title="回避虚函数的机制"></a>回避虚函数的机制</h4><p>有时，我们希望调用特定版本的虚函数，则可以使用作用域运算符：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">double undiscounted = baseP->Quote::net_price(42);
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> undiscounted = baseP-&gt;Quote::net_price(<span class="number">42</span>);</span><br></pre></td></tr></table></figure>
 <p>什么时候需要回避虚函数的默认机制？通常是当一个派生类的虚函数调用它覆盖的基类的虚函数版本时。</p>
 <blockquote>
 <p>如果一个派生类虚函数需要调用它的基类版本，但是没有使用作用域运算符，则在运行时该调用将被解析为对派生类版本自身的调用，从而导致无限递归。</p>
 </blockquote>
 <h3 id="抽象基类"><a href="#抽象基类" class="headerlink" title="抽象基类"></a>抽象基类</h3><p>有时，不希望用户创建某个类的对象，该类只是一种通用的概念，不存在某种具体的含义。此时，我们可以将该类中的虚函数定义为<strong>纯虚函数</strong>，纯虚函数是没有实际意义的。和普通的虚函数不同，纯虚函数无须定义，在函数体的位置（声明语句的分号之前）书写<code>=0</code>即可将一个虚函数说明为纯虚函数，<code>=0</code>只能出现在类内部的虚函数声明语句处。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Disc_quote : public Quote() {
-public:
-    Disc_quote() = defalue;
-    Disc_quote(const std::string& book, double price, std::size_t qyt, double disc):
-                Quote(book, price), quantity(qty), discount(disc) { }
-    double net_price(std::size_t) const = 0;//声明为纯虚函数
-protected:
-    std::size_t quantity = 0; // 折扣适用的购买量
-    double discount = 0.0; // 表示折扣的小数值
-};
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Disc_quote</span> :</span> <span class="function"><span class="keyword">public</span> <span class="title">Quote</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Disc_quote() = defalue;</span><br><span class="line">    Disc_quote(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; book, <span class="keyword">double</span> price, <span class="built_in">std</span>::<span class="keyword">size_t</span> qyt, <span class="keyword">double</span> disc):</span><br><span class="line">    			Quote(book, price), quantity(qty), discount(disc) &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span>)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;<span class="comment">//声明为纯虚函数</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> quantity = <span class="number">0</span>; <span class="comment">// 折扣适用的购买量</span></span><br><span class="line">    <span class="keyword">double</span> discount = <span class="number">0.0</span>; <span class="comment">// 表示折扣的小数值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>同样需要定义该类的默认构造函数和带有四个参数的构造函数，尽管用户无法创建该类的对象，但是在创建该类的派生类的对象时，派生类需要调用该类的构造函数创建派生类对象中的Disc_quote部分。</p>
 <p>也可以为纯虚函数提供定义，但函数体必须定义在类的外部。</p>
 <h4 id="含有纯虚函数的类是抽象基类"><a href="#含有纯虚函数的类是抽象基类" class="headerlink" title="含有纯虚函数的类是抽象基类"></a>含有纯虚函数的类是抽象基类</h4><p>含有（或者未经覆盖直接继承）纯虚函数的类是抽象基类。抽象基类负责定义借口，后续的派生类可以选择覆盖该接口。我们无法从创建抽象基类的对象，抽象基类的派生类必须给出自己的纯虚函数的定义，负责派生类同样无法创建对象。</p>
@@ -679,18 +627,7 @@ protected:
 <li>和公有成员类似，受保护的成员对于派生类的成员和友元来说是可访问的。</li>
 <li>但要注意，派生类的成员和友元只能通过派生类的对象对受保护的成员进行访问，派生类本身是无法访问受保护成员的。</li>
 </ol>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Base{
-protected:
-    int prot_mem; //受保护的成员
-};
-class Sneaky : public Base{
-    friend void clobber(Sneaky &);//正确，可以通过派生类的对象进行访问
-    friend void clobber(Base &);//错误，不能访问Base的受保护成员
-    int j;
-}
-void clobber(Sneaky &s) { s.j = s.prot_mem = 0; }
-void clobber(Base &b) { b.prot_mem = 0;}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> prot_mem; <span class="comment">//受保护的成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sneaky</span> :</span> <span class="keyword">public</span> Base&#123;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Sneaky &amp;)</span></span>;<span class="comment">//正确，可以通过派生类的对象进行访问</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Base &amp;)</span></span>;<span class="comment">//错误，不能访问Base的受保护成员</span></span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Sneaky &amp;s)</span> </span>&#123; s.j = s.prot_mem = <span class="number">0</span>; &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Base &amp;b)</span> </span>&#123; b.prot_mem = <span class="number">0</span>;&#125;</span><br></pre></td></tr></table></figure>
 <p>如果派生类及其友元可以直接访问基类对象的受保护成员，那么只要定义一个Sneaky类便可规避protected提供的访问保护。这样一来，虽然clobber并非Base的友元，但同样可以访问Base的受保护成员。</p>
 <p>为了阻止上述现象的发生，必须作出如下假设：</p>
 <blockquote>
@@ -705,19 +642,7 @@ void clobber(Base &b) { b.prot_mem = 0;}
 <p>不考虑继承的情况下，可以认为一个类有两个不同的用户，一个是普通用户，一个是类的实现者。普通用户编写的代码使用类的对象，这部分代码只能访问类的公有成员；类的实现者则负责编写类的成员和友元，成员和友元既能访问类的公有部分，也可以访问类的私有部分。</p>
 <p>在普通用户和类的实现者之间存在第三种用户，即派生类，基类将希望派生类使用而不希望普通用户使用的成员声明为受保护的。普通用户不能访问受保护部分，派生类的成员和友元不能访问私有部分。</p>
 <h4 id="改变个别成员的可访问性"><a href="#改变个别成员的可访问性" class="headerlink" title="改变个别成员的可访问性"></a>改变个别成员的可访问性</h4><p>有时，我们需要改变派生类继承的某个名字的访问级别，通过使用<code>using</code>声明可以达到这一目的：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Base{
-public:
-    std::size_t size() const { return n; }
-protected:
-    std::size_t n;
-};
-class Dereived : private Base { // 私有继承
-public:
-    using Base::size; // 使用using改变访问级别，为在基类中的访问级别（public）
-protected:
-    using Base::n;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">4<span class="built_in">std</span>::<span class="keyword">size_t</span> size() <span class="keyword">const</span> &#123; <span class="keyword">return</span> n; &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">4<span class="built_in">std</span>::<span class="keyword">size_t</span> n;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dereived</span> :</span> <span class="keyword">private</span> Base &#123; <span class="comment">// 私有继承</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">4<span class="keyword">using</span> Base::size; <span class="comment">// 使用using改变访问级别，为在基类中的访问级别（public）</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">4<span class="keyword">using</span> Base::n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>派生类只能为那些它本身可以访问的成员（公有和受保护成员）提供using声明。</p>
 </blockquote>
@@ -729,18 +654,7 @@ protected:
 </blockquote>
 <p>如果一个名字在派生类的作用域内无法正确解析，则编译器将继续在外层的基类作用域中寻找该名字的定义。</p>
 <h4 id="在编译时进行名字查找"><a href="#在编译时进行名字查找" class="headerlink" title="在编译时进行名字查找"></a>在编译时进行名字查找</h4><p>一个对象、引用或指针的静态类型决定该对象的那些类型可见，静态类型在编译时就已经确定。对于派生类中的对象，使用基类的指针指向它，那么无法使用基类指针访问派生类中新增的成员。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Disc_quote : public Quote {
-public:
-    std::pair<size_t, double=""> discount_policy() const
-        { return {quantity, discount}; }
-};
-
-Bulk_quote bulk;
-Bulk_quote *bulkP = &bulk; //静态类型与动态类型一致
-Quote *itemP = &bulk;      //静态类型与动态类型不一致
-bulkP->discount_policy();  //正确：bulkP的类型是Bulk_quote*
-itemP->discount_policy();  //错误：itemP的类型是Quote*
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></size_t,></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Disc_quote</span> :</span> <span class="keyword">public</span> Quote &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">4<span class="built_in">std</span>::pair&lt;<span class="keyword">size_t</span>, <span class="keyword">double</span>&gt; discount_policy() <span class="keyword">const</span></span><br><span class="line">44&#123; <span class="keyword">return</span> &#123;quantity, discount&#125;; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Bulk_quote bulk;</span><br><span class="line">Bulk_quote *bulkP = &amp;bulk; <span class="comment">//静态类型与动态类型一致</span></span><br><span class="line">Quote *itemP = &amp;bulk;      <span class="comment">//静态类型与动态类型不一致</span></span><br><span class="line">bulkP-&gt;discount_policy();  <span class="comment">//正确：bulkP的类型是Bulk_quote*</span></span><br><span class="line">itemP-&gt;discount_policy();  <span class="comment">//错误：itemP的类型是Quote*</span></span><br></pre></td></tr></table></figure>
 <h4 id="名字冲突与继承"><a href="#名字冲突与继承" class="headerlink" title="名字冲突与继承"></a>名字冲突与继承</h4><p>定义在内层作用域（派生类）中的名字将隐藏定义在外城作用域（基类）的名字。</p>
 <p>但我们可以使用作用域运算符使用被内层作用域隐藏的成员。</p>
 <blockquote>
@@ -767,12 +681,7 @@ itemP->discount_policy();  //错误：itemP的类型是Quote*
 <h3 id="构造函数与拷贝控制"><a href="#构造函数与拷贝控制" class="headerlink" title="构造函数与拷贝控制"></a>构造函数与拷贝控制</h3><p>位于继承体系中的类也需要控制当其对象执行一系列操作时发生什么样的行为，包括创建、拷贝、移动、赋值和销毁。</p>
 <h4 id="虚析构函数"><a href="#虚析构函数" class="headerlink" title="虚析构函数"></a>虚析构函数</h4><p>基类通常应该定义一个虚析构函数，以对继承体系中的对象进行动态分配。</p>
 <p>delete一个动态分配的对象的指针时将执行析构函数。如果该动态指针指向继承体系中的某个类型，则有可能出现指针的静态类型与被删除对象的动态类型不符的情况。这时，如果使用静态类型的析构函数删除动态类型的对象，将会出现未定义的情况。为了避免这一情况，在基类中将析构函数定义为虚函数以确保执行正确的析构函数版本。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">class Quote{
-public:
-    // 如果我们删除的是一个指向派生类对象的基类指针，则需要虚析构函数
-    virtual ~Quote() = default;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">4<span class="comment">// 如果我们删除的是一个指向派生类对象的基类指针，则需要虚析构函数</span></span><br><span class="line">4<span class="keyword">virtual</span> ~Quote() = <span class="keyword">default</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>虚析构函数的虚属性也会被继承。只要基类的析构函数是虚函数，就能确保当我们delete基类指针时将运行正确的析构函数版本。</p>
 <p>注意，基类有析构函数时，并不一定同样需要拷贝和赋值操作。</p>
 <blockquote>
@@ -912,7 +821,7 @@ public:
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1083,7 +992,7 @@ public:
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

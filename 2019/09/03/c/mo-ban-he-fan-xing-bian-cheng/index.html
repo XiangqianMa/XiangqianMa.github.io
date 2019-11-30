@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板template  int compare(const T &amp;v1, const T &amp;v2) {     if (v1 &amp;lt; v2) return -1;     if (v1 &amp;gt; v2) return 1;     return 0; }  模板定义以关键字template开始，后跟一个模板参数列表，模板参数列表不能为空。 模板参数表示">
+  <meta name="description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板1234567template &amp;lt;typename T&amp;gt;int compare(const T &amp;amp;v1, const T &amp;amp;v2)&amp;#123;4if (v1 &amp;lt; v2) return -1;4if (v1 &amp;gt; v2) return 1;4return 0;&amp;#125; 模板定义以关键字templat">
 <meta name="keywords" content="编程基础,C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++基础-模板和泛型编程">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/09/03/c/mo-ban-he-fan-xing-bian-cheng/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板template  int compare(const T &amp;v1, const T &amp;v2) {     if (v1 &amp;lt; v2) return -1;     if (v1 &amp;gt; v2) return 1;     return 0; }  模板定义以关键字template开始，后跟一个模板参数列表，模板参数列表不能为空。 模板参数表示">
+<meta property="og:description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板1234567template &amp;lt;typename T&amp;gt;int compare(const T &amp;amp;v1, const T &amp;amp;v2)&amp;#123;4if (v1 &amp;lt; v2) return -1;4if (v1 &amp;gt; v2) return 1;4return 0;&amp;#125; 模板定义以关键字templat">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.660Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++基础-模板和泛型编程">
-<meta name="twitter:description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板template  int compare(const T &amp;v1, const T &amp;v2) {     if (v1 &amp;lt; v2) return -1;     if (v1 &amp;gt; v2) return 1;     return 0; }  模板定义以关键字template开始，后跟一个模板参数列表，模板参数列表不能为空。 模板参数表示">
+<meta name="twitter:description" content="模板和泛型编程模板是c++泛型编程的基础。 定义模板函数模板1234567template &amp;lt;typename T&amp;gt;int compare(const T &amp;amp;v1, const T &amp;amp;v2)&amp;#123;4if (v1 &amp;lt; v2) return -1;4if (v1 &amp;gt; v2) return 1;4return 0;&amp;#125; 模板定义以关键字templat">
 
 
 
@@ -523,14 +523,7 @@
 
       
         <h2 id="模板和泛型编程"><a href="#模板和泛型编程" class="headerlink" title="模板和泛型编程"></a>模板和泛型编程</h2><p>模板是c++泛型编程的基础。</p>
-<h3 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h3><h4 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h4><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
-int compare(const T &v1, const T &v2)
-{
-    if (v1 < v2) return -1;
-    if (v1 > v2) return 1;
-    return 0;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></code></pre>
+<h3 id="定义模板"><a href="#定义模板" class="headerlink" title="定义模板"></a>定义模板</h3><h4 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> T &amp;v1, <span class="keyword">const</span> T &amp;v2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">4<span class="keyword">if</span> (v1 &lt; v2) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">4<span class="keyword">if</span> (v1 &gt; v2) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">4<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>模板定义以关键字template开始，后跟一个<strong>模板参数列表</strong>，模板参数列表不能为空。</p>
 <p>模板参数表示在类或函数定义中用到的类型或值。当使用模板时，我们（显式或者隐式地）指定模板参数，将其绑定到模板参数上。</p>
 <p>当我们调用一个函数模板时，编译器通常用函数实参来为我们推断模板实参。即，编译器使用实参的类型来确定绑定到模板实参T的类型。</p>
@@ -556,40 +549,14 @@ int compare(const T &v1, const T &v2)
 <p>保证传递给模板的实参支持模板所要求的操作，以及这些操作在模板中能够正确工作，是调用者的责任。</p>
 </blockquote>
 <h3 id="类模板"><a href="#类模板" class="headerlink" title="类模板"></a>类模板</h3><p>类模板作为类的蓝图，与函数模板不同，编译器无法为类模板推断模板参数类型，在使用类模板时，我们必须在类模板名后的尖括号内提供额外信息。</p>
-<h4 id="类模板的定义"><a href="#类模板的定义" class="headerlink" title="类模板的定义"></a>类模板的定义</h4><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t=""> class Blob{
-public:
-    typedef T value_type;
-    typedef typename std::vector<t>::size_type size_type;
-    // 构造函数
-    Blob();
-    Blob(std::initializer_list<t> i1);
-    // Blob中的元素数目
-    size_type size() const { return data->size(); }
-    bool empty() const { return data->empty; }
-    // 添加和删除元素
-    void push_back(const T &t) { data->push_back(t); }
-    // 移动版本
-    void push_back(T &&t) { data->push_back(std::move(t)); }
-    void pop_back();
-    // 元素访问
-    T &back();
-    T &operator[] (size_type i);
-private:
-    std::shared_ptr<std::vector<t>> data;
-    // 若data[i]无效，则抛出msg
-    void check(size_type i, const std::string &msg) const;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></std::vector<t></t></t></typename></code></pre>
+<h4 id="类模板的定义"><a href="#类模板的定义" class="headerlink" title="类模板的定义"></a>类模板的定义</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Blob</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">typedef</span> T value_type;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;::size_type size_type;</span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    Blob();</span><br><span class="line">    Blob(<span class="built_in">std</span>::<span class="built_in">initializer_list</span>&lt;T&gt; i1);</span><br><span class="line">    <span class="comment">// Blob中的元素数目</span></span><br><span class="line">    <span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> data-&gt;size(); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> data-&gt;empty; &#125;</span><br><span class="line">    <span class="comment">// 添加和删除元素</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(<span class="keyword">const</span> T &amp;t)</span> </span>&#123; data-&gt;push_back(t); &#125;</span><br><span class="line">    <span class="comment">// 移动版本</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(T &amp;&amp;t)</span> </span>&#123; data-&gt;push_back(<span class="built_in">std</span>::move(t)); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">pop_back</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 元素访问</span></span><br><span class="line">    <span class="function">T &amp;<span class="title">back</span><span class="params">()</span></span>;</span><br><span class="line">    T &amp;<span class="keyword">operator</span>[] (size_type i);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;&gt; data;</span><br><span class="line">    <span class="comment">// 若data[i]无效，则抛出msg</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">check</span><span class="params">(size_type i, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;msg)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在定义中有下面一句代码：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">typedef typename std::vector<t>::size_type size_type;
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></t></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;::size_type size_type;</span><br></pre></td></tr></table></figure>
 <p>其中，<code>typename</code>的作用是，在实例化模板之前，编译器不清楚<code>std::vector&lt;T&gt;</code>的具体类型，使用<code>typename</code>告诉编译器后者是一个类型。</p>
 <p>在上述类模板的构造函数中，使用了如下的格式：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Blob(std::initializer_list<t> i1);
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></t></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Blob(<span class="built_in">std</span>::<span class="built_in">initializer_list</span>&lt;T&gt; i1);</span><br></pre></td></tr></table></figure>
 <p>在上述语句中使用了标准库中的<code>initializer_list</code>类模板，该类可以使得我们使用下述语句对类进行初始化：</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">Blob<int> ia2 = {0,1,2,3,4};
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></int></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Blob&lt;<span class="keyword">int</span>&gt; ia2 = &#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br></pre></td></tr></table></figure>
 <h4 id="实例化类模板"><a href="#实例化类模板" class="headerlink" title="实例化类模板"></a>实例化类模板</h4><p>当编译器从Blob模板实例化出一个类时，它会重写Blob模板，将模板参数T的每个实例替换为给定的模板实参。</p>
 <p>一个类模板的每个实例都形成一个独立的类。</p>
 <h4 id="在模板作用域中引用模板类型"><a href="#在模板作用域中引用模板类型" class="headerlink" title="在模板作用域中引用模板类型"></a>在模板作用域中引用模板类型</h4><p>类模板的名字不是一个类型名，类模板用来实例化类型，而一个实例化的类型总是包含模板参数的。</p>
@@ -597,32 +564,15 @@ private:
 <p>无论何时使用模板都必须提供模板实参，提供给类模板中的模板的模板实参就是使用它的类模板的模板参数。</p>
 <h4 id="类模板的成员函数"><a href="#类模板的成员函数" class="headerlink" title="类模板的成员函数"></a>类模板的成员函数</h4><p>类模板的成员函数具有和类模板相同的模板参数，因而，定义在类模板之外的成员函数就必须以关键字template开始，后接类模板参数列表。</p>
 <p>在类外定义一个成员时，必须说明成员属于哪个类。而且，从一个模板生成的类的名字中必须包含其模板实参。当我们定义一个成员函数时，模板实参与模板形参相同。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
-ret-type Blob<t>::member-name(parm-list);
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></t></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">ret-type Blob&lt;T&gt;::member-name(parm-<span class="built_in">list</span>);</span><br></pre></td></tr></table></figure>
 <p>例如，上述类模板的check成员。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
-void Blob<t>::check(size_type i, const std::string &msg) const
-{
-    if (i >= data->size())
-        throw std::out_of_range(msg);
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></t></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Blob&lt;T&gt;::check(size_type i, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;msg) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">4<span class="keyword">if</span> (i &gt;= data-&gt;size())</span><br><span class="line">44<span class="keyword">throw</span> <span class="built_in">std</span>::out_of_range(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="类模板的构造函数"><a href="#类模板的构造函数" class="headerlink" title="类模板的构造函数"></a>类模板的构造函数</h4><p>与其他的在外部的类模板的普通成员函数一样，构造函数的定义要以模板参数开始。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
-Blob<t>::Blob():data(std::make_shared<std::vector<t>>()) {}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></std::vector<t></t></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Blob&lt;T&gt;::Blob():data(<span class="built_in">std</span>::make_shared&lt;<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;&gt;()) &#123;&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="类模板成员函数的实例化"><a href="#类模板成员函数的实例化" class="headerlink" title="类模板成员函数的实例化"></a>类模板成员函数的实例化</h4><p>一个类模板的成员函数只有当程序用到它时才进行实例化。如果一个成员函数没有被使用，则它不会被实例化，这一特性使得即使某种类型不能完全符合模板操作的要求。</p>
 <h4 id="在类代码内简化模板类名的使用"><a href="#在类代码内简化模板类名的使用" class="headerlink" title="　在类代码内简化模板类名的使用"></a>　在类代码内简化模板类名的使用</h4><p>在类模板自己的作用域内，可以直接使用模板名而不提供模板实参。当我们处于一个类模板的作用域中时，编译器处理模板自身引用时就好像我们已经提供了模板参数匹配的实参一样。</p>
 <h4 id="在类模板外使用类模板名"><a href="#在类模板外使用类模板名" class="headerlink" title="在类模板外使用类模板名"></a>在类模板外使用类模板名</h4><p>当我们在类模板为定义其成员时，必须记住，我们并不在类的作用域内，只有遇到类名才表示进入类的作用域。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
-BlobPtr<t> BlobPtr<t>::operator++(int)
-{
-    BlobPtr ret = *this; // 保存当前状态
-    ++*this; // 推进一个元素；前置++检车递增是否合法
-    return ret; // 返回保存的状态
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></t></t></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">BlobPtr&lt;T&gt; BlobPtr&lt;T&gt;::<span class="keyword">operator</span>++(<span class="keyword">int</span>)</span><br><span class="line">&#123;</span><br><span class="line">    BlobPtr ret = *<span class="keyword">this</span>; <span class="comment">// 保存当前状态</span></span><br><span class="line">    ++*<span class="keyword">this</span>; <span class="comment">// 推进一个元素；前置++检车递增是否合法</span></span><br><span class="line">    <span class="keyword">return</span> ret; <span class="comment">// 返回保存的状态</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>返回类型位于类的作用域之外，因此必须指定模板类型参数。在函数体内，已经进入了类的作用域，因而在定义ret时无需重复模板实参。</p>
 <h4 id="类模板和友元"><a href="#类模板和友元" class="headerlink" title="类模板和友元"></a>类模板和友元</h4><ul>
 <li>如果一个类模板包含一个<strong>非模板友元</strong>，则友元被授权可以访问所有模板实例。</li>
@@ -633,53 +583,19 @@ BlobPtr<t> BlobPtr<t>::operator++(int)
 <blockquote>
 <p>为了引用（类或函数）模板的一个特定实例，我们必须首先声明模板自身。一个模板的声明包括模板参数列表。</p>
 </blockquote>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">// 前置声明在Blob中声明友元所需
-template <typename t=""> class BlobPtr;
-template <typename t=""> calss Blob; // 运算符==中的参数需要
-template <typename t="">
-    bool operator==(const Blob<t>&, const Blob<t>&);
-
-template <typename t=""> class Blob{
-    // 每个Blob实例将访问权限授予用相同类型实例化的BlobPtr和相等运算符
-    friend class BlobPtr<t>;
-    friend bool operator==<t>
-            (const Blob<t>&, const Blob<t>&);
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></t></t></t></t></typename></t></t></typename></typename></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前置声明在Blob中声明友元所需</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">BlobPtr</span>;</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; calss Blob; <span class="comment">// 运算符==中的参数需要</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">4<span class="keyword">bool</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> Blob&lt;T&gt;&amp;, <span class="keyword">const</span> Blob&lt;T&gt;&amp;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Blob</span>&#123;</span></span><br><span class="line">    <span class="comment">// 每个Blob实例将访问权限授予用相同类型实例化的BlobPtr和相等运算符</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">BlobPtr</span>&lt;T&gt;;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span>==&lt;T&gt;</span><br><span class="line">        	(<span class="keyword">const</span> Blob&lt;T&gt;&amp;, <span class="keyword">const</span> Blob&lt;T&gt;&amp;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上述代码中，<strong>友元的声明用Blob的模板形参作为它们自己的模板实参</strong>。因此，友好关系<strong>被限定</strong>在用相同类型实例化的Blob与BlobPtr相等运算符之间。</p>
 <h5 id="通用和特定的模板友好关系"><a href="#通用和特定的模板友好关系" class="headerlink" title="通用和特定的模板友好关系"></a>通用和特定的模板友好关系</h5><p>一个类可以将另一个模板的每个实例都声明为自己的友元，也可以限定特定的实例为友元。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t=""> class Pal;
-class C{
-    friend class Pal<c>;// 用类C实例化的Pal是C的一个友元
-    template <typename t=""> friend class Pal2; // 模板类Pal2的所有实例都是C的友元，这种情况无需前置声明
-};
-
-template <typename t=""> class C2{
-    // C2的每个实例将相同实例化的Pal声明为友元，需要前置声明
-    friend class Pal<t>;
-    template <typename x=""> friend class Pal2;// 模板类Pal2的所有实例都是C的友元 
-    // Pal3是非模板类，它是C2所有实例的友元
-    friend class Pal3;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></t></typename></typename></c></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Pal</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>&#123;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Pal</span>&lt;C&gt;;</span><span class="comment">// 用类C实例化的Pal是C的一个友元</span></span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Pal2</span>;</span> <span class="comment">// 模板类Pal2的所有实例都是C的友元，这种情况无需前置声明</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">C2</span>&#123;</span></span><br><span class="line">    <span class="comment">// C2的每个实例将相同实例化的Pal声明为友元，需要前置声明</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Pal</span>&lt;T&gt;;</span></span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> X&gt; <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Pal2</span>;</span><span class="comment">// 模板类Pal2的所有实例都是C的友元 </span></span><br><span class="line">    <span class="comment">// Pal3是非模板类，它是C2所有实例的友元</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Pal3</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>为了让所有实例成为友元，友元声明中必须使用与类模板本身不同的模板参数</p>
 </blockquote>
-<h5 id="模板类型别名"><a href="#模板类型别名" class="headerlink" title="模板类型别名"></a>模板类型别名</h5><pre class="line-numbers language-lang-c++"><code class="language-lang-c++">typedef Blob<string> StrBlob;
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></string></code></pre>
+<h5 id="模板类型别名"><a href="#模板类型别名" class="headerlink" title="模板类型别名"></a>模板类型别名</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> Blob&lt;<span class="built_in">string</span>&gt; StrBlob;</span><br></pre></td></tr></table></figure>
 <h5 id="类模板的static成员"><a href="#类模板的static成员" class="headerlink" title="类模板的static成员"></a>类模板的static成员</h5><p>类模板可以声明static成员.。</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t=""> class Foo{
-public:
-    static std::size_t count() { return ctr; }
-private:
-    static std::size_t ctr;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> count() &#123; <span class="keyword">return</span> ctr; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> ctr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>类模板的不同实例有其各自的static成员实例。所有<code>Foo&lt;X&gt;</code>类型的对象共享相同的<code>ctr</code>对象和<code>count</code>函数。</p>
 <p>模板类的每个static数据成员都有且仅有一个定义，但是，类模板的每个实例都有一个独有的static对象，因而，将类模板的static数据成员也定义为模板:</p>
-<pre class="line-numbers language-lang-c++"><code class="language-lang-c++">template <typename t="">
-size_t Foo<t>::ctr = 0;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></t></typename></code></pre>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">size_t</span> Foo&lt;T&gt;::ctr = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -806,7 +722,7 @@ size_t Foo<t>::ctr = 0;
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -977,7 +893,7 @@ size_t Foo<t>::ctr = 0;
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

@@ -96,13 +96,13 @@
 
 
 
-  <meta name="description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： a = 1  其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
+  <meta name="description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： 1a = 1 其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python的内存管理机制">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： a = 1  其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
+<meta property="og:description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： 1a = 1 其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568789682133.png">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104016583.gif">
@@ -112,7 +112,7 @@
 <meta property="og:updated_time" content="2019-11-09T13:46:21.662Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的内存管理机制">
-<meta name="twitter:description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： a = 1  其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
+<meta name="twitter:description" content="Python的内存管理机制Python中与内存相关的基本概念变量、对象及引用在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下： 1a = 1 其中a被称为变量，而1则是对象，a的数据类型由1决定，即整型int，当我们将变量a指向另一个数据类型的对象时，a的">
 <meta name="twitter:image" content="http://xiangqianma.github.io/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568789682133.png">
 
 
@@ -529,28 +529,9 @@
 
       
         <h1 id="Python的内存管理机制"><a href="#Python的内存管理机制" class="headerlink" title="Python的内存管理机制"></a>Python的内存管理机制</h1><h2 id="Python中与内存相关的基本概念"><a href="#Python中与内存相关的基本概念" class="headerlink" title="Python中与内存相关的基本概念"></a>Python中与内存相关的基本概念</h2><h3 id="变量、对象及引用"><a href="#变量、对象及引用" class="headerlink" title="变量、对象及引用"></a>变量、对象及引用</h3><p>在python中有一个基础概念：python中的所有东西都是对象。与C++等编译语言不同（把值赋给变量），python中的变量本身是不具有数据类型的，其数据类型由其所指向的对象的类型决定，如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = 1
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>其中<code>a</code>被称为变量，而<code>1</code>则是对象，<code>a</code>的数据类型由<code>1</code>决定，即整型<code>int</code>，当我们将变量<code>a</code>指向另一个数据类型的对象时，<code>a</code>的类型也将随着其所指向的对象类型而发生改变。</p>
-<p>在 Python 中 <code>a = something</code> 应该理解为给 <code>something</code> 贴上了一个标签 <code>a</code>。当再赋值给 <code>a</code> 的时候，就好象把<code>a</code> 这个标签从原来的 <code>something</code>上拿下来，贴到其他对象上，建立新的引用。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>> a = [1, 2, 3]
->>> b = a
->>> a = [4, 5, 6] //赋新的值给 a
->>> a
-[4, 5, 6]
->>> b
-[1, 2, 3]
-# a 的值改变后，a更换了对象，b 并没有随着 a 变
-
->>> a = [1, 2, 3]
->>> b = a
->>> a[0], a[1], a[2] = 4, 5, 6 //改变原来 list 中的元素
->>> a
-[4, 5, 6]
->>> b
-[4, 5, 6]
-# a 的值改变后，b 随着 a 变了
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 Python 中 <code>a = something</code> 应该理解为给 <code>something</code> 贴上了一个标签 <code>a</code>。当再赋值给 <code>a</code> 的时候，就好象把<code>a</code> 这个标签从原来的 <code>something</code>上拿下来，贴到其他对象上，建立新的引用。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] //赋新的值给 a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment"># a 的值改变后，a更换了对象，b 并没有随着 a 变</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>], a[<span class="number">1</span>], a[<span class="number">2</span>] = <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> //改变原来 list 中的元素</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line"><span class="comment"># a 的值改变后，b 随着 a 变了</span></span><br></pre></td></tr></table></figure></p>
 <p>在python中，对象拥有真正的内存资源与相应的取值，变量只是对象的一个引用。一个变量引用一个对象，而一个对象可以被多个变量引用。正是因为一个对象可以被多个变量引用，所以<strong>只有在某个对象的引用个数为0时，python才会对该对象的内存进行回收</strong>，有点类似于C++中的智能指针的内存回收机制。</p>
 <h3 id="存储机制"><a href="#存储机制" class="headerlink" title="存储机制"></a>存储机制</h3><p>总的来说，python在存储对象时存在<strong>三个存储区域</strong>：</p>
 <ol>
@@ -559,49 +540,12 @@
 <li>使用<code>malloc</code>和<code>free</code>管理的自由内存，这一部分的内存是动态申请和释放的。</li>
 </ol>
 <p>首先来看整型对象的存储，该类型的存储区域可分为两部分：对小整数<code>[-5, 256]</code>事先分配静态内存、对大整数（其他部分）事先分配可重复利用的内存。比如如下的代码：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def main():
-    x = y = -1
-    while True:
-        x += 1
-        y += 1
-        if x is y:
-            print('%d is %d' % (x, y))
-        else:
-            print('Attention! %d is not %d' % (x, y))
-            break
-
-    x = y = 0
-    while True:
-        x -= 1
-        y -= 1
-        if x is y:
-            print('%d is %d' % (x, y))
-        else:
-            print('Attention! %d is not %d' % (x, y))
-            break
-
-
-if __name__ == '__main__':
-    main()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">4x = y = <span class="number">-1</span></span><br><span class="line">4<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">44x += <span class="number">1</span></span><br><span class="line">44y += <span class="number">1</span></span><br><span class="line">44<span class="keyword">if</span> x <span class="keyword">is</span> y:</span><br><span class="line">444print(<span class="string">'%d is %d'</span> % (x, y))</span><br><span class="line">44<span class="keyword">else</span>:</span><br><span class="line">444print(<span class="string">'Attention! %d is not %d'</span> % (x, y))</span><br><span class="line">444<span class="keyword">break</span></span><br><span class="line">444</span><br><span class="line">4x = y = <span class="number">0</span></span><br><span class="line">4<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">44x -= <span class="number">1</span></span><br><span class="line">44y -= <span class="number">1</span></span><br><span class="line">44<span class="keyword">if</span> x <span class="keyword">is</span> y:</span><br><span class="line">444print(<span class="string">'%d is %d'</span> % (x, y))</span><br><span class="line">44<span class="keyword">else</span>:</span><br><span class="line">444print(<span class="string">'Attention! %d is not %d'</span> % (x, y))</span><br><span class="line">444<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">4main()</span><br></pre></td></tr></table></figure>
 <p>其运行结果如下图所示：</p>
 <p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568789682133.png" alt=""></p>
 <p>出现这一现象的原因便是Python的静态内存机制，当整数的大小位于[-5,256]范围内时，在任何需要引用这些对象的地方，都不再重新创建新的对象，而是直接引用缓存中的对象。而当整数的大小不在这一范围内时，便会新建新的对象，这时即使值是一样的，也属于不同的对象（对应不同的内存地址）。</p>
 <p>还有另外一种情况，如下代码所示：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = 257
-
-
-def main():
-    b = 257  # 第6行
-    c = 257  # 第7行
-    print(b is c)  # True
-    print(a is b)  # False
-    print(a is c)  # False
-
-
-if __name__ == "__main__":
-    main()
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">257</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">4b = <span class="number">257</span>  <span class="comment"># 第6行</span></span><br><span class="line">4c = <span class="number">257</span>  <span class="comment"># 第7行</span></span><br><span class="line">4print(b <span class="keyword">is</span> c)  <span class="comment"># True</span></span><br><span class="line">4print(a <span class="keyword">is</span> b)  <span class="comment"># False</span></span><br><span class="line">4print(a <span class="keyword">is</span> c)  <span class="comment"># False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">4main()</span><br></pre></td></tr></table></figure>
 <p>其运行结果如注释所示，看上去<code>a</code>、<code>b</code>和<code>c</code>的值都是一样的，但是<code>is</code>运算的结果却不一样。为什么会出现这样的结果，首先需要理解Python程序中的代码块的概念。</p>
 <blockquote>
 <p>所谓<strong>代码块</strong>是程序的一个最小的基本执行单位，一个模块文件、一个函数体、一个类、交互式命令中的单行代码都叫做一个代码块。</p>
@@ -642,97 +586,35 @@ if __name__ == "__main__":
 </ol>
 <p>上述内容参考自<a href="https://chenrudan.github.io/blog/2016/04/23/pythonmemorycontrol.html" target="_blank" rel="noopener">内存管理</a></p>
 <p>而垃圾回收还有一个重要功能是，解决循环引用的问题，通常发生在某个变量<code>a</code>引用了自己或者变量<code>a</code>与<code>b</code>互相引用。考虑引用自己的情况，可以从下面的例子中看到，<code>a</code>所指向的内存对象有3个引用，但是实际上只有两个变量，假如把这两个变量都<code>del</code>掉，对象引用个数还是1，没有变成0，这种情况下，如果只有引用计数的机制，那么这块没有用的内存会一直无法释放掉。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>> a = []
->>> b = a
->>> getrefcount(b)
-3
->>> a.append(a)
->>> getrefcount(b)
-4
->>> del a
->>> getrefcount(b)
-3
->>> del b
->>> unreachable = gc.collect()
->>> unreachable
-1
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getrefcount(b)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.append(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getrefcount(b)</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getrefcount(b)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>unreachable = gc.collect()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>unreachable</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>Python的<code>gc</code>模块便可以被用来处理这种情况。</p>
 <h2 id="Python中的拷贝"><a href="#Python中的拷贝" class="headerlink" title="Python中的拷贝"></a>Python中的拷贝</h2><p>在Python中，如果直接使用<code>a=b</code>的方式，其实是新增了对象的引用，变量<code>a</code>和<code>b</code>指向同一个对象，因而对两个变量中的任何一个进行修改都会导致原始对象的修改。</p>
 <p>为了使用拷贝，我们需要使用<code>copy</code>模块，在Python中将拷贝分为浅拷贝（<code>copy</code>）和深拷贝（<code>deepcopy</code>），对于一般的对象来说，浅拷贝和深拷贝不存在区别。但对于一些较为复杂的对象，例如嵌套的<code>list</code>将会产生区别。</p>
 <p>当对嵌套<code>list</code>使用浅拷贝时，实际上拷贝的时<code>list</code>里各个对象的引用，将<code>list</code>中各个<strong>对象的引用</strong>存放到了新的内存地址，浅拷贝示意如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">>>> import copy
->>> origin = [1, 2, [3, 4]]
->>> cop1 = copy.copy(origin)
->>> cop2 = copy.deepcopy(origin)
->>> cop1 == cop2
-True
->>> cop1 is cop2
-False 
-# cop2和cop1处于不同的内存地址，是不同的对象
->>> origin[2][0] = "hey!" 
->>> origin
-[1, 2, ['hey!', 4]]
->>> cop1
-[1, 2, ['hey!', 4]]
-# 浅拷贝拷贝的是list中的各个对象的引用，改变一个会影响另一个
->>> cop2
-[1, 2, [3, 4]]
-# 深拷贝拷贝的是list中的各个对象的值，改变一个不会影响另一个
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>origin = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cop1 = copy.copy(origin)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cop2 = copy.deepcopy(origin)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cop1 == cop2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cop1 <span class="keyword">is</span> cop2</span><br><span class="line"><span class="keyword">False</span> </span><br><span class="line"><span class="comment"># cop2和cop1处于不同的内存地址，是不同的对象</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>origin[<span class="number">2</span>][<span class="number">0</span>] = <span class="string">"hey!"</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>origin</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="string">'hey!'</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cop1</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="string">'hey!'</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="comment"># 浅拷贝拷贝的是list中的各个对象的引用，改变一个会影响另一个</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>cop2</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="comment"># 深拷贝拷贝的是list中的各个对象的值，改变一个不会影响另一个</span></span><br></pre></td></tr></table></figure>
 <p><code>copy</code>对于一个<strong>复杂对象的子对象</strong>并不会完全复制，什么是复杂对象的子对象呢？就比如序列里的嵌套序列，字典里的嵌套序列等都是复杂对象的子对象。对于子对象，python会把它当作一个公共镜像存储起来，所有对他的复制都被当成一个<strong>引用</strong>，所以说当其中一个引用将镜像改变了之后另一个引用使用镜像的时候镜像已经被改变了，如下图所示，子对象指向的是同一个公共镜像。</p>
 <p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104016583.gif" alt="è¿éåå¾çæè¿°"></p>
 <p>而对于深拷贝<code>deepcopy</code>而言，会将对象中的每一层复制为一个单独的个体，因而复制之后得到的对象和原始对象互不影响，如下图所示，各个子对象指向的是一个独立的个体。</p>
 <p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/20180330104112461.gif" alt="è¿éåå¾çæè¿°"></p>
 <h2 id="嵌套列表的坑"><a href="#嵌套列表的坑" class="headerlink" title="嵌套列表的坑"></a>嵌套列表的坑</h2><p>以下内容转自<a href="[https://github.com/jackfrued/Python-100-Days/blob/master/%E9%82%A3%E4%BA%9B%E5%B9%B4%E6%88%91%E4%BB%AC%E8%B8%A9%E8%BF%87%E7%9A%84%E9%82%A3%E4%BA%9B%E5%9D%91.md](https://github.com/jackfrued/Python-100-Days/blob/master/那些年我们踩过的那些坑.md">那些年我们踩过的坑</a>)</p>
 <p>Python中有一种内置的数据类型叫列表，它是一种容器，可以用来承载其他的对象（准确的说是其他对象的引用），列表中的对象可以称为列表的元素，很明显我们可以把列表作为列表中的元素，这就是所谓的嵌套列表。嵌套列表可以模拟出现实中的表格、矩阵、2D游戏的地图（如植物大战僵尸的花园）、棋盘（如国际象棋、黑白棋）等。但是在使用嵌套的列表时可能会出现一些问题：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">names = ['关羽', '张飞', '赵云', '马超', '黄忠']
-subjs = ['语文', '数学', '英语']
-scores = [[0] * 3] * 5
-for row, name in enumerate(names):
-    print('请输入%s的成绩' % name)
-    for col, subj in enumerate(subjs):
-        scores[row][col] = float(input(subj + ': '))
-        print(scores)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">'关羽'</span>, <span class="string">'张飞'</span>, <span class="string">'赵云'</span>, <span class="string">'马超'</span>, <span class="string">'黄忠'</span>]</span><br><span class="line">subjs = [<span class="string">'语文'</span>, <span class="string">'数学'</span>, <span class="string">'英语'</span>]</span><br><span class="line">scores = [[<span class="number">0</span>] * <span class="number">3</span>] * <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> row, name <span class="keyword">in</span> enumerate(names):</span><br><span class="line">    print(<span class="string">'请输入%s的成绩'</span> % name)</span><br><span class="line">    <span class="keyword">for</span> col, subj <span class="keyword">in</span> enumerate(subjs):</span><br><span class="line">        scores[row][col] = float(input(subj + <span class="string">': '</span>))</span><br><span class="line">        print(scores)</span><br></pre></td></tr></table></figure>
 <p>我们希望录入5个学生3门课程的成绩，于是定义了一个有5个元素的列表，而列表中的每个元素又是一个由3个元素构成的列表，这样一个列表的列表刚好跟一个表格是一致的，相当于有5行3列，接下来我们通过嵌套的for-in循环输入每个学生3门课程的成绩。程序执行完成后我们发现，每个学生3门课程的成绩是一模一样的，而且就是最后录入的那个学生的成绩。</p>
 <p>要想把这个坑填平，我们首先要区分对象和对象的引用这两个概念，而要区分这两个概念，还得先说说内存中的栈和堆。我们经常会听人说起“<strong>堆栈</strong>”这个词，但实际上“堆”和“栈”是两个不同的概念。众所周知，一个程序运行时需要占用一些内存空间来存储数据和代码，那么这些内存从逻辑上又可以做进一步的划分。对底层语言（如C语言）有所了解的程序员大都知道，程序中可以使用的内存从逻辑上可以为五个部分，按照地址从高到低依次是：栈（stack）、堆（heap）、数据段（data segment）、只读数据段（static area）和代码段（code segment）。其中，栈用来存储局部、临时变量，以及函数调用时保存现场和恢复现场需要用到的数据，这部分内存在代码块开始执行时自动分配，代码块执行结束时自动释放，通常由编译器自动管理；堆的大小不固定，可以动态的分配和回收，因此如果程序中有大量的数据需要处理，这些数据通常都放在堆上，如果堆空间没有正确的被释放会引发内存泄露的问题，而像Python、Java等编程语言都使用了垃圾回收机制来实现自动化的内存管理（自动回收不再使用的堆空间）。</p>
 <p>所以下面的代码中，变量<code>a</code>并不是真正的对象，它是对象的引用，相当于记录了对象在堆空间的地址，通过这个地址我们可以访问到对应的对象；同理，变量<code>b</code>是列表容器的引用，它引用了堆空间上的列表容器，而列表容器中并没有保存真正的对象，它保存的也仅仅是对象的引用。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = object()
-b = ['apple', 'pitaya', 'grape']
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = object()</span><br><span class="line">b = [<span class="string">'apple'</span>, <span class="string">'pitaya'</span>, <span class="string">'grape'</span>]</span><br></pre></td></tr></table></figure>
 <p>知道了这一点，我们可以回过头看看刚才的程序，我们对列表进行<code>[[0] * 3] * 5</code>操作时，仅仅是将<code>[0, 0, 0]</code>这个列表的地址进行了复制，并没有创建新的列表对象，所以容器中虽然有5个元素，但是这5个元素引用了同一个列表对象，这一点可以通过<code>id</code>函数检查<code>scores[0]</code>和<code>scores[1]</code>的地址得到证实。</p>
-<pre class="line-numbers language-lang-shell"><code class="language-lang-shell">scores[0]: 212a5f1f8c8, scores[1]: 212a5f1f8c8
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">scores = [[0] * 3] * 5
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scores[0]: 212a5f1f8c8, scores[1]: 212a5f1f8c8</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scores = [[<span class="number">0</span>] * <span class="number">3</span>] * <span class="number">5</span></span><br></pre></td></tr></table></figure>
 <p>这句代码所创建的内存的分布如下图所示：</p>
 <p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568792629558.png" alt=""></p>
 <p>所以正确的代码应该按照如下的方式进行修改。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">names = ['关羽', '张飞', '赵云', '马超', '黄忠']
-subjs = ['语文', '数学', '英语']
-scores = [[]] * 5
-for row, name in enumerate(names):
-    print('请输入%s的成绩' % name)
-    scores[row] = [0] * 3
-    for col, subj in enumerate(subjs):
-        scores[row][col] = float(input(subj + ': '))
-        print(scores)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">'关羽'</span>, <span class="string">'张飞'</span>, <span class="string">'赵云'</span>, <span class="string">'马超'</span>, <span class="string">'黄忠'</span>]</span><br><span class="line">subjs = [<span class="string">'语文'</span>, <span class="string">'数学'</span>, <span class="string">'英语'</span>]</span><br><span class="line">scores = [[]] * <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> row, name <span class="keyword">in</span> enumerate(names):</span><br><span class="line">    print(<span class="string">'请输入%s的成绩'</span> % name)</span><br><span class="line">    scores[row] = [<span class="number">0</span>] * <span class="number">3</span></span><br><span class="line">    <span class="keyword">for</span> col, subj <span class="keyword">in</span> enumerate(subjs):</span><br><span class="line">        scores[row][col] = float(input(subj + <span class="string">': '</span>))</span><br><span class="line">        print(scores)</span><br></pre></td></tr></table></figure>
 <p>内存分布方式如下：</p>
 <p><img src="/2019/10/24/python/python-de-nei-cun-guan-li-ji-zhi/1568792969372.png" alt="1568792969372"></p>
 <p>在上述代码中，最外层列表的每一个元素所引用的列表都是在运行时重新分配的。</p>
 <p>或者：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">names = ['关羽', '张飞', '赵云', '马超', '黄忠']
-subjs = ['语文', '数学', '英语']
-scores = [[0] * 3 for _ in range(5)]
-for row, name in enumerate(names):
-    print('请输入%s的成绩' % name)
-    scores[row] = [0] * 3
-    for col, subj in enumerate(subjs):
-        scores[row][col] = float(input(subj + ': '))
-        print(scores)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">'关羽'</span>, <span class="string">'张飞'</span>, <span class="string">'赵云'</span>, <span class="string">'马超'</span>, <span class="string">'黄忠'</span>]</span><br><span class="line">subjs = [<span class="string">'语文'</span>, <span class="string">'数学'</span>, <span class="string">'英语'</span>]</span><br><span class="line">scores = [[<span class="number">0</span>] * <span class="number">3</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line"><span class="keyword">for</span> row, name <span class="keyword">in</span> enumerate(names):</span><br><span class="line">    print(<span class="string">'请输入%s的成绩'</span> % name)</span><br><span class="line">    scores[row] = [<span class="number">0</span>] * <span class="number">3</span></span><br><span class="line">    <span class="keyword">for</span> col, subj <span class="keyword">in</span> enumerate(subjs):</span><br><span class="line">        scores[row][col] = float(input(subj + <span class="string">': '</span>))</span><br><span class="line">        print(scores)</span><br></pre></td></tr></table></figure>
 <p>这一做法其实和上一个做法相同，都是在运行时分配对象内存。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://blog.csdn.net/u010712012/article/details/79754132" target="_blank" rel="noopener">python中copy()和deepcopy()详解</a></li>
@@ -865,7 +747,7 @@ for row, name in enumerate(names):
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1036,7 +918,7 @@ for row, name in enumerate(names):
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

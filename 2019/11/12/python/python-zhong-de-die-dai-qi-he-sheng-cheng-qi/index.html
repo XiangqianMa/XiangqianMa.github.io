@@ -527,232 +527,39 @@
 </blockquote>
 <h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>所有的容器都是可迭代（iterable）的。迭代和枚举不同，进行迭代时，并不知道被迭代对象有的容量是多少，只是每次进行迭代时，被迭代对象都返回一个元素或者迭代完成的标志（StopIteration）。</p>
 <p>对于可迭代的对象，可以使用<code>iter()</code>函数得到一个迭代器，再调用<code>next()</code>函数便可以实现对可迭代对象的遍历。我们常使用的<code>for</code>循环便是将这一过程隐式化。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">items = [1, 2 ,3]
-it = iter(items)
-try:
-    print(next(it))
-except StopIteration:
-    print('Stop iteration')
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">items = [<span class="number">1</span>, <span class="number">2</span> ,<span class="number">3</span>]</span><br><span class="line">it = iter(items)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">4print(next(it))</span><br><span class="line"><span class="keyword">except</span> StopIteration:</span><br><span class="line">4print(<span class="string">'Stop iteration'</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><h3 id="什么是生成器？"><a href="#什么是生成器？" class="headerlink" title="什么是生成器？"></a>什么是生成器？</h3><p>在C++等语言中都有迭代器的概念，而对于生成器来说，很多语言中则没有对应的实现。</p>
 <blockquote>
 <p>生成器是懒人版本的迭代器。</p>
 </blockquote>
 <p>在迭代器中，如果我们想要对其元素进行枚举，就需要提前生成这些元素。如下述程序：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">import os
-import psutil
-
-# 显示当前 python 程序占用的内存大小
-def show_memory_info(hint):
-    pid = os.getpid()
-    p = psutil.Process(pid)
-
-    info = p.memory_full_info()
-    memory = info.uss / 1024. / 1024
-    print('{} memory used: {} MB'.format(hint, memory))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def test_iterator():
-    show_memory_info('initing iterator')
-    list_1 = [i for i in range(100000000)]
-    show_memory_info('after iterator initiated')
-    print(sum(list_1))
-    show_memory_info('after sum called')
-
-def test_generator():
-    show_memory_info('initing generator')
-    list_2 = (i for i in range(100000000))
-    show_memory_info('after generator initiated')
-    print(sum(list_2))
-    show_memory_info('after sum called')
-
-%time test_iterator()
-%time test_generator()
-
-########## 输出 ##########
-
-initing iterator memory used: 48.9765625 MB
-after iterator initiated memory used: 3920.30078125 MB
-4999999950000000
-after sum called memory used: 3920.3046875 MB
-Wall time: 17 s
-initing generator memory used: 50.359375 MB
-after generator initiated memory used: 50.359375 MB
-4999999950000000
-after sum called memory used: 50.109375 MB
-Wall time: 12.5 s
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> psutil</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示当前 python 程序占用的内存大小</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_memory_info</span><span class="params">(hint)</span>:</span></span><br><span class="line">    pid = os.getpid()</span><br><span class="line">    p = psutil.Process(pid)</span><br><span class="line">    </span><br><span class="line">    info = p.memory_full_info()</span><br><span class="line">    memory = info.uss / <span class="number">1024.</span> / <span class="number">1024</span></span><br><span class="line">    print(<span class="string">'&#123;&#125; memory used: &#123;&#125; MB'</span>.format(hint, memory))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_iterator</span><span class="params">()</span>:</span></span><br><span class="line">    show_memory_info(<span class="string">'initing iterator'</span>)</span><br><span class="line">    list_1 = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000000</span>)]</span><br><span class="line">    show_memory_info(<span class="string">'after iterator initiated'</span>)</span><br><span class="line">    print(sum(list_1))</span><br><span class="line">    show_memory_info(<span class="string">'after sum called'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_generator</span><span class="params">()</span>:</span></span><br><span class="line">    show_memory_info(<span class="string">'initing generator'</span>)</span><br><span class="line">    list_2 = (i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000000</span>))</span><br><span class="line">    show_memory_info(<span class="string">'after generator initiated'</span>)</span><br><span class="line">    print(sum(list_2))</span><br><span class="line">    show_memory_info(<span class="string">'after sum called'</span>)</span><br><span class="line"></span><br><span class="line">%time test_iterator()</span><br><span class="line">%time test_generator()</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">initing iterator memory used: <span class="number">48.9765625</span> MB</span><br><span class="line">after iterator initiated memory used: <span class="number">3920.30078125</span> MB</span><br><span class="line"><span class="number">4999999950000000</span></span><br><span class="line">after sum called memory used: <span class="number">3920.3046875</span> MB</span><br><span class="line">Wall time: <span class="number">17</span> s</span><br><span class="line">initing generator memory used: <span class="number">50.359375</span> MB</span><br><span class="line">after generator initiated memory used: <span class="number">50.359375</span> MB</span><br><span class="line"><span class="number">4999999950000000</span></span><br><span class="line">after sum called memory used: <span class="number">50.109375</span> MB</span><br><span class="line">Wall time: <span class="number">12.5</span> s</span><br></pre></td></tr></table></figure>
 <p>在上述程序中可以发现，迭代器提前生成了所有的元素，这会消耗大量的内存。而生成器则不会提前生成所有元素。生成器只有在调用<code>next()</code>函数时才会生成下一个变量，同时生成器在初始化的时候不需要运行一次生成操作，耗时更短。</p>
 <p>在Python中，我们可以使用小括号来初始化一个生成器：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">(i for i in range(100000000))
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000000</span>))</span><br></pre></td></tr></table></figure>
 <h3 id="自定义生成器"><a href="#自定义生成器" class="headerlink" title="自定义生成器"></a>自定义生成器</h3><p>首先给出如下代码：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def generator(k):
-    i = 1
-    while True:
-        yield i ** k
-        i += 1
-
-gen_1 = generator(1)
-gen_3 = generator(3)
-print(gen_1)
-print(gen_3)
-
-def get_sum(n):
-    sum_1, sum_3 = 0, 0
-    for i in range(n):
-        next_1 = next(gen_1)
-        next_3 = next(gen_3)
-        print('next_1 = {}, next_3 = {}'.format(next_1, next_3))
-        sum_1 += next_1
-        sum_3 += next_3
-    print(sum_1 * sum_1, sum_3)
-
-get_sum(8)
-
-########## 输出 ##########
-
-<generator object="" generator="" at="" 0x000001e70651c4f8="">
-<generator object="" generator="" at="" 0x000001e70651c390="">
-next_1 = 1, next_3 = 1
-next_1 = 2, next_3 = 8
-next_1 = 3, next_3 = 27
-next_1 = 4, next_3 = 64
-next_1 = 5, next_3 = 125
-next_1 = 6, next_3 = 216
-next_1 = 7, next_3 = 343
-next_1 = 8, next_3 = 512
-1296 1296
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></generator></generator></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generator</span><span class="params">(k)</span>:</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> i ** k</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">gen_1 = generator(<span class="number">1</span>)</span><br><span class="line">gen_3 = generator(<span class="number">3</span>)</span><br><span class="line">print(gen_1)</span><br><span class="line">print(gen_3)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_sum</span><span class="params">(n)</span>:</span></span><br><span class="line">    sum_1, sum_3 = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        next_1 = next(gen_1)</span><br><span class="line">        next_3 = next(gen_3)</span><br><span class="line">        print(<span class="string">'next_1 = &#123;&#125;, next_3 = &#123;&#125;'</span>.format(next_1, next_3))</span><br><span class="line">        sum_1 += next_1</span><br><span class="line">        sum_3 += next_3</span><br><span class="line">    print(sum_1 * sum_1, sum_3)</span><br><span class="line"></span><br><span class="line">get_sum(<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">&lt;generator object generator at <span class="number">0x000001E70651C4F8</span>&gt;</span><br><span class="line">&lt;generator object generator at <span class="number">0x000001E70651C390</span>&gt;</span><br><span class="line">next_1 = <span class="number">1</span>, next_3 = <span class="number">1</span></span><br><span class="line">next_1 = <span class="number">2</span>, next_3 = <span class="number">8</span></span><br><span class="line">next_1 = <span class="number">3</span>, next_3 = <span class="number">27</span></span><br><span class="line">next_1 = <span class="number">4</span>, next_3 = <span class="number">64</span></span><br><span class="line">next_1 = <span class="number">5</span>, next_3 = <span class="number">125</span></span><br><span class="line">next_1 = <span class="number">6</span>, next_3 = <span class="number">216</span></span><br><span class="line">next_1 = <span class="number">7</span>, next_3 = <span class="number">343</span></span><br><span class="line">next_1 = <span class="number">8</span>, next_3 = <span class="number">512</span></span><br><span class="line"><span class="number">1296</span> <span class="number">1296</span></span><br></pre></td></tr></table></figure>
 <p>在上述代码中，<code>generator()</code>函数即创建了一个生成器。在这个函数中有一个关键字<code>yeild</code>，可以理解为，当程序运行到这一行时会暂停，跳出程序。跳出的目的地是<code>next()</code>函数，<code>yield</code>后跟的<code>i ** k</code>即为<code>next()</code>函数的返回值。</p>
 <p>当每次调用<code>next()</code>函数时，程序将会从上一次暂停的地方继续运行，并且，其中的<code>i</code>变量并未被清除。</p>
 <p>与迭代器的另一个不同之处是，迭代器是一个有限的集合，而生成器可以成为一个无限集。只要调用<code>next()</code>函数，生成器便会执行一次操作。</p>
 <p>下面解决一个常见的问题，给定一个列表，求一个特定的数字在这个列表中的位置。</p>
 <p>常规做法是暴力遍历，如下所示：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-def index_normal(L, target):
-    result = []
-    for i, num in enumerate(L):
-        if num == target:
-            result.append(i)
-    return result
-
-print(index_normal([1, 6, 2, 4, 5, 2, 8, 6, 3, 2], 2))
-
-########## 输出 ##########
-
-[2, 5, 9]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_normal</span><span class="params">(L, target)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> i, num <span class="keyword">in</span> enumerate(L):</span><br><span class="line">        <span class="keyword">if</span> num == target:</span><br><span class="line">            result.append(i)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">print(index_normal([<span class="number">1</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">2</span>], <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">[<span class="number">2</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
 <p>使用生成器的做法如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-def index_generator(L, target):
-    for i, num in enumerate(L):
-        if num == target:
-            yield i
-
-print(list(index_generator([1, 6, 2, 4, 5, 2, 8, 6, 3, 2], 2)))
-
-########## 输出 ##########
-
-[2, 5, 9]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_generator</span><span class="params">(L, target)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i, num <span class="keyword">in</span> enumerate(L):</span><br><span class="line">        <span class="keyword">if</span> num == target:</span><br><span class="line">            <span class="keyword">yield</span> i</span><br><span class="line"></span><br><span class="line">print(list(index_generator([<span class="number">1</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">2</span>], <span class="number">2</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">[<span class="number">2</span>, <span class="number">5</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
 <p>上述代码中使用<code>list()</code>将生成器对象转换为了列表。</p>
 <p>另一个问题，给定两个序列，判定第一个是不是第二个的子序列。子序列指的是：一个列表的元素在第二个列表中按照顺序出现，但是不必要挨在一起。</p>
 <p>最简单的做法是贪心算法，维持两个指针指向两个列表的最开始，对第二个列表进行遍历，当与第一个列表的指针指向的元素匹配时，第一个列表的指针后移一位，然后第二个列表的指针继续从当前位置向后遍历，当第一个列表的指针遍历完所有的元素时，返回<code>True</code>，否则返回<code>False</code>。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def is_subsequence(a, b):
-    i = 0
-    j = 0
-    while True:
-        if a[i] == b[j]:
-            i += 1
-        j += 1
-        if j == len(b):
-            break
-    if i == len(a):
-        # 第一个列表被遍历完
-        result = True
-    else:
-        result = False
-    return result
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_subsequence</span><span class="params">(a, b)</span>:</span></span><br><span class="line">4i = <span class="number">0</span></span><br><span class="line">4j = <span class="number">0</span></span><br><span class="line">4<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">44<span class="keyword">if</span> a[i] == b[j]:</span><br><span class="line">444i += <span class="number">1</span></span><br><span class="line">44j += <span class="number">1</span></span><br><span class="line">44<span class="keyword">if</span> j == len(b):</span><br><span class="line">444<span class="keyword">break</span></span><br><span class="line">4<span class="keyword">if</span> i == len(a):</span><br><span class="line">44<span class="comment"># 第一个列表被遍历完</span></span><br><span class="line">44result = <span class="keyword">True</span></span><br><span class="line">4<span class="keyword">else</span>:</span><br><span class="line">44result = <span class="keyword">False</span></span><br><span class="line">4<span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
 <p>如果使用迭代器和生成器，则写法如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">def is_subsequence(a, b):
-    b = iter(b)
-    return all(i in b for i in a)
-
-print(is_subsequence([1, 3, 5], [1, 2, 3, 4, 5]))
-print(is_subsequence([1, 4, 3], [1, 2, 3, 4, 5]))
-
-########## 输出 ##########
-
-True
-False
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_subsequence</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    b = iter(b)</span><br><span class="line">    <span class="keyword">return</span> all(i <span class="keyword">in</span> b <span class="keyword">for</span> i <span class="keyword">in</span> a)</span><br><span class="line"></span><br><span class="line">print(is_subsequence([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))</span><br><span class="line">print(is_subsequence([<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
 <p>将上述代码展开：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-def is_subsequence(a, b):
-    b = iter(b)
-    print(b)
-
-    gen = (i for i in a)
-    print(gen)
-
-    for i in gen:
-        print(i)
-
-    gen = ((i in b) for i in a)
-    print(gen)
-
-    for i in gen:
-        print(i)
-
-    return all(((i in b) for i in a))
-
-print(is_subsequence([1, 3, 5], [1, 2, 3, 4, 5]))
-print(is_subsequence([1, 4, 3], [1, 2, 3, 4, 5]))
-
-########## 输出 ##########
-
-<list_iterator object="" at="" 0x000001e7063d0e80="">
-<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C570>
-1
-3
-5
-<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C5E8>
-True
-True
-True
-False
-<list_iterator object="" at="" 0x000001e7063d0d30="">
-<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C5E8>
-1
-4
-3
-<generator object="" is_subsequence.<locals="">.<genexpr> at 0x000001E70651C570>
-True
-True
-False
-False
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></genexpr></generator></genexpr></generator></list_iterator></genexpr></generator></genexpr></generator></list_iterator></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_subsequence</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    b = iter(b)</span><br><span class="line">    print(b)</span><br><span class="line"></span><br><span class="line">    gen = (i <span class="keyword">for</span> i <span class="keyword">in</span> a)</span><br><span class="line">    print(gen)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> gen:</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line">    gen = ((i <span class="keyword">in</span> b) <span class="keyword">for</span> i <span class="keyword">in</span> a)</span><br><span class="line">    print(gen)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> gen:</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> all(((i <span class="keyword">in</span> b) <span class="keyword">for</span> i <span class="keyword">in</span> a))</span><br><span class="line"></span><br><span class="line">print(is_subsequence([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))</span><br><span class="line">print(is_subsequence([<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">&lt;list_iterator object at <span class="number">0x000001E7063D0E80</span>&gt;</span><br><span class="line">&lt;generator object is_subsequence.&lt;locals&gt;.&lt;genexpr&gt; at <span class="number">0x000001E70651C570</span>&gt;</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">&lt;generator object is_subsequence.&lt;locals&gt;.&lt;genexpr&gt; at <span class="number">0x000001E70651C5E8</span>&gt;</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">False</span></span><br><span class="line">&lt;list_iterator object at <span class="number">0x000001E7063D0D30</span>&gt;</span><br><span class="line">&lt;generator object is_subsequence.&lt;locals&gt;.&lt;genexpr&gt; at <span class="number">0x000001E70651C5E8</span>&gt;</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">&lt;generator object is_subsequence.&lt;locals&gt;.&lt;genexpr&gt; at <span class="number">0x000001E70651C570</span>&gt;</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
 <p>其中的<code>(i in b)</code>语句，相当于下述代码：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">while True:
-    val = next(b)
-    if val == i:
-        yield True
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    val = next(b)</span><br><span class="line">    <span class="keyword">if</span> val == i:</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
 <p>首先使用<code>iter(b)</code>将<code>b</code>转换为迭代器，这样在<code>next()</code>函数运行时，就可以保存当前运行到的<code>b</code>的值，下一次运行到<code>val = next(b)</code>时会接着上一次的指针继续往下。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">
-b = (i for i in range(5))
-
-print(2 in b)
-print(4 in b)
-print(3 in b)
-
-########## 输出 ##########
-
-True
-True
-False
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">b = (i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">print(<span class="number">2</span> <span class="keyword">in</span> b)</span><br><span class="line">print(<span class="number">4</span> <span class="keyword">in</span> b)</span><br><span class="line">print(<span class="number">3</span> <span class="keyword">in</span> b)</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
 <p>上述代码中，<code>b</code>是一个生成器，第一次调用<code>2 in b</code>生成到2的时候就停止，接着调用<code>4 in b</code>时，生成到4时停止，此时生成器已经消耗完毕，再次调用<code>3 in b</code>便会返回<code>False</code>。</p>
 <ul>
 <li>容器是可迭代对象，可迭代对象调用<code>iter()</code>函数可以得到迭代器。对迭代器调用<code>next()</code>函数可以得到下一个元素。</li>
@@ -891,7 +698,7 @@ False
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1062,7 +869,7 @@ False
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

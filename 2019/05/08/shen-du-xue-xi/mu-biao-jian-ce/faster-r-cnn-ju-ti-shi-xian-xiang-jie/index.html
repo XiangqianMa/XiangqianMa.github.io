@@ -562,10 +562,7 @@
 </ol>
 <p>R-CNN使用预训练网络（例如ResNet）的前几层从输入图片中提取特征，这一做法由迁移学习理论作为支持（将在一个数据集上训练得到的网络用于不同的问题是可能的）。网络的前几层检测一些通用的特征（如，边、颜色块等在不同的问题中都具有较好的区分性的特征）,而后几层学习到的更多是与特定问题相关的高层特征。在我们搭建的网路中，可以直接将后面几层移除或者在反向传播过程中对其参数进行更新。这些从预训练的网络的前几层迁移过来的层构成了”head”网络。</p>
 <p>由”head”网络产生的卷积特征图将被送入RPN网络中，RPN网络使用一系列的卷积层和全连接层产生可能存在前景目标的RoI区域。接着将使用这些RoI区域从”head”网络产生的特征图中裁剪出相应的特征图区域，称为“crop pooling”.由裁剪池化得到的特征图区域将被送入分类网络，进而经过学习得到该RoI区域所包含的目标种类。</p>
-<p>另一方面，ResNet的权重也可以使用如下方式进行初始化：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-m.weight.data.normal_(0, math.sqrt(2. / n))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>另一方面，ResNet的权重也可以使用如下方式进行初始化：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">n = m.kernel_size[<span class="number">0</span>] * m.kernel_size[<span class="number">1</span>] * m.out_channels</span><br><span class="line">m.weight.data.normal_(<span class="number">0</span>, math.sqrt(<span class="number">2.</span> / n))</span><br></pre></td></tr></table></figure></p>
 <h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>下图分别展示了上述几种不同的网络模块，图中给出了每一层网络输出和输入特征的大小，这将有助于理解网络中的特征是如何进行转换的，$w,h$表示经过预测后的图片的大小。</p>
 <p><img src="/2019/05/08/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/img_5a9ffec911c19.png" alt=""></p>
 <h3 id="实现细节：训练"><a href="#实现细节：训练" class="headerlink" title="实现细节：训练"></a>实现细节：训练</h3><p>在本节将详细介绍训练R-CNN所涉及到的步骤。一旦理解了训练的流程，理解推理过程将很容易，因为推理只用到了训练过程的一个子集。训练的目标是调整RPN、分类网络以及Head的权重。RPN的任务是产生RoIs区域，分类网络的任务是对每一个RoI给定一个类别分数。为了训练这些网络，我们需要得到相应的ground truths（即图片中所出现的目标的bounding boxes的坐标以及这些目标的类别）。这些信息已经由数据集的标定文件给出，这里有一些常用的通用数据集：</p>
@@ -885,7 +882,7 @@ cross\_entropy(predicted\_class, actual\_class)</script><p><strong>Bounding Box 
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1056,7 +1053,7 @@ cross\_entropy(predicted\_class, actual\_class)</script><p><strong>Bounding Box 
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

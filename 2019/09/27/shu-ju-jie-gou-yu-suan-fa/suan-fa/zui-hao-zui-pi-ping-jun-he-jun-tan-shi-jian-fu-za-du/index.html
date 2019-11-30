@@ -96,20 +96,20 @@
 
 
 
-  <meta name="description" content="最好、最坏、平均和均摊时间复杂度本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。 不同情况下具有不同的时间复杂度考虑如下代码： // n 表示数组 array 的长度 int find(int[] array, int n, int x) {   int i = 0;   int pos = -1;   for (; i &amp;lt; n; ++i) {     if (array[">
+  <meta name="description" content="最好、最坏、平均和均摊时间复杂度本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。 不同情况下具有不同的时间复杂度考虑如下代码： 123456789101112// n 表示数组 array 的长度int find(int[] array, int n, int x) &amp;#123;  int i = 0;  int pos = -1;  for (; i &amp;lt; n; ++">
 <meta name="keywords" content="编程基础,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最好、最坏、平均和均摊时间复杂度">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/09/27/shu-ju-jie-gou-yu-suan-fa/suan-fa/zui-hao-zui-pi-ping-jun-he-jun-tan-shi-jian-fu-za-du/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="最好、最坏、平均和均摊时间复杂度本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。 不同情况下具有不同的时间复杂度考虑如下代码： // n 表示数组 array 的长度 int find(int[] array, int n, int x) {   int i = 0;   int pos = -1;   for (; i &amp;lt; n; ++i) {     if (array[">
+<meta property="og:description" content="最好、最坏、平均和均摊时间复杂度本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。 不同情况下具有不同的时间复杂度考虑如下代码： 123456789101112// n 表示数组 array 的长度int find(int[] array, int n, int x) &amp;#123;  int i = 0;  int pos = -1;  for (; i &amp;lt; n; ++">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/09/27/shu-ju-jie-gou-yu-suan-fa/suan-fa/zui-hao-zui-pi-ping-jun-he-jun-tan-shi-jian-fu-za-du/d889a358b8eccc5bbb90fc16e327a22f.jpg">
 <meta property="og:image" content="http://xiangqianma.github.io/2019/09/27/shu-ju-jie-gou-yu-suan-fa/suan-fa/zui-hao-zui-pi-ping-jun-he-jun-tan-shi-jian-fu-za-du/6df62366a60336d9de3bc34f488d8bed.jpg">
 <meta property="og:updated_time" content="2019-11-10T02:07:45.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最好、最坏、平均和均摊时间复杂度">
-<meta name="twitter:description" content="最好、最坏、平均和均摊时间复杂度本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。 不同情况下具有不同的时间复杂度考虑如下代码： // n 表示数组 array 的长度 int find(int[] array, int n, int x) {   int i = 0;   int pos = -1;   for (; i &amp;lt; n; ++i) {     if (array[">
+<meta name="twitter:description" content="最好、最坏、平均和均摊时间复杂度本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。 不同情况下具有不同的时间复杂度考虑如下代码： 123456789101112// n 表示数组 array 的长度int find(int[] array, int n, int x) &amp;#123;  int i = 0;  int pos = -1;  for (; i &amp;lt; n; ++">
 <meta name="twitter:image" content="http://xiangqianma.github.io/2019/09/27/shu-ju-jie-gou-yu-suan-fa/suan-fa/zui-hao-zui-pi-ping-jun-he-jun-tan-shi-jian-fu-za-du/d889a358b8eccc5bbb90fc16e327a22f.jpg">
 
 
@@ -527,19 +527,7 @@
       
         <h1 id="最好、最坏、平均和均摊时间复杂度"><a href="#最好、最坏、平均和均摊时间复杂度" class="headerlink" title="最好、最坏、平均和均摊时间复杂度"></a>最好、最坏、平均和均摊时间复杂度</h1><p>本文为<a href="https://time.geekbang.org/column/article/40036" target="_blank" rel="noopener">数据结构与算法之美-王争</a>的学习笔记，如需查看完整内容，请参考链接。</p>
 <h2 id="不同情况下具有不同的时间复杂度"><a href="#不同情况下具有不同的时间复杂度" class="headerlink" title="不同情况下具有不同的时间复杂度"></a>不同情况下具有不同的时间复杂度</h2><p>考虑如下代码：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c">// n 表示数组 array 的长度
-int find(int[] array, int n, int x) {
-  int i = 0;
-  int pos = -1;
-  for (; i < n; ++i) {
-    if (array[i] == x) {
-       pos = i;
-       break;
-    }
-  }
-  return pos;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// n 表示数组 array 的长度</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>, <span class="keyword">int</span> n, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> pos = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">for</span> (; i &lt; n; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[i] == x) &#123;</span><br><span class="line">       pos = i;</span><br><span class="line">       <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码的功能是在一个数组中查找指定的元素。对于这一段程序有以下几种情况：</p>
 <ul>
 <li>所查找的元素位于数组的首位，那么<code>for</code>循环中的程序只需运行一次，该算法的时间复杂度为$O(1)$。</li>
@@ -554,25 +542,7 @@ int find(int[] array, int n, int x) {
 <p>在上述分析过程中，我们使用了加权平均值，也叫期望值，所以平均情况时间复杂度也可称为<strong>加权平均时间复杂度</strong>。实际上，上述n中情况发生的概率不一定相同，但最终得到的时间复杂度是正确的。</p>
 <h2 id="均摊时间复杂度"><a href="#均摊时间复杂度" class="headerlink" title="均摊时间复杂度"></a>均摊时间复杂度</h2><p>实际上，在一般的算法时间度分析时，我们不需要区分最好、最坏、平均三种复杂度。平均复杂度只在某些特殊情况下才会用到，而均摊时间复杂度应用的场景更为特殊。</p>
 <p>以下述代码为例：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c"> // array 表示一个长度为 n 的数组
- // 代码中的 array.length 就等于 n
- int[] array = new int[n];
- int count = 0;
-
- void insert(int val) {
-    if (count == array.length) {
-       int sum = 0;
-       for (int i = 0; i < array.length; ++i) {
-          sum = sum + array[i];
-       }
-       array[0] = sum;
-       count = 1;
-    }
-
-    array[count] = val;
-    ++count;
- }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array 表示一个长度为 n 的数组</span></span><br><span class="line"><span class="comment">// 代码中的 array.length 就等于 n</span></span><br><span class="line"><span class="keyword">int</span>[] <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (count == <span class="built_in">array</span>.length) &#123;</span><br><span class="line">      <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">array</span>.length; ++i) &#123;</span><br><span class="line">         sum = sum + <span class="built_in">array</span>[i];</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">array</span>[<span class="number">0</span>] = sum;</span><br><span class="line">      count = <span class="number">1</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="built_in">array</span>[count] = val;</span><br><span class="line">   ++count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这段代码实现的功能为向数组中插入元素，当数组满时，对数组中的元素进行遍历求和，将求和结果放到数组的第一个位置，并将要插入的元素放到数组的第二个位置。</p>
 <p>在最好的情况下，数组中还有空位，程序只需运行一次，因而时间复杂度为$O(1)$；最坏的情况下，数组已满，则需要执行<code>for</code>循环，时间复杂度为$O(n)$。</p>
 <p>数组中还有空位的情况共有n种，每一种的时间复杂度都为$O(1)$，除此之外，当数组已满时，时间复杂度为$O(n)$。在插入一个元素时，这$n+1$种情况具有同等的概率，加权平均后得：</p>
@@ -588,29 +558,7 @@ int find(int[] array, int n, int x) {
 <p>均摊分析法适用于以下场景：在对一个数据结构进行一系列操作时，大部分情况下时间复杂度都很低，只有个别情况下时间复杂度比较高，并且，这些操作之间通常存在前后连贯的操作关系。因而，可以将这一系列的操作放在一起进行分析，看是否可以将耗时高的操作的耗时均摊到耗时低的操作上。</p>
 <p>一般能应用均摊时间复杂度的场合，均摊时间复杂度就等于最好情况时间复杂度。</p>
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>一段算法如下：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c">// 全局变量，大小为 10 的数组 array，长度 len，下标 i。
-int array[] = new int[10]; 
-int len = 10;
-int i = 0;
-
-// 往数组中添加一个元素
-void add(int element) {
-   if (i >= len) { // 数组空间不够了
-     // 重新申请一个 2 倍大小的数组空间
-     int new_array[] = new int[len*2];
-     // 把原来 array 数组中的数据依次 copy 到 new_array
-     for (int j = 0; j < len; ++j) {
-       new_array[j] = array[j];
-     }
-     // new_array 复制给 array，array 现在大小就是 2 倍 len 了
-     array = new_array;
-     len = 2 * len;
-   }
-   // 将 element 放到下标为 i 的位置，下标 i 加一
-   array[i] = element;
-   ++i;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局变量，大小为 10 的数组 array，长度 len，下标 i。</span></span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]; </span><br><span class="line"><span class="keyword">int</span> len = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往数组中添加一个元素</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> element)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (i &gt;= len) &#123; <span class="comment">// 数组空间不够了</span></span><br><span class="line">     <span class="comment">// 重新申请一个 2 倍大小的数组空间</span></span><br><span class="line">     <span class="keyword">int</span> new_array[] = <span class="keyword">new</span> <span class="keyword">int</span>[len*<span class="number">2</span>];</span><br><span class="line">     <span class="comment">// 把原来 array 数组中的数据依次 copy 到 new_array</span></span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; ++j) &#123;</span><br><span class="line">       new_array[j] = <span class="built_in">array</span>[j];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">// new_array 复制给 array，array 现在大小就是 2 倍 len 了</span></span><br><span class="line">     <span class="built_in">array</span> = new_array;</span><br><span class="line">     len = <span class="number">2</span> * len;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// 将 element 放到下标为 i 的位置，下标 i 加一</span></span><br><span class="line">   <span class="built_in">array</span>[i] = element;</span><br><span class="line">   ++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这段往数组中添加元素的代码中</p>
 <ul>
 <li><p>最好的情况是数组空间充足，那么时间复杂度为$O(1)$；</p>
@@ -752,7 +700,7 @@ void add(int element) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -923,7 +871,7 @@ void add(int element) {
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

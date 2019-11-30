@@ -586,22 +586,13 @@
 <h2 id="如何编写链表代码"><a href="#如何编写链表代码" class="headerlink" title="如何编写链表代码"></a>如何编写链表代码</h2><h3 id="使用哨兵简化实现难度"><a href="#使用哨兵简化实现难度" class="headerlink" title="使用哨兵简化实现难度"></a>使用哨兵简化实现难度</h3><p>以单链表的插入为例，如下图所示：</p>
 <p><img src="/2019/10/01/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shi-yong-lian-biao-shi-xian-lru-huan-cun-tao-tai-suan-fa/05a4a3b57502968930d517c934347c6e.jpg" alt=""></p>
 <p>如果要在结点p后面插入一个新的结点，只需要如下两行代码即可：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c">new_node->next = p->next;
-p->next = new_node;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">new_node-&gt;next = p-&gt;next;</span><br><span class="line">p-&gt;next = new_node;</span><br></pre></td></tr></table></figure>
 <p>但如果要向一个空链表插入第一个结点时，就无法使用这一代码，因为此时链表的表头指向为空。因而应该使用如下的逻辑：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c">if (head == null) {
-  head = new_node;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (head == null) &#123;</span><br><span class="line">  head = new_node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>同理对于单链表中的一般结点的删除操作，只需要一行代码即可：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c">p->next = p->next->next;
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;next = p-&gt;next-&gt;next;</span><br></pre></td></tr></table></figure>
 <p>但是，如果删除的结点为单链表的最后一个，就需要使用如下代码：</p>
-<pre class="line-numbers language-lang-c"><code class="language-lang-c">if (head->next == null) {
-   head = null;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (head-&gt;next == null) &#123;</span><br><span class="line">   head = null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>也就是说，我们需要在插入和删除单链表的结点时，分别对第一个和最后一个结点进行特殊处理。为了解决代码编写时的麻烦，我们可以引入哨兵元素，所谓哨兵即为了防止操作越界。在单链表中，我们可以声明一个哨兵结点，单链表的head指针会一直指向该哨兵结点，将这种链表称为<strong>带头链表</strong>，如下图所示。</p>
 <p><img src="/2019/10/01/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shi-yong-lian-biao-shi-xian-lru-huan-cun-tao-tai-suan-fa/7d22d9428bdbba96bfe388fe1e3368c7.jpg" alt=""></p>
 <p>通过加入哨兵结点，便可以将链表的插入和删除操作统一起来。</p>
@@ -744,7 +735,7 @@ p->next = new_node;
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -915,7 +906,7 @@ p->next = new_node;
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->

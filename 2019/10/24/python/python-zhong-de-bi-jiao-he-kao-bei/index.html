@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： a = 10 b = 10  a == b True  id(a) 4427562448  id(">
+  <meta name="description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： 1234567891011121314a = 10b = 10a == bTrueid(a)442">
 <meta name="keywords" content="编程基础,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python中的比较和拷贝">
 <meta property="og:url" content="http://xiangqianma.github.io/2019/10/24/python/python-zhong-de-bi-jiao-he-kao-bei/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： a = 10 b = 10  a == b True  id(a) 4427562448  id(">
+<meta property="og:description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： 1234567891011121314a = 10b = 10a == bTrueid(a)442">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-09T13:46:21.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的比较和拷贝">
-<meta name="twitter:description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： a = 10 b = 10  a == b True  id(a) 4427562448  id(">
+<meta name="twitter:description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： 1234567891011121314a = 10b = 10a == bTrueid(a)442">
 
 
 
@@ -524,127 +524,25 @@
       
         <h1 id="Python中的比较和拷贝"><a href="#Python中的比较和拷贝" class="headerlink" title="Python中的比较和拷贝"></a>Python中的比较和拷贝</h1><h2 id="‘-’和’is’"><a href="#‘-’和’is’" class="headerlink" title="‘==’和’is’"></a>‘==’和’is’</h2><p>’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。</p>
 <p>在Python中，可以使用<code>id(object)</code>函数获得每个对象的身份表示。因此，<code>is</code>操作符相当于比较对象之间的ID是否相等：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = 10
-b = 10
-
-a == b
-True
-
-id(a)
-4427562448
-
-id(b)
-4427562448
-
-a is b
-True
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">a == b</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">id(a)</span><br><span class="line"><span class="number">4427562448</span></span><br><span class="line"></span><br><span class="line">id(b)</span><br><span class="line"><span class="number">4427562448</span></span><br><span class="line"></span><br><span class="line">a <span class="keyword">is</span> b</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
 <p><code>a</code>和<code>b</code>指向同一片内存的原因在于，Python会首先给10分配一块内存区域，接着将<code>a</code>和<code>b</code>都指向这块内存。因此，两者的值和内存地址都相同。</p>
 <p>但是当整型数据不在[-5,256]范围内时，结果会是值相同而内存不相同，这一差异是由Python的内存管理机制导致的。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">a = 257
-b = 257
-
-a == b
-True
-
-id(a)
-4473417552
-
-id(b)
-4473417584
-
-a is b
-False
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">257</span></span><br><span class="line">b = <span class="number">257</span></span><br><span class="line"></span><br><span class="line">a == b</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">id(a)</span><br><span class="line"><span class="number">4473417552</span></span><br><span class="line"></span><br><span class="line">id(b)</span><br><span class="line"><span class="number">4473417584</span></span><br><span class="line"></span><br><span class="line">a <span class="keyword">is</span> b</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
 <p>实际操作时，更多使用<code>==</code>来比较两个对象的值是否相同，<code>is</code>操作符常用于比较一个变量与一个单例：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">if a is None:
-      ...
-
-if a is not None:
-      ...
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">      ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> a <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">      ...</span><br></pre></td></tr></table></figure>
 <p><code>is</code>操作符的效率高于<code>==</code>，因为<code>is</code>操作符不会被重载。而<code>==</code>操作是通过执行对象的<code>a.__eq__(b)</code>函数来执行比较操作的，不同的类会重载不同的<code>__eq__()</code>函数，因而效率相对低一点。</p>
 <h2 id="浅拷贝和深度拷贝"><a href="#浅拷贝和深度拷贝" class="headerlink" title="浅拷贝和深度拷贝"></a>浅拷贝和深度拷贝</h2><p>常见的浅拷贝是使用数据类型本身的构造器：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l1 = [1, 2, 3]
-l2 = list(l1)
-
-l2
-[1, 2, 3]
-
-l1 == l2
-True
-
-l1 is l2
-False
-
-s1 = set([1, 2, 3])
-s2 = set(s1)
-
-s2
-{1, 2, 3}
-
-s1 == s2
-True
-
-s1 is s2
-False
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">l1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">l2 = list(l1)</span><br><span class="line"></span><br><span class="line">l2</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">l1 == l2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">l1 <span class="keyword">is</span> l2</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">s1 = set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">s2 = set(s1)</span><br><span class="line"></span><br><span class="line">s2</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line">s1 == s2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">s1 <span class="keyword">is</span> s2</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
 <p>也可以使用<code>copy.copy()</code>函数进行浅拷贝操作。但是对于元组，使用<code>tuple()</code>或者切片操作符<code>:</code>不会创建一份浅拷贝，而是返回一个指向相同元组的引用：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">t1 = (1, 2, 3)
-t2 = tuple(t1)
-
-t1 == t2
-True
-
-t1 is t2
-True
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t1 = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">t2 = tuple(t1)</span><br><span class="line"></span><br><span class="line">t1 == t2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">t1 <span class="keyword">is</span> t2</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
 <p>那么，浅拷贝就指的是重新分配一片内存，创建一个新的对象，里面的元素是原对象中的元素的引用。如果原始对象的元素不可变，影响不大；但如果元素可变，通常会带来一些副作用：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">l1 = [[1, 2], (30, 40)]
-l2 = list(l1)
-l1.append(100)
-l1[0].append(3)
-
-l1
-[[1, 2, 3], (30, 40), 100]
-
-l2
-[[1, 2, 3], (30, 40)]
-
-l1[1] += (50, 60)
-l1
-[[1, 2, 3], (30, 40, 50, 60), 100]
-
-l2
-[[1, 2, 3], (30, 40)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">l1 = [[<span class="number">1</span>, <span class="number">2</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br><span class="line">l2 = list(l1)</span><br><span class="line">l1.append(<span class="number">100</span>)</span><br><span class="line">l1[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">l1</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>), <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">l2</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br><span class="line"></span><br><span class="line">l1[<span class="number">1</span>] += (<span class="number">50</span>, <span class="number">60</span>)</span><br><span class="line">l1</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>), <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">l2</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br></pre></td></tr></table></figure>
 <p>如果向避免上面的副作用就需要使用深度拷贝。</p>
 <p>深度拷贝指的是：重新分配一块内存，创建一个新的对象，并对原对象中的元素以递归的方式创建新的子对象拷贝到新对象中，因而，<strong>新对象和原对象没有任何关联</strong>。</p>
 <p>深度拷贝的实现方式如下：</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">import copy
-l1 = [[1, 2], (30, 40)]
-l2 = copy.deepcopy(l1)
-l1.append(100)
-l1[0].append(3)
-
-l1
-[[1, 2, 3], (30, 40), 100]
-
-l2 
-[[1, 2], (30, 40)]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">l1 = [[<span class="number">1</span>, <span class="number">2</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br><span class="line">l2 = copy.deepcopy(l1)</span><br><span class="line">l1.append(<span class="number">100</span>)</span><br><span class="line">l1[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">l1</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>), <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">l2 </span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br></pre></td></tr></table></figure>
 <p>但如果原始对象中存在到自身的引用，在使用深度拷贝时很容易出现无限循环。</p>
-<pre class="line-numbers language-lang-python"><code class="language-lang-python">import copy
-x = [1]
-x.append(x)
-
-x
-[1, [...]]
-
-y = copy.deepcopy(x)
-y
-[1, [...]]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">x = [<span class="number">1</span>]</span><br><span class="line">x.append(x)</span><br><span class="line"></span><br><span class="line">x</span><br><span class="line">[<span class="number">1</span>, [...]]</span><br><span class="line"></span><br><span class="line">y = copy.deepcopy(x)</span><br><span class="line">y</span><br><span class="line">[<span class="number">1</span>, [...]]</span><br></pre></td></tr></table></figure>
 <p>但在执行时并未出现溢出的现象，这时应为深度拷贝函数会在拷贝的同时维持一个列表记录已经被拷贝的对象和其ID，遇到已经拷贝过的对象，会直接从字典中返回。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://time.geekbang.org/column/article/100105" target="_blank" rel="noopener">景霄-Python核心技术与实战</a></li>
@@ -775,7 +673,7 @@ y
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -946,7 +844,7 @@ y
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">60.6k</span> 字
+      博客全站共： <span class="post-count">76.4k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
