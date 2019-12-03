@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>散列表-上</title>
+      <link href="/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/"/>
+      <url>/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/</url>
+      
+        <content type="html"><![CDATA[<h1 id="散列表-上"><a href="#散列表-上" class="headerlink" title="散列表-上"></a>散列表-上</h1><blockquote><p>本文为<a href="https://time.geekbang.org/column/article/64233" target="_blank" rel="noopener">数据结构与算法之美-王筝</a>的学习笔记，如需查看完整版请参考链接。</p></blockquote><h2 id="散列表（Hash-Table）的定义"><a href="#散列表（Hash-Table）的定义" class="headerlink" title="散列表（Hash Table）的定义"></a>散列表（Hash Table）的定义</h2><p>散列表， 又称“哈希表”或“Hash表”。<strong>散列表使用的是数组支持按照下标随机访问数据的特性</strong>，因而散列表就是数组的一种扩展，由数组演化而来。</p><p>假设有89位运动员，这些运动员的编号依次是0、1、2、…、87，希望通过运动员的编号快速查找对应运行员的信息。因为参赛编号和数组下标一一对应，因而我们可以将编号与数组的下标一一对应，编号为0的运动员的信息放在数组中下标为0的位置，以此类推。</p><p>因为参赛编号和数组下标一一对应，因而当我们需要创造编号为x的运动员的信息时，只需要将下标为x的数组元素取出来即可，时间复杂度为$O(1)$。</p><p>这就是典型的散列思想，参赛选手的编号被称为键（key）或者关键字，被用来标示一个选手；将参赛编号转换为数组下标的映射方法被称为散列函数（或“Hash函数”、“哈希函数”）；由散列函数计算得到的值被称作“散列值”（或“Hash值”、“哈希值”）。</p><p><img src="/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/92c89a57e21f49d2f14f4424343a2773.jpg" alt="img" style="zoom: 33%;"></p><p>因而，散列表主要利用的就是：</p><blockquote><p>数组在利用下标进行访问的时候，时间复杂度为$O(1)$的特性。</p></blockquote><p>通过使用散列函数把元素的键值映射为下标，并将元素的数据存储在数组中对应下标的位置。当按照键值查询元素时，使用同样的散列函数把键值转换为下标，从对应的数组下标的位置提取相应的数据即可。</p><p>因而散列表主要设计到两个核心问题：</p><ul><li>散列函数的设计；</li><li>散列冲突的解决。</li></ul><h2 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h2><p>可以将散列函数定义为$hash(key)$，其中key表示元素的键值，$hash(key)$的值表示经过散列函数计算得到的<strong>散列值</strong>。</p><p>对于上述运动员的例子，由散列函数计算得到的散列值就等于数组的下标。这样的例子中散列函数的构建比较简单，但是如果参赛选手的编号是随机生成的6位数字或者是a到z之间的字符串，那么该如何构建散列函数？在课程中，作者总结了三点散列函数设计的基本要求：</p><ul><li>散列函数计算得到的散列值是一个非负整数；</li><li>如果$key1=key2$，那么计算得到的散列值相等，即$hash(key1)=hash(key2)$；</li><li>如果$key1\neq key2$，那么计算得到的散列值也应该不同，即$hash(key1)\neq hash(key2)$。</li></ul><p>前两个要求很容易满足，但第三个要求在实际应用时比较难以满足，或者说是不可能的。将键值不同，散列值却相同的情况成为散列冲突。我们几乎无法找到一个完美的无冲突的散列函数。</p><h2 id="散列冲突"><a href="#散列冲突" class="headerlink" title="散列冲突"></a>散列冲突</h2><p>正如上文中所述，我们无法完全解决散列冲突问题，那么应该如何缓解这一问题？常用的有以下两种解决方法： </p><ul><li>开放寻址法（open addressing）；</li><li>链表法（chaining）。</li></ul><h3 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h3><p>核心思想是：</p><blockquote><p>当出现散列冲突时，重新探测一个空闲位置，将其插入。</p></blockquote><p>那么如何探测空闲位置？</p><p>方法之一是线性探测，原理是如果某个函数经过散列函数计算后，对应的存储位置已经被占用，则从当前位置开始，依次往后寻找，直到找到空闲位置。如下图所示，黄色位置为空闲，橙色为占用。</p><p><img src="/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/5c31a3127cbc00f0c63409bbe1fbd0d5.jpg" alt="img" style="zoom:33%;"></p><p>如上图所示，当查找到数组尾部仍旧未找到时，就从数组的头部开始。</p><p>在散列表中查找元素时，首先通过散列函数计算出要查找的元素的散列值，然后依据散列值找到对应位置的元素，如果对应位置处的元素和要查找的元素相等，则找到；否则继续向后查找，如果遇到数组中的空闲位置时仍旧没有找到，说明散列表中不存在要查找的元素。</p><p><img src="/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/9126b0d33476777e7371b96e676e90ff.jpg" alt="img" style="zoom:33%;"></p><p>除了插入、查找操作之外，散列表还支持删除操作。但是当插入元素时使用的是线性探测法时，就不能直接将待删除的元素对应的位置置空。在进行查找操作时，当遇到空闲位置时就认为不存在对应的元素，但如果空闲位置是由于删除操作导致的，查找操作便会失效。</p><p>解决方法是，使用特殊标记法，将被删除位置标记为deleted。</p><p><img src="/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/fe7482ba09670cbe05a9dfe4dd49bd1d.jpg" alt="img" style="zoom: 50%;"></p><p>线性探测法存在的问题是，随着插入操作的进行，散列表中的元素越来越多，发生散列冲突的可能性将越来越大，空闲位置越来越少，线性探测的时间会越来越多。极端情况下，可能需要探测整个散列表。</p><p>在开放寻址冲突解决方法中，除了线性探测法之外，还有<strong>二次探测（Quadratic probing）</strong>和<strong>双重散列（Double hashing）</strong>方法。</p><p>二次探测是线性探测的变体，即每次探测的前进步长为前进次数的平方，即每次探测的下标为：$hash(key)+0,hash(key)+1^2,hash(key)+2^2$。</p><p>双重散列指的是使用多个散列函数，如果第一个散列函数计算得到的散列值位置不为空，则使用第二个散列函数计算散列值，以此类推。</p><p>除此之外还有一个概念，装载因子：</p><blockquote><p>散列表的装载因子=填入表中的元素个数 /散列表的长度</p></blockquote><p>装载因子越大，空闲位置越少，发生散列冲突的可能性越大。</p><h2 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h2><p>链表法是一种更常用的散列冲突解决方法，也更简单。在该方法中，散列表的每个“桶（bucket）”或者“槽（slot）”都会对应一个链表，散列值相同的元素存放在同一个链表中，如下图所示：</p><p><img src="/2019/12/03/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/a4b77d593e4cb76acb2b0689294ec17f.jpg" alt="img" style="zoom:50%;"></p><p>在进行元素插入时，只需要使用散列函数计算散列值，并将元素插入到对应的链表即可，插入的时间复杂度为$O(1)$。</p><p>而在进行元素查找和删除时，首先使用散列函数计算散列值，进而找到对应的链表，并从链表中找到或删除对应的元素。查找或删除的时间复杂度与链表的长度成正比，即$O(k)$，k为链表的长度。</p><h2 id="散列表的应用"><a href="#散列表的应用" class="headerlink" title="散列表的应用"></a>散列表的应用</h2><p>在Word的单词拼写功能中就用到了散列表技术，将目前所有的单词组成散列表存在内存中，当用户输入某一个单词时，就使用散列函数计算散列值，并在散列表中进行查找，如果找到则说明拼写无误，否则就有可能出错。</p><h2 id="课后思考"><a href="#课后思考" class="headerlink" title="课后思考"></a>课后思考</h2><ul><li><p>假设有10万条URL访问日志，如何按照访问次数对URL排序？</p><p>使用URL作为键值，访问次数作为内容，将URL存储为散列表的形式，并记录下最大的访问次数k。这样一来一个散列值可能对应多个URL，如果k不打则使用桶排序，否则使用快排。</p></li><li><p>有两个字符串数组，每一个数组的长度都很长，如何找到两个数组中相同的字符串？</p><p>将第一个字符串数组存储为散列表的形式（使用链表法解决冲突），然后，对于第二个字符串数组中的每一个字符串都使用相同的散列函数计算散列值，然后对对应的链表进行查找，找到则存在，否则不存在。</p></li></ul><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://time.geekbang.org/column/article/64233" target="_blank" rel="noopener">数据结构与算法之美</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程基础 </category>
+          
+          <category> 数据结构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 编程基础 </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>动态数据结构-跳表</title>
       <link href="/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/"/>
       <url>/2019/11/30/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/</url>
