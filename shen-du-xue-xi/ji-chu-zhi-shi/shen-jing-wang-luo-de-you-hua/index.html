@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="神经网络的优化我们在使用神经网络时会面临一些难点，这些难点主要可分为以下两大类：  优化问题：神经网络模型是一个非凸函数，再加上在深度网络中的梯度消失问题，很难进行优化；另外，深层神经网络模型一般参数比较多，训练数据也比较大，会导致训练的效率比较低 。 泛化问题：神经网络具有很强的拟合能力，因而很容易在训练集上产生过拟合。在训练神经网络时，需要采取一定的正则化方法来改进网络的泛化能力。  网络优化">
+<meta name="keywords" content="深度学习,基础知识,常见知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络中的优化方法">
+<meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="神经网络的优化我们在使用神经网络时会面临一些难点，这些难点主要可分为以下两大类：  优化问题：神经网络模型是一个非凸函数，再加上在深度网络中的梯度消失问题，很难进行优化；另外，深层神经网络模型一般参数比较多，训练数据也比较大，会导致训练的效率比较低 。 泛化问题：神经网络具有很强的拟合能力，因而很容易在训练集上产生过拟合。在训练神经网络时，需要采取一定的正则化方法来改进网络的泛化能力。  网络优化">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568453885312.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568454107662.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568456615851.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568535431591.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568535554582.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568687020682.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568687091725.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773120967.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773274360.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773378763.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773826547.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773835231.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568774196413.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568774234393.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568774686577.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568775024667.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568775165104.png">
+<meta property="og:updated_time" content="2019-11-30T15:23:28.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="神经网络中的优化方法">
+<meta name="twitter:description" content="神经网络的优化我们在使用神经网络时会面临一些难点，这些难点主要可分为以下两大类：  优化问题：神经网络模型是一个非凸函数，再加上在深度网络中的梯度消失问题，很难进行优化；另外，深层神经网络模型一般参数比较多，训练数据也比较大，会导致训练的效率比较低 。 泛化问题：神经网络具有很强的拟合能力，因而很容易在训练集上产生过拟合。在训练神经网络时，需要采取一定的正则化方法来改进网络的泛化能力。  网络优化">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568453885312.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>神经网络中的优化方法 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">神经网络中的优化方法
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-18 11:00:20" itemprop="dateCreated datePublished" datetime="2019-09-18T11:00:20+08:00">2019-09-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-30 23:23:28" itemprop="dateModified" datetime="2019-11-30T23:23:28+08:00">2019-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/基础知识/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="神经网络的优化"><a href="#神经网络的优化" class="headerlink" title="神经网络的优化"></a>神经网络的优化</h1><p>我们在使用神经网络时会面临一些难点，这些难点主要可分为以下两大类：</p>
+<ol>
+<li>优化问题：神经网络模型是一个非凸函数，再加上在深度网络中的梯度消失问题，很难进行优化；另外，深层神经网络模型一般参数比较多，训练数据也比较大，会导致训练的效率比较低 。</li>
+<li>泛化问题：神经网络具有很强的拟合能力，因而很容易在训练集上产生过拟合。在训练神经网络时，需要采取一定的正则化方法来改进网络的泛化能力。</li>
+</ol>
+<h2 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h2><p>在对神经网络进行优化时存在一些难点，主要有以下几点：</p>
+<ul>
+<li><p><strong>网络结构多样</strong></p>
+<p>神经网络具有非常多样的结构，我们无法找到一种通用的优化方法来解决所有网络上的参数优化问题。</p>
+</li>
+<li><p><strong>高维变量非凸优化</strong></p>
+<p>在低维优化问题中，要解决的问题主要是如何逃离局部最优值。而在高维空间中，所面临的是另一种问题，即如何逃离<strong>鞍点</strong>（Saddle Point）。鞍点处的的梯度为0，但在一些维度上是最高点、在另一些维度上是最低点，如图所示：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568453885312.png" alt="鞍点示意"></p>
+<p>在高维空间中，大部分梯度为0的点都是鞍点。基于梯度下降的优化方法在鞍点附近会处于停滞状态，很难从这些鞍点逃离。</p>
+</li>
+<li><p><strong>平坦的底部</strong></p>
+<p>神经网络的参数非常多，且参数之间存在一定的冗余性，因而每一个参数对于最终的损失的影响都非常小，损失函数在局部最优点附近表现为一个平坦的区域，称为<strong>平坦最小值</strong>。</p>
+</li>
+</ul>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568454107662.png" alt="神经网络中的平坦底部"></p>
+<p>目前，神经网络所使用的参数优化方法主要是基于梯度下降来寻找一组可以最小化结构风险的参数。可以将梯度下降法分为：</p>
+<ul>
+<li>随机梯度下降（每次只使用一个样本进行梯度计算）</li>
+<li>批量梯度下降（每次使用所有的样本进行梯度计算）</li>
+<li>小批量梯度下降（每次使用小批量的样本进行梯度计算）</li>
+</ul>
+<h2 id="小批量梯度下降（mini-batch）"><a href="#小批量梯度下降（mini-batch）" class="headerlink" title="小批量梯度下降（mini-batch）"></a>小批量梯度下降（mini-batch）</h2><p>影响小批量梯度下降算法的因素主要有三个：<strong>学习率</strong>、<strong>小批量的大小</strong>以及<strong>参数更新方向</strong>。</p>
+<ul>
+<li><p><strong>批量大小的选择</strong></p>
+<p>批量大小一般不会影响随机梯度的期望，但对随机梯度的方差有较大影响。批量大小越大，随机梯度的方差越小，引入的噪声也越小，训练也越稳定，因此可以设置较大的学习率。反之，当批量大小越小时，需要设置较小的学习率，否则模型会不收敛。</p>
+<p>学习率通常要随着批量大小的增加而相应的增大，一个常用的方法是<strong>线性缩放规则</strong>，即学习率和批量大小以同等的倍数增大。要注意的是，线性缩放规则在批量大小较小时适用，当批量大小非常大时，线性缩放会使得训练不稳定。</p>
+</li>
+<li><p><strong>学习率调整</strong></p>
+<p>学习率的调整非常重要，过大导致训练不收敛，过小导致训练收敛缓慢。常用的学习率调整方法包括学习率衰减、学习率预热、周期学习率和自适应学习率调整方法等。</p>
+<p>常见的<strong>学习率衰减方法</strong>有：</p>
+<ol>
+<li><p><strong>分段常数衰减</strong>（Piecewise Constant Decay）：每经过$T_1,T_2,…T_m$次训练迭代，分别将学习率衰减为原来的$\beta_1, \beta_2,…,\beta_m$倍，也称为步衰减（Step Decay）。</p>
+</li>
+<li><p><strong>逆时衰减</strong>（Inverse Time Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \frac{1}{1+\beta \times t}</script></li>
+<li><p><strong>指数衰减</strong>（Exponential Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \beta^{t},\ \ \ \beta<1</script></li>
+<li><p><strong>自然指数衰减</strong>（Natural Exponential Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \beta^{t}</script></li>
+<li><p><strong>余弦衰减</strong>（Cosine Decay）：</p>
+<script type="math/tex; mode=display">
+\alpha_{t}=\alpha_{0} \exp (-\beta \times t)</script></li>
+</ol>
+<p>不同的学习率衰减方法的示意图如下所示：</p>
+</li>
+</ul>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568456615851.png" alt="学习率衰减示意图"></p>
+<p>​    除了使用学习率衰减方法之外，在训练的开始阶段常用的学习率调整方法还有<strong>学习率预热</strong>：</p>
+<p>​    使用学习率预热的原因在于，在一开始时由于网络的参数是随机初始化的，因而梯度也比较大，这时候如果同    时采用较大的初始学习率会导致训练不稳定。因而我们可以在开始的几轮迭代中使用较小的学习率进行预热，    当梯度下降到一定梯度时再恢复初始学习率。</p>
+<p>​    在学习率调整方法中，一种常用的方法还有周期性学习率调整：为了使得梯度下降方法能够逃离局部最小点，    一种经验性的方式是在训练过程中周期性地增大学习率。增加学习率短期内会损害网络的收敛稳定性，但从长    期来看有助于找到更好的局部最优解。主要有两种周期性学习率调整方法：循环学习率、带热重启的随机梯度    下降。所谓循环学习率即让学习率在一个区间内周期性地增大和缩小，每个周期的学习率的上界和下界可以随    着循环周期数的增大而减小：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568535431591.png" alt="三角循环学习率"></p>
+<p>​    所谓带热重启的随机梯度下降指的是：学习率每隔一定周期后重新初始化为某个预设值，然后逐渐衰减，每次    重启后模型参数不是从头开始优化，而是从重启前的参数基础上继续优化：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568535554582.png" alt="带热重启的随机梯度下降"></p>
+<p>除了上述的学习率调整方法之外，还有一些自适应的学习率调整方法。</p>
+<h3 id="自适应学习率调整"><a href="#自适应学习率调整" class="headerlink" title="自适应学习率调整"></a>自适应学习率调整</h3><p>在自适应学习率调整中，调整对象为各个参数各自的学习率。</p>
+<h4 id="AdaGrad算法"><a href="#AdaGrad算法" class="headerlink" title="AdaGrad算法"></a>AdaGrad算法</h4><p>在标准的梯度下降算法中，每个参数在每次迭代时都使用相同的学习率。但实际上，对于每个参数来说，在每一迭代中是具有不同的梯度的，因而统一采用相同的学习率并不合适。自适应学习率调整方法便是被用来解决这一问题的。</p>
+<p>AdaGrad（Adaptive Gradient）算法[Duchi et al.，2011]借鉴$l_2$正则化思想，<strong>在每次迭代时自适应地调整每个参数的学习率</strong>：</p>
+<ol>
+<li><p>在第$t$次迭代时，首先计算每一个参数各自的梯度平方的累积和：</p>
+<script type="math/tex; mode=display">
+G_{t}=\sum_{\tau=1}^{t} g_{\tau} \odot g_{\tau}</script></li>
+<li><p>接着，依据各个参数各自的梯度平方累计和的大小计算当前迭代所使用的梯度：</p>
+<script type="math/tex; mode=display">
+\Delta \theta_t=-\frac{\alpha}{\sqrt{G_t+\epsilon}}\odot g_t</script></li>
+</ol>
+<p>在AdaGrad算法中，如果某个参数的偏导数累计比较大，其学习率相对较小；相反，如果其偏导数较小，其学习率相对较大。但整体上，各个参数的学习率随着迭代次数的增加而逐渐减小。</p>
+<p>该算法的缺点是，在经过一定次数的迭代后，如果仍旧没有找到最优点，由于此时的学习率非常小，很难再继续找到最优点。</p>
+<h4 id="RMSprop算法"><a href="#RMSprop算法" class="headerlink" title="RMSprop算法"></a>RMSprop算法</h4><p>该算法由Geoff Hinton提出，可以在有些情况下避免AdaGrad算法中学习率不断单调下降以至于过早衰减的缺点。该算法中首先计算每次迭代梯度$g_t$平方的指数衰减移动平均：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568687020682.png" alt=""></p>
+<p>其中$\beta$为衰减率，一般取值为0.9。</p>
+<p>参数的更新差值为：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568687091725.png" alt=""></p>
+<p>该算法与AdaGrad的区别在于，$G_t$的计算方式由平方累计和变为了指数衰减移动平均。</p>
+<h4 id="AdaDelta算法"><a href="#AdaDelta算法" class="headerlink" title="AdaDelta算法"></a>AdaDelta算法</h4><p>该算法也属于AdaGrad算法的一个改进，该算法除了使用梯度的指数衰减移动平均来调整学习率之外，还引入了每次参数更新的差值$\Delta \theta$的指数衰减移动平均。</p>
+<p>在第$t$次迭代时，每次参数更新差$\Delta \theta_\tau$，$1\leq \tau \geq t-1$的平方的指数衰减权移动平均为：</p>
+<script type="math/tex; mode=display">
+\Delta X_{t-1}^2=\beta_1\Delta X_{t-2}^2+(1-\beta_1)\Delta \theta_{t-1} \odot \Delta \theta_{t-1}</script><p>其中$\beta_1$为衰减率。在此基础上，参数的更新差值为：</p>
+<script type="math/tex; mode=display">
+\Delta \theta_t=-\frac{\sqrt{\Delta X_{t-1}^2}+\epsilon}{\sqrt{G_t}+\epsilon}g_t</script><p>AdaDelta算法将RMSprop算法中的初始学习率改为动态计算，在一定程度上抑制了学习率的波动。</p>
+<h3 id="更新方向的优化"><a href="#更新方向的优化" class="headerlink" title="更新方向的优化"></a>更新方向的优化</h3><p>除了对学习率进行优化之外，我们还可以对参数的更新方向即梯度进行优化。为了缓解在样本数量较少时所导致的梯度震荡问题，可以使用最近一段时间的平均梯度来替代当前时刻的梯度，并提高优化速度，即<strong>动量法</strong>。</p>
+<h4 id="动量法"><a href="#动量法" class="headerlink" title="动量法"></a>动量法</h4><p>所谓动量，指的是物理中一个物体在其运动方向上保持运动的趋势，是物体的质量和速度的乘积。所谓动量法（Momentum Method）是用之前积累动量来替代真正的梯度，每次迭代的梯度可以看作加速度。</p>
+<p>在第t次迭代时，计算<strong>负梯度</strong>的“加权移动平均”作为当前参数的更新方向：</p>
+<script type="math/tex; mode=display">
+\Delta\theta_t=\rho\Delta\theta_{t-1}-\alpha g_t=-\alpha \sum_\tau^t\rho^{t-\tau}g_{\tau}</script><p>这样，每个参数的实际更新差值取决于最近一段时间内梯度的加权平均值。当某个参数在最近一段时间内的梯度方向不一致时，其真实的参数更新幅度变小；相反，当在最近一段时间内的梯度方向都一致时，其真实的参数更新幅度变大，起到加速作用。一般而言，在迭代初期，梯度方向都比较一致，动量法会起到加速作用，可以更快地到达最优点。在迭代后期，梯度方向会不一致，在收敛值附近震荡，动量法会起到减速作用，增加稳定性。</p>
+<h4 id="Nesterov加速梯度"><a href="#Nesterov加速梯度" class="headerlink" title="Nesterov加速梯度"></a>Nesterov加速梯度</h4><p>Nesterov加速梯度法是对动量法的一种改进，在动量法中，实际的参数更新方向$\Delta\theta_t$可以被拆分为两步，第一步是先根据$\Delta\theta_{t-1}$更新一次得到参数$\hat \theta$，再使用$g_t$进行更新：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773120967.png" alt=""></p>
+<p>在第二步更新中，梯度$g_t$为$\theta_{t-1}$上的梯度，按照梯度下降法来说，应该是$\hat \theta$上的梯度。依照这种思路，合并后的更新方向为：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773274360.png" alt=""></p>
+<p>Nesterov加速梯度与动量法在参数更新方向上的比较：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773378763.png" alt=""></p>
+<h4 id="Adam算法"><a href="#Adam算法" class="headerlink" title="Adam算法"></a>Adam算法</h4><p>自适应动量估计（Adaptive Moment Estimation, Adam）算法可以看作动量法和RMSprop学习率更新算法的结合，在<strong>使用动量作为参数更新方向</strong>的同时，<strong>对学习率进行自适应调整</strong>。</p>
+<p>Adam算法一方面计算梯度平方的指数加权平均，另一方面计算梯度的指数加权平均：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773826547.png" alt=""></p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568773835231.png" alt=""></p>
+<p>其中$\beta_1,\beta_2$为两个指数加权平均的衰减率，通常取值为$\beta_1=0.9,\beta_2=0.99$。</p>
+<p>梯度的指数加权平均$M_t$可以被看作梯度的均值（一阶矩），梯度的平方的指数加权平均可以被看作梯度的未减去均值的方差（二阶矩）。</p>
+<p>假设$M_0=0,G_0=0$，那么在迭代初期两者的值会比真实的均值和方差要小。特别是当两个衰减率接近于1时，偏差会很大，因而需要对偏差进行修正：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568774196413.png" alt=""></p>
+<p>最终，Adam算法的参数更新值为：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568774234393.png" alt=""></p>
+<p>其中，学习率通常设置为0.001，也可以进行衰减。</p>
+<p>既然，Adam算法是RMSprop算法和动量法的结合，那么自然也可以将RMSprop算法和Nesterov加速度算法进行结合，即Nadam算法。</p>
+<h3 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h3><p>在深度神经网络的训练过程中，除了梯度消失之外，梯度爆炸是影响学习效率的主要因素。在梯度下降算法中，如果梯度突然增大，将导致模型远离最优点。因而，当梯度大于一定值时，需要对梯度进行截断，即梯度阶段（gradient clipping）。</p>
+<p>梯度截断一般有以下两种方法：</p>
+<ul>
+<li><p>按值截断</p>
+<p>将参数的梯度限制在一个区间内，按照区间的端点进行截断。</p>
+</li>
+<li><p>按模截断</p>
+<p>将参数的梯度的模值限制在一个给定的阈值下，当参数的梯度的模值小于该阈值时，梯度保持不变，大于该阈值时，令：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568774686577.png" alt=""></p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，可以将优化算法划分为两类：一类是调整学习率；另一类是调整参数优化方向。总结为公式如下：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568775024667.png" alt=""></p>
+<p>其中，$g_t$为第$t$步的梯度，$\alpha_t$为第$t$步的学习率，可以衰减也可以不变。依据参数优化方向和学习率调整方法的不同，可以将优化方法划分为下表所示：</p>
+<p><img src="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-de-you-hua/1568775165104.png" alt="神经网络常用优化方法"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/nndl/nndl.github.io" target="_blank" rel="noopener">邱锡鹏-《神经网络与深度学习》</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/基础知识/" rel="tag"># 基础知识</a>
+          
+            <a href="/tags/常见知识/" rel="tag"># 常见知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/" rel="next" title="神经网络中的归一化操作">
+                <i class="fa fa-chevron-left"></i> 神经网络中的归一化操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/shu-ju-jie-gou-yu-suan-fa/suan-fa/zui-hao-zui-pi-ping-jun-he-jun-tan-shi-jian-fu-za-du/" rel="prev" title="最好、最坏、平均和均摊时间复杂度">
+                最好、最坏、平均和均摊时间复杂度 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#神经网络的优化"><span class="nav-number">1.</span> <span class="nav-text">神经网络的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络优化"><span class="nav-number">1.1.</span> <span class="nav-text">网络优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小批量梯度下降（mini-batch）"><span class="nav-number">1.2.</span> <span class="nav-text">小批量梯度下降（mini-batch）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自适应学习率调整"><span class="nav-number">1.2.1.</span> <span class="nav-text">自适应学习率调整</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AdaGrad算法"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">AdaGrad算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RMSprop算法"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">RMSprop算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AdaDelta算法"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">AdaDelta算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新方向的优化"><span class="nav-number">1.2.2.</span> <span class="nav-text">更新方向的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#动量法"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">动量法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nesterov加速梯度"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Nesterov加速梯度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Adam算法"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Adam算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度截断"><span class="nav-number">1.2.3.</span> <span class="nav-text">梯度截断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">92.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>

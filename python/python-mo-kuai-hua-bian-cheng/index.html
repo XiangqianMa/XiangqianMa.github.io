@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Python模块化编程包与模块的导入包对应的from语句和import语句import语句和包一起使用时，有些不方便，因为你必须经常在程序中重新输入路径。因此，让包使用from语句，来避免每次读取时都得重新输入路径，并且当目录树结构发生改变时，只需要在程序中更新一次路径即可。 实际中需要包导入的场合，就是解决当多个同名程序文件安装在同一个机器上时，所引发的模糊性。假设目录结构如下： 1234567">
+<meta name="keywords" content="编程基础,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的模块化编程">
+<meta property="og:url" content="http://xiangqianma.github.io/python/python-mo-kuai-hua-bian-cheng/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="Python模块化编程包与模块的导入包对应的from语句和import语句import语句和包一起使用时，有些不方便，因为你必须经常在程序中重新输入路径。因此，让包使用from语句，来避免每次读取时都得重新输入路径，并且当目录树结构发生改变时，只需要在程序中更新一次路径即可。 实际中需要包导入的场合，就是解决当多个同名程序文件安装在同一个机器上时，所引发的模糊性。假设目录结构如下： 1234567">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-30T15:16:55.043Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的模块化编程">
+<meta name="twitter:description" content="Python模块化编程包与模块的导入包对应的from语句和import语句import语句和包一起使用时，有些不方便，因为你必须经常在程序中重新输入路径。因此，让包使用from语句，来避免每次读取时都得重新输入路径，并且当目录树结构发生改变时，只需要在程序中更新一次路径即可。 实际中需要包导入的场合，就是解决当多个同名程序文件安装在同一个机器上时，所引发的模糊性。假设目录结构如下： 1234567">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/python/python-mo-kuai-hua-bian-cheng/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python的模块化编程 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/python/python-mo-kuai-hua-bian-cheng/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的模块化编程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-19 21:09:20" itemprop="dateCreated datePublished" datetime="2019-10-19T21:09:20+08:00">2019-10-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-30 23:16:55" itemprop="dateModified" datetime="2019-11-30T23:16:55+08:00">2019-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/编程语言/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Python模块化编程"><a href="#Python模块化编程" class="headerlink" title="Python模块化编程"></a>Python模块化编程</h1><h2 id="包与模块的导入"><a href="#包与模块的导入" class="headerlink" title="包与模块的导入"></a>包与模块的导入</h2><h3 id="包对应的from语句和import语句"><a href="#包对应的from语句和import语句" class="headerlink" title="包对应的from语句和import语句"></a>包对应的from语句和import语句</h3><p>import语句和包一起使用时，有些不方便，因为你必须经常在程序中重新输入路径。因此，让包使用from语句，来避免每次读取时都得重新输入路径，并且当目录树结构发生改变时，只需要在程序中更新一次路径即可。</p>
+<p>实际中需要包导入的场合，就是解决当多个同名程序文件安装在同一个机器上时，所引发的模糊性。假设目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">system1\</span><br><span class="line"></span><br><span class="line">4utilities.py</span><br><span class="line"></span><br><span class="line">4main.py</span><br><span class="line"></span><br><span class="line">4other.py</span><br></pre></td></tr></table></figure>
+<p>与<code>system1</code>位于同一父目录下存在另一目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">system2\</span><br><span class="line"></span><br><span class="line">    utilities.py</span><br><span class="line"></span><br><span class="line">4main.py</span><br><span class="line"></span><br><span class="line">4other.py</span><br></pre></td></tr></table></figure>
+<p>Python总是先搜索主目录，也就是包含顶层文件的目录，例如，在<code>system1/main.py</code>中使用导入语句<code>import utilities</code>，导入会先搜索<code>system1</code>，只有在跨目录进行导入时才需要模块搜索路径的设置。</p>
+<p>但是在第三个目录下导入另两个目录中的同名文件时就会发生错误，例如在第三个目录的程序文件中使用<code>import utilities</code>，便会产生模糊性，解释器会先搜索位于搜索路径左侧的<code>utilities.py</code>，这样做很容易出错，当然，我们可以使用<code>sys.path</code>对路径进行修改，但很容易出错。</p>
+<p><strong>使用包便可以解决模块查找的模糊性</strong>，不要在单独的目录内把文件安装成单纯的文件列表，而是将它们打包，在共同的根目录下，以子目录的方式进行组织，如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root\</span><br><span class="line">4system1\</span><br><span class="line">44__init__.py</span><br><span class="line">44utilities.py</span><br><span class="line">44main.py</span><br><span class="line">44other.py</span><br><span class="line">4system2\</span><br><span class="line">44__init__.py</span><br><span class="line">44utilities.py</span><br><span class="line">44main.py</span><br><span class="line">44other.py</span><br><span class="line">    system3\</span><br><span class="line">    	__init__py</span><br><span class="line">    	myfile.py</span><br></pre></td></tr></table></figure>
+<p>在<code>myfile.py</code>中可以使用import语句进行导入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> system1.utilities</span><br><span class="line">impott system2.utilities</span><br><span class="line"></span><br><span class="line">system1.utilities.function(<span class="string">'spam'</span>)</span><br><span class="line">system2.utilities.function(<span class="string">'eggs'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：当读取两个或两个以上路径内的同名属性时，必须使用 <code>import</code>，不能使用<code>from</code>。</p>
+<h3 id="包相对导入"><a href="#包相对导入" class="headerlink" title="包相对导入"></a>包相对导入</h3><p>上述导入方式都是针对从包的外部导入包文件而言的，在包自身的内部，包文件的导入可以使用和外部导入相同的路径语法。但是，也存在特殊的包内搜索规则来简化导入语句，也就是说，<strong>包内的导入可能相对于包，而不是列出包导入路径</strong>。</p>
+<p>注意，包的相对导入机制与版本有关。Python2.6首先在导入上隐式地搜索包目录，而Python3.0需要显示地使用相对导入语法，这种变化使得相同的包的导入更为明显，从而增强代码的可读性。</p>
+<h4 id="Python3-0中的变化"><a href="#Python3-0中的变化" class="headerlink" title="Python3.0中的变化"></a>Python3.0中的变化</h4><p>引入了两个变化：</p>
+<ul>
+<li>修改了模块导入搜索路径语义，默认跳过包自己的目录。导入只是检查搜索路径的其他组件，叫做“<strong>绝对导入</strong>”。</li>
+<li></li>
+<li>扩展了<code>from</code>语句，允许显式地要求导入只搜索包的目录，叫做“<strong>相对导入</strong>”.</li>
+</ul>
+<p>在python3.0和python2.6中，from语句可以使用前面的点号<code>.</code>来指定，导入位于同一包的模块，即相对导入，而不是位于模块导入路径上某处的模块，即绝对导入。</p>
+<ul>
+<li>点号表示导入应该相对于外围的包-这样的导入将只在包的内部搜索，并且不会搜索位于导入搜索路径(sys.path)上某处的同名模块。即包模块覆盖了外部的模块。</li>
+<li>在python2.6中，包的代码中的常规导入默认为先相对再绝对。而在Python3.0中在一个包中导入默认是绝对的。</li>
+</ul>
+<p>使用两个点表示在文件所在的包的父目录的相对导入，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .. <span class="keyword">import</span> spam</span><br></pre></td></tr></table></figure>
+<p>表示从与spam所在包的父目录开始进行相对导入，假设目录结构如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A\</span><br><span class="line">|_ _ __init__.py</span><br><span class="line">|_ _ B\</span><br><span class="line">|	|_ _ myfile.py</span><br><span class="line">|	|_ _ D\</span><br><span class="line">|		 |_ _ X</span><br><span class="line">|_ _ E\</span><br><span class="line">4 |_ _X</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意：A目录下有<code>__init__.py</code>文件，也就是说A是一个包，如果没有<code>__init__.py</code></strong> ，则会出现以下错误：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImportError: attempted relative import with no known parent package</span><br></pre></td></tr></table></figure>
+<p>该错误说明，解释器在从当前文件向上查找包时，超出了包的范围。</p>
+<p>在该目录结构下，<code>myfile.py</code>有如下导入方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> D <span class="comment"># 导入A.B.D</span></span><br><span class="line"><span class="keyword">from</span> .. <span class="keyword">import</span> E <span class="comment"># 导入 A.E</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .D <span class="keyword">import</span> X <span class="comment"># 导入A.B.D.X</span></span><br><span class="line"><span class="keyword">from</span> ..E <span class="keyword">import</span> X <span class="comment"># 导入A.E.X</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用相对导入要注意以下几点"><a href="#使用相对导入要注意以下几点" class="headerlink" title="使用相对导入要注意以下几点"></a>使用相对导入要注意以下几点</h3><ul>
+<li>相对导入只适用于包内导入。</li>
+<li>相对导入只适用于from语句。</li>
+</ul>
+<h3 id="可选导入"><a href="#可选导入" class="headerlink" title="可选导入"></a>可选导入</h3><p>如果你希望优先使用某个模块或包，但是同时也想在没有这个模块或包的情况下有备选，你就可以使用可选导入这种方式。这样做可以导入支持某个软件的多种版本或者实现性能提升。以<a href="http://pythonhosted.org/github2/_modules/github2/request.html" target="_blank" rel="noopener">github2包</a>中的代码为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># For Python 3</span></span><br><span class="line">    <span class="keyword">from</span> http.client <span class="keyword">import</span> responses</span><br><span class="line"><span class="keyword">except</span> ImportError:  <span class="comment"># For Python 2.5-2.7</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">from</span> httplib <span class="keyword">import</span> responses  <span class="comment"># NOQA</span></span><br><span class="line">    <span class="keyword">except</span> ImportError:  <span class="comment"># For Python 2.4</span></span><br><span class="line">        <span class="keyword">from</span> BaseHTTPServer <span class="keyword">import</span> BaseHTTPRequestHandler <span class="keyword">as</span> _BHRH</span><br><span class="line">        responses = dict([(k, v[<span class="number">0</span>]) <span class="keyword">for</span> k, v <span class="keyword">in</span> _BHRH.responses.items()])</span><br></pre></td></tr></table></figure>
+<p><code>lxml</code>包也有使用可选导入方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> urlparse <span class="keyword">import</span> urljoin</span><br><span class="line">    <span class="keyword">from</span> urllib2 <span class="keyword">import</span> urlopen</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="comment"># Python 3</span></span><br><span class="line">    <span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urljoin</span><br><span class="line">    <span class="keyword">from</span> urllib.request <span class="keyword">import</span> urlopen</span><br></pre></td></tr></table></figure>
+<p>正如以上示例所示，<strong>可选导入的使用很常见，是一个值得掌握的技巧</strong>。</p>
+<h3 id="局部导入"><a href="#局部导入" class="headerlink" title="局部导入"></a>局部导入</h3><p>当你在局部作用域中导入模块时，你执行的就是局部导入。如果你在Python脚本文件的顶部导入一个模块，那么你就是在将该模块导入至全局作用域，这意味着之后的任何函数或方法都可能访问该模块。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys  <span class="comment"># global scope</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square_root</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="comment"># This import is into the square_root functions local scope</span></span><br><span class="line">    <span class="keyword">import</span> math</span><br><span class="line">    <span class="keyword">return</span> math.sqrt(a)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_pow</span><span class="params">(base_num, power)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> math.pow(base_num, power)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(square_root(<span class="number">49</span>))</span><br><span class="line">    print(my_pow(<span class="number">2</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p>这里，我们将<code>sys</code>模块导入至全局作用域，但我们并没有使用这个模块。然后，在<code>square_root</code>函数中，我们将<code>math</code>模块导入至该函数的局部作用域，这意味着<code>math</code>模块只能在<code>square_root</code>函数内部使用。如果我们试图在<code>my_pow</code>函数中使用<code>math</code>，会引发<code>NameError</code>。</p>
+<p>使用局部作用域的好处之一，是你使用的模块可能需要很长时间才能导入，如果是这样的话，将其放在某个不经常调用的函数中或许更加合理，而不是直接在全局作用域中导入。</p>
+<p>但是，<strong>根据约定，所有的导入语句都应该位于模块的顶部</strong>。</p>
+<h3 id="导入注意事项"><a href="#导入注意事项" class="headerlink" title="导入注意事项"></a>导入注意事项</h3><p>在导入模块方面，有几个程序员常犯的错误。这里我们介绍两个。</p>
+<ul>
+<li>循环导入（circular imports）</li>
+<li>覆盖导入（Shadowed imports，暂时翻译为覆盖导入）</li>
+</ul>
+<p>先来看看循环导入。</p>
+<h3 id="循环导入"><a href="#循环导入" class="headerlink" title="循环导入"></a>循环导入</h3><p>如果你创建两个模块，二者相互导入对方，那么就会出现循环导入。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a.py</span><br><span class="line"><span class="keyword">import</span> b</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_test</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"in a_test"</span>)</span><br><span class="line">    b.b_test()</span><br><span class="line"></span><br><span class="line">a_test()</span><br></pre></td></tr></table></figure>
+<p>然后在同个文件夹中创建另一个模块，将其命名为<code>b.py</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> a</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">b_test</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'In test_b"'</span>)</span><br><span class="line">    a.a_test()</span><br><span class="line"></span><br><span class="line">b_test()</span><br></pre></td></tr></table></figure>
+<p>如果你运行任意一个模块，都会引发<code>AttributeError</code>。这是因为这两个模块都在试图导入对方。简单来说，模块<code>a</code>想要导入模块<code>b</code>，但是因为模块<code>b</code>也在试图导入模块<code>a</code>（这时正在执行），模块<code>a</code>将无法完成模块<code>b</code>的导入。一般来说，<strong>修改方法是重构代码，避免发生这种情况</strong>。</p>
+<h4 id="覆盖导入"><a href="#覆盖导入" class="headerlink" title="覆盖导入"></a>覆盖导入</h4><p>当你创建的模块与标准库中的模块同名时，如果你导入这个模块，就会出现覆盖导入。举个例子，创建一个名叫<code>math.py</code>的文件，在其中写入如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square_root</span><span class="params">(number)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> math.sqrt(number)</span><br><span class="line"></span><br><span class="line">square_root(<span class="number">72</span>)</span><br></pre></td></tr></table></figure>
+<p>试着运行这个文件，你会得到以下回溯信息（traceback）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File "math.py", line 1, in &lt;module&gt;</span><br><span class="line">    import math</span><br><span class="line">  File "/Users/michael/Desktop/math.py", line 6, in &lt;module&gt;</span><br><span class="line">    square_root(72)</span><br><span class="line">  File "/Users/michael/Desktop/math.py", line 4, in square_root</span><br><span class="line">    return math.sqrt(number)</span><br><span class="line">AttributeError: module 'math' has no attribute 'sqrt'</span><br></pre></td></tr></table></figure>
+<p>你运行这个文件的时候，Python解释器首先在当前运行脚本所处的的文件夹中查找名叫<code>math</code>的模块。在这个例子中，解释器找到了我们正在执行的模块，试图导入它。但是我们的模块中并没有叫<code>sqrt</code>的函数或属性，所以就抛出了<code>AttributeError</code>。</p>
+<h2 id="项目模块化"><a href="#项目模块化" class="headerlink" title="项目模块化"></a>项目模块化</h2><p>在Linux系统中，每一个文件都有一个绝对路径，以<code>\</code>开头，来表示从根目录到叶子结点的路径，这种方法叫做绝对路径。另外，对于任意两个文件，都存在从一个文件到另一个文件的路径，如：<code>../../Downloads/example.json</code>，该路径称为相对路径。</p>
+<p>在大型工程中应该尽可能使用绝对位置，而非相对位置，对于一个独立的项目，所有的模块的追寻方式都最好从项目的根目录开始，称为相对的绝对路径。</p>
+<p>例如，有一个项目的结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.</span><br><span class="line">├── proto</span><br><span class="line">│   ├── mat.py</span><br><span class="line">├── utils</span><br><span class="line">│   └── mat_mul.py</span><br><span class="line">└── src</span><br><span class="line">    └── main.py</span><br></pre></td></tr></table></figure>
+<p>各个文件中的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># proto/mat.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Matrix</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line">        self.n = len(data)</span><br><span class="line">        self.m = len(data[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># proto/mat.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Matrix</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line">        self.n = len(data)</span><br><span class="line">        self.m = len(data[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># utils/mat_mul.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> proto.mat <span class="keyword">import</span> Matrix</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mat_mul</span><span class="params">(matrix_1: Matrix, matrix_2: Matrix)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> matrix_1.m == matrix_2.n</span><br><span class="line">    n, m, s = matrix_1.n, matrix_1.m, matrix_2.m</span><br><span class="line">    result = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(s)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(s):</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(m):</span><br><span class="line">                result[i][k] += matrix_1.data[i][j] * matrix_2.data[j][k]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Matrix(result)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># src/main.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> proto.mat <span class="keyword">import</span> Matrix</span><br><span class="line"><span class="keyword">from</span> utils.mat_mul <span class="keyword">import</span> mat_mul</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = Matrix([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">b = Matrix([[<span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>]])</span><br><span class="line"></span><br><span class="line">print(mat_mul(a, b).data)</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">[[<span class="number">19</span>, <span class="number">22</span>], [<span class="number">43</span>, <span class="number">50</span>]]</span><br></pre></td></tr></table></figure>
+<p>观察上述代码，在<code>utils/mat_mul.py</code>文件中，导入<code>Matrix</code>的方式是从工程的目录开始导入<code>from proto.mat import Matrix</code>，而不是使用<code>..</code>从上一级目录导入。</p>
+<p>在<code>Pycharm</code>中，上述代码可以被成功运行，但是如果在命令行中，无论是进入<code>src</code>文件夹输入<code>python main.py</code>还是退回上一级目录，输入<code>python src/main.py</code>，都会出现找不到包<code>proto</code>的错误。</p>
+<p>实际上，正如上文中所示，Python解释器在导入模块时，会在一个特定的列表中查找模块，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys  </span><br><span class="line"></span><br><span class="line">print(sys.path)</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">[<span class="string">''</span>, <span class="string">'/usr/lib/python36.zip'</span>, <span class="string">'/usr/lib/python3.6'</span>, <span class="string">'/usr/lib/python3.6/lib-dynload'</span>, <span class="string">'/usr/local/lib/python3.6/dist-packages'</span>, <span class="string">'/usr/lib/python3/dist-packages'</span>]</span><br></pre></td></tr></table></figure>
+<p>对于Pycharm来说，当它运行程序时，会首先将上述列表的第一项设置为项目的根目录。因而，无论如何运行<code>main.py</code>，导入模块时都会首先从项目的根目录中寻找对应的包和模块。</p>
+<p>为了在命令函中也能达到无论如何运行<code>main.py</code>也能正确找到包和模块的目的，有以下两种方法：</p>
+<ul>
+<li><p>直接对上述列表的第一个位置进行修改。但这样就在代码中写入了绝对路径，不推荐。</p>
+</li>
+<li><p>修改<code>PYTHONHOME</code>。Python存在一个虚拟运行环境，提倡每一个项目最好都有一个对立的运行环境来保持包和模块的纯洁性。</p>
+<p>可以直接在Virtual Environment中的activate文件中加入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PYTHONPATH="/home/ubuntu/workspace/your_projects"</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="if-name-‘main‘"><a href="#if-name-‘main‘" class="headerlink" title="if name == ‘main‘"></a>if <strong>name</strong> == ‘<strong>main</strong>‘</h2><p>C++、Java等语言需要显式提供入口函数<code>main()</code>，但Python不用。那么，<code>if __name__ == __main__</code>的作用是什么？</p>
+<p>有项目结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── utils.py</span><br><span class="line">├── utils_with_main.py</span><br><span class="line">├── main.py</span><br><span class="line">└── main_2.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># utils.py</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">print(<span class="string">'testing'</span>)</span><br><span class="line">print(<span class="string">'&#123;&#125; + &#123;&#125; = &#123;&#125;'</span>.format(<span class="number">1</span>, <span class="number">2</span>, get_sum(<span class="number">1</span>, <span class="number">2</span>)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># utils_with_main.py</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(<span class="string">'testing'</span>)</span><br><span class="line">    print(<span class="string">'&#123;&#125; + &#123;&#125; = &#123;&#125;'</span>.format(<span class="number">1</span>, <span class="number">2</span>, get_sum(<span class="number">1</span>, <span class="number">2</span>)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> get_sum</span><br><span class="line"></span><br><span class="line">print(<span class="string">'get_sum: '</span>, get_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">testing</span><br><span class="line"><span class="number">1</span> + <span class="number">2</span> = <span class="number">3</span></span><br><span class="line">get_sum: <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># main_2.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> utils_with_main <span class="keyword">import</span> get_sum</span><br><span class="line"></span><br><span class="line">print(<span class="string">'get_sum: '</span>, get_sum(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">########## 输出 ##########</span></span><br><span class="line"></span><br><span class="line">get_sum_2: <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p><code>import</code>在导入模块时会自动将文件中的暴露代码执行一遍，对于模块的测试代码，如果我们不想在导入模块的时候执行这些代码，就要将这些代码放在<code>if __name__ == __main__</code>之下。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shi-yong-lian-biao-shi-xian-lru-huan-cun-tao-tai-suan-fa/" rel="next" title="使用链表实现LRU缓存淘汰算法">
+                <i class="fa fa-chevron-left"></i> 使用链表实现LRU缓存淘汰算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python/python-zhong-de-han-shu/" rel="prev" title="Python中的函数">
+                Python中的函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python模块化编程"><span class="nav-number">1.</span> <span class="nav-text">Python模块化编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包与模块的导入"><span class="nav-number">1.1.</span> <span class="nav-text">包与模块的导入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包对应的from语句和import语句"><span class="nav-number">1.1.1.</span> <span class="nav-text">包对应的from语句和import语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包相对导入"><span class="nav-number">1.1.2.</span> <span class="nav-text">包相对导入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python3-0中的变化"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Python3.0中的变化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用相对导入要注意以下几点"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用相对导入要注意以下几点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选导入"><span class="nav-number">1.1.4.</span> <span class="nav-text">可选导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部导入"><span class="nav-number">1.1.5.</span> <span class="nav-text">局部导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入注意事项"><span class="nav-number">1.1.6.</span> <span class="nav-text">导入注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环导入"><span class="nav-number">1.1.7.</span> <span class="nav-text">循环导入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#覆盖导入"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">覆盖导入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目模块化"><span class="nav-number">1.2.</span> <span class="nav-text">项目模块化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if-name-‘main‘"><span class="nav-number">1.3.</span> <span class="nav-text">if name == ‘main‘</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">92.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>

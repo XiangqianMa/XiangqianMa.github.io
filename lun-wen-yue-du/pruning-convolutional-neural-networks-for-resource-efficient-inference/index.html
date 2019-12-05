@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Pruning Convolutional Neural Networks For Resource Efficient Inference 作者：Pavlo Molchanov, Stephen Tyree, Tero Karras, Timo Aila, Jan Kautz 机构：Nvidia  简介在该方法中，使用迭代步骤进行剪枝：在基于准则的贪婪剪枝和使用反向传播进行微调两个步骤之间进行切">
+<meta name="keywords" content="深度学习,模型压缩,模型剪枝">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则">
+<meta property="og:url" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="Pruning Convolutional Neural Networks For Resource Efficient Inference 作者：Pavlo Molchanov, Stephen Tyree, Tero Karras, Timo Aila, Jan Kautz 机构：Nvidia  简介在该方法中，使用迭代步骤进行剪枝：在基于准则的贪婪剪枝和使用反向传播进行微调两个步骤之间进行切">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568081011761.png">
+<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/prune_example.png">
+<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568261252580.png">
+<meta property="og:updated_time" content="2019-11-30T15:23:56.686Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则">
+<meta name="twitter:description" content="Pruning Convolutional Neural Networks For Resource Efficient Inference 作者：Pavlo Molchanov, Stephen Tyree, Tero Karras, Timo Aila, Jan Kautz 机构：Nvidia  简介在该方法中，使用迭代步骤进行剪枝：在基于准则的贪婪剪枝和使用反向传播进行微调两个步骤之间进行切">
+<meta name="twitter:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568081011761.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-12 12:10:20" itemprop="dateCreated datePublished" datetime="2019-09-12T12:10:20+08:00">2019-09-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-30 23:23:56" itemprop="dateModified" datetime="2019-11-30T23:23:56+08:00">2019-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/模型压缩/" itemprop="url" rel="index"><span itemprop="name">模型压缩</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Pruning-Convolutional-Neural-Networks-For-Resource-Efficient-Inference"><a href="#Pruning-Convolutional-Neural-Networks-For-Resource-Efficient-Inference" class="headerlink" title="Pruning Convolutional Neural Networks For Resource Efficient Inference"></a>Pruning Convolutional Neural Networks For Resource Efficient Inference</h1><blockquote>
+<p>作者：Pavlo Molchanov, Stephen Tyree, Tero Karras, Timo Aila, Jan Kautz</p>
+<p>机构：Nvidia</p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在该方法中，使用迭代步骤进行剪枝：在基于准则的贪婪剪枝和使用反向传播进行微调两个步骤之间进行切换。作者提出了一种新的权重重要性度量准则-该准则<strong>基于对网络参数进行剪枝所导致的损失函数变化的泰勒展开式</strong>提出。作者将注意力集中在迁移学习上，将大的预训练网络调整到特定的任务。所提出的度量准则优于其他准则。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>在本文中提出的剪枝算法包含以下几步：</p>
+<ol>
+<li>对网络进行微调，直到网络在特定任务上收敛。</li>
+<li>在剪枝和微调两步之间进行迭代。</li>
+<li>在准确率和剪枝指标之间取得平衡后停止剪枝（FLOPS或者内存利用率）。</li>
+</ol>
+<p>如下图所示：</p>
+<p><img src="/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568081011761.png" alt="剪枝流程"></p>
+<p>剪枝流程很简单，但其成功应用依赖于使用正确的剪枝准则。在本节，我们将介绍一些有效的剪枝准则和相关技术。</p>
+<p>考虑给定的训练样本$\mathcal{D}=\{\mathcal{X}=\left.\left\{\mathbf{x}_{0}, \mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}, \mathcal{Y}=\left\{y_{0}, y_{1}, \ldots, y_{N}\right\}\right\}$，其中$x$和$y$分别表示输入样本和目标变量。网络参数$\mathcal{W}=\left\{\left(\mathbf{w}_{1}^{1}, b_{1}^{1}\right),\left(\mathbf{w}_{1}^{2}, b_{1}^{2}\right), \ldots\left(\mathbf{w}_{L}^{C_{\ell}}, b_{L}^{C_{\ell}}\right)\right\}$被用于最小化损失值$\mathcal{C}(\mathcal{D} | \mathcal{W})$，常用的损失函数为负对数似然函数（$L(y)=-\log (y)$）。损失函数的选取与剪枝无关，只与网络所处理的任务有关。在迁移学习中，我们使用一个在类似但有区别的任务上训练的模型参数进行迁移。</p>
+<p>在进行剪枝时，我们使用网络参数的子集来维持网络原有的准确率，即使得$\mathcal{C}\left(\mathcal{D} | \mathcal{W}^{\prime}\right) \approx \mathcal{C}(\mathcal{D} | \mathcal{W})$，为了达到这一目的，我们需要求解一个组合有优化问题：</p>
+<script type="math/tex; mode=display">
+\min _{W^{\prime}}\left|\mathcal{C}\left(\mathcal{D} | \mathcal{W}^{\prime}\right)-\mathcal{C}(\mathcal{D} | \mathcal{W})\right| \text { s.t. } \quad\left\|\mathcal{W}^{\prime}\right\|_{0} \leq B</script><p>上式中使用$L_0$范数来限制网络权重中非零参数的个数。对于上述问题，当$\mathcal{W}^{\prime}=\mathcal{W}$时，函数取得全局最小值，但由于约束条件的限制，一般无法取得这个值。</p>
+<p>在参数空间中，查找足够好的参数子集使得损失函数的值尽可能地接近原始网络的损失值的问题属于组合优化问题。对于给定的数据，我们需要进行$2^{|\mathcal{W}|}$次评估来查找最优值。但是由于网络参数的个数过多，导致搜索空间太大，无法计算。在本文中，我们调查了一些贪婪方法。</p>
+<p>给定参数集合，我们迭代地识别并移除最不重要的参数。在每次迭代中，保证参数数目满足约束条件的要求。</p>
+<p>因为我们的目标集中在从卷积层中剪除特征图，因此将特征图的集合表示为：$\mathbf{z}_{\ell} \in \mathbb{R}^{H_{\ell} \times W_{\ell} \times C_{\ell}}$，其中$H_{\ell} \times W_{\ell}$表示特征图的大小，$C_{\ell}$表示独立特征图的个数（通道数）。特征图可以是网络的输入或者某一层卷积层的输出。$z_l$中$l \in[1,2,…,L]$。单个卷积图表示为$z_l^{(k)}$，其中$k\in[1,2,…,C_l]$。卷积层执行卷积核和输入特征图之间的卷积运算。</p>
+<script type="math/tex; mode=display">
+\mathbf{z}_{\ell}^{(k)}=\mathbf{g}_{\ell}^{(k)} \mathcal{R}\left(\mathbf{z}_{\ell-1} * \mathbf{w}_{\ell}^{(k)}+b_{\ell}^{(k)}\right)</script><p>其中$\mathbf{g}_{\ell}$为开关函数，决定一个特定的特征图是否在前向传播过程中被剪除或保留。</p>
+<h3 id="Oracle-Pruning"><a href="#Oracle-Pruning" class="headerlink" title="Oracle Pruning"></a>Oracle Pruning</h3><p>是否能最小化剪枝模型和全模型之间的准确率的差别取决于所使用的识别“最不重要”参数的准则。最优准则是对每一个参数进行经验评估，将其表示为oracle准则，<strong>通过依次移除权重中的非零参数并记录损失的差别得到</strong>。</p>
+<p>我们对比了两种使用oracle重要性评估的方式：</p>
+<ol>
+<li><p><em>oracle-loss</em>：将重要性表示为损失函数变化值的符号：</p>
+<script type="math/tex; mode=display">
+\mathcal{C}\left(\mathcal{D} | \mathcal{W}^{\prime}\right)-\mathcal{C}(\mathcal{D} | \mathcal{W})</script></li>
+<li><p>oracle-abs：将重要性表示为损失函数变化值的绝对值：</p>
+<script type="math/tex; mode=display">
+\left|\mathcal{C}\left(\mathcal{D} | \mathcal{W}^{\prime}\right)-\mathcal{C}(\mathcal{D} | \mathcal{W})\right|</script></li>
+</ol>
+<p>两种评判方式都组织对可能导致损失增大的权重进行剪枝，不同之处在于：oracle-loss鼓励剪除那些被剪除后损失函数的值会减低的参数；而oracle-abs会惩罚那些可能会导致损失值发生变化的任何值，而不是变化的方向。</p>
+<p>尽管oracle是贪婪搜索流程的最优选择，但是这一方法是非常耗时的。对于一个训练集，需要进行$\left|W^{\prime}\right|_{0}$次评估（对参数中的所有非零参数依次进行评估）。参数重要性的评估对于剪枝算法的准确率和效率都很重要，因而我们提出和评估了集中不同的准则。</p>
+<h3 id="剪枝准则"><a href="#剪枝准则" class="headerlink" title="剪枝准则"></a>剪枝准则</h3><p>在本文中，我们对以下几种方法进行了评估，并提出了基于<strong>泰勒展开式</strong>的评估准则。</p>
+<p><strong>最小权重</strong>：依据权重的幅度移除卷积核可能是最简单的评价准则之一。在使用权重的范数进行剪枝的算法中，评估准则为：$\Theta_{M W} : \mathbb{R}^{C_{\ell-1} \times p \times p} \rightarrow \mathbb{R}$，其中$\Theta_{M W}(\mathbf{w})=\frac{1}{|\mathbf{w}|} \sum_{i} w_{i}^{2}$，$|\mathbf{w}|$为将权重向量化之后的维度。这一准则的出发点是具有较小二范数的权重的重要性低于具有较大二范数的权重。可以通过在训练过程中添加$l_1$、$l_2$正则项得到。</p>
+<p><strong>激活值</strong>：ReLU激活函数流行的原因之一是其会使得激活值变得稀疏，使得卷积层可以被当作一个特征检测器。因此我们可以假设：如果一个输入特征图的值很小的话，那么其对应的特征检测器将不是很重要。我们可以使用单个特征图的平均激活值进行度量：$\Theta_{MA}:\mathbb{R}^{H_{l} \times W_{\ell} \times \mathcal{C}_{\ell}} \rightarrow \mathbb{R}$，其中 $\Theta_{M A}(\mathbf{a})=\frac{1}{|\mathbf{a}|} \sum_{i} a_{i}$。或者使用激活值的标准差：$\Theta_{M A_{-} s t d}(\mathbf{a})=\sqrt{\frac{1}{|\mathbf{a}|} \sum_{i}\left(a_{i}-\mu_{\mathbf{a}}\right)^{2}}$。</p>
+<p><strong>混合信息</strong>：混合信息用来度量在一个变量中包含的另一个变量的信息量。可以使用混合信息来度量在某一激活值中所包含的目标的信息量，使用该信息量作为重要性的度量。因为混合信息定义在连续值上，因而可以使用信息增益进行替代。</p>
+<p><strong>泰勒展开</strong>：我们将剪枝问题视作最优化问题，尝试找到在非零参数个数受限的情况下使得$\left|\Delta \dot{C}\left(h_{i}\right)\right|=\left|\mathcal{C}\left(\mathcal{D} | \mathcal{W}^{\prime}\right)-\mathcal{C}(\mathcal{D} | \mathcal{W})\right|$最小化的参数子集$\mathcal{W}^{\prime}$。基于泰勒展开的方法，我们直接对由移除某个参数所导致的损失函数的变化值进行近似。设$h_i$表示参数$i$产生的输出。在特征图中，$h=\left\{z_{0}^{(1)}, z_{0}^{(2)}, \ldots, z_{L}^{\left(C_{\ell}\right)}\right\}$。为了表示方便，认为参数和参数对应的输出对损失函数的值所造成的影响是相同的：$\mathcal{C}\left(\mathcal{D} | h_{i}\right)=\mathcal{C}\left(\mathcal{D} |(\mathbf{w}, b)_{i}\right)$。假设参数之间互相独立：</p>
+<script type="math/tex; mode=display">
+\left|\Delta \mathcal{C}\left(h_{i}\right)\right|=\left|\mathcal{C}\left(\mathcal{D}, h_{i}=0\right)-\mathcal{C}\left(\mathcal{D}, h_{i}\right)\right|（1）</script><p>其中，$\mathcal{C}\left(\mathcal{D}, h_{i}=0\right)$表示将输出$h_i$剪除后损失函数的值，$\mathcal{C}\left(\mathcal{D}, h_{i}\right)$表示未剪除该输出时的损失函数的值。尽管参数之间并非相互独立，我们仍旧在每次参数更新时进行了独立性假设。</p>
+<p>为了对损失函数的变化$\Delta \mathcal{C}\left(h_{i}\right)$的一阶泰勒展开对其进行近似。对于函数$f(x)$，其在$x=a$点的泰勒展开可以表示为：</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{p=0}^{P} \frac{f^{(p)}(a)}{p !}(x-a)^{p}+R_{p}(x)</script><p>其中$f^{(p)}(a)$为函数的$p$阶导数在$a$点的值，$R_p(x)$为$p$阶余项。将$C(D,h_i=0)$表示为函数在$h_i=0$点附近的一阶泰勒展开式。</p>
+<script type="math/tex; mode=display">
+\mathcal{C}\left(\mathcal{D}, h_{i}=0\right)=\mathcal{C}\left(\mathcal{D}, h_{i}\right)-\frac{\delta \mathcal{C}}{\delta h_{i}} h_{i}+R_{1}\left(h_{i}=0\right)  （2）</script><p>使用二阶拉格朗日余项：</p>
+<script type="math/tex; mode=display">
+R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\xi\right)} \frac{h_{i}^{2}}{2}</script><p>这里，我们直接忽略掉余项，一方面因为计算余项需要大量的计算资源（求二阶导数）；另一方面因为$ReLU$激活函数的原因，余项中的二阶项会比较小。</p>
+<p>接着，将$(2)$式代入$(1)$式并忽略余项，可以得到$\Theta_{T E}:$$<br>\mathbb{R}^{H_{l} \times W_{l} \times \tilde{C}_{l}} \rightarrow \mathbb{R}^{+}<br>$：</p>
+<script type="math/tex; mode=display">
+\Theta_{T E}\left(h_{i}\right)=\left|\Delta \mathcal{C}\left(h_{i}\right)\right|=\left|\mathcal{C}\left(\mathcal{D}, h_{i}\right)-\frac{\delta \mathcal{C}}{\delta h_{i}} h_{i}-\mathcal{C}\left(\mathcal{D}, h_{i}\right)\right|=\left|\frac{\delta \mathcal{C}}{\delta h_{i}} h_{i}\right|</script><p>上式即可表示移除某一参数后对损失函数所造成的影响。在这一准则下，那些有较为平坦的梯度的特征图所对应的参数将被剪除。其中的梯度在反向传播过程中很容易计算得到。对于某个特征图,可以将上式转换为如下形式：</p>
+<script type="math/tex; mode=display">
+\Theta_{T E}\left(z_{l}^{(k)}\right)=\left|\frac{1}{M} \sum_{m} \frac{\delta C}{\delta z_{l, m}^{(k)}} z_{l, m}^{(k)}\right|</script><p>其中，$M$是向量化特征图的长度。对于一个minibatch的样本，分别针对每个样本计算上述值，再将各个样本的值进行平均。</p>
+<h2 id="相关博客"><a href="#相关博客" class="headerlink" title="相关博客"></a>相关博客</h2><p>在VGG网络中，大部分的参数来自于全连接层，但全连接层的计算量只占所有浮点运算数的1%。对全连接层进行剪枝，会大幅度降低网络的参数量，但计算量并不会变化太多。而对卷积核进行剪枝不仅会降低参数量，也会大幅度降低运算量。</p>
+<p>当对卷积核进行剪枝时，有一种操作是剪除每一个核中的一些权重，或者移除单个卷积核中的特定维度。这样，会得到稀疏的卷积核，但并不会起到加速计算的作用。因而，更多的工作集中在结构化剪枝 （移除整个卷积核）。</p>
+<p>一些论文显示，通过对一个大的网络进行训练和剪枝，特别是迁移学习，会得到比直接从零开始训练一个小的网络更好的结果。</p>
+<h4 id="论文-Pruning-Filters-For-Efficient-Convnets"><a href="#论文-Pruning-Filters-For-Efficient-Convnets" class="headerlink" title="论文-Pruning Filters For Efficient Convnets"></a>论文-Pruning Filters For Efficient Convnets</h4><p>在本文中，移除整个卷积核。移除第k个卷积核将导致其产生的特征图中的第k个通道消失，进而导致下一层的所有卷积核的第k个通道消失，如下图所示：</p>
+<p><img src="/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/prune_example.png" alt="Pruning a convolutional filter entire filter"></p>
+<p>当下一层为全连接层时，假设被移除的通道的特征图大小为$M\times N$，那么全连接层中将有$M \times N$个神经元被移除。</p>
+<p>在本文中，使用权重的$L1$范数对其进行分级。</p>
+<h4 id="使用泰勒准则来对猫狗分类器进行剪枝"><a href="#使用泰勒准则来对猫狗分类器进行剪枝" class="headerlink" title="使用泰勒准则来对猫狗分类器进行剪枝"></a>使用泰勒准则来对猫狗分类器进行剪枝</h4><h5 id="第一步-训练一个大的网络"><a href="#第一步-训练一个大的网络" class="headerlink" title="第一步-训练一个大的网络"></a>第一步-训练一个大的网络</h5><p>使用VGG16，移除全连接层，替换为三层新的全连接层。在训练过程中，冻结卷积层，只对新的全连接层进行训练。在Pytorch中，新的层如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">self.classifier = nn.Sequential(</span><br><span class="line">4    nn.Dropout(),</span><br><span class="line">4    nn.Linear(<span class="number">25088</span>, <span class="number">4096</span>),</span><br><span class="line">4    nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">4    nn.Dropout(),</span><br><span class="line">4    nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">4    nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">4    nn.Linear(<span class="number">4096</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>使用数据增强训练20个epoches后，在测试集上得到98.7%的准确率。</p>
+<h5 id="第二步-对卷积核进行分级"><a href="#第二步-对卷积核进行分级" class="headerlink" title="第二步-对卷积核进行分级"></a>第二步-对卷积核进行分级</h5><p>为了计算泰勒准则，我们需要在数据集上（如果数据集太大，可以使用一部分数据集）进行前向传播和反向传播（需要计算梯度）。</p>
+<p>接着，我们需要同时得到军基层的梯度和激活值。在Pytorch中，我们可以在梯度计算中注册一个hook，所以在调用时便会完成相关计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> layer, (name, module) <span class="keyword">in</span> enumerate(self.model.features._modules.items()):</span><br><span class="line">4x = module(x)</span><br><span class="line">4<span class="keyword">if</span> isinstance(module, torch.nn.modules.conv.Conv2d):</span><br><span class="line">44x.register_hook(self.compute_rank)</span><br><span class="line">44self.activations.append(x)</span><br><span class="line">44self.activation_to_layer[activation_index] = layer</span><br><span class="line">44activation_index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>这样，我们就使用<code>self.activations</code>保存了各层的激活值，当完成梯度的计算时，<code>compute_rank</code>函数便会被调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_rank</span><span class="params">(self, grad)</span>:</span></span><br><span class="line">4activation_index = len(self.activations) - self.grad_index - <span class="number">1</span></span><br><span class="line">4activation = self.activations[activation_index]</span><br><span class="line">4values = \</span><br><span class="line">44torch.sum((activation * grad), dim = <span class="number">0</span>).\</span><br><span class="line">444sum(dim=<span class="number">2</span>).sum(dim=<span class="number">3</span>)[<span class="number">0</span>, :, <span class="number">0</span>, <span class="number">0</span>].data</span><br><span class="line">4</span><br><span class="line">4<span class="comment"># Normalize the rank by the filter dimensions</span></span><br><span class="line">4values = \</span><br><span class="line">44values / (activation.size(<span class="number">0</span>) * activation.size(<span class="number">2</span>) * activation.size(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">4<span class="keyword">if</span> activation_index <span class="keyword">not</span> <span class="keyword">in</span> self.filter_ranks:</span><br><span class="line">44self.filter_ranks[activation_index] = \</span><br><span class="line">444torch.FloatTensor(activation.size(<span class="number">1</span>)).zero_().cuda()</span><br><span class="line"></span><br><span class="line">4self.filter_ranks[activation_index] += values</span><br><span class="line">4self.grad_index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>这一函数对batch中的激活值和其梯度进行点乘，接着对于每一个激活值，在除了输出维度（特征图通道数）之外的所有维度进行求和。</p>
+<p>例如，batch的大小为32，某一激活值的大小为256、空间大小为$112\times 112$，那么该激活值和其梯度的大小为$32\times 256 \times 112 \times 112$，那么其输出为大小为256的向量，向量的每一个元素表示该层中的256个卷积核各自的等级。</p>
+<p>得到各个卷积核的等级之后，使用最小堆来得到$N$个等级最低的卷积核。和原始文章中在每一轮迭代中使用$N=1$不同，为了计算快速，我们使用$N=512$。这意味着，在每次剪枝迭代中，会移除$12%$的卷积核。</p>
+<p>大多数被剪除的卷积核都来自于较深的层，在第一次迭代后被剪除的卷积核的分布：</p>
+<p><img src="/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568261252580.png" alt="剪枝卷积核分布示意"></p>
+<h5 id="第三步-微调并重复"><a href="#第三步-微调并重复" class="headerlink" title="第三步-微调并重复"></a>第三步-微调并重复</h5><p>在这一步，解冻所有的层，并重新训练10个epochs。接着返回第一步并重复。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://jacobgil.github.io/deeplearning/pruning-deep-learning" target="_blank" rel="noopener">https://jacobgil.github.io/deeplearning/pruning-deep-learning</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/模型压缩/" rel="tag"># 模型压缩</a>
+          
+            <a href="/tags/模型剪枝/" rel="tag"># 模型剪枝</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/" rel="next" title="数据结构-基本概念">
+                <i class="fa fa-chevron-left"></i> 数据结构-基本概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/shen-du-xue-xi/ji-chu-zhi-shi/shen-jing-wang-luo-zhong-de-gui-yi-hua/" rel="prev" title="神经网络中的归一化操作">
+                神经网络中的归一化操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pruning-Convolutional-Neural-Networks-For-Resource-Efficient-Inference"><span class="nav-number">1.</span> <span class="nav-text">Pruning Convolutional Neural Networks For Resource Efficient Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">1.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle-Pruning"><span class="nav-number">1.2.1.</span> <span class="nav-text">Oracle Pruning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#剪枝准则"><span class="nav-number">1.2.2.</span> <span class="nav-text">剪枝准则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关博客"><span class="nav-number">1.3.</span> <span class="nav-text">相关博客</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#论文-Pruning-Filters-For-Efficient-Convnets"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">论文-Pruning Filters For Efficient Convnets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用泰勒准则来对猫狗分类器进行剪枝"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">使用泰勒准则来对猫狗分类器进行剪枝</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一步-训练一个大的网络"><span class="nav-number">1.3.0.2.1.</span> <span class="nav-text">第一步-训练一个大的网络</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二步-对卷积核进行分级"><span class="nav-number">1.3.0.2.2.</span> <span class="nav-text">第二步-对卷积核进行分级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三步-微调并重复"><span class="nav-number">1.3.0.2.3.</span> <span class="nav-text">第三步-微调并重复</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">92.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>

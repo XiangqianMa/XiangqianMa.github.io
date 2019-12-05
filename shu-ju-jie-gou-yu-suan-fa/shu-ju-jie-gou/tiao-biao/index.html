@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="跳表 本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。  对于二分查找算法，其底层依赖支持随机查找特性的数组，一般情况下只能依靠数组来实现。但是，如果数据存储在链表中，是否可以实现二分查找算法呢？ 为此，需要引入一种新型的动态数据结构，跳表（Skip List）。跳表可以支持快速的插入、删除和查找操作，甚至可以替代红黑树。 什么是跳表？对于一个单链表，即使其中存储的数据是有">
+<meta name="keywords" content="编程基础,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态数据结构-跳表">
+<meta property="og:url" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="跳表 本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。  对于二分查找算法，其底层依赖支持随机查找特性的数组，一般情况下只能依靠数组来实现。但是，如果数据存储在链表中，是否可以实现二分查找算法呢？ 为此，需要引入一种新型的动态数据结构，跳表（Skip List）。跳表可以支持快速的插入、删除和查找操作，甚至可以替代红黑树。 什么是跳表？对于一个单链表，即使其中存储的数据是有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/e18303fcedc068e5a168de04df956f6d.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/14753c824a5ee4a976ea799727adc78e.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/492206afe5e2fef9f683c7cff83afa65.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/d03bef9a64a0368e6a0d23ace8bd450c.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/100e9d6e5abeaae542cf7841be3f8255.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/0b0680ecf500f9349fc142e1a9eb73f7.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/192c480664e35591360cee96ff2f8395.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/65379f0651bc3a7cfd13ab8694c4d26c.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/c863074c01c26538cf0134eaf8dc67c5.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/a861445d0b53fc842f38919365b004a7.jpg">
+<meta property="og:updated_time" content="2019-11-30T15:20:41.572Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="动态数据结构-跳表">
+<meta name="twitter:description" content="跳表 本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。  对于二分查找算法，其底层依赖支持随机查找特性的数组，一般情况下只能依靠数组来实现。但是，如果数据存储在链表中，是否可以实现二分查找算法呢？ 为此，需要引入一种新型的动态数据结构，跳表（Skip List）。跳表可以支持快速的插入、删除和查找操作，甚至可以替代红黑树。 什么是跳表？对于一个单链表，即使其中存储的数据是有">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/e18303fcedc068e5a168de04df956f6d.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>动态数据结构-跳表 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">动态数据结构-跳表
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-30 21:44:20 / 修改时间：23:20:41" itemprop="dateCreated datePublished" datetime="2019-11-30T21:44:20+08:00">2019-11-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h1><blockquote>
+<p>本文为<a href="https://time.geekbang.org/column/article/40036" target="_blank" rel="noopener">数据结构与算法之美-王争</a>的学习笔记，如需查看完整内容，请参考链接。</p>
+</blockquote>
+<p>对于二分查找算法，其底层依赖支持随机查找特性的数组，一般情况下只能依靠数组来实现。但是，如果数据存储在链表中，是否可以实现二分查找算法呢？</p>
+<p>为此，需要引入一种新型的动态数据结构，跳表（Skip List）。跳表可以支持快速的插入、删除和查找操作，甚至可以替代红黑树。</p>
+<h2 id="什么是跳表？"><a href="#什么是跳表？" class="headerlink" title="什么是跳表？"></a>什么是跳表？</h2><p>对于一个单链表，即使其中存储的数据是有序的，如果我们想要查找特定的值，也只能从头到尾进行遍历，时间复杂度为$O(n)$。</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/e18303fcedc068e5a168de04df956f6d.jpg" alt="img" style="zoom: 50%;"></p>
+<p>为了提高查找效率，我们可以使用额外的链表来建立查找索引，每两个结点提取一个结点到上一级，把抽取出来的一级称作<strong>索引</strong>或<strong>索引层</strong>。索引层中的每一个结点有一个down指针，该指针指向其下一级结点。</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/14753c824a5ee4a976ea799727adc78e.jpg" alt="img" style="zoom:50%;"></p>
+<p>这样，如果我们要查找特定的值，例如16，便可以首先对第一级索引层进行遍历，当查找到值为13的结点时，发现其下一个结点的值为17，因为数据是有序存储的，那么16肯定在这两个结点之间。此时，只需要通过13结点的down指针转移到原始链表的13结点处，再对原始链表的13到17结点之间的元素进行查找即可很快找到值为16的结点。</p>
+<p>在上述查找过程中，利用第一级索引层，从原先需要遍历10个结点降低为只需要遍历7个结点，跳过了中间的多个结点，查找效率大幅度提高。</p>
+<p>在第一级索引的基础上，还可以继续增加第二级索引，对于第一级索引中的值，每两个结点创建一个结点，如下图所示。</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/492206afe5e2fef9f683c7cff83afa65.jpg" alt="img" style="zoom:50%;"></p>
+<p>这样，如果要查找值为16的结点，就只需要遍历6个结点。</p>
+<p>在上述例子中，由于原始结点数目不多，查找效率的提升不明显。但是，当原始结点的数目很大时，查找效率就会得到明显提升。</p>
+<h2 id="使用跳表进行查询的效率"><a href="#使用跳表进行查询的效率" class="headerlink" title="使用跳表进行查询的效率"></a>使用跳表进行查询的效率</h2><p>在单链表中查询某个数据的时间复杂度为$O(n)$。那么，跳表的查询时间复杂度是多少？</p>
+<p>假设链表中有n个结点，按照每两个结点抽取一个结点作为上一级索引的结点，那么第一级索引有$n/2$个结点，第二级索引有$n/4$个结点，即：第k级索引的结点个数是第k-1级索引的结点个数的$1/2$，第k级索引结点的个数为$n/(2^k)$。</p>
+<p>假设索引有$h$级，最高级的索引有两个结点，那么$n/(2^h)=2$，求得$h=log_2n-1$，加上原始链表，整个跳表的高度为$log_2n$。假设，在跳表中查询某个数据时，每一层都需要遍历$m$个结点，那么在跳表中查询一个数据的时间复杂度为$O(m*logn)$。</p>
+<p>如果使用上述的跳表结构，那么在每一级遍历时，最多只需要遍历3个结点。原因在于，当我们从当前级跳转到下一级索引时，当前级的两个结点之间最多只存在3个结点，那么每级最多也只需要遍历3个结点。</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/d03bef9a64a0368e6a0d23ace8bd450c.jpg" alt="img" style="zoom:50%;"></p>
+<p>因此，在跳表中查询任意数据的时间复杂度就是$O(logn)$。查找的时间复杂度和二分查找相同。</p>
+<h2 id="跳表的空间复杂度"><a href="#跳表的空间复杂度" class="headerlink" title="跳表的空间复杂度"></a>跳表的空间复杂度</h2><p>跳表的空间复杂度如下所示：</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/100e9d6e5abeaae542cf7841be3f8255.jpg" alt="img" style="zoom:50%;"></p>
+<p>上述等比数列的和为n-2，那么空间复杂度为$O(n)$。也就是说，为包含n个结点的单链表构建多级索引构成跳表，需要额外使用接近n个结点的存储空间。</p>
+<p>如果每三个结点或这五个结点抽取一个结点构成上级索引，如下图所示：</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/0b0680ecf500f9349fc142e1a9eb73f7.jpg" alt="img" style="zoom:50%;"></p>
+<p>空间复杂度的计算方式如下图所示：</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/192c480664e35591360cee96ff2f8395.jpg" alt="img" style="zoom:50%;"></p>
+<p>和为$n/2$，空间复杂度同样是$O(n)$，但是相比于间隔为2，减少了一般的索引结点存储空间。</p>
+<p>在实际工程中，单链表中的每一结点所存储的对象可能很大，此时，在构建索引结点时，只需要存储关键值和指针，不需要存储对象，因而当对象比索引结点大很多时，索引结点所占用的额外空间可以忽略不计。</p>
+<h2 id="高效的动态插入和删除"><a href="#高效的动态插入和删除" class="headerlink" title="高效的动态插入和删除"></a>高效的动态插入和删除</h2><h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><p>跳表除了支持查找操作之外还支持动态的插入、删除操作，插入、删除操作的时间复杂度也是$O(logn)$。</p>
+<p>在单链表中，如果要找到特定的位置并执行插入操作，查找操作比较耗时，而插入的时间复杂度为$O(1)$。而对于跳表来说，查找某个特定的插入位置的时间复杂度为$O(logn)$，找到插入位置后，插入操作的时间复杂度同样为$O(1)$。如下图所示：</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/65379f0651bc3a7cfd13ab8694c4d26c.jpg" alt="img" style="zoom:50%;"></p>
+<h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><p>在进行删除操作时，我们需要考虑的一点时，所删除的结点可能会在索引中出现，此时要同时删除索引中的对应结点。在进行删除操作时，要注意获取被删除结点的前驱结点。</p>
+<h2 id="跳表索引的动态更新"><a href="#跳表索引的动态更新" class="headerlink" title="跳表索引的动态更新"></a>跳表索引的动态更新</h2><p>在往跳表中插入数据时，如果不进行索引的更新操作，会导致某两个索引结点之间的数据非常多，导致在对这一部分结点执行相关操作时效率底下。</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/c863074c01c26538cf0134eaf8dc67c5.jpg" alt="img" style="zoom:50%;"></p>
+<p>因而，我们需要一种手段来维护索引和原始链表大小之间的动态平衡。当链表中的数据增多时，就加入更多的索引结点。</p>
+<p>当我们向跳表中插入数据时，可以选择同时将这个数据插入到部分索引层中。通过使用一个随机函数来决定将这个结点插入到哪几级索引中，例如随机函数生成的值为k，那么就将这个结点添加到第一级到第k级这k级索引中。</p>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/tiao-biao/a861445d0b53fc842f38919365b004a7.jpg" alt="img" style="zoom:50%;"></p>
+<p>这里要注意的一点是，随机函数应该能够在概率上保证跳表的索引大小和数据大小相平衡。</p>
+<p>在Redis中就使用跳表来实现有序集合，那么为何不使用红黑树呢？</p>
+<p>Redis中的有序集合所支持的核心操作主要有以下几个：</p>
+<ul>
+<li>插入一个数据；</li>
+<li>删除一个数据；</li>
+<li>查找一个数据；</li>
+<li>按照区间查找数据（[100, 356]之间的数据）；</li>
+<li>迭代输出有序序列。</li>
+</ul>
+<p>其中的插入、删除、查找和迭代输出有序序列的操作使用红黑树也可以完成，时间复杂度和跳表一样。但是，按照区间查找数据的操作红黑树没有跳表效率高。</p>
+<p>除此之外，还有跳表代码实现简单、更加灵活的特点。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://time.geekbang.org/column/article/42896" target="_blank" rel="noopener">数据结构与算法之美-王筝</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/c/c-zhong-de-zi-yuan-guan-li/" rel="next" title="C++中的资源管理：堆、栈和RAII">
+                <i class="fa fa-chevron-left"></i> C++中的资源管理：堆、栈和RAII
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao/" rel="prev" title="散列表-上">
+                散列表-上 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#跳表"><span class="nav-number">1.</span> <span class="nav-text">跳表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是跳表？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是跳表？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用跳表进行查询的效率"><span class="nav-number">1.2.</span> <span class="nav-text">使用跳表进行查询的效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跳表的空间复杂度"><span class="nav-number">1.3.</span> <span class="nav-text">跳表的空间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高效的动态插入和删除"><span class="nav-number">1.4.</span> <span class="nav-text">高效的动态插入和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入操作"><span class="nav-number">1.4.1.</span> <span class="nav-text">插入操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除操作"><span class="nav-number">1.4.2.</span> <span class="nav-text">删除操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跳表索引的动态更新"><span class="nav-number">1.5.</span> <span class="nav-text">跳表索引的动态更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">92.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>

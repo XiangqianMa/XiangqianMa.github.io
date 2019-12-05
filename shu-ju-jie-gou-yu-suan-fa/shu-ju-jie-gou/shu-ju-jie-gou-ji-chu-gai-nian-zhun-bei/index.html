@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="数据结构在研究数据结构之前，我们有必要搞清楚什么是数据结构。 首先，什么是数据？  数据是描述客观事物的符号，是计算机中可以操作的对象，是能被计算机识别，并输入给计算机处理的符号集合。  而数据元素指的是组成数据的、有一定意义的基本单位，在计算机中通常作为整体处理，例如：人、猫等。一个数据元素可以由若干个数据项组成，例如：人由眼睛、鼻子等组成，数据项是数据不可分割的最小单位。 对于数据元素中性质相">
+<meta name="keywords" content="编程基础,数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-基本概念">
+<meta property="og:url" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="数据结构在研究数据结构之前，我们有必要搞清楚什么是数据结构。 首先，什么是数据？  数据是描述客观事物的符号，是计算机中可以操作的对象，是能被计算机识别，并输入给计算机处理的符号集合。  而数据元素指的是组成数据的、有一定意义的基本单位，在计算机中通常作为整体处理，例如：人、猫等。一个数据元素可以由若干个数据项组成，例如：人由眼睛、鼻子等组成，数据项是数据不可分割的最小单位。 对于数据元素中性质相">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/497a3f120b7debee07dc0d03984faf04.jpg">
+<meta property="og:updated_time" content="2019-11-30T15:20:44.259Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构-基本概念">
+<meta name="twitter:description" content="数据结构在研究数据结构之前，我们有必要搞清楚什么是数据结构。 首先，什么是数据？  数据是描述客观事物的符号，是计算机中可以操作的对象，是能被计算机识别，并输入给计算机处理的符号集合。  而数据元素指的是组成数据的、有一定意义的基本单位，在计算机中通常作为整体处理，例如：人、猫等。一个数据元素可以由若干个数据项组成，例如：人由眼睛、鼻子等组成，数据项是数据不可分割的最小单位。 对于数据元素中性质相">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/497a3f120b7debee07dc0d03984faf04.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>数据结构-基本概念 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据结构-基本概念
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-05 22:35:20" itemprop="dateCreated datePublished" datetime="2019-09-05T22:35:20+08:00">2019-09-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-30 23:20:44" itemprop="dateModified" datetime="2019-11-30T23:20:44+08:00">2019-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>在研究数据结构之前，我们有必要搞清楚什么是数据结构。</p>
+<p>首先，什么是<strong>数据</strong>？</p>
+<blockquote>
+<p>数据是描述客观事物的符号，是计算机中可以操作的对象，是能被计算机识别，并输入给计算机处理的符号集合。</p>
+</blockquote>
+<p>而<strong>数据元素</strong>指的是组成数据的、有一定意义的基本单位，在计算机中通常作为整体处理，例如：人、猫等。一个数据元素可以由若干个<strong>数据项</strong>组成，例如：人由眼睛、鼻子等组成，数据项是数据不可分割的最小单位。</p>
+<p>对于数据元素中性质相同的集合，我们将其称为数据对象。在实际应用中，处理的数据元素通产具有相同的性质，在不产生混淆的情况下，将数据对象称为数据。</p>
+<p>那么，什么是数据结构呢？</p>
+<blockquote>
+<p>数据结构：是相互之间存在一种或多种特定关系的数据元素的集合。</p>
+</blockquote>
+<h2 id="逻辑结构与物理结构"><a href="#逻辑结构与物理结构" class="headerlink" title="逻辑结构与物理结构"></a>逻辑结构与物理结构</h2><p>上文中说到，数据元素之间存在一种或多种特定的关系，依据关系类型的不同可以将数据结构分为逻辑结构和物理结构。</p>
+<h3 id="逻辑结构"><a href="#逻辑结构" class="headerlink" title="逻辑结构"></a>逻辑结构</h3><p>逻辑结构是指数据对象中数据元素之间的相互关系，逻辑结构可以分为以下四种：</p>
+<ul>
+<li><p><strong>集合结构</strong></p>
+<p>集合结构中的数据除了同属于一个集合外，它们之间没有其它关系。各个数据之间是<strong>相互平等</strong>的。</p>
+</li>
+<li><p><strong>线性结构</strong></p>
+<p>线性结构中的数据是<strong>一对一</strong>的关系。</p>
+</li>
+<li><p><strong>树形结构</strong></p>
+<p>树形结构中的数据之间存在一种<strong>一对多</strong>的层次关系。</p>
+</li>
+<li><p><strong>图形结构</strong></p>
+<p>图形结构的数据元素是<strong>多对多</strong>的关系。</p>
+</li>
+</ul>
+<p>逻辑结构是针对具体问题的，是为了解决某个问题，在对问题理解的基础上，选择一个合适的数据结构表示数据元素之间的逻辑关系。</p>
+<h3 id="物理结构"><a href="#物理结构" class="headerlink" title="物理结构"></a>物理结构</h3><p>物理结构是指数据的逻辑结构在计算机中的存储形式。物理结构研究的就是如何将数据元素存储到计算机中，存储器主要是针对内存而言的。</p>
+<p>数据的存储结构应该正确反映数据元素之间的逻辑关系，如何存储数据元素之间的逻辑关系，是实现物理结构的重点和难点。</p>
+<p>数据元素的存储形式有两种：顺序存储和链式存储。</p>
+<ul>
+<li><p>顺序存储结构</p>
+<p>把数据元素存放在地址连续的存储单元里，其数据间的逻辑关系和物理关系一致。</p>
+</li>
+<li><p>链式存储结构</p>
+<p>把数据元素存放在任意的存储单元里，这组存储单元可以是连续的，也可以是不连续的。</p>
+</li>
+</ul>
+<p>总的来说，逻辑结构是面向问题的，物理结构解决如何将数据元素之间的逻辑关系存储在计算机中。</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>为了学好数据结构，就必须学习算法，只有同时掌握了数据结构和算法才能写出完整的程序。</p>
+<p>何为算法？</p>
+<blockquote>
+<p>算法是解决特定问题求解步骤的描述，在计算机中表现为指令的有限序列，并且每条指令表示一个或多个操作。</p>
+</blockquote>
+<h3 id="算法的特性"><a href="#算法的特性" class="headerlink" title="算法的特性"></a>算法的特性</h3><ul>
+<li><p>输入、输出</p>
+<p>算法具有零个或多个输入，至少有一个或多个输出。</p>
+</li>
+<li><p>有穷性</p>
+<p>指算法在执行有限的步骤后，自动结束而不会陷入死循环，并且每一个步骤在可接受的时间内完成。</p>
+</li>
+<li><p>确定性</p>
+<p>算法的每一步骤都具有确定的含义，不会出现二义性。</p>
+</li>
+<li><p>可行性</p>
+<p>算法的每一步都必须可行，每一步都能够通过执行有限次数完成。</p>
+</li>
+</ul>
+<h3 id="算法效率度量方式"><a href="#算法效率度量方式" class="headerlink" title="算法效率度量方式"></a>算法效率度量方式</h3><p>在进行算法设计时，我们需要对算法的效率进行度量（大部分情况下指运行时间），那么如何对算法的运行时间进行度量呢？</p>
+<p>一般存在两种度量方式，<strong>事后度量和事前度量</strong>，所谓事后度量，指的是设计测试程序和数据对程序的性能进行实地测试，但一个算法的运行效率和所使用的测试样例、硬件环境等有很大的关系，事后度量一般不准确。因而我们一般采用事前度量的方式。</p>
+<p>一个用高级程序语言设计的程序在计算机上运行时所消耗的时间取决于下列因素：</p>
+<ul>
+<li>算法采用的策略、方法。</li>
+<li>编译产生的代码质量。</li>
+<li>问题的输入规模。</li>
+<li>机器执行指令的速度。</li>
+</ul>
+<p>抛开与计算机硬件（第四条）、软件（第二条）相关的因素，<strong>一个程序运行的时间取决于算法的好坏和问题的输入规模</strong>。</p>
+<p>而测定一个程序的运行时间的最可靠的方法就是<strong>计算对运行时间有消耗的基本操作的执行次数</strong>，运行时间与这个计数成正比，如下述程序所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i, j, x = <span class="number">0</span>, sum = <span class="number">0</span>, n = <span class="number">100</span>; <span class="comment">/* 执行一次 */</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">&#123;</span><br><span class="line">4<span class="keyword">for</span> (j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">4&#123;</span><br><span class="line">44x++;</span><br><span class="line">44sum = sum + x; <span class="comment">/* 执行nxn次 */</span></span><br><span class="line">4&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>, sum); <span class="comment">/* 执行一次 */</span></span><br></pre></td></tr></table></figure>
+<p>在上述程序中，其最核心的基本操作便是两个<code>for</code>循环中的语句，该语句总计执行了<code>nxn</code>次。</p>
+<p>在对算法效率进行分析的时候，我们不关心算法的实现语言是什么、实现平台是什么，只关注算法本身。不计循环索引的递增、循环终止条件、变量声明和打印等操作，<strong>在分析程序的运行时间时，最重要的是把程序看作是独立于程序设计语言的算法或一系列步骤</strong>。</p>
+<p>我们要做的是把基本操作的数量与输入规模关联起来，即<strong>基本操作的数量必须表示成输入规模的函数</strong>。</p>
+<h3 id="函数的渐近增长"><a href="#函数的渐近增长" class="headerlink" title="函数的渐近增长"></a>函数的渐近增长</h3><p>给出定义如下：</p>
+<blockquote>
+<p>给定两个函数$f(n)$和$g(n)$，如果存在一个整数$N$，使得对于所有的$n&gt;N$，$f(n)$总是比$g(n)$大，那么我们就说$f(n)$的增长渐近快于$g(n)$。</p>
+</blockquote>
+<h4 id="忽略加法常数"><a href="#忽略加法常数" class="headerlink" title="忽略加法常数"></a>忽略加法常数</h4><p>存在这样一种现象，随着输入规模的逐渐增大，算法计算效率中的<strong>加法常数所造成的影响将变得可以忽略不计</strong>。例如在对比$2n+3$和$3n+1$时，两者中的常数便可以被忽略。</p>
+<h4 id="忽略与最高次项相乘的常数"><a href="#忽略与最高次项相乘的常数" class="headerlink" title="忽略与最高次项相乘的常数"></a>忽略与最高次项相乘的常数</h4><p>假如两个算法的计算效率分别是$4n+8$和$2n^2+1$，我们可以忽略掉其中的最高次项的常数系数，只保留$n$和$n^2$。</p>
+<h4 id="忽略低次项"><a href="#忽略低次项" class="headerlink" title="忽略低次项"></a>忽略低次项</h4><p>在比较两个算法的计算效率时，我们可以忽略掉除最高次项的其它项，例如，$2n^2+3n+1$和$2n^3+3n+1$等价于比较$n^2$和$n^3$。</p>
+<p>综合上述所言，我们可以得出这样一个结论：<strong>在判断一个算法的效率时，函数中的常数和其他次要项常常可以忽略，而更应该关注主项（最高阶项）的阶数</strong>。</p>
+<p>判断一个算法的优劣，我们无法只通过少量数据进行准确的判断。通过上述分析可以看出，如果我们可以对比这几个算法的关键执行次数函数的渐近增长性，基本就可以分析出：<strong>某个算法，随着$n$的增大，它会越来越优于另一个算法，或者越来越差于另一个算法</strong>。</p>
+<p>这就是事前估计方法的理论依据，通过算法时间复杂度来估算算法时间效率。</p>
+<h2 id="算法时间复杂度"><a href="#算法时间复杂度" class="headerlink" title="算法时间复杂度"></a>算法时间复杂度</h2><h3 id="算法的时间复杂度的定义"><a href="#算法的时间复杂度的定义" class="headerlink" title="算法的时间复杂度的定义"></a><strong>算法的时间复杂度的定义</strong></h3><p>算法的时间复杂度，也就是算法的时间度量，记作：$T(n)=O(f(n))$，它表示随问题规模$n$的增大，算法执行时间的增长率和$f(n)$的增长率相同，称作算法的渐近时间复杂度，简称为时间复杂度。其中，$f(n)$是问题规模的某个函数。</p>
+<p>上述使用大写的$O$表示算法的时间复杂度的记法，称作大$O$记法。</p>
+<h3 id="计算算法的大-O-阶"><a href="#计算算法的大-O-阶" class="headerlink" title="计算算法的大$O$阶"></a>计算算法的大$O$阶</h3><p>计算方法大体如下：</p>
+<ul>
+<li><p>用常数1取代运行时间中的所有加法常数。</p>
+</li>
+<li><p>在修改后的运行次数函数中，只保留最高阶项，也就是只关注循环执行次数最多的一段代码。</p>
+<p>在分析一个算法、一段代码的时间复杂度时，只关注循环执行次数最多的那一段代码就行了。</p>
+</li>
+<li><p>如果最高阶项存在且不是1，则去除于这个项相乘的常数。</p>
+</li>
+<li><p>嵌套代码的时间复杂度等于嵌套内外代码复杂度的乘积。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span> ret = <span class="number">0</span>; </span><br><span class="line">   <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">for</span> (; i &lt; n; ++i) &#123;</span><br><span class="line">     ret = ret + f(i);</span><br><span class="line">   &#125; </span><br><span class="line"> &#125; </span><br><span class="line"> </span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (; i &lt; n; ++i) &#123;</span><br><span class="line">    sum = sum + i;</span><br><span class="line">  &#125; </span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码的时间复杂度等于<code>cal(int n)</code>函数中<code>for</code>循环的时间复杂度$O(n)$乘以函数<code>f(int n)</code>的时间复杂度$O(n)$，即该段代码的时间复杂度为$O(n^2)$。</p>
+</li>
+</ul>
+<h4 id="常数阶"><a href="#常数阶" class="headerlink" title="常数阶"></a>常数阶</h4><p>存在这样一类算法，它们的计算复杂度与问题的输入无关，无论问题的规模为多少，这些算法的执行时间都是恒定的，我们称此类算法为具有$O(1)$的时间复杂度，又叫常数阶。<strong>一般情况下，只要算法中不存在循环语句、递归语句，即使有成千上万行的代码，其时间复杂度也是$O(1)$</strong>。</p>
+<h4 id="线性阶"><a href="#线性阶" class="headerlink" title="线性阶"></a>线性阶</h4><p>我们要分析算法的复杂度，关键就是要分析循环结构的执行情况。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>  i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">&#123;</span><br><span class="line">4<span class="comment">/* 时间复杂度为O(1)的程序步骤序列 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述程序的循环分支中的语句执行了$n$次，因此其时间复杂度为$O(n)$。</p>
+<h4 id="对数阶"><a href="#对数阶" class="headerlink" title="对数阶"></a>对数阶</h4><p>如下述代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (count &lt; n)</span><br><span class="line">&#123;</span><br><span class="line">4count = count * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要计算出上述代码中的<code>while</code>循环中的语句的执行次数，<code>count</code>每次乘2，满足$count*2^x=n$，即$x=log_2n$时循环结束，所以这个循环的时间复杂度为$log_2n$。</p>
+<p>实际上，不论以2为底还是以3为底，都将所有对数阶的时间复杂度记为$O(logn)$。同时，如果一段代码的时间复杂度为$O(logn)$，将这段代码重复执行$n$次，时间复杂度就是$O(nlogn)$。</p>
+<h4 id="平方阶"><a href="#平方阶" class="headerlink" title="平方阶"></a>平方阶</h4><p>当循环内部嵌套循环时，总的算法的时间复杂度为循环体的复杂度乘以该循环运行的次数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ing i, j;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">&#123;</span><br><span class="line">4<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">4&#123;</span><br><span class="line">44<span class="comment">/* 时间复杂度为O(1)的程序步骤 */</span></span><br><span class="line">4&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述算法的时间复杂度为$O(n^2)$。</p>
+<h3 id="O-m-n-、O-m-n"><a href="#O-m-n-、O-m-n" class="headerlink" title="$O(m+n)、O(m*n)$"></a>$O(m+n)、O(m*n)$</h3><p>这一类时间复杂度与前面几种复杂度不同，该类时间复杂度由<strong>两个数据的规模</strong>决定。如下述代码所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> sum_1 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (; i &lt; m; ++i) &#123;</span><br><span class="line">    sum_1 = sum_1 + i;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> sum_2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (; j &lt; n; ++j) &#123;</span><br><span class="line">    sum_2 = sum_2 + j;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> sum_1 + sum_2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上述代码中，$m$和$n$是两个数据规模，我们无法事先估计两者的量级大小，所以在计算时间复杂度时就无法利用加法规则省略掉其中的一个。但是此时乘法规则仍旧适用。</p>
+<h2 id="常见的时间复杂度"><a href="#常见的时间复杂度" class="headerlink" title="常见的时间复杂度"></a>常见的时间复杂度</h2><p>常见的时间复杂度如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>执行次数函数</th>
+<th>阶</th>
+<th>非正式用语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$12$</td>
+<td>$O(1)$</td>
+<td>常数阶</td>
+</tr>
+<tr>
+<td>$2n+3$</td>
+<td>$O(n)$</td>
+<td>线性阶</td>
+</tr>
+<tr>
+<td>$3n^2+2n+1$</td>
+<td>$O(n^2)$</td>
+<td>平方阶</td>
+</tr>
+<tr>
+<td>$5log_2n+20$</td>
+<td>$O(logn)$</td>
+<td>对数阶</td>
+</tr>
+<tr>
+<td>$2n+3nlog_2n+19$</td>
+<td>$O(nlogn)$</td>
+<td>$nlogn$阶</td>
+</tr>
+<tr>
+<td>$6n^3+2n^2+3n+4$</td>
+<td>$O(n^3)$</td>
+<td>立方阶</td>
+</tr>
+<tr>
+<td>$2^n$</td>
+<td>$O(2^n)$</td>
+<td>指数阶</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上述时间复杂度所耗费的时间从小到大以此为：</p>
+<script type="math/tex; mode=display">
+O(1)<O(N)<O(n^2)<O(logn)<O(nlogn)<O(n^3)<O(2^n)</script><blockquote>
+<p>在算法复杂度的分析中，一般提到的运行时间都是最坏情况下的运行时间。</p>
+</blockquote>
+<p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/shu-ju-jie-gou-ji-chu-gai-nian-zhun-bei/497a3f120b7debee07dc0d03984faf04.jpg" alt=""></p>
+<h2 id="算法的空间复杂度"><a href="#算法的空间复杂度" class="headerlink" title="算法的空间复杂度"></a>算法的空间复杂度</h2><p>在进行算法设计时，我们完全可以使用空间换时间。算法的空间复杂度通过计算算法所需的存储空间实现，算法空间复杂度的计算公式记作：$S(n)=O(f(n))$，其中，$n$为问题的规模，$f(n)$为语句关于$n$所占存储空间的函数。同样，空间复杂度的全称为渐近空间复杂度。</p>
+<p>通常情况下，我们使用“时间复杂度”指程序运行时间的需求，使用“空间复杂度”指空间需求。当不使用限定词时，“复杂度”通常都是指时间复杂度。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《大话数据结构》</li>
+<li><a href="https://time.geekbang.org/column/article/40036" target="_blank" rel="noopener">数据结构与算法之美-王争</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/c/bian-liang-he-ji-ben-lei-xing/" rel="next" title="C++基础-变量和基本类型">
+                <i class="fa fa-chevron-left"></i> C++基础-变量和基本类型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/" rel="prev" title="模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则">
+                模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑结构与物理结构"><span class="nav-number">2.</span> <span class="nav-text">逻辑结构与物理结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑结构"><span class="nav-number">2.1.</span> <span class="nav-text">逻辑结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理结构"><span class="nav-number">2.2.</span> <span class="nav-text">物理结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">3.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法的特性"><span class="nav-number">3.1.</span> <span class="nav-text">算法的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法效率度量方式"><span class="nav-number">3.2.</span> <span class="nav-text">算法效率度量方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的渐近增长"><span class="nav-number">3.3.</span> <span class="nav-text">函数的渐近增长</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#忽略加法常数"><span class="nav-number">3.3.1.</span> <span class="nav-text">忽略加法常数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#忽略与最高次项相乘的常数"><span class="nav-number">3.3.2.</span> <span class="nav-text">忽略与最高次项相乘的常数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#忽略低次项"><span class="nav-number">3.3.3.</span> <span class="nav-text">忽略低次项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">算法时间复杂度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法的时间复杂度的定义"><span class="nav-number">4.1.</span> <span class="nav-text">算法的时间复杂度的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算算法的大-O-阶"><span class="nav-number">4.2.</span> <span class="nav-text">计算算法的大$O$阶</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常数阶"><span class="nav-number">4.2.1.</span> <span class="nav-text">常数阶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线性阶"><span class="nav-number">4.2.2.</span> <span class="nav-text">线性阶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对数阶"><span class="nav-number">4.2.3.</span> <span class="nav-text">对数阶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#平方阶"><span class="nav-number">4.2.4.</span> <span class="nav-text">平方阶</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#O-m-n-、O-m-n"><span class="nav-number">4.3.</span> <span class="nav-text">$O(m+n)、O(m*n)$</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的时间复杂度"><span class="nav-number">5.</span> <span class="nav-text">常见的时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法的空间复杂度"><span class="nav-number">6.</span> <span class="nav-text">算法的空间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">92.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>

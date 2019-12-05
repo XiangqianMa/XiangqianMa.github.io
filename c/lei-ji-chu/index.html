@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="const成员函数 指向非常量的常量指针无法被绑定至常量  在默认情况下，类的this指针的类型是指向类类型非常量版本的常量指针，这一设定意味着我们无法将this指针绑定至类类型的常量上。也就是说我们无法使用常量对象调用普通的成员对象，为了提高程序的兼容性，可以将this声明为指向常量的常量指针，为了达到之一目的可以在成员函数的参数列表之后加入const关键字，表示this指向常量，称这样的成员函">
+<meta name="keywords" content="编程基础,C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++基础-类基础">
+<meta property="og:url" content="http://xiangqianma.github.io/c/lei-ji-chu/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="const成员函数 指向非常量的常量指针无法被绑定至常量  在默认情况下，类的this指针的类型是指向类类型非常量版本的常量指针，这一设定意味着我们无法将this指针绑定至类类型的常量上。也就是说我们无法使用常量对象调用普通的成员对象，为了提高程序的兼容性，可以将this声明为指向常量的常量指针，为了达到之一目的可以在成员函数的参数列表之后加入const关键字，表示this指向常量，称这样的成员函">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-30T15:16:25.702Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++基础-类基础">
+<meta name="twitter:description" content="const成员函数 指向非常量的常量指针无法被绑定至常量  在默认情况下，类的this指针的类型是指向类类型非常量版本的常量指针，这一设定意味着我们无法将this指针绑定至类类型的常量上。也就是说我们无法使用常量对象调用普通的成员对象，为了提高程序的兼容性，可以将this声明为指向常量的常量指针，为了达到之一目的可以在成员函数的参数列表之后加入const关键字，表示this指向常量，称这样的成员函">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/c/lei-ji-chu/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>C++基础-类基础 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/c/lei-ji-chu/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++基础-类基础
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-03 22:35:20" itemprop="dateCreated datePublished" datetime="2019-09-03T22:35:20+08:00">2019-09-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-30 23:16:25" itemprop="dateModified" datetime="2019-11-30T23:16:25+08:00">2019-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/编程语言/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="const成员函数"><a href="#const成员函数" class="headerlink" title="const成员函数"></a>const成员函数</h2><blockquote>
+<p>指向非常量的常量指针无法被绑定至常量</p>
+</blockquote>
+<p>在默认情况下，类的this指针的类型是指向类类型非常量版本的常量指针，这一设定意味着我们无法将this指针绑定至类类型的常量上。也就是说我们无法使用常量对象调用普通的成员对象，为了提高程序的兼容性，可以将this声明为指向常量的常量指针，为了达到之一目的可以在成员函数的参数列表之后加入<code>const</code>关键字，表示this指向常量，称这样的成员函数为常量成员函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo; &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>类通过一个或几个特殊的成员函数控制其对象的初始化过程，这些函数称为构造函数。构造函数初始化类对象的数据成员，只要有类的对象被创建，就会指向构造函数。</p>
+<blockquote>
+<p>类的构造函数不能被声明为const，因为直到构造函数完成初始化过程，对象才能真正获得常量属性，在此之前，我们需要向对象中写入数值。</p>
+</blockquote>
+<p>类通过一个特殊的构造函数控制默认初始化过程，这个函数叫做<strong>默认构造函数</strong>，编译器创建的构造函数又称为<strong>合成的默认构造函数。</strong>默认构造函数按照如下规则初始化类的数据成员：</p>
+<ul>
+<li>如果存在类内初始值，用它初始化成员。</li>
+<li>否则，默认初始化。</li>
+</ul>
+<p><strong>有些类不能依赖于合成的默认构造函数</strong></p>
+<p>原因如下：</p>
+<ol>
+<li>当我们定义了自己的构造函数时，编译器便不会为我们的类合成默认构造函数，需要自己定义默认构造函数。</li>
+<li>合成的默认构造函数可能会执行错误的操作。如果类内包含有内置类型或者符合类型的成员，则只有当这些成员全部被赋予了类内的初始值时，该类才适合于使用合成的默认构造函数。</li>
+<li>编译器无法为一些类合成默认构造函数，如类中包含的其他类没有默认的构造函数时。</li>
+</ol>
+<blockquote>
+<p><strong>当我们定义了其他构造函数时，也必须定义一个默认构造函数</strong>。</p>
+</blockquote>
+<p>如果没有在构造函数的初始值列表中显示地初始化成员，则该成员将在构造函数体之前执行默认初始化。有时候，在构造函数中不使用初始化列表，而是在函数体中使用赋值操作。这一做法有时是没有问题的，但对于有些必须进行初始化的类型而言，这一做法便不可取。例如，当成员为const或者引用时，就必须对其进行初始化，而不能采用赋值操作为其赋值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">COnstRef</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">4ConstRef(<span class="keyword">int</span> ii);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">4<span class="keyword">int</span> i;</span><br><span class="line">4<span class="keyword">const</span> <span class="keyword">int</span> ci;</span><br><span class="line">4<span class="keyword">int</span> &amp;ri;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ConstRef::COnstRef(<span class="keyword">int</span> ii)</span><br><span class="line">&#123;</span><br><span class="line">4i = ii;</span><br><span class="line">4ci = ii;<span class="comment">//不能向const赋值</span></span><br><span class="line">4ri = i;<span class="comment">//ri为引用，未被初始化</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>初始化const或者引用类型的数据成员的唯一机会就是通过构造函数初始值，因而该构造函数的正确形式为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConstRef::ConstRef(<span class="keyword">int</span> ii): i(ii), ci(ii), ri(i) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果成员是const、引用个、或者属于某种未提供默认构造函数的类类型，我们必须通过构造函数初始值列表为这些成员提供初值。</p>
+</blockquote>
+<p>在构造函数，成员的初始化顺序与它们在类定义中的出现顺序一致。不受初始值列表中的顺序的影响。</p>
+<h3 id="默认构造函数的作用"><a href="#默认构造函数的作用" class="headerlink" title="默认构造函数的作用"></a>默认构造函数的作用</h3><p>当对象被默认初始化或值初始化时自动执行默认构造函数。</p>
+<ol>
+<li><p>默认初始化发生的情况：</p>
+<ol>
+<li>在块作用域内不适用任何初始值定义一个非静态变量或者数组。</li>
+<li>一个类本身含有其他类类型的成员，同时该类使用合成的默认构造函数。</li>
+<li>类类型的成员未在构造函数初始值列表中显式地初始化。</li>
+</ol>
+</li>
+<li><p>值初始化</p>
+<ol>
+<li>数组初始化过程中提供的初始值数量小于数组的大小。</li>
+<li>不使用初始值定义一个局部静态变量。</li>
+<li>使用形如T()的表达式显式地请求值初始化。</li>
+</ol>
+</li>
+</ol>
+<h2 id="拷贝、赋值和析构"><a href="#拷贝、赋值和析构" class="headerlink" title="　拷贝、赋值和析构"></a>　拷贝、赋值和析构</h2><p>类还需要控制拷贝、赋值和销毁对象时发生的行为。当我们初始化变量、以值的方式传递或返回一个参数时会发生对象的拷贝操作；使用赋值运算符时会发生对象的赋值操作；当对象不在存在时会发生销毁操作。</p>
+<h2 id="类的访问控制与封装"><a href="#类的访问控制与封装" class="headerlink" title="类的访问控制与封装"></a>类的访问控制与封装</h2><p>封装的作用就是限制用户对于类的接口的控制，我们使用<strong>访问说明符</strong>加强类的封装性。</p>
+<ul>
+<li><strong>public</strong>：该说明符之后的成员可以在整个程序内被访问，通常将类的接口定义为public；</li>
+<li><strong>private</strong>：该说明符之后的成员可以被类的成员函数访问，但不能被使用该类的外部代码访问。</li>
+</ul>
+<h2 id="class和struct关键字"><a href="#class和struct关键字" class="headerlink" title="class和struct关键字"></a>class和struct关键字</h2><p>这两个关键字的<strong>唯一区别</strong>是默认访问权限不一样，类可以在它的第一个访问说明符之前定义成员，对于这些成员的访问权限取决于所使用的关键字，<strong>struct说明这些成员是public的，class说明这些成员是private的</strong>。</p>
+<h2 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h2><p>有一些函数虽然属于类的接口，但由于其并非类的成员函数，因而无法访问类的私有成员。</p>
+<p>为了解决这一问题，类可以允许其他类或者函数访问它的非公有成员，方法是令其他类或者函数成为它的友元，增加一条以friend关键字开头的函数声明语句即可。</p>
+<p>友元在类内的具体为知不限，也不受其所在区域的访问控制级别的限制，但一般，最好在类定义的开始或结束前的位置集中声明友元。</p>
+<p>我们可以将一个类声明为另一类的友元，这样第一个类将可以访问第二个类的所有成员。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>&#123;</span></span><br><span class="line">4<span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Window_mgr</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要特别注意：友元关系不存在传递性。</p>
+</blockquote>
+<p>也可以只将类的某一个成员函数声明为友元，需明确指出该成员函数所属的类：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>&#123;</span></span><br><span class="line">4<span class="keyword">friend</span> <span class="keyword">void</span> Window_mgr::clear(ScreenIndex);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>要想令某个成员函数作为友元，必须仔细组织程序的结构以满足声明和定义的彼此依赖关系。</p>
+<ul>
+<li>首先定义Window_mgr类，其中声明clear函数，但不能定义它。因为在clear使用Screen的成员之前，必须首先定义Screen。</li>
+<li>定义Screen，包括对clear的友元声明。</li>
+<li>定义clear成员函数。</li>
+</ul>
+<p>友元声明的作用仅仅是影响访问权限，不具有函数声明的作用，在对一个友元函数进行声明之前是无法对其进行调用的，这一点要特别注意。即使在类的内部定义了该友元函数，也必须在类的外部提供该函数的声明。</p>
+<p>不要求类和非成员函数的声明必须在它们的友元之前。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struce X&#123;</span><br><span class="line">4<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;<span class="comment">/*可以直接在类的内部对友元函数进行定义*/</span>&#125;</span><br><span class="line">4X() &#123;f();&#125; <span class="comment">//错误，f()尚未声明</span></span><br><span class="line">4<span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">4<span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">void</span> X::g() &#123;<span class="keyword">return</span> f();&#125;<span class="comment">//错误，f()尚未声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">void</span> X::h() &#123;<span class="keyword">return</span> f();&#125;<span class="comment">//正确，f()已声明</span></span><br></pre></td></tr></table></figure>
+<h2 id="类的可变数据成员"><a href="#类的可变数据成员" class="headerlink" title="类的可变数据成员"></a>类的可变数据成员</h2><p>我们希望能够修改类的某个数据成员，即使在一个const成员函数内，可以通过在变量的声明中加入<strong>mutable</strong>关键字完成。</p>
+<h2 id="返回-this的成员函数"><a href="#返回-this的成员函数" class="headerlink" title="返回*this的成员函数"></a>返回*this的成员函数</h2><p>当我们将成员函数的返回类型定义为引用时，同时该成员函数返回<code>*this</code>时，那么该成员函数的返回值为调用该成员函数的对象本身，如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Screen &amp;Screen::<span class="built_in">set</span>(<span class="keyword">char</span> c)</span><br><span class="line">&#123;</span><br><span class="line">4contents[cursor] = c;</span><br><span class="line">4<span class="keyword">return</span> *<span class="keyword">this</span>; <span class="comment">//将this对象作为左值返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们把一系列这样的操作连接成一条表达式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myScreen.move(<span class="number">4</span>, <span class="number">0</span>).<span class="built_in">set</span>(<span class="string">"#"</span>);</span><br></pre></td></tr></table></figure>
+<p>这些操作将在同一个对象上进行。</p>
+<p>从const成员函数返回<code>*this</code>时，意味着该成员函数返回的是一个常量对象，那么我们将不能随意地将该成员函数嵌入一组动作的序列中去。</p>
+<h2 id="基于const关键字进行区分的重载"><a href="#基于const关键字进行区分的重载" class="headerlink" title="基于const关键字进行区分的重载"></a>基于const关键字进行区分的重载</h2><p>需要明确一点，<strong>常量对象是无法调用非常量的成员函数的</strong>，因而我们只能在一个常量对象上调用const成员函数。虽然，也可以使用非常量对象调用常量成员函数，但非常量成员函数更为匹配。</p>
+<h2 id="类的作用域"><a href="#类的作用域" class="headerlink" title="类的作用域"></a>类的作用域</h2><p><strong>一个类就是一个作用域</strong>，当我们在类的外部定义成员函数时，一旦遇到了类名，定义的剩余部分就是在类的作用域之内，剩余部分包括参数列表和函数体。而位于类名之前的函数的返回值部分位与类的作用域之外。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/lun-wen-yue-du/octaveconv/" rel="next" title="八角卷积-一种高效的卷积方式">
+                <i class="fa fa-chevron-left"></i> 八角卷积-一种高效的卷积方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/c/mian-xiang-dui-xiang-cheng-xu-she-ji/" rel="prev" title="C++基础-面向对象程序设计">
+                C++基础-面向对象程序设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#const成员函数"><span class="nav-number">1.</span> <span class="nav-text">const成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.</span> <span class="nav-text">构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造函数的作用"><span class="nav-number">2.1.</span> <span class="nav-text">默认构造函数的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝、赋值和析构"><span class="nav-number">3.</span> <span class="nav-text">　拷贝、赋值和析构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的访问控制与封装"><span class="nav-number">4.</span> <span class="nav-text">类的访问控制与封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class和struct关键字"><span class="nav-number">5.</span> <span class="nav-text">class和struct关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#友元"><span class="nav-number">6.</span> <span class="nav-text">友元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的可变数据成员"><span class="nav-number">7.</span> <span class="nav-text">类的可变数据成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回-this的成员函数"><span class="nav-number">8.</span> <span class="nav-text">返回*this的成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于const关键字进行区分的重载"><span class="nav-number">9.</span> <span class="nav-text">基于const关键字进行区分的重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类的作用域"><span class="nav-number">10.</span> <span class="nav-text">类的作用域</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">92.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
