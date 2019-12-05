@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568081011761.png">
 <meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/prune_example.png">
 <meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/pruning-convolutional-neural-networks-for-resource-efficient-inference/1568261252580.png">
-<meta property="og:updated_time" content="2019-11-30T15:23:56.686Z">
+<meta property="og:updated_time" content="2019-12-05T09:37:12.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模型剪枝-基于损失变化的泰勒展开近似的卷积核重要性度量准则">
 <meta name="twitter:description" content="Pruning Convolutional Neural Networks For Resource Efficient Inference 作者：Pavlo Molchanov, Stephen Tyree, Tero Karras, Timo Aila, Jan Kautz 机构：Nvidia  简介在该方法中，使用迭代步骤进行剪枝：在基于准则的贪婪剪枝和使用反向传播进行微调两个步骤之间进行切">
@@ -460,7 +460,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-30 23:23:56" itemprop="dateModified" datetime="2019-11-30T23:23:56+08:00">2019-11-30</time>
+                <time title="修改时间：2019-12-05 17:37:12" itemprop="dateModified" datetime="2019-12-05T17:37:12+08:00">2019-12-05</time>
               
             
           </span>
@@ -588,10 +588,10 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
 <p>当下一层为全连接层时，假设被移除的通道的特征图大小为$M\times N$，那么全连接层中将有$M \times N$个神经元被移除。</p>
 <p>在本文中，使用权重的$L1$范数对其进行分级。</p>
 <h4 id="使用泰勒准则来对猫狗分类器进行剪枝"><a href="#使用泰勒准则来对猫狗分类器进行剪枝" class="headerlink" title="使用泰勒准则来对猫狗分类器进行剪枝"></a>使用泰勒准则来对猫狗分类器进行剪枝</h4><h5 id="第一步-训练一个大的网络"><a href="#第一步-训练一个大的网络" class="headerlink" title="第一步-训练一个大的网络"></a>第一步-训练一个大的网络</h5><p>使用VGG16，移除全连接层，替换为三层新的全连接层。在训练过程中，冻结卷积层，只对新的全连接层进行训练。在Pytorch中，新的层如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">self.classifier = nn.Sequential(</span><br><span class="line">4    nn.Dropout(),</span><br><span class="line">4    nn.Linear(<span class="number">25088</span>, <span class="number">4096</span>),</span><br><span class="line">4    nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">4    nn.Dropout(),</span><br><span class="line">4    nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">4    nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">4    nn.Linear(<span class="number">4096</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">self.classifier = nn.Sequential(</span><br><span class="line">44nn.Dropout(),</span><br><span class="line">44nn.Linear(<span class="number">25088</span>, <span class="number">4096</span>),</span><br><span class="line">44nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">44nn.Dropout(),</span><br><span class="line">44nn.Linear(<span class="number">4096</span>, <span class="number">4096</span>),</span><br><span class="line">44nn.ReLU(inplace=<span class="keyword">True</span>),</span><br><span class="line">    	nn.Linear(<span class="number">4096</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
 <p>使用数据增强训练20个epoches后，在测试集上得到98.7%的准确率。</p>
 <h5 id="第二步-对卷积核进行分级"><a href="#第二步-对卷积核进行分级" class="headerlink" title="第二步-对卷积核进行分级"></a>第二步-对卷积核进行分级</h5><p>为了计算泰勒准则，我们需要在数据集上（如果数据集太大，可以使用一部分数据集）进行前向传播和反向传播（需要计算梯度）。</p>
-<p>接着，我们需要同时得到军基层的梯度和激活值。在Pytorch中，我们可以在梯度计算中注册一个hook，所以在调用时便会完成相关计算：</p>
+<p>接着，我们需要同时得到卷积层的梯度和激活值。在Pytorch中，我们可以在梯度计算中注册一个hook，所以在调用时便会完成相关计算：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> layer, (name, module) <span class="keyword">in</span> enumerate(self.model.features._modules.items()):</span><br><span class="line">4x = module(x)</span><br><span class="line">4<span class="keyword">if</span> isinstance(module, torch.nn.modules.conv.Conv2d):</span><br><span class="line">44x.register_hook(self.compute_rank)</span><br><span class="line">44self.activations.append(x)</span><br><span class="line">44self.activation_to_layer[activation_index] = layer</span><br><span class="line">44activation_index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>这样，我们就使用<code>self.activations</code>保存了各层的激活值，当完成梯度的计算时，<code>compute_rank</code>函数便会被调用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_rank</span><span class="params">(self, grad)</span>:</span></span><br><span class="line">4activation_index = len(self.activations) - self.grad_index - <span class="number">1</span></span><br><span class="line">4activation = self.activations[activation_index]</span><br><span class="line">4values = \</span><br><span class="line">44torch.sum((activation * grad), dim = <span class="number">0</span>).\</span><br><span class="line">444sum(dim=<span class="number">2</span>).sum(dim=<span class="number">3</span>)[<span class="number">0</span>, :, <span class="number">0</span>, <span class="number">0</span>].data</span><br><span class="line">4</span><br><span class="line">4<span class="comment"># Normalize the rank by the filter dimensions</span></span><br><span class="line">4values = \</span><br><span class="line">44values / (activation.size(<span class="number">0</span>) * activation.size(<span class="number">2</span>) * activation.size(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">4<span class="keyword">if</span> activation_index <span class="keyword">not</span> <span class="keyword">in</span> self.filter_ranks:</span><br><span class="line">44self.filter_ranks[activation_index] = \</span><br><span class="line">444torch.FloatTensor(activation.size(<span class="number">1</span>)).zero_().cuda()</span><br><span class="line"></span><br><span class="line">4self.filter_ranks[activation_index] += values</span><br><span class="line">4self.grad_index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
@@ -732,7 +732,7 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -901,7 +901,7 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">92.3k</span> 字
+      博客全站共： <span class="post-count">94.1k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -1141,7 +1141,24 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
 .MathJax_Display {
   overflow: auto hidden;
 }
-</style>
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
     
   
@@ -1163,22 +1180,5 @@ R_{1}\left(h_{i}=0\right)=\frac{\delta^{2} \mathcal{C}}{\delta\left(h_{i}^{2}=\x
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
