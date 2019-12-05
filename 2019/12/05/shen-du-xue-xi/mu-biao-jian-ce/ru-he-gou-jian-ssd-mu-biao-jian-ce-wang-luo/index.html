@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="如何构建SSD目标检测网络？这是一篇翻译文章，原文链接。 思想在深度学习模型中，随着深度的增加特征图的大小逐渐降低。深层的网络具有更大的感受野，同时具有更为抽象的表示能力，而浅层的感受野相对较小。在目标检测中，因为小的目标不需要更大的感受野并且更大的感受野会使得模型在检测小目标时变得混乱，因而可以使用模型的浅层来预测小目标，深层来预测大目标。 下表展示了使用VGG作为basenet的SSD网络的结">
+<meta name="keywords" content="深度学习,目标检测">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何构建SSD目标检测网络？">
+<meta property="og:url" content="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="如何构建SSD目标检测网络？这是一篇翻译文章，原文链接。 思想在深度学习模型中，随着深度的增加特征图的大小逐渐降低。深层的网络具有更大的感受野，同时具有更为抽象的表示能力，而浅层的感受野相对较小。在目标检测中，因为小的目标不需要更大的感受野并且更大的感受野会使得模型在检测小目标时变得混乱，因而可以使用模型的浅层来预测小目标，深层来预测大目标。 下表展示了使用VGG作为basenet的SSD网络的结">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_rtPAsnXglvZFWa57XkkT4w.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_gxrxaxjO6F-DTFTQsVKh8A.png">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_7h3MObIuV1d0mbSzjvvYjA.png">
+<meta property="og:image" content="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_ICnEdjhB9FVjyqMHg5cwwQ.png">
+<meta property="og:updated_time" content="2019-12-05T07:34:15.754Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何构建SSD目标检测网络？">
+<meta name="twitter:description" content="如何构建SSD目标检测网络？这是一篇翻译文章，原文链接。 思想在深度学习模型中，随着深度的增加特征图的大小逐渐降低。深层的网络具有更大的感受野，同时具有更为抽象的表示能力，而浅层的感受野相对较小。在目标检测中，因为小的目标不需要更大的感受野并且更大的感受野会使得模型在检测小目标时变得混乱，因而可以使用模型的浅层来预测小目标，深层来预测大目标。 下表展示了使用VGG作为basenet的SSD网络的结">
+<meta name="twitter:image" content="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_rtPAsnXglvZFWa57XkkT4w.jpeg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何构建SSD目标检测网络？ | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何构建SSD目标检测网络？
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-05 15:33:20 / 修改时间：15:34:15" itemprop="dateCreated datePublished" datetime="2019-12-05T15:33:20+08:00">2019-12-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/目标检测/" itemprop="url" rel="index"><span itemprop="name">目标检测</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="如何构建SSD目标检测网络？"><a href="#如何构建SSD目标检测网络？" class="headerlink" title="如何构建SSD目标检测网络？"></a>如何构建SSD目标检测网络？</h1><p>这是一篇翻译文章，<a href="https://medium.com/@smallfishbigsea/understand-ssd-and-implement-your-own-caa3232cd6ad" target="_blank" rel="noopener">原文链接</a>。</p>
+<h2 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h2><p>在深度学习模型中，随着深度的增加特征图的大小逐渐降低。深层的网络具有更大的感受野，同时具有更为抽象的表示能力，而浅层的感受野相对较小。在目标检测中，因为小的目标不需要更大的感受野并且更大的感受野会使得模型在检测小目标时变得混乱，因而可以使用模型的浅层来预测小目标，深层来预测大目标。</p>
+<p>下表展示了使用VGG作为basenet的SSD网络的结构。中间一列展示的是由不同层产生的特征特。例如，第一层特征图由VGG的第23层产生，特征图大小为$38\times38$，深度为512。$38\times 38$大小的特征图中的每一个点都覆盖了图片的一部分，512个通道可以被视作每一个点的特征。通过使用512个通道中的特征，我们可以对每一个点使用图片分类来预测类标以及使用回归来预测小目标的bouding box。第二层特征图的大小为$19\times19$，该层的每一点有着更大的感受野，因而可以被用于检测稍大的目标。而对于最后一层特征图，只有一个点，因而该层被用来检测最大的目标。</p>
+<p>以Pascal VOC数据集为例，总共有21类（20个目标类和一个背景类）。需要注意的是，对于每一个特征点的分类结果来说总共有$4\times24$个输出。4表示每一个点总共预测4个不同的bounding boxes。在SSD中，每一个特征图中的多个boxes被记作priors，而在Faster RCNN中被称为anchors，两者实际上是同一个概念。</p>
+<p><img src="/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_rtPAsnXglvZFWa57XkkT4w.jpeg" alt="img"></p>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><h3 id="生成Priors"><a href="#生成Priors" class="headerlink" title="生成Priors"></a>生成Priors</h3><p>对于特征图中的每一个点，我们都会生成一些priors，这些priors将被用于和ground truth的标定框进行匹配来决定类标和bounding boxes。</p>
+<p>产生priors的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line">SSDBoxSizes = collections.namedtuple(<span class="string">'SSDBoxSizes'</span>, [<span class="string">'min'</span>, <span class="string">'max'</span>])</span><br><span class="line"></span><br><span class="line">Spec = collections.namedtuple(<span class="string">'Spec'</span>, [<span class="string">'feature_map_size'</span>, <span class="string">'shrinkage'</span>, <span class="string">'box_sizes'</span>, <span class="string">'aspect_ratios'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># the SSD orignal specs</span></span><br><span class="line">specs = [</span><br><span class="line">    Spec(<span class="number">38</span>, <span class="number">8</span>, SSDBoxSizes(<span class="number">30</span>, <span class="number">60</span>), [<span class="number">2</span>]),</span><br><span class="line">    Spec(<span class="number">19</span>, <span class="number">16</span>, SSDBoxSizes(<span class="number">60</span>, <span class="number">111</span>), [<span class="number">2</span>, <span class="number">3</span>]),</span><br><span class="line">    Spec(<span class="number">10</span>, <span class="number">32</span>, SSDBoxSizes(<span class="number">111</span>, <span class="number">162</span>), [<span class="number">2</span>, <span class="number">3</span>]),</span><br><span class="line">    Spec(<span class="number">5</span>, <span class="number">64</span>, SSDBoxSizes(<span class="number">162</span>, <span class="number">213</span>), [<span class="number">2</span>, <span class="number">3</span>]),</span><br><span class="line">    Spec(<span class="number">3</span>, <span class="number">100</span>, SSDBoxSizes(<span class="number">213</span>, <span class="number">264</span>), [<span class="number">2</span>]),</span><br><span class="line">    Spec(<span class="number">1</span>, <span class="number">300</span>, SSDBoxSizes(<span class="number">264</span>, <span class="number">315</span>), [<span class="number">2</span>])</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_ssd_priors</span><span class="params">(specs, image_size=<span class="number">300</span>, clip=True)</span>:</span></span><br><span class="line">    <span class="string">"""Generate SSD Prior Boxes.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        specs: Specs about the shapes of sizes of prior boxes. i.e.</span></span><br><span class="line"><span class="string">            specs = [</span></span><br><span class="line"><span class="string">                Spec(38, 8, SSDBoxSizes(30, 60), [2]),</span></span><br><span class="line"><span class="string">                Spec(19, 16, SSDBoxSizes(60, 111), [2, 3]),</span></span><br><span class="line"><span class="string">                Spec(10, 32, SSDBoxSizes(111, 162), [2, 3]),</span></span><br><span class="line"><span class="string">                Spec(5, 64, SSDBoxSizes(162, 213), [2, 3]),</span></span><br><span class="line"><span class="string">                Spec(3, 100, SSDBoxSizes(213, 264), [2]),</span></span><br><span class="line"><span class="string">                Spec(1, 300, SSDBoxSizes(264, 315), [2])</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        image_size: image size.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        priors: a list of priors: [[center_x, center_y, h, w]]. All the values</span></span><br><span class="line"><span class="string">            are relative to the image size (300x300).</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    boxes = []</span><br><span class="line">    <span class="keyword">for</span> spec <span class="keyword">in</span> specs:</span><br><span class="line">        scale = image_size / spec.shrinkage</span><br><span class="line">        <span class="keyword">for</span> j, i <span class="keyword">in</span> itertools.product(range(spec.feature_map_size), repeat=<span class="number">2</span>):</span><br><span class="line">            x_center = (i + <span class="number">0.5</span>) / scale</span><br><span class="line">            y_center = (j + <span class="number">0.5</span>) / scale</span><br><span class="line"></span><br><span class="line">            <span class="comment"># small sized square box</span></span><br><span class="line">            size = spec.box_sizes.min</span><br><span class="line">            h = w = size / image_size</span><br><span class="line">            boxes.append([</span><br><span class="line">                x_center,</span><br><span class="line">                y_center,</span><br><span class="line">                h,</span><br><span class="line">                w</span><br><span class="line">            ])</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># big sized square box</span></span><br><span class="line">            size = np.sqrt(spec.box_sizes.max * spec.box_sizes.min)</span><br><span class="line">            h = w = size / image_size</span><br><span class="line">            boxes.append([</span><br><span class="line">                x_center,</span><br><span class="line">                y_center,</span><br><span class="line">                h,</span><br><span class="line">                w</span><br><span class="line">            ])           </span><br><span class="line">            </span><br><span class="line">            <span class="comment"># change h/w ratio of the small sized box</span></span><br><span class="line">            <span class="comment"># based on the SSD implementation, it only applies ratio to the smallest size.</span></span><br><span class="line">            <span class="comment"># it looks wierd.</span></span><br><span class="line">            size = spec.box_sizes.min</span><br><span class="line">            h = w = size / image_size</span><br><span class="line">            <span class="keyword">for</span> ratio <span class="keyword">in</span> spec.aspect_ratios:</span><br><span class="line">                ratio = sqrt(ratio)                  </span><br><span class="line">                boxes.append([</span><br><span class="line">                    x_center,</span><br><span class="line">                    y_center,</span><br><span class="line">                    h * ratio,</span><br><span class="line">                    w / ratio</span><br><span class="line">                ])</span><br><span class="line">                boxes.append([</span><br><span class="line">                    x_center,</span><br><span class="line">                    y_center,</span><br><span class="line">                    h / ratio,</span><br><span class="line">                    w * ratio</span><br><span class="line">                ])</span><br><span class="line">            </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    boxes = np.array(boxes)</span><br><span class="line">    <span class="keyword">if</span> clip:</span><br><span class="line">        boxes = np.clip(boxes, <span class="number">0.0</span>, <span class="number">1.0</span>)</span><br><span class="line">    <span class="keyword">return</span> boxes</span><br></pre></td></tr></table></figure>
+<h3 id="将Priors与Ground-Truth进行匹配"><a href="#将Priors与Ground-Truth进行匹配" class="headerlink" title="将Priors与Ground-Truth进行匹配"></a>将Priors与Ground-Truth进行匹配</h3><p>当我们将priors和ground-truth标定框进行匹配后便可以得到训练目标。Prior和ground-turth标定框进行匹配的评价准则是IoU（Intersection Over Union），或者被成为Jaccard Index。IoU越大表示两个框的重合度越高。匹配的流程如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> every ground-truth box:</span><br><span class="line">    match the ground-truth box <span class="keyword">with</span> prior having the biggest the IoU</span><br><span class="line"><span class="keyword">for</span> every prior:</span><br><span class="line">    ious = IoU(prior, ground_truth_boxes)</span><br><span class="line">    max_iou = max(ious)</span><br><span class="line">    <span class="keyword">if</span> max_iou &gt; threshold:</span><br><span class="line">        i = argmax(ious)</span><br><span class="line">        match the prior <span class="keyword">with</span> ground_truth_boxes[i]</span><br></pre></td></tr></table></figure>
+<p>首先，对于每一个ground truth都匹配一个prior；接着，对每一个prior都尝试匹配一个ground truth。</p>
+<h3 id="尺度化Ground-Truth标定框"><a href="#尺度化Ground-Truth标定框" class="headerlink" title="尺度化Ground-Truth标定框"></a>尺度化Ground-Truth标定框</h3><p>为了更好地训练，需要将ground-turth标定框进行尺度变换，将其表示在同一尺度内。在SSD中，转换方式如下：</p>
+<p><img src="/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_gxrxaxjO6F-DTFTQsVKh8A.png" alt="img" style="zoom:50%;"></p>
+<p>在论文中，<code>variance0</code>和<code>variance</code>分别被设定为0.1和0.2。</p>
+<h3 id="难例挖掘"><a href="#难例挖掘" class="headerlink" title="难例挖掘"></a>难例挖掘</h3><p>在上述匹配策略中，我们通过将ground-turth与多个priors进行匹配来提升正目标（指那些被分配了真实目标的priors）。然而，仍旧存在大量的未匹配的priors。也就是说，这些被标定为背景类的priors会使得数据集极度不平衡。为了使得数据集变得平衡，可以使用难例挖掘策略。难例挖掘的思想在于，在计算整体的损失函数时，只考虑那些置信度最高的几个背景类priors，其他置信度较低的背景类priors则被舍弃。这样一来，背景类priors和匹配的priors之间的比例就变得相对较低（文章中设定为３）。</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>损失函数由分类损失和回归损失结合而成。这里的回归损失使用的是$Smooth-L1$损失，该损失和Faster RCNN和Fast RCNN中使用的一样。</p>
+<p><img src="/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_7h3MObIuV1d0mbSzjvvYjA.png" alt="img" style="zoom: 67%;"></p>
+<h3 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h3><p>使用数据增强可以帮助网络学习数据中的不变性。与Faster RCNN不同，数据增强在SSD中有着重要的作用。使用的数据增强如下所示：</p>
+<p><img src="/2019/12/05/shen-du-xue-xi/mu-biao-jian-ce/ru-he-gou-jian-ssd-mu-biao-jian-ce-wang-luo/1_ICnEdjhB9FVjyqMHg5cwwQ.png" alt="img" style="zoom:50%;"></p>
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p>预测过程比较简单。将图片送入网络，每一个prior都会有预测出的一系列的bounding boxes和labels。在计算过程中，我们可能将一个目标分配给了多个priors，因而会有多个priors预测同一个目标。为了移除重复的目标，需要使用非极大抑制方法。</p>
+<h4 id="NMS"><a href="#NMS" class="headerlink" title="NMS"></a>NMS</h4><p>NMS只保留有着最大概率的bounding boxes，移除有着更低概率和与留下的bounding boxes有着更大的IoUs的那些bounding boxes。伪代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> each <span class="class"><span class="keyword">class</span>:</span></span><br><span class="line">    <span class="keyword">while</span> predictions are <span class="keyword">not</span> empty: </span><br><span class="line">        pick the bounding box <span class="keyword">with</span> the biggest probability</span><br><span class="line">        append it along <span class="keyword">with</span> the <span class="class"><span class="keyword">class</span> <span class="title">to</span> <span class="title">the</span> <span class="title">result</span>.</span></span><br><span class="line"><span class="class">        <span class="title">remove</span> <span class="title">all</span> <span class="title">the</span> <span class="title">other</span> <span class="title">bounding</span> <span class="title">boxes</span> <span class="title">having</span> <span class="title">IoU</span> <span class="title">greater</span> <span class="title">than</span> <span class="title">the</span> <span class="title">threshold</span> <span class="title">from</span> <span class="title">the</span> <span class="title">predictions</span>.</span></span><br></pre></td></tr></table></figure>
+<h2 id="不足之处"><a href="#不足之处" class="headerlink" title="不足之处"></a>不足之处</h2><p>网络中较浅的层可能无法产生足够高层次的特征来对小目标进行检测，因而SSD在小目标上的性能比大目标差。</p>
+<p>需要对训练数据进行复杂的增强表明训练需要足够多的样本数目。例如：如果在COCO数据集上进行预训练，那么在Pascal VOC上会得到更高的性能。所以在将模型用于自己的数据集之前，要确保模型在大数据集上进行过预训练。</p>
+<p>Prior boxes的设计是一个开放问题，需要额外注意。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://medium.com/@smallfishbigsea/understand-ssd-and-implement-your-own-caa3232cd6ad" target="_blank" rel="noopener">Understand Single Shot MultiBox Detector (SSD) and Implement It in Pytorch</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/目标检测/" rel="tag"># 目标检测</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/04/python/python-bing-fa-bian-cheng/" rel="next" title="Python并发编程">
+                <i class="fa fa-chevron-left"></i> Python并发编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何构建SSD目标检测网络？"><span class="nav-number">1.</span> <span class="nav-text">如何构建SSD目标检测网络？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思想"><span class="nav-number">1.1.</span> <span class="nav-text">思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练"><span class="nav-number">1.2.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成Priors"><span class="nav-number">1.2.1.</span> <span class="nav-text">生成Priors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将Priors与Ground-Truth进行匹配"><span class="nav-number">1.2.2.</span> <span class="nav-text">将Priors与Ground-Truth进行匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尺度化Ground-Truth标定框"><span class="nav-number">1.2.3.</span> <span class="nav-text">尺度化Ground-Truth标定框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#难例挖掘"><span class="nav-number">1.2.4.</span> <span class="nav-text">难例挖掘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">1.2.5.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据增强"><span class="nav-number">1.2.6.</span> <span class="nav-text">数据增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测"><span class="nav-number">1.2.7.</span> <span class="nav-text">预测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NMS"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">NMS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不足之处"><span class="nav-number">1.3.</span> <span class="nav-text">不足之处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">90.9k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
