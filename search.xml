@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>散列表-下</title>
+      <link href="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/"/>
+      <url>/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/</url>
+      
+        <content type="html"><![CDATA[<h1 id="散列表-下"><a href="#散列表-下" class="headerlink" title="散列表-下"></a>散列表-下</h1><h2 id="LRU缓存淘汰算法"><a href="#LRU缓存淘汰算法" class="headerlink" title="LRU缓存淘汰算法"></a>LRU缓存淘汰算法</h2><p>首先回顾一下如何使用链表实现LRU缓存淘汰算法。需要维持一个按照访问时间从大到小排列的链表，当缓存空间不足时，直接删除表头的元素即可。</p><p>当要缓存某个数据时，首先在链表中进行查找，当找到时，将该数据移动到表尾即可，未找到时，在表尾插入该数据。只用链表实现的LRU的查找时间复杂度为$O(n)$。</p><p>一个缓存（cache）系统主要包含以下几个操作：</p><ul><li>向缓存中添加一个数据；</li><li>从缓存中删除一个数据；</li><li>在缓存中查找一个数据。</li></ul><p>上述三个操作都涉及查找操作，因而如果只是用链表实现的话，时间复杂度为$O(n)$。但如果将散列表和链表两种数据结构组合使用，可以将三个操作的时间复杂度降低到$O(1)$。结构如下：</p><p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/eaefd5f4028cc7d4cfbb56b24ce8ae6e.jpg" alt="img" style="zoom:80%;"></p><p>如上图所示，使用双向链表存储数据。链表中的每个结点除了数据（data）、前驱指针（prev）、后继指针（next）之外，还有额外的字段<code>hnext</code>。该字段的作用是将结点存放在散列表的拉链中。</p><p>在使用散列表进行查找时，使用链表法解决散列冲突。因而，除了将数据存储在双向链表中之外，还需要将数据存储在散列表的拉链中。前驱和后驱指针用于构成双向链表，<code>hnext</code>用于构成散列表的拉链。</p><p>那么，利用上述结构如何实现快速查找、删除和添加的操作？</p><p>当要查找一个数据时，利用散列表查找数据的时间复杂度接近$O(1)$的特性，可以很快查找到某一个数据；</p><p>当要删除一个数据时，可以使用散列表找到该数据，在利用双向链表删除该数据，查找数据的时间复杂度为$O(1)$，删除数据时，使用双向链表，时间复杂度同样为$O(1)$；当要添加一个数据时，需要首先查找该数据是否在缓存中，如果在则移至双向链表的尾部，如果不在且缓存已满则首先删除双向链表头部的结点，接着将数据放在链表的尾部，如果不在且缓存未满，则直接将数据放在双向链表的尾部。</p><p>上述所有过程中的查找操作都可以使用散列表完成，且删除头结点、链表尾部插入数据等都可以在$O(1)$的时间复杂度内完成。因而，三个操作的时间复杂度都是$O(1)$。</p><h2 id="Redis有序集合"><a href="#Redis有序集合" class="headerlink" title="Redis有序集合"></a>Redis有序集合</h2><p>在有序集合中，每个成员对象有两个重要的属性：key（键值）和score（分值）。不仅可以使用score查找数据，还可以使用key查找数据。</p><p>例如，用户积分排行榜有如下功能：通过用户的ID查找积分信息，或通过积分区间查找用户ID或姓名信息。</p><p>因而，Redis中的有序集合就设计如下的操作：</p><ul><li>添加一个成员对象；</li><li>按照键值删除一个成员对象；</li><li>按照键值查找一个成员对象；</li><li>按照分值区间查找数据，例如查找积分位于[100, 356]之间的成员对象；</li><li>按照分值从小到大排序成员变量。</li></ul><p>假如我们仅仅按照分值将成员对象组织成跳表的结构，那么按照键值查询和删除成员对象将变得很慢。为了解决这个问题，可以模仿LRU淘汰算法的实现思想。使用散列表和跳表来保存数据。按照键值构建散列表，这样按照键值进行查找和删除成员对象的时间复杂度将变为$O(1)$。</p><h2 id="Java-LinkedHashMap"><a href="#Java-LinkedHashMap" class="headerlink" title="Java LinkedHashMap"></a>Java LinkedHashMap</h2><p>观察如下代码，会以何种顺序打印3、1、5、2这结构键值？</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;Integer, Integer&gt; m = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">m.put(<span class="number">3</span>, <span class="number">11</span>);</span><br><span class="line">m.put(<span class="number">1</span>, <span class="number">12</span>);</span><br><span class="line">m.put(<span class="number">5</span>, <span class="number">23</span>);</span><br><span class="line">m.put(<span class="number">2</span>, <span class="number">22</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (Map.Entry e : m.entrySet()) &#123;</span><br><span class="line">  System.out.println(e.getKey());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>结果是：上述代码会按照数据的插入顺序依次打印键值。那么，如果散列表中的数据是经过散列函数打乱之后无规律存储的，为何可以按照数据的插入顺序遍历打印？</p><p>实际上，LinkedHashMap也是通过散列表和链表结合在一起实现的。实际上，除了支持按照插入顺序遍历数据，还支持按照访问顺序遍历数据。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 10是初始大小，0.75是装载因子，true是表示按照访问时间排序</span></span><br><span class="line">HashMap&lt;Integer, Integer&gt; m = <span class="keyword">new</span> LinkedHashMap&lt;&gt;(<span class="number">10</span>, <span class="number">0.75f</span>, <span class="keyword">true</span>);</span><br><span class="line">m.put(<span class="number">3</span>, <span class="number">11</span>);</span><br><span class="line">m.put(<span class="number">1</span>, <span class="number">12</span>);</span><br><span class="line">m.put(<span class="number">5</span>, <span class="number">23</span>);</span><br><span class="line">m.put(<span class="number">2</span>, <span class="number">22</span>);</span><br><span class="line"></span><br><span class="line">m.put(<span class="number">3</span>, <span class="number">26</span>);</span><br><span class="line">m.get(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (Map.Entry e : m.entrySet()) &#123;</span><br><span class="line">  System.out.println(e.getKey());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>上述代码的输出为1、2、3、5。</p><p>每一次调用<code>put()</code>函数向LinkedHashMap中添加数据时，都会将数据添加到链表的尾部。前四个添加操作完成后，链表中的数据如下所示：</p><p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/17ac41d9dac454e454dcb289100bf198.jpg" alt="img" style="zoom:50%;"></p><p>当实行<code>m.put(3, 26)</code>时，会首先对链表进行查找，如果存在该数据，则将链表中的数据删除，将新数据插入链表的尾部。</p><p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/fe313ed327bcf234c73ba738d975b18c.jpg" alt="img" style="zoom:50%;"></p><p>当执行<code>m.get(5)</code>时，则将被访问到的数据移动到链表的尾部。</p><p><img src="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/b5e07bb34d532d46d127f4fcc4b78f11.jpg" alt="img" style="zoom:50%;"></p><p>因而，最终执行打印语句时，输出的是1、2、3、5。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>为什么经常将散列表和链表组合使用个？</p><p>散列表虽然支持高效的数据插入、删除和查找操作，但由于散列表中的数据是通过散列函数打乱之后无规律存储的。因而，散列表无法支持按照某种顺序快速地遍历数据。因此，为了解决数据的顺序问题，常将散列表和链表（或跳表）结合在一起使用。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://time.geekbang.org/column/article/64858" target="_blank" rel="noopener">数据结构与算法之美</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程基础 </category>
+          
+          <category> 数据结构 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 编程基础 </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Python全局解释器锁（GIL）</title>
       <link href="/python/python-quan-ju-jie-shi-qi-suo-gil/"/>
       <url>/python/python-quan-ju-jie-shi-qi-suo-gil/</url>
