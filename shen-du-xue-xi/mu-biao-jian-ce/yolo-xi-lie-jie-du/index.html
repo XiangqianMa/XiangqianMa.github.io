@@ -144,11 +144,11 @@
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1__gX42bmgvyib4lyR9GQrAg.png">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1__0ijX5oRZdQCNlSk-gXj3Q.jpeg">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0XHKAh0GxpW22y1DlL4hYA.png">
-<meta property="og:image" content="http://xiangqianma.github.io/工作学习/笔记/typora-notes/深度学习/目标检测/YOLO系列解读/1_UuIx6sH39tefFMxgWAaaNQ.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_UuIx6sH39tefFMxgWAaaNQ.png">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_biRYJyCSv-UTbTQTa4Afqg.png">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_bFMwN__ZgfvVRYuo4o8EEg.png">
-<meta property="og:image" content="http://xiangqianma.github.io/工作学习/笔记/typora-notes/深度学习/目标检测/YOLO系列解读/1_RFpjH8D6TStBaYuZYehe_g.png">
-<meta property="og:updated_time" content="2019-12-17T09:59:22.521Z">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_RFpjH8D6TStBaYuZYehe_g.png">
+<meta property="og:updated_time" content="2019-12-17T10:07:24.328Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典目标检测算法YOLO系列解读">
 <meta name="twitter:description" content="实时目标检测：YOLO、YOLOv2以及YOLOv3本文翻译自：Real-time Object Detection with YOLO, YOLOv2 and now YOLOv3 You only look once（YOLO）是一系列用于解决实时目标检测问题的算法。在本文中，将依次介绍YOLO、YOLOv2以及YOLOv3。在YOLO的官方网站上，作者提供了一些目标检测算法的性能和速度的对比">
@@ -484,7 +484,7 @@
                 
               
 
-              <time title="创建时间：2019-12-17 09:50:20 / 修改时间：17:59:22" itemprop="dateCreated datePublished" datetime="2019-12-17T09:50:20+08:00">2019-12-17</time>
+              <time title="创建时间：2019-12-17 09:50:20 / 修改时间：18:07:24" itemprop="dateCreated datePublished" datetime="2019-12-17T09:50:20+08:00">2019-12-17</time>
             
 
             
@@ -713,7 +713,7 @@
 <h4 id="YOLO9000"><a href="#YOLO9000" class="headerlink" title="YOLO9000"></a>YOLO9000</h4><p>YOLO9000使用有9418个结点的wordtree来检测超过9000类的目标。它将COCO的样本和ImageNet中的前9000个类别进行结合。对于每一个COCO数据，YOLO从ImageNet中采样出4个数据。它学习使用COCO的检测数据进行定位，使用ImageNet中的数据进行分类。</p>
 <h2 id="YOLOv3"><a href="#YOLOv3" class="headerlink" title="YOLOv3"></a>YOLOv3</h2><h3 id="预测类别"><a href="#预测类别" class="headerlink" title="预测类别"></a>预测类别</h3><p>大多数分类器都假设各个类别之间是互不相关的。因而，YOLO在预测类别时使用softmax函数，softmax函数的输出之和为1。但在YOLOv3中使用multi-label分类，一个目标可能同时属于多个类别。YOLOv3将softmax函数替换为独立的logistic分类器。除此之外，YOLOv3未使用均方误差来计算损失函数，而是针对每一个类别使用二维交叉熵损失。这一做法同时降低了计算复杂度。</p>
 <h3 id="边界框预测和损失函数计算"><a href="#边界框预测和损失函数计算" class="headerlink" title="边界框预测和损失函数计算"></a>边界框预测和损失函数计算</h3><p>YOLOv3使用logistic回归预测每一个边界框的目标分数。并改变了计算损失函数的方式。如果一个先验边界框与某个ground truth的重合率高于其它先验框，那么该先验边界框的目标分数为1。对于剩余的重合率超过预设阈值的先验框，将不计入损失计算。每一个ground truth只与一个先验框匹配。如果某个先验框未匹配上ground truth，那么该先验框将不被计算分类损失和定位损失，只计算是否包含目标的损失。将坐标值和长宽使用公式进行转换后计算损失：</p>
-<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/../../../../../工作学习/笔记/typora-notes/深度学习/目标检测/YOLO系列解读/1_UuIx6sH39tefFMxgWAaaNQ.png" alt="img" style="zoom:67%;"></p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_UuIx6sH39tefFMxgWAaaNQ.png" alt="1_UuIx6sH39tefFMxgWAaaNQ" style="zoom: 67%;"></p>
 <h3 id="Feature-Pyramid-Networks-FPN"><a href="#Feature-Pyramid-Networks-FPN" class="headerlink" title="Feature Pyramid Networks (FPN)"></a>Feature Pyramid Networks (FPN)</h3><p>对于每一个位置，YOLOv3预测三个边界框，每一个预测包含一个边界框、一个目标分数和80个类别分数（N × N × [3 × (4 + 1 + 80) ]）。</p>
 <p>YOLOv3在三个尺度的特征图上进行预测（类似于FPN）：</p>
 <ul>
@@ -727,7 +727,7 @@
 <h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>在COCO上，YOLOv3的AP值与SSD持平，但快3倍。但仍旧低于RetinaNet，表明YOLOv3有着较高的定位误差。在检测小目标的性能上，YOLOv3有所提升。</p>
 <p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_bFMwN__ZgfvVRYuo4o8EEg.png" alt="img"></p>
 <p>在快速目标检测算法中，YOLOv3具有较高的性能。</p>
-<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/../../../../../工作学习/笔记/typora-notes/深度学习/目标检测/YOLO系列解读/1_RFpjH8D6TStBaYuZYehe_g.png" alt="img" style="zoom: 50%;"></p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_RFpjH8D6TStBaYuZYehe_g.png" alt="1_RFpjH8D6TStBaYuZYehe_g" style="zoom: 50%;"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><p><a href="https://medium.com/@jonathan_hui/real-time-object-detection-with-yolo-yolov2-28b1b93e2088" target="_blank" rel="noopener">Real-time Object Detection with YOLO, YOLOv2 and now YOLOv3</a></p>
 </li>
@@ -1267,7 +1267,24 @@
 .MathJax_Display {
   overflow: auto hidden;
 }
-</style>
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
     
   
@@ -1289,22 +1306,5 @@
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
