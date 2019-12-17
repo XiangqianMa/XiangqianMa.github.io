@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="实时目标检测：YOLO、YOLOv2以及YOLOv3本文翻译自：Real-time Object Detection with YOLO, YOLOv2 and now YOLOv3 You only look once（YOLO）是一系列用于解决实时目标检测问题的算法。在本文中，将依次介绍YOLO、YOLOv2以及YOLOv3。在YOLO的官方网站上，作者提供了一些目标检测算法的性能和速度的对比">
+<meta name="keywords" content="深度学习,目标检测">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典目标检测算法YOLO系列解读">
+<meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="实时目标检测：YOLO、YOLOv2以及YOLOv3本文翻译自：Real-time Object Detection with YOLO, YOLOv2 and now YOLOv3 You only look once（YOLO）是一系列用于解决实时目标检测问题的算法。在本文中，将依次介绍YOLO、YOLOv2以及YOLOv3。在YOLO的官方网站上，作者提供了一些目标检测算法的性能和速度的对比">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/Screenshot%20from%202019-12-06%2016-22-25.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_EYFejGUjvjPcc4PZTwoufw.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_QOGcvHbrDZiCqTG6THIQ_w.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_6qZXYCDUkC5Bc8nRolT0Mw.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/3036/1*j4PnWfxP3yoVPOFyI27tww.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_OuMJUWo2rXYA-GYU63NUGw.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_jtnrhMFNwGxiQmkY6LkdCQ.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_e0VY6U1_WMF2KBoKQNZvkQ.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_qVL77IZyEnra4DvENayXUA.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0IPktA65WxOBfP_ULQWcmw.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_9ER4GVUtQGVA2Y0skC9OQQ.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_lF6SCAVj5jMwLxs39SCogw.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_BwhGMvffFfqtND9413oiwA.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_QT7mwEbyLJYIxTYtOWClFQ.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_Yc_OJIXOoV2WaGQ6PqhTXA.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_aW6htqx4Q7APLrSQg2eWDw.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_XbOnbcZmc50hyhhTwhD5QA.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_7iwTsezrn-tSndx96twprA.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_krGqonOLMzSE_PWqH_LvQA.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/691/1*CGWTPTY0sfvQoxsS0X6VFg.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_8Q8r9ixjTiKLi1mrF36xCw.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/1904/1*tavjieD0Bum_uX-svYUTKA.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_UsqjfoW3sLkmyXKQ0Hyo8A-1575816763206.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_KiSd2CBfcs5af6oliHCqzw.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_89qezEeLKJLpD8_fM_H4qQ.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_esSmI0UaMr-GrqkUGMg0hA.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_l5wvrPjLlFp6Whgy0MqbKQ.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_38-Tdx-wQA7c3TX5hdnwpw.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_gyOSRA_FDz4Pf5njoUb4KQ.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_RuW-SCIML8SHc5_PrIE9-g.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_3IdCKSzR5R0lIE1LSmN4Bg.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_NJj17Z6FgffYaA4WH2WIjw.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_8FiQUakp9i4MneU4VXk4Ww.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_NBnDpz8fitkhcdnkgF2bvg.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_QKwSclDLcT8eJxyj3CVL0w.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_TALo1-LuWbF80RTCM7bszw.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0Oyd6FWXo7OJzzuXuXSoDQ.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1__gX42bmgvyib4lyR9GQrAg.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1__0ijX5oRZdQCNlSk-gXj3Q.jpeg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0XHKAh0GxpW22y1DlL4hYA.png">
+<meta property="og:updated_time" content="2019-12-17T01:52:43.557Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="经典目标检测算法YOLO系列解读">
+<meta name="twitter:description" content="实时目标检测：YOLO、YOLOv2以及YOLOv3本文翻译自：Real-time Object Detection with YOLO, YOLOv2 and now YOLOv3 You only look once（YOLO）是一系列用于解决实时目标检测问题的算法。在本文中，将依次介绍YOLO、YOLOv2以及YOLOv3。在YOLO的官方网站上，作者提供了一些目标检测算法的性能和速度的对比">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/Screenshot%20from%202019-12-06%2016-22-25.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>经典目标检测算法YOLO系列解读 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">经典目标检测算法YOLO系列解读
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-17 09:50:20 / 修改时间：09:52:43" itemprop="dateCreated datePublished" datetime="2019-12-17T09:50:20+08:00">2019-12-17</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/目标检测/" itemprop="url" rel="index"><span itemprop="name">目标检测</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="实时目标检测：YOLO、YOLOv2以及YOLOv3"><a href="#实时目标检测：YOLO、YOLOv2以及YOLOv3" class="headerlink" title="实时目标检测：YOLO、YOLOv2以及YOLOv3"></a>实时目标检测：YOLO、YOLOv2以及YOLOv3</h1><p>本文翻译自：<a href="https://medium.com/@jonathan_hui/real-time-object-detection-with-yolo-yolov2-28b1b93e2088" target="_blank" rel="noopener">Real-time Object Detection with YOLO, YOLOv2 and now YOLOv3</a></p>
+<p>You only look once（YOLO）是一系列用于解决实时目标检测问题的算法。在本文中，将依次介绍YOLO、YOLOv2以及YOLOv3。在YOLO的<a href="https://pjreddie.com/darknet/yolo/" target="_blank" rel="noopener">官方网站</a>上，作者提供了一些目标检测算法的性能和速度的对比，如下图所示。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/Screenshot from 2019-12-06 16-22-25.png" alt=""></p>
+<p>从上图中可以看出，YOLOv3在性能、速度的平衡上超过了其他的目标检测算法。</p>
+<p>在本文中，将以下述图片为例进行算法的讲解。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_EYFejGUjvjPcc4PZTwoufw.jpeg" alt="img" style="zoom:50%;"></p>
+<p>使用YOLO进行检测得到的结果：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_QOGcvHbrDZiCqTG6THIQ_w.png" alt="img" style="zoom:50%;"></p>
+<h2 id="YOLOv1"><a href="#YOLOv1" class="headerlink" title="YOLOv1"></a>YOLOv1</h2><h3 id="Grid-Cell"><a href="#Grid-Cell" class="headerlink" title="Grid Cell"></a>Grid Cell</h3><p>在YOLOv1版本中，将待检测图片划分为$S\times S$大小的grid。每一个grid只负责预测一个目标。例如，在下图中，preson（蓝色边框）的中心落在了黄色grid内，因而黄色grid负责对person进行预测。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_6qZXYCDUkC5Bc8nRolT0Mw.jpeg" alt="img" style="zoom: 80%;"></p>
+<p>每一个grid cell预测固定数目的边界框。在下述例子中，黄色grid cell使用两个边界框（蓝色框）来定位人的位置。</p>
+<p>但是，一个框只能预测一个目标的设定限制了所能预测的目标之间的距离，例如当有多个目标的中心落在同一个grid cell中时，YOLO只会负责预测其中的一个目标。如下图所示，在左下角有9个圣诞老人，而YOLO只能检测出5个。</p>
+<p><img src="https://miro.medium.com/max/3036/1*j4PnWfxP3yoVPOFyI27tww.jpeg" alt="img" style="zoom:80%;"></p>
+<p>对于每一个grid cell：</p>
+<ul>
+<li>预测$B$个边界框，每一个边界框有一个box置信度分数；</li>
+<li>只预测一个目标，而不是边界框的数目$B$；</li>
+<li>预测$C$个条件类别概率。</li>
+</ul>
+<p>为了评估PASCAL VOC，YOLO使用$7\times 7$大小的grids（$S\times S$），每一个grid预测2（$B$）个边界框和20（$C$）个类别。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_OuMJUWo2rXYA-GYU63NUGw.jpeg" alt="img"></p>
+<p>每一个边界框包含5个元素：$(x,y,w,h)$以及一个边界框置信度分数（box confidence score）。置信度分数表明了当前边界框包含目标的置信度和边界框的准确度。</p>
+<p>对于边界框，使用图片的宽和高对其宽$w$和高$h$进行归一化。$x,y$的值为相对于cell左上角的偏移量。因而，$(x,y,w,h)$的值都被限定在$[0,1]$之间。每一个cell都包含20个条件类别概率。条件类别概率的含义为：所检测出的目标属于特定类别的概率。因而，YOLO的预测的形状为$(S,S,B\times 5+C)=(7,7,2\times 5+20)=(7,7,30)$。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_jtnrhMFNwGxiQmkY6LkdCQ.jpeg" alt="img"></p>
+<p>YOLO的核心思想就是使用一个卷积神经网络来预测一个大小为$(7,7,30)$的张量。首先，YOLO使用CNN来将特征图的空间大小降低为$7\times 7$，在特征图中的每一点处都有1024个通道；接着，YOLO使用两层全连接层来执行线性回归操作，最终的到$7\times 7 \times 2$个边界框的预测（中间图片所示）。为了进行最终的预测，算法会将置信度分数大于阈值（大于0.25）的预测框留下，作为最终的预测（右侧图片所示）。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_e0VY6U1_WMF2KBoKQNZvkQ.png" alt="img"></p>
+<p>图中所预测出的每一个边界框的类别置信度分数的计算公式如下：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_qVL77IZyEnra4DvENayXUA.png" alt="img"></p>
+<p>该分数同时对分类和定位（目标处在何处）进行度量。</p>
+<p>上述计算公式的数学推导式如下：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0IPktA65WxOBfP_ULQWcmw.png" alt="img"></p>
+<h3 id="网络设计"><a href="#网络设计" class="headerlink" title="网络设计"></a>网络设计</h3><p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_9ER4GVUtQGVA2Y0skC9OQQ.png" alt="img"></p>
+<p>YOLO的网络结构由24个卷基层加2个全连接层构成。在一些卷积层，交替使用$1\times 1$大小的卷积核来降低特征图的深度。最后一层卷积层的输出特征图大小为$(7,7,1024)$。接着，该特征图将被拉开，然后使用2个全连接层来进行线性回归操作，输出的特征图大小为$7\times 7\times 30$。</p>
+<p>YOLO还有一个快速但低精度的版本，被称为Fast YOLO，只使用了9个卷积层。</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>对于每一个grid cell，YOLO会预测多个边界框。为了计算true positive的损失，我们只希望这些边界框中的一个来负责预测对应的目标。为此，我们选中这些边界框中与ground truth有着最大IoU的那个。这一策略使得在进行预测时，边界框变得专一化。每一个预测都擅长于预测特定的大小和长宽比的目标。</p>
+<p>YOLO使用预测和ground truth之间的均方误差来计算损失，损失函数包含以下几部分：</p>
+<ul>
+<li>分类损失；</li>
+<li>定位损失（预测的边界框和ground truth之间的误差）；</li>
+<li>置信度损失（边界框是否包含目标）。</li>
+</ul>
+<h4 id="分类损失"><a href="#分类损失" class="headerlink" title="分类损失"></a>分类损失</h4><p>如果检测到了目标，每一个cell的类别误差的计算方式为：每一类的类条件概率的均方误差。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_lF6SCAVj5jMwLxs39SCogw.png" alt="img"></p>
+<h4 id="定位损失"><a href="#定位损失" class="headerlink" title="定位损失"></a>定位损失</h4><p>定位损失分为位置和大小两个方面来计算损失。只计算负责对目标进行预测的那个边界框的定位损失：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_BwhGMvffFfqtND9413oiwA.png" alt="img"></p>
+<p>对于大目标和小目标，两者的损失应该不同（对于大目标和小目标来说，两个像素的偏移有着不同的影响）。为此，YOLO预测边界框宽和高的均方根而不是直接预测宽和高。除此之外，为了将更多的注意力放在边界框准确率上，给定位损失乘以$\lambda_{coord}$，默认为5.</p>
+<h4 id="置信度损失"><a href="#置信度损失" class="headerlink" title="置信度损失"></a>置信度损失</h4><p>如果边界框负责预测某个目标，那么置信度损失的计算方式如下：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_QT7mwEbyLJYIxTYtOWClFQ.png" alt="img"></p>
+<p>如果边界框未负责预测某个目标，那么置信度损失的计算方式如下：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_Yc_OJIXOoV2WaGQ6PqhTXA.png" alt="img"></p>
+<p>大多数边框不包含任何目标，因而会导致类别不平衡问题（导致模型偏向于将边界框预测为背景类）。为了纠正这一问题，给不包含目标的边界框的类别损失乘以$\lambda_{noobj}$（默认0.5）。</p>
+<h4 id="损失"><a href="#损失" class="headerlink" title="损失"></a>损失</h4><p>最终的损失函数的形式为：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_aW6htqx4Q7APLrSQg2eWDw.png" alt="img" style="zoom: 67%;"></p>
+<h3 id="前向推理：非极大抑制（Non-maximal-suppression）"><a href="#前向推理：非极大抑制（Non-maximal-suppression）" class="headerlink" title="前向推理：非极大抑制（Non-maximal suppression）"></a>前向推理：非极大抑制（Non-maximal suppression）</h3><p>对于同一个目标，YOLO可能预测出多个预测框。为了解决这个问题，YOLO使用非极大抑制算法来移除重复的预测。使用非极大抑制可以提升$2-3\%$的mAP。</p>
+<p>非极大抑制的实现方法之一如下：</p>
+<ul>
+<li>依据置信度分数对预测框进行排序；</li>
+<li>从最高的分数开始，如果发现任何前面的预测与当前预测的类别相同且IoU大于0.5，则忽略当前预测；</li>
+<li>重复步骤2知道所有预测都被检查过。</li>
+</ul>
+<h3 id="YOLO的优点"><a href="#YOLO的优点" class="headerlink" title="YOLO的优点"></a>YOLO的优点</h3><ul>
+<li><p>快速；</p>
+</li>
+<li><p>可端到端训练；</p>
+</li>
+<li><p>更通用；</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_XbOnbcZmc50hyhhTwhD5QA.png" alt="img"></p>
+</li>
+<li><p>基于区域建议的方法将分类器限定在特定的区域。而YOLO在进行预测时利用的是整幅图的信息。因而，由于利用了额外的背景信息，YOLO预测出的背景区域的假正样本更少；</p>
+</li>
+<li><p>每一个grid预测一个目标，在进行预测时，提升了空间稀疏度。</p>
+</li>
+</ul>
+<h2 id="YOLOv2"><a href="#YOLOv2" class="headerlink" title="YOLOv2"></a>YOLOv2</h2><p>相比于YOLO，SSD有着更高的精度。与基于区域的检测方法相比，YOLO的定位误差更高，且召回率（度量定位所有的目标的能力）更低。YOLOv2是YOLO的第二个版本，目标在于提升速度的同时，获得更高的精度。</p>
+<h3 id="提升精度"><a href="#提升精度" class="headerlink" title="提升精度"></a>提升精度</h3><h4 id="Batch-normalization"><a href="#Batch-normalization" class="headerlink" title="Batch normalization"></a>Batch normalization</h4><p>在卷积层之后添加了BN层，因而可以去除dropout层，mAP提升2%.</p>
+<h4 id="更高分辨率的分类器"><a href="#更高分辨率的分类器" class="headerlink" title="更高分辨率的分类器"></a>更高分辨率的分类器</h4><p>YOLO的训练过程包含两步。首先，训练一个类似于VGG16的分类网络；接着，使用卷积层替换全连接层并针对目标检测进行端到端的训练。在训练分类器时使用的分辨率为$224\times 224$，而在训练目标检测时使用的分辨率为$448\times 448$。</p>
+<h4 id="使用带Anchor-Boxes的卷积"><a href="#使用带Anchor-Boxes的卷积" class="headerlink" title="使用带Anchor Boxes的卷积"></a>使用带Anchor Boxes的卷积</h4><p>在YOLO中，训练的起始阶段梯度很不稳定。刚开始，YOLO对边界框进行随意的猜测，导致在一些目标上表现不错，而在一些目标上变现很差，因而导致很剧烈的梯度改变。在训练的早期，预测框都在寻找其应该专注的目标框的形状。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_7iwTsezrn-tSndx96twprA.jpeg" alt="img"></p>
+<p>而在现实世界中，边界框并不是任意的。汽车有着很相似的形状，而行人的长宽比接近0.41。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_krGqonOLMzSE_PWqH_LvQA.jpeg" alt="img"></p>
+<p>因为我们只需要正确的猜测，因此如果有一个适用于现实世界目标的多种多样的初始形状猜测，刚开始的训练将变得比较稳定。</p>
+<p><img src="https://miro.medium.com/max/691/1*CGWTPTY0sfvQoxsS0X6VFg.jpeg" alt="img"></p>
+<p>例如，创建如下大小的5个anchor boxes。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_8Q8r9ixjTiKLi1mrF36xCw.jpeg" alt="img"></p>
+<p>在预测过程中，不会直接预测5个任意的边界框，而是预测相对于上述5个anchor boxes的偏移值。如果对偏移值进行限制，就可以维持预测的多样性并使得每一个预测集中在特定的形状。因而，初始训练阶段将更加平稳。</p>
+<blockquote>
+<p>在本文中，anchors又被称作priors。</p>
+</blockquote>
+<p>对网络结构的改变如下所示：</p>
+<ul>
+<li><p>移除负责预测边界框的全连接层；</p>
+<p><img src="https://miro.medium.com/max/1904/1*tavjieD0Bum_uX-svYUTKA.jpeg" alt="img"></p>
+</li>
+<li><p>将类别预测从cell级移动到边界框级（每一个边界框都进行类别预测）。因而，每一个预测包含边界框的四个参数、一个表示是否存在目标的置信度分数和20个类别概率。那么，5个边界框就有125个参数。与YOLO相同，objectness prediction仍旧表示ground truth和预测框的IOU。</p>
+</li>
+<li><p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_UsqjfoW3sLkmyXKQ0Hyo8A-1575816763206.png" alt="img"></p>
+</li>
+<li><p>为了产生大小为$7\times 7 \times 125$大小的特征图，将最后一层卷积层替换为三个$3\times 3$大小的卷积层，每一个卷积层输出1024个通道。接着，使用最后的一层大小为$1\times 1$的卷积层将$7\times 7\times 1024$大小的输出转换为$7\times 7 \times 125$大小。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_KiSd2CBfcs5af6oliHCqzw.jpeg" alt="img" style="zoom:80%;"></p>
+</li>
+<li><p>将输入图片的大小从$448\times 448$转换为$416\times 416$。该大小将产生大小为奇数的特征图。因为图片的中心一般都被一个大目标所占据。当grid cell的大小为奇数时，将更容易确定该大目标的位置。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_89qezEeLKJLpD8_fM_H4qQ.jpeg" alt="img" style="zoom:80%;"></p>
+</li>
+<li><p>移除一层池化层，将网络输出的大小变为$13\times 13$。</p>
+</li>
+</ul>
+<p>引入anchor boxes后，mAP从69.5降低到69.2，但recall从81%提升到88%。也就是说，即使准确率下降但是提升了检测到所有ground truth目标的概率。</p>
+<h4 id="维度聚类"><a href="#维度聚类" class="headerlink" title="维度聚类"></a>维度聚类</h4><p>在很多问题领域，其目标的边界框都是有一定的模式的。例如，在自动驾驶领域，常见的模式为不同距离的行人和车辆。为了找出前K个尽可能覆盖训练数据的边界框，我们使用K-均值来聚类得出训练数据的边界框的前K个聚类中心。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_esSmI0UaMr-GrqkUGMg0hA.jpeg" alt="img"></p>
+<p>因为关注的是边界框而非点，所以不能使用常规的空间距离来度量数据点的距离。自然而然，使用IoU进行度量。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_l5wvrPjLlFp6Whgy0MqbKQ.png" alt="img" style="zoom:50%;"></p>
+<p>在左侧，我们画出了在使用不同数目的聚类中心（anchors）的情况下，anchors和ground truth之间的平均IoU。随着anchors数目的增加，准确率平缓上升。最终，选取了5。在右侧，表示的是5个anchor。蓝色矩形框表示COCO数据，黑色矩形框表示VOC2007数据。在两种数据集中，anchors大多表现为瘦和高，这一现象也表明了现实中的边界框不是任意的。</p>
+<blockquote>
+<p>除非特意声明，下文中的YOLO都表示YOLOv2。</p>
+</blockquote>
+<h4 id="直接预测定位"><a href="#直接预测定位" class="headerlink" title="直接预测定位"></a>直接预测定位</h4><p>我们预测的是相对于anchors的偏移量，但是，如果不进行限制的话，预测值将会变得随机。对于体育每一个预测框，YOLO会预测5个参数（$tx,ty,tw,th$和$to$），并使用sigma函数来限制可能的偏移范围。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_38-Tdx-wQA7c3TX5hdnwpw.jpeg" alt="img" style="zoom: 50%;"></p>
+<p>可视化如下所示：其中，蓝框表示预测的边界框，点框表示anchor。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_gyOSRA_FDz4Pf5njoUb4KQ.jpeg" alt="img" style="zoom:50%;"></p>
+<p>通过使用k-均值和上述的改进，mAP提升5%左右。</p>
+<h4 id="细粒度特征"><a href="#细粒度特征" class="headerlink" title="细粒度特征"></a>细粒度特征</h4><p>卷积层逐渐减小特征图的空间维度。随着分辨率的降低，检测小目标的难度将逐渐增大。其他目标检测算法，诸如SSD，使用多尺度的特征图进行目标检测。因而每一层特征图专注于不同尺度的目标。YOLO使用了一种不同的策略（passthrough）。它将大小为$26\times \times 26\times 512$的特征图reshape为$13\times 13 \times 2048$，接着将该特征图与原始的$13\times 13 \times 1024$的特征图进行拼接。最后，在拼接得到的特征图上进行检测。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_RuW-SCIML8SHc5_PrIE9-g.jpeg" alt="img"></p>
+<h4 id="多尺度训练"><a href="#多尺度训练" class="headerlink" title="多尺度训练"></a>多尺度训练</h4><p>在移除全连接层后，YOLO可以输入不同大小尺寸的图片。如果图片的长和宽都加倍，就会预测的grid的数目就会变为原来的4倍。因为YOLO网络对输入图片的下采样倍数为32，所以输入的长和宽必须是32的倍数。在训练过程中，YOLO接受$320\times 320,352\times 352,…$和$608\times 608$大小的特征图。每10个batches，YOLOv2随机从上述尺度中选取一个尺度用于训练。</p>
+<p>这一做法有着数据增强的作用，使得网络对不同大小的输入图片都有着不错的预测能力。因而，可以依据要求的不同选择不同大小的输入图片。需要更高的速度则选择较小的输入图片，需要更高的准确度则选择较大的图片。</p>
+<h4 id="准确度"><a href="#准确度" class="headerlink" title="准确度"></a>准确度</h4><p>使用上述改进方法后，性能如下：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_3IdCKSzR5R0lIE1LSmN4Bg.png" alt="img" style="zoom:50%;"></p>
+<p>不同目标检测算法的性能比较：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_NJj17Z6FgffYaA4WH2WIjw.png" alt="img"></p>
+<h3 id="速度提升"><a href="#速度提升" class="headerlink" title="速度提升"></a>速度提升</h3><p>对于一张大小为$224\times 224$的图片，VGG16在一次前向传播中需要30.69 billion次浮点操作，自定义的GoogLeNet需要8.52 billion次。因而可以将VGG16替换为GoogLeNet，但是会导致在ImageNet上的top-5准确率从90.0%下降到88.0%。</p>
+<h4 id="DarkNet"><a href="#DarkNet" class="headerlink" title="DarkNet"></a>DarkNet</h4><p>可以进一步对使用的backbone进行简化。Darknet只需要5.58 billion次浮点操作。在Darknet中，大量使用$3\times 3$卷积提取特征，$1\times 1$卷积降低输出通道数。并使用全局平均池化来进行预测。网络结构如下（下表的网络结构用于分类任务）：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_8FiQUakp9i4MneU4VXk4Ww.png" alt="img" style="zoom:67%;"></p>
+<p>为了将Darknet用于目标检测，将最后的分类层的结构替换为三个$3\times 3$大小的卷积层，每一个卷积层输出1024个通道。接着使用$1\times 1$卷积将$7\times \times 7 \times 1024$转换为$7\times 7\times 125$（每一个grid预测5个边界框，每一个边界框预测4个位置参数，一个置信度分数和20个条件类别概率）。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_NBnDpz8fitkhcdnkgF2bvg.png" alt="img" style="zoom:50%;"></p>
+<h4 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h4><p>首先使用ImageNet的1000类分类数据集对YOLO训练160个epochs：使用随机梯度下降法，初始学习率为0.1，指数衰减的次数为4，权重衰减系数为0.0005以及动量为0.9。在初始训练阶段，使用大小为$224\times 224$的分辨率，接着使用$448\times 448$大小的分辨率，初始学习率为10-3，微调10个epoch。在训练完成后，top-1正确率为76.5%，top-5学习率为93.3%。</p>
+<p>接着，移除全连接层和最后一层卷积层。添加三个大小为$3\times 3$，输出通道为1024的卷积层，后接大小为$1\times1$，输出通道数为125的卷积层。同时添加passthrough层。使用初始学习率10-3，分别在第60和90个epoch将学习率衰减10倍，权重衰减为0.0005和动量0.9训练160个epochs。</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>与分类任务相比，检测任务的类别数目相对较少。为了拓展可以检测的类别数目，YOLO提出了一种在训练过程中，对分类和目标检测数据集进行融合的方法。在使用目标检测样本训练端到端网络的同时，将来自分类样本的分类损失反向传播到分类支路。该方法需要解决如下的问题：</p>
+<ul>
+<li>如何将不同数据集的类标进行合并？目标检测数据集和不同的分类数据集有着不同的类标。</li>
+<li>合并的类别之间并不是相互独立的。例如，ImageNet中的<em>Norfolk terrier</em> 和COCO中的dog。因而无法使用softmax来计算概率（softmax只会将单一的样本判定为单一的类别）。</li>
+</ul>
+<h4 id="层次分类"><a href="#层次分类" class="headerlink" title="层次分类"></a>层次分类</h4><p>YOLO将不同的数据集结合起来组成一棵树型的WordTree。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_QKwSclDLcT8eJxyj3CVL0w.png" alt="img" style="zoom: 50%;"></p>
+<p>以1000类的ImageNet为例。并非直接预测1000个类别，而是创建了一个有着1000个结点，369个父类结点的树形结构。原始情况下，YOLO预测biplane的类别分数。但是在WordTree中，预测给定airplane的情况下是biplane的分数。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_TALo1-LuWbF80RTCM7bszw.png" alt="img"></p>
+<p>因为：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0Oyd6FWXo7OJzzuXuXSoDQ.png" alt="img"></p>
+<p>因而可以使用softmax函数来计算概率值：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1__gX42bmgvyib4lyR9GQrAg.png" alt="img"></p>
+<p>不同之处在于，并不是只执行了一次softmax操作，而是对每一个父结点的孩子都执行softmax操作。</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1__0ijX5oRZdQCNlSk-gXj3Q.jpeg" alt="img"></p>
+<p>接着通过对树的结点进行遍历，便可以得到类别概率：</p>
+<p><img src="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/1_0XHKAh0GxpW22y1DlL4hYA.png" alt="img"></p>
+<p>在进行分类时，假设目标已经被检测到，因而$Pr(physical\ object)=1$。</p>
+<p>当YOLO在执行分类任务时，只会反向传播分类损失来训练分类器。YOLO关注那些对某一类预测出的分数最高的bounding box，同时也计算该类的父结点的分类损失（如果一个bounding box被打上biplane的标签，同时也会被打上airplane 、air、vehicle…）。这一做法鼓励模型提取出这些类别的公共特征。</p>
+<p>在目标检测中，将$Pr(physical\ object)$设置为box confidence分数。YOLO对树进行遍历，取出其中有着最高分数的一条支路，同时执行阈值操作得到最终的预测。</p>
+<h4 id="YOLO9000"><a href="#YOLO9000" class="headerlink" title="YOLO9000"></a>YOLO9000</h4><p>YOLO9000使用有9418个结点的wordtree来检测超过9000类的目标。它将COCO的样本和ImageNet中的前9000个类别进行结合。对于每一个COCO数据，YOLO从ImageNet中采样出4个数据。它学习使用COCO的检测数据进行定位，使用ImageNet中的数据进行分类。</p>
+<h2 id="YOLOv3"><a href="#YOLOv3" class="headerlink" title="YOLOv3"></a>YOLOv3</h2><p>未完待续…</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/目标检测/" rel="tag"># 目标检测</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/python/python-he-xin-ji-zhu-yu-shi-zhan-ke-cheng-da-yi-zong-jie/" rel="next" title="Python核心技术与实战-课程答疑总结（持续更新）">
+                <i class="fa fa-chevron-left"></i> Python核心技术与实战-课程答疑总结（持续更新）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实时目标检测：YOLO、YOLOv2以及YOLOv3"><span class="nav-number">1.</span> <span class="nav-text">实时目标检测：YOLO、YOLOv2以及YOLOv3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLOv1"><span class="nav-number">1.1.</span> <span class="nav-text">YOLOv1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Grid-Cell"><span class="nav-number">1.1.1.</span> <span class="nav-text">Grid Cell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络设计"><span class="nav-number">1.1.2.</span> <span class="nav-text">网络设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">1.1.3.</span> <span class="nav-text">损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分类损失"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">分类损失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定位损失"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">定位损失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#置信度损失"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">置信度损失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#损失"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">损失</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前向推理：非极大抑制（Non-maximal-suppression）"><span class="nav-number">1.1.4.</span> <span class="nav-text">前向推理：非极大抑制（Non-maximal suppression）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLO的优点"><span class="nav-number">1.1.5.</span> <span class="nav-text">YOLO的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLOv2"><span class="nav-number">1.2.</span> <span class="nav-text">YOLOv2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提升精度"><span class="nav-number">1.2.1.</span> <span class="nav-text">提升精度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Batch-normalization"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Batch normalization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更高分辨率的分类器"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">更高分辨率的分类器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用带Anchor-Boxes的卷积"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">使用带Anchor Boxes的卷积</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维度聚类"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">维度聚类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接预测定位"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">直接预测定位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细粒度特征"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">细粒度特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多尺度训练"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">多尺度训练</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准确度"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">准确度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#速度提升"><span class="nav-number">1.2.2.</span> <span class="nav-text">速度提升</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DarkNet"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">DarkNet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">训练</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分类"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#层次分类"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">层次分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#YOLO9000"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">YOLO9000</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLOv3"><span class="nav-number">1.3.</span> <span class="nav-text">YOLOv3</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">102.8k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
