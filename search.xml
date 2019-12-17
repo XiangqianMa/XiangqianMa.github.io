@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>Python核心技术与实战-课程答疑总结（持续更新）</title>
+      <link href="/python/python-he-xin-ji-zhu-yu-shi-zhan-ke-cheng-da-yi-zong-jie/"/>
+      <url>/python/python-he-xin-ji-zhu-yu-shi-zhan-ke-cheng-da-yi-zong-jie/</url>
+      
+        <content type="html"><![CDATA[<h2 id="列表self-append无限嵌套的原理"><a href="#列表self-append无限嵌套的原理" class="headerlink" title="列表self.append无限嵌套的原理"></a>列表self.append无限嵌套的原理</h2><p>如下述代码所示：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>]</span><br><span class="line">x.append(x)</span><br><span class="line">x</span><br><span class="line">[<span class="number">1</span>, [...]]</span><br></pre></td></tr></table></figure><p>上述操作的示意如下：</p><p>  <img src="/python/python-he-xin-ji-zhu-yu-shi-zhan-ke-cheng-da-yi-zong-jie/001a607f3f29f68975be3e706711325f.png" alt="001a607f3f29f68975be3e706711325f" style="zoom: 50%;"></p><p>虽然<code>x</code>是无限嵌套的列表，但是<code>x.append(x)</code>操作并不会遍历其中的每一个元素，只是扩充了原列表的第二个元素，并将其指向<code>x</code>，因而不会出现栈溢出的问题。同时，<code>len(x)</code>的返回为2，因为<code>x</code>的top level只有两个元素。</p><h2 id="装饰器的宏观理解"><a href="#装饰器的宏观理解" class="headerlink" title="装饰器的宏观理解"></a>装饰器的宏观理解</h2><p>装饰器的作用与意义在于其可以通过自定义的函数或类，在不改变原函数的基础上，改变原函数的一些功能。装饰器将额外增加的功能封装在自己的装饰器函数或类中；如果想要调用该装饰器，只需要在原函数的顶部，加上<code>@decorator</code>即可。</p><p>例如，在一些社交网络的后台，有无数的操作在调用之前，需要执行一些检查操作。使用常规编程的方式如下：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 发表评论</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_comment</span><span class="params">(request, ...)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> authenticate(request):</span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">'U must log in first'</span>)</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 发表状态</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_moment</span><span class="params">(request, ...)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> authenticate(request):</span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">'U must log in first'</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure><p>反复调用<code>authenticate</code>显得非常冗余。更好的解决方法是将<code>authenticate</code>单独分离出来，写成装饰器，如下所示：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 发表评论</span></span><br><span class="line"><span class="meta">@authenticate</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_comment</span><span class="params">(request, ...)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发表状态</span></span><br><span class="line"><span class="meta">@authenticate</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_moment</span><span class="params">(request, ...)</span>:</span></span><br></pre></td></tr></table></figure><p>使用装饰器有以下好处：</p><ul><li>代码更加简洁；</li><li>逻辑更加清晰；</li><li>程序的层次化、分离化更加明显。</li></ul><h2 id="GIL和多线程的关系"><a href="#GIL和多线程的关系" class="headerlink" title="GIL和多线程的关系"></a>GIL和多线程的关系</h2><p>GIL只支持单线程，而Python支持多线程，这两者之间是什么关系？</p><p>GIL的存在和Python支持多线程不矛盾，GIL指的是同一时刻，程序只能有一个线程运行；而Python中的多线程是多个线程交替执行，是“伪并行”，具体到某一个时刻，只有1个线程在运行。</p><p> <img src="/python/python-he-xin-ji-zhu-yu-shi-zhan-ke-cheng-da-yi-zong-jie/e09b09170e0d2990d2e7f4e6a0292d7b.png" alt="img" style="zoom:67%;"> </p><p>例如，在爬虫时，线程1在爬取第一个网站时发生I/O阻塞，处于等待状态，此时，GIL就会被释放，线程2开始执行，以此类推。等到线程1的I/O操作完成时，主程序便会切换回线程1，完成剩余工作。</p><h2 id="多进程和多线程的适用场景"><a href="#多进程和多线程的适用场景" class="headerlink" title="多进程和多线程的适用场景"></a>多进程和多线程的适用场景</h2><p>多进程适用于CPU密集型任务，如大型矩阵运算等，对于CPU密集任务，多线程无效，因为Python的多线程一个时刻只会有一个线程运行。</p><p>而多线程或Asyncio适用于I/O密集型任务，但如果I/O操作非常多、非常heavy，需要建立的连接也比较多时，一般会选择Asyncio。因为Asyncio的任务切换更为轻量化，且能启动的任务数远比多线程能启动的线程数多。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li><a href="https://time.geekbang.org/column/article/105083" target="_blank" rel="noopener">Python核心技术与实战</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程基础 </category>
+          
+          <category> 编程语言 </category>
+          
+          <category> Python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 编程基础 </tag>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>散列表-下</title>
       <link href="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/"/>
       <url>/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/san-lie-biao-xia/</url>
