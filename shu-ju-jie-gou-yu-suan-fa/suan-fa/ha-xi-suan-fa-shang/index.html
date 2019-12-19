@@ -96,25 +96,25 @@
 
 
 
-  <meta name="description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： 1234567891011121314a = 10b = 10a == bTrueid(a)442">
-<meta name="keywords" content="编程基础,Python">
+  <meta name="description" content="哈希算法-上 本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。  哈希算法的定义 将任意长度的二进制值串映射为固定长度的二进制值串，所用的映射规则就是哈希算法，通过原始数据映射之后得到的二进制值串就是哈希值。  一个优秀的哈希算法需要满足以下几点要求：  从哈希值不能反向推导出原始数据（哈希算法也叫做单向哈希算法）； 对输入数据非常敏感，原始数据较小的修改也会导致哈希值的大">
+<meta name="keywords" content="编程基础,算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python中的比较和拷贝">
-<meta property="og:url" content="http://xiangqianma.github.io/python/python-zhong-de-bi-jiao-he-kao-bei/index.html">
+<meta property="og:title" content="哈希算法-上">
+<meta property="og:url" content="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/suan-fa/ha-xi-suan-fa-shang/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： 1234567891011121314a = 10b = 10a == bTrueid(a)442">
+<meta property="og:description" content="哈希算法-上 本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。  哈希算法的定义 将任意长度的二进制值串映射为固定长度的二进制值串，所用的映射规则就是哈希算法，通过原始数据映射之后得到的二进制值串就是哈希值。  一个优秀的哈希算法需要满足以下几点要求：  从哈希值不能反向推导出原始数据（哈希算法也叫做单向哈希算法）； 对输入数据非常敏感，原始数据较小的修改也会导致哈希值的大">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-30T15:16:50.906Z">
+<meta property="og:updated_time" content="2019-12-19T16:11:30.271Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python中的比较和拷贝">
-<meta name="twitter:description" content="Python中的比较和拷贝‘==’和’is’’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。 在Python中，可以使用id(object)函数获得每个对象的身份表示。因此，is操作符相当于比较对象之间的ID是否相等： 1234567891011121314a = 10b = 10a == bTrueid(a)442">
+<meta name="twitter:title" content="哈希算法-上">
+<meta name="twitter:description" content="哈希算法-上 本文为数据结构与算法之美-王争的学习笔记，如需查看完整内容，请参考链接。  哈希算法的定义 将任意长度的二进制值串映射为固定长度的二进制值串，所用的映射规则就是哈希算法，通过原始数据映射之后得到的二进制值串就是哈希值。  一个优秀的哈希算法需要满足以下几点要求：  从哈希值不能反向推导出原始数据（哈希算法也叫做单向哈希算法）； 对输入数据非常敏感，原始数据较小的修改也会导致哈希值的大">
 
 
 
 
 
 
-  <link rel="canonical" href="http://xiangqianma.github.io/python/python-zhong-de-bi-jiao-he-kao-bei/">
+  <link rel="canonical" href="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/suan-fa/ha-xi-suan-fa-shang/">
 
 
 
@@ -124,7 +124,7 @@
   };
 </script>
 
-  <title>Python中的比较和拷贝 | MXQ</title>
+  <title>哈希算法-上 | MXQ</title>
   
 
 
@@ -396,7 +396,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/python/python-zhong-de-bi-jiao-he-kao-bei/">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shu-ju-jie-gou-yu-suan-fa/suan-fa/ha-xi-suan-fa-shang/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MXQ">
@@ -413,7 +413,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python中的比较和拷贝
+          <h1 class="post-title" itemprop="name headline">哈希算法-上
 
               
             
@@ -439,7 +439,7 @@
                 
               
 
-              <time title="创建时间：2019-10-24 12:21:20" itemprop="dateCreated datePublished" datetime="2019-10-24T12:21:20+08:00">2019-10-24</time>
+              <time title="创建时间：2019-12-19 23:35:20" itemprop="dateCreated datePublished" datetime="2019-12-19T23:35:20+08:00">2019-12-19</time>
             
 
             
@@ -456,7 +456,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-30 23:16:50" itemprop="dateModified" datetime="2019-11-30T23:16:50+08:00">2019-11-30</time>
+                <time title="修改时间：2019-12-20 00:11:30" itemprop="dateModified" datetime="2019-12-20T00:11:30+08:00">2019-12-20</time>
               
             
           </span>
@@ -480,14 +480,7 @@
                   ，
                 
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/编程语言/" itemprop="url" rel="index"><span itemprop="name">编程语言</span></a></span>
-
-                
-                
-                  ，
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/编程基础/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/算法/" itemprop="url" rel="index"><span itemprop="name">算法</span></a></span>
 
                 
                 
@@ -529,30 +522,39 @@
       
 
       
-        <h1 id="Python中的比较和拷贝"><a href="#Python中的比较和拷贝" class="headerlink" title="Python中的比较和拷贝"></a>Python中的比较和拷贝</h1><h2 id="‘-’和’is’"><a href="#‘-’和’is’" class="headerlink" title="‘==’和’is’"></a>‘==’和’is’</h2><p>’==‘操作符比较对象之间的值是否相等，’is’操作符比较的是对象的身份标识是否相等，即是否是同一个对象，是否指向同一个内存地址。</p>
-<p>在Python中，可以使用<code>id(object)</code>函数获得每个对象的身份表示。因此，<code>is</code>操作符相当于比较对象之间的ID是否相等：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">a == b</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">id(a)</span><br><span class="line"><span class="number">4427562448</span></span><br><span class="line"></span><br><span class="line">id(b)</span><br><span class="line"><span class="number">4427562448</span></span><br><span class="line"></span><br><span class="line">a <span class="keyword">is</span> b</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
-<p><code>a</code>和<code>b</code>指向同一片内存的原因在于，Python会首先给10分配一块内存区域，接着将<code>a</code>和<code>b</code>都指向这块内存。因此，两者的值和内存地址都相同。</p>
-<p>但是当整型数据不在[-5,256]范围内时，结果会是值相同而内存不相同，这一差异是由Python的内存管理机制导致的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">257</span></span><br><span class="line">b = <span class="number">257</span></span><br><span class="line"></span><br><span class="line">a == b</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">id(a)</span><br><span class="line"><span class="number">4473417552</span></span><br><span class="line"></span><br><span class="line">id(b)</span><br><span class="line"><span class="number">4473417584</span></span><br><span class="line"></span><br><span class="line">a <span class="keyword">is</span> b</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
-<p>实际操作时，更多使用<code>==</code>来比较两个对象的值是否相同，<code>is</code>操作符常用于比较一个变量与一个单例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">      ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> a <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">      ...</span><br></pre></td></tr></table></figure>
-<p><code>is</code>操作符的效率高于<code>==</code>，因为<code>is</code>操作符不会被重载。而<code>==</code>操作是通过执行对象的<code>a.__eq__(b)</code>函数来执行比较操作的，不同的类会重载不同的<code>__eq__()</code>函数，因而效率相对低一点。</p>
-<h2 id="浅拷贝和深度拷贝"><a href="#浅拷贝和深度拷贝" class="headerlink" title="浅拷贝和深度拷贝"></a>浅拷贝和深度拷贝</h2><p>常见的浅拷贝是使用数据类型本身的构造器：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">l1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">l2 = list(l1)</span><br><span class="line"></span><br><span class="line">l2</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">l1 == l2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">l1 <span class="keyword">is</span> l2</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">s1 = set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">s2 = set(s1)</span><br><span class="line"></span><br><span class="line">s2</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line">s1 == s2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">s1 <span class="keyword">is</span> s2</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
-<p>也可以使用<code>copy.copy()</code>函数进行浅拷贝操作。但是对于元组，使用<code>tuple()</code>或者切片操作符<code>:</code>不会创建一份浅拷贝，而是返回一个指向相同元组的引用：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t1 = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">t2 = tuple(t1)</span><br><span class="line"></span><br><span class="line">t1 == t2</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">t1 <span class="keyword">is</span> t2</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
-<p>那么，浅拷贝就指的是重新分配一片内存，创建一个新的对象，里面的元素是原对象中的元素的引用。如果原始对象的元素不可变，影响不大；但如果元素可变，通常会带来一些副作用：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">l1 = [[<span class="number">1</span>, <span class="number">2</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br><span class="line">l2 = list(l1)</span><br><span class="line">l1.append(<span class="number">100</span>)</span><br><span class="line">l1[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">l1</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>), <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">l2</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br><span class="line"></span><br><span class="line">l1[<span class="number">1</span>] += (<span class="number">50</span>, <span class="number">60</span>)</span><br><span class="line">l1</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>), <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">l2</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br></pre></td></tr></table></figure>
-<p>如果向避免上面的副作用就需要使用深度拷贝。</p>
-<p>深度拷贝指的是：重新分配一块内存，创建一个新的对象，并对原对象中的元素以递归的方式创建新的子对象拷贝到新对象中，因而，<strong>新对象和原对象没有任何关联</strong>。</p>
-<p>深度拷贝的实现方式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">l1 = [[<span class="number">1</span>, <span class="number">2</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br><span class="line">l2 = copy.deepcopy(l1)</span><br><span class="line">l1.append(<span class="number">100</span>)</span><br><span class="line">l1[<span class="number">0</span>].append(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">l1</span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], (<span class="number">30</span>, <span class="number">40</span>), <span class="number">100</span>]</span><br><span class="line"></span><br><span class="line">l2 </span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>], (<span class="number">30</span>, <span class="number">40</span>)]</span><br></pre></td></tr></table></figure>
-<p>但如果原始对象中存在到自身的引用，在使用深度拷贝时很容易出现无限循环。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">x = [<span class="number">1</span>]</span><br><span class="line">x.append(x)</span><br><span class="line"></span><br><span class="line">x</span><br><span class="line">[<span class="number">1</span>, [...]]</span><br><span class="line"></span><br><span class="line">y = copy.deepcopy(x)</span><br><span class="line">y</span><br><span class="line">[<span class="number">1</span>, [...]]</span><br></pre></td></tr></table></figure>
-<p>但在执行时并未出现溢出的现象，这时应为深度拷贝函数会在拷贝的同时维持一个列表记录已经被拷贝的对象和其ID，遇到已经拷贝过的对象，会直接从字典中返回。</p>
+        <h1 id="哈希算法-上"><a href="#哈希算法-上" class="headerlink" title="哈希算法-上"></a>哈希算法-上</h1><blockquote>
+<p>本文为<a href="https://time.geekbang.org/column/article/40036" target="_blank" rel="noopener">数据结构与算法之美-王争</a>的学习笔记，如需查看完整内容，请参考链接。</p>
+</blockquote>
+<h2 id="哈希算法的定义"><a href="#哈希算法的定义" class="headerlink" title="哈希算法的定义"></a>哈希算法的定义</h2><blockquote>
+<p>将任意长度的二进制值串映射为固定长度的二进制值串，所用的映射规则就是哈希算法，通过原始数据映射之后得到的二进制值串就是哈希值。</p>
+</blockquote>
+<p>一个优秀的哈希算法需要满足以下几点要求：</p>
+<ul>
+<li>从哈希值不能反向推导出原始数据（哈希算法也叫做单向哈希算法）；</li>
+<li>对输入数据非常敏感，原始数据较小的修改也会导致哈希值的大不相同；</li>
+<li>散列冲突的概率小，不同的原始数据，哈希值相同的概率非常小；</li>
+<li>哈希算法的执行效率要高，针对较长的文本也需要能快速地计算出哈希值。</li>
+</ul>
+<p>以MD5哈希算法为例。对“今天我来讲哈希算法”和“jiajia”两个文本计算MD5哈希值，将得到的字符串转换为16进制编码。可以看出，两者的哈希值的长度相同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MD5(<span class="string">"今天我来讲哈希算法"</span>) = bb4767201ad42c74e650c1b6c03d78fa</span><br><span class="line">MD5(<span class="string">"jiajia"</span>) = cd611a31ea969b908932d44d126d195b</span><br></pre></td></tr></table></figure>
+<p>而对于两个非常相似的文本，如“我今天讲哈希算法！”和“我今天讲哈希算法”。两者虽然只有一个叹号的差别，但得到的哈希值完全不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MD5(<span class="string">"我今天讲哈希算法！"</span>) = <span class="number">425</span>f0d5a917188d2c3c3dc85b5e4f2cb</span><br><span class="line">MD5(<span class="string">"我今天讲哈希算法"</span>) = a1fb91ac128e6aa37fe42c663971ac3d</span><br></pre></td></tr></table></figure>
+<p>同时，MD5算法的计算速度也非常快。</p>
+<h2 id="哈希算法的应用"><a href="#哈希算法的应用" class="headerlink" title="哈希算法的应用"></a>哈希算法的应用</h2><h3 id="安全加密"><a href="#安全加密" class="headerlink" title="安全加密"></a>安全加密</h3><p>常用于加密的哈希算法有MD5（MD5 Message-Digest Algorithm，MD5消息摘要算法）和SHA（Secure Hash Algorithm，安全散列算法）。</p>
+<p>在对哈希算法的四点要求中，对用于加密的哈希算法，有两点格外重要。第一点：很难根据哈希值反向推导出原始数据；第二点：散列冲突的概率很小。</p>
+<p>对于加密来说，第一点很好理解。第二点需要进一步的解释。</p>
+<p>实际上，哈希算法无法做到零冲突。因为，哈希算法产生的哈希值的长度是固定且有限的。哈希值的长度固定时，能表示的数据就是有限的，但是要进行哈希的数据的个数是无限的。因而，必然存在哈希值相同的情况。</p>
+<p>但是，尽管哈希算法存在散列冲突的情况，但是因为哈希值的范围很大，因而冲突的概率很低。因而，当我们得到一个哈希值，希望通过穷举的方式找到与该哈希值相同的另一个数据时，也需要耗费极大的难以承担的时间。</p>
+<p>实际上，无法找到一种绝对安全的加密算法。越复杂、越难破解的加密算法，需要的计算时间就越长。在实际工程中，需要对加密算法的时间和安全性进行权衡。</p>
+<h3 id="唯一标识"><a href="#唯一标识" class="headerlink" title="唯一标识"></a>唯一标识</h3><p>例：当我们要在大量的数据集中查找某一张图片时，就不能单纯地使用图片的元信息（例如名字）进行对比，因为可能存在名字不同但内容相同、名字相同但内容不同的图片。</p>
+<p>一种比较笨的方法是使用图片的原始二进制值进行一一比对，但是效率很低。此时，就可以给每一张图片赋予一个唯一的标识。例如，可以从图片的二进制码的开头取100个字节，中间取100个字节，末尾取100个字节，然后将这300个字节拼接在一起，通过哈希算法计算得到一个哈希字符串，将该字符串作为图片的唯一标识。</p>
+<p>为了进一步提高效率，可以提前计算图库中的所有图片的哈希值，将哈希值和图片文件的路径信息存放为散列表。当要查看某个图片是否存在时，先使用哈希算法计算该图片的哈希值，再从散列表中查找是否存在该唯一标识。</p>
+<p>如果散列表中不存在则说明不存在，如果存在则通过路径信息找到对应的图片，并进行完全比对，一样则说明存在，否则不存在。</p>
+<h3 id="数据校验"><a href="#数据校验" class="headerlink" title="数据校验"></a>数据校验</h3><p>我们经常使用的BT下载软件是基于P2P协议的。BT下载软件从多个机器上并行地下载一部电影，该电影文件可能会被分割成多个文件块，等所有的文件下载完成后，再组装成一个完整的电影文件。</p>
+<p>但是，所下载的文件块可能存在损坏的情况。因而，需要对各个文件块的完整性等进行检查。</p>
+<p>有一种BT校验思路便是利用哈希算法。使用哈希算法对各个文件分别取哈希值并且保存在种子文件中。当文件下载完成后，通过相同的哈希算法对下载好的文件计算哈希值，与种子文件中的哈希值进行逐一比对。如果不同则说明文件有问题，否则说明文件完好。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://time.geekbang.org/column/article/100105" target="_blank" rel="noopener">景霄-Python核心技术与实战</a></li>
+<li><a href="https://time.geekbang.org/column/article/65312" target="_blank" rel="noopener">数据结构与算法之美-王争</a></li>
 </ul>
 
       
@@ -579,7 +581,7 @@
           
             <a href="/tags/编程基础/" rel="tag"># 编程基础</a>
           
-            <a href="/tags/Python/" rel="tag"># Python</a>
+            <a href="/tags/算法/" rel="tag"># 算法</a>
           
         </div>
       
@@ -592,8 +594,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/python/python-de-nei-cun-guan-li-ji-zhi/" rel="next" title="Python的内存管理机制">
-                <i class="fa fa-chevron-left"></i> Python的内存管理机制
+              <a href="/shen-du-xue-xi/mu-biao-jian-ce/yolo-xi-lie-jie-du/" rel="next" title="经典目标检测算法YOLO系列解读">
+                <i class="fa fa-chevron-left"></i> 经典目标检测算法YOLO系列解读
               </a>
             
           </div>
@@ -601,10 +603,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/python/python-zhong-de-ni-ming-han-shu/" rel="prev" title="Python中的匿名函数">
-                Python中的匿名函数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -808,7 +806,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python中的比较和拷贝"><span class="nav-number">1.</span> <span class="nav-text">Python中的比较和拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#‘-’和’is’"><span class="nav-number">1.1.</span> <span class="nav-text">‘==’和’is’</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浅拷贝和深度拷贝"><span class="nav-number">1.2.</span> <span class="nav-text">浅拷贝和深度拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#哈希算法-上"><span class="nav-number">1.</span> <span class="nav-text">哈希算法-上</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希算法的定义"><span class="nav-number">1.1.</span> <span class="nav-text">哈希算法的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希算法的应用"><span class="nav-number">1.2.</span> <span class="nav-text">哈希算法的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全加密"><span class="nav-number">1.2.1.</span> <span class="nav-text">安全加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#唯一标识"><span class="nav-number">1.2.2.</span> <span class="nav-text">唯一标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据校验"><span class="nav-number">1.2.3.</span> <span class="nav-text">数据校验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
