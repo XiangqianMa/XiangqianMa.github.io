@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="行人重识别入门什么是行人重识别？行人重识别的定义行人重识别，也称行人再识别（ReID），其任务是希望能够利用计算机视觉的算法来进行跨摄像头的追踪，也就是找到不同摄像头下的同一个人，这也是图像检索的一个子问题，同时因为摄像头的距离比较远，所以人的图像都比较模糊，没有办法通过人脸来定位，同时 ReID 更希望解决跨摄像头的问题，所以周围的环境以及摄像头的变化都会增加 ReID 的难度（sherlock">
+<meta name="keywords" content="深度学习,行人重识别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="行人重识别入门">
+<meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="行人重识别入门什么是行人重识别？行人重识别的定义行人重识别，也称行人再识别（ReID），其任务是希望能够利用计算机视觉的算法来进行跨摄像头的追踪，也就是找到不同摄像头下的同一个人，这也是图像检索的一个子问题，同时因为摄像头的距离比较远，所以人的图像都比较模糊，没有办法通过人脸来定位，同时 ReID 更希望解决跨摄像头的问题，所以周围的环境以及摄像头的变化都会增加 ReID 的难度（sherlock">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-cb6080c56a5f4d3822bdadfb0e32c662_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/map.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-cc7f31e9f2681f50f8fa4f106a60ccd2_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-470540752c1d8f4fdccfd00fd9557d4e_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-9cfa5f8e463ac87299b999a1b10d976a_hd-1572941489149.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-21f0d2845c3ed72d52f44a10e9943e64_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-d37e5ce5794bd23f36146f0ed7552cad_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-4367e3b00cd2120e914a4254fc5d8b88_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-40200ddf39fcd24a82698e7deb7aa3f5_r.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/1572964019580.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/1572964292519.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/equation-1572964636537.svg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/equation.svg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-da1d26e5a0da9cfad38fdaa73101b6b7_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-46c33706eb1b12dcafe8526d82674f19_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-0e563bc3605a8d91e57177985a00c3fc_hd.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/equation-1572963181659.svg">
+<meta property="og:updated_time" content="2019-12-20T14:38:55.758Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="行人重识别入门">
+<meta name="twitter:description" content="行人重识别入门什么是行人重识别？行人重识别的定义行人重识别，也称行人再识别（ReID），其任务是希望能够利用计算机视觉的算法来进行跨摄像头的追踪，也就是找到不同摄像头下的同一个人，这也是图像检索的一个子问题，同时因为摄像头的距离比较远，所以人的图像都比较模糊，没有办法通过人脸来定位，同时 ReID 更希望解决跨摄像头的问题，所以周围的环境以及摄像头的变化都会增加 ReID 的难度（sherlock">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-cb6080c56a5f4d3822bdadfb0e32c662_hd.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>行人重识别入门 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">行人重识别入门
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-20 22:38:20 / 修改时间：22:38:55" itemprop="dateCreated datePublished" datetime="2019-12-20T22:38:20+08:00">2019-12-20</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/行人重识别/" itemprop="url" rel="index"><span itemprop="name">行人重识别</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="行人重识别入门"><a href="#行人重识别入门" class="headerlink" title="行人重识别入门"></a>行人重识别入门</h1><h2 id="什么是行人重识别？"><a href="#什么是行人重识别？" class="headerlink" title="什么是行人重识别？"></a>什么是行人重识别？</h2><h3 id="行人重识别的定义"><a href="#行人重识别的定义" class="headerlink" title="行人重识别的定义"></a>行人重识别的定义</h3><p>行人重识别，也称行人再识别（ReID），其任务是希望能够利用计算机视觉的算法来进行跨摄像头的追踪，也就是找到不同摄像头下的同一个人，这也是图像检索的一个子问题，同时因为摄像头的距离比较远，所以人的图像都比较模糊，没有办法通过人脸来定位，同时 ReID 更希望解决跨摄像头的问题，所以周围的环境以及摄像头的变化都会增加 ReID 的难度（<a href="https://zhuanlan.zhihu.com/p/40514536" target="_blank" rel="noopener">sherlock</a>）。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-cb6080c56a5f4d3822bdadfb0e32c662_hd.jpg" alt="行人重识别示意"></p>
+<p>如上图所示（出处见图片水印），左侧一列图片为query集，右侧的所有图片为gallery，我们的任务就是从右侧的gallery集中找出和query为同一人的图片。</p>
+<h3 id="行人重识别的评价指标"><a href="#行人重识别的评价指标" class="headerlink" title="行人重识别的评价指标"></a>行人重识别的评价指标</h3><p>行人重识别常用的评价指标主要有两种：</p>
+<ul>
+<li><p><strong>rank1</strong></p>
+<p>即首位命中率，对于query中的一张图片会和gallery中的每一张图片都计算一个距离，然后将距离进行排序，判断排序后的第一张的ID是否和query相同；而rank5表示排序后的前五张中是否有一张命中。</p>
+</li>
+<li><p><strong>mAP</strong></p>
+<p>mAP表示平均精度，如下图所示：</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/map.png" alt="mAP计算示意"></p>
+<p>对于一张query图片，从gallery中得到前10个结果，对于不同的rank，其中正确识别的图片占总的返回的10个图片的比例被称为各个rank的查准率，正确识别的图片占该ID所有图片的比例被称为查全率；取不同rank的查准率的平均值便得到AP（average precision）；对query中所有的图片的AP取平均值便可以得到整个query的mAP。上图来自：<a href="http://yongyuan.name/blog/evaluation-of-information-retrieval" target="_blank" rel="noopener">图像检索：信息检索评价指标</a>。</p>
+</li>
+</ul>
+<h3 id="常见的行人重识别方法"><a href="#常见的行人重识别方法" class="headerlink" title="常见的行人重识别方法"></a>常见的行人重识别方法</h3><p>行人重识别方法可以被划分为以下几类：</p>
+<ul>
+<li>基于表征学习的ReID方法</li>
+<li>基于度量学习的ReID方法</li>
+<li>基于局部特征的ReID方法</li>
+<li>基于视频序列的ReID方法</li>
+<li>基于GAN造图的ReID方法</li>
+</ul>
+<h2 id="基于表征学习的ReID方法"><a href="#基于表征学习的ReID方法" class="headerlink" title="基于表征学习的ReID方法"></a>基于表征学习的ReID方法</h2><h2 id="基于度量学习的ReID方法"><a href="#基于度量学习的ReID方法" class="headerlink" title="基于度量学习的ReID方法"></a>基于度量学习的ReID方法</h2><p>度量学习被广泛应用于图像检索领域，不同于表征学习给出行人的类标，度量学习旨在通过网络学习出两张图片的相似度。通过对损失函数进行设计，使得相同行人的图片（正样本对）的距离尽可能小，不同行人图片（负样本对）的距离尽可能大。常用的度量学习算是方法有：</p>
+<ul>
+<li>对比损失（Contrastive loss）</li>
+<li>三元组损失（Triplet loss）</li>
+<li>四元组损失（Quadruplet loss）</li>
+<li>难样本采样三元组损失（Triplet hard loss with batch hard mining, TriHard loss）</li>
+<li>边界挖掘损失（Margin sample mining loss, MSML）</li>
+</ul>
+<p>假设有两张图片，经过网络的前向传播后得到其归一化后的向量$f_{I_1}$和$f_{I_2}$，定义两个特征向量之间的欧氏距离为：</p>
+<script type="math/tex; mode=display">
+d_{I_1,I_2}=||f_{I_1}-f_{I_2}||_2</script><h3 id="对比损失"><a href="#对比损失" class="headerlink" title="对比损失"></a>对比损失</h3><p>有如下孪生网络结构，输入一对图片$I_a$和$I_b$，两者可为同一或不同行人的图片，当两者为同一行人的图片时，此对图片的标签为$y=1$，否则为$y=0$。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-cc7f31e9f2681f50f8fa4f106a60ccd2_hd.jpg" alt="孪生网络结构"></p>
+<p>定义对比损失如下：</p>
+<script type="math/tex; mode=display">
+L_c=yd^2_{I_a,I_b}+(1-y)(\alpha-d_{I_a,I_b})^2_+</script><p>其中$(z)_+$表示$max(z,0)$，$\alpha$为可调整的阈值参数。在训练过程中，为了最小化损失函数，对于正样本对，$d_{I_a,I_b}$会逐渐变小，相同ID的行人图片会逐渐在特征空间中形成聚类；对于负样本对，$d_{I_a,I_b}$会逐渐变大，直到超过设定的阈值时，认为负样本对被完全区分开，此时该负样本对的损失为0。</p>
+<p>最终，正样本对的距离逐渐变小，负样本对的距离逐渐变大。从而，在预测时，输入一对图片便可以判定是否属于同一个行人。</p>
+<h3 id="三元组损失（Triplet-loss）"><a href="#三元组损失（Triplet-loss）" class="headerlink" title="三元组损失（Triplet loss）"></a>三元组损失（Triplet loss）</h3><p>三元组损失是一种被广泛应用的度量学习损失。三元组损失需要三张输入图片，包含一对正样本和一对负样本。三张图片分别对应固定图片（Anchor）$a$，正样本图片（Positive）和负样本图片（Negative）$n$。固定图片和正样本图片为正样本对，固定图片和负样本图片为负样本对。三元组损失表示为：</p>
+<script type="math/tex; mode=display">
+L_t=(d_{a,p}-d_(a,n)+\alpha)_+</script><p>三元组损失的作用如下图所示：拉近正样本对之间的距离，增大负样本对之间的距离，使得相同ID的行人图片在特征空间中形成聚类。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-470540752c1d8f4fdccfd00fd9557d4e_hd.jpg" alt="三元组损失的作用"></p>
+<p>改进三元组损失：有论文认为三元组损失只考虑了正负样本对之间的相对距离，而没有考虑正样本对之间的绝对距离，提出改进的三元组损失：</p>
+<script type="math/tex; mode=display">
+L_t=d_{a,p}+(d_{a,p}-d_(a,n)+\alpha)_+</script><h3 id="四元组损失"><a href="#四元组损失" class="headerlink" title="四元组损失"></a>四元组损失</h3><p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-9cfa5f8e463ac87299b999a1b10d976a_hd-1572941489149.jpg" alt="img"></p>
+<p> 与三元组损失相比，四元组损失需要四张输入图片，四张图片分别为固定图片（Anchor）$a$，正样本图片（Positive）$p$，负样本图片1（Negative1）$n_1$和负样本图片2（Negative2）$n_2$。其中$n_1$和$n_2$是两张不同行人ID的图片，四元组损失表示为：</p>
+<script type="math/tex; mode=display">
+q=(d_{a,p}-d_{a,n_1}+\alpha)_++(d_{a,p}-d_{n_1,n_2}+\beta)_+</script><p>其中$\beta$常小于$\alpha$，前一项称为强推动，后一项称为弱推动。</p>
+<p>相比于三元组损失只考虑正负样本间的相对距离，四元组添加的第二项不共享ID，因而考虑的是正负样本间的相对距离。</p>
+<h3 id="难样本采样三元组损失（Triplet-loss-with-batch-hard-mining-TriHard-loss）"><a href="#难样本采样三元组损失（Triplet-loss-with-batch-hard-mining-TriHard-loss）" class="headerlink" title="难样本采样三元组损失（Triplet loss with batch hard mining, TriHard loss）"></a>难样本采样三元组损失（Triplet loss with batch hard mining, TriHard loss）</h3><p>传统的三元组损失随机从训练数据中抽取三张图片，做法简单但是抽样出的大部分都是简单易区分的样本对。样本对简单是不利于网络学习到更好的特征的。研究表明用更难的样本去训练网络能够提高网络的泛化能力。</p>
+<p>TriHard损失的核心思想是：对于一个训练batch，随机挑选$P$个ID的行人，每个行人随机挑选$K$张不同的照片，那么一个batch含有$P\times K$张图片。对于batch中的每一张图片$a$，从剩余样本中挑选一个最难的正样本和一个最难的负样本组成一个三元组。</p>
+<p>定义和$a$为相同ID的图片集为$A$，剩下不同ID的图片集为$B$，TriHard损失表示为：</p>
+<script type="math/tex; mode=display">
+L_{th}=\frac{1}{P\times K}\sum_{a\in batch}(max_{p\in A}d_{a,p}-min_{n\in B}d_{a,n}+\alpha)_+</script><p>其中$\alpha$为人为设定的阈值。TriHard损失会挑选与$a$距离最远的正样本和距离最近的负样本来构成三元组。一般情况下，TriHard损失的效果由于传统三元组损失。</p>
+<h3 id="边界挖掘损失（Margin-sample-mining-loss-MSML）"><a href="#边界挖掘损失（Margin-sample-mining-loss-MSML）" class="headerlink" title="边界挖掘损失（Margin sample mining loss, MSML）"></a>边界挖掘损失（Margin sample mining loss, MSML）</h3><p>TriHard损失对一个batch中的每一张图片都挑选出最难的正样本和最难的负样本构成三元组计算损失，而MSML只挑选出一个batch中最难的一对正样本对和最难的一对负样本对计算损失，可以将MSML看做更难的一种难样本采样，形式如下：</p>
+<script type="math/tex; mode=display">
+L_{msml}=(max_{a,p}d_{a,p}-min_{m,n}d_{m,n}+\alpha)_+</script><p>其中，a和m可以是正样本对也可以是负样本对，因而同时兼顾了正负样本对的相对距离和绝对距离。$max_{a,p}d_{a,p}$可以看做正样本对的上界，$min_{m,n}d_{m,n}$可以看做负样本对的下界，MSML使得正负样本对的边界的间距变大。因而被成为边界样本挖掘损失。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-21f0d2845c3ed72d52f44a10e9943e64_hd.jpg" alt="损失函数的演变"></p>
+<h3 id="损失函数性能的对比"><a href="#损失函数性能的对比" class="headerlink" title="损失函数性能的对比"></a>损失函数性能的对比</h3><p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-d37e5ce5794bd23f36146f0ed7552cad_hd.jpg" alt="损失函数性能对比"></p>
+<h2 id="基于局部特征的ReID方法"><a href="#基于局部特征的ReID方法" class="headerlink" title="基于局部特征的ReID方法"></a>基于局部特征的ReID方法</h2><p>上面的方法都是将一整幅图送入神经网络得到单个特征向量，属于一种全局特征，后面，研究者又提出了使用局部特征的方法。</p>
+<h3 id="图像切块"><a href="#图像切块" class="headerlink" title="图像切块"></a>图像切块</h3><p>将行人图片进行垂直切割，按顺序送入长短时记忆网络中，最后的特征融合了所有图像块的局部特征，但是缺点在于对图像对齐的要求比较高。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-4367e3b00cd2120e914a4254fc5d8b88_hd.jpg" alt="img"></p>
+<p>为了解决图片不对齐的问题，研究者借助人体姿态和关键点等信息对图像进行仿射变换，以是的图像对齐。也有一种方法时，在进行关键点检测后不使用仿射变换，而是依据关键点提取多个人体结构的感兴趣区域。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-40200ddf39fcd24a82698e7deb7aa3f5_r.jpg" alt="preview"></p>
+<p>除了上述两种行人重识别方法之外还有基于视频的行人重识别方法和基于GAN生成的行人重识别方法，这两个方法都是为了得到更多的信息。</p>
+<h2 id="如何训练和测试行人重识别模型？"><a href="#如何训练和测试行人重识别模型？" class="headerlink" title="如何训练和测试行人重识别模型？"></a>如何训练和测试行人重识别模型？</h2><h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><p>ReID的basemodel主要使用一个backbone网络，如ResNet等，使用预训练权重进行初始化；损失函数主要使用分类的交叉熵损失或者度量学习的三元组损失。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>去掉backbone后面的全连接层，使用网络提取特征，计算查询集（query）和图片集（gallery）所有图片的特征之间的距离，根据距离计算rank1和mAP得到最后的结果。</p>
+<h2 id="行人重识别常用Tricks"><a href="#行人重识别常用Tricks" class="headerlink" title="行人重识别常用Tricks"></a>行人重识别常用Tricks</h2><h3 id="Baseline-Model"><a href="#Baseline-Model" class="headerlink" title="Baseline Model"></a>Baseline Model</h3><p>在论文中一般使用ResNet50作为基础模型（可以将最后一个卷积块的步长修改为1，得到的特征图增大一倍）。除此之外，可以使用三种损失函数：softmax、triplet hard和softmax+triplet。</p>
+<h3 id="加入BNNeck"><a href="#加入BNNeck" class="headerlink" title="加入BNNeck"></a>加入BNNeck</h3><p>常用的baseline中通常会同时使用分类损失和三元组损失，分类损失的作用是学习几个超平面将特征向量划分到不同的子空间中，对于分类损失而言，如果对特征向量进行了归一化，使其位于一个超球面上，此时分类损失的优化效果会更好；而三元组损失的作用是正样本对的特征向量在空间中离得更近，负样本对的特征空间在空间中离得更远，如果将特征向量限制在超球面上，三元组损失将正负样本推开的难度会增大。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/1572964019580.png" alt="分类损失和三元组损失的作用"></p>
+<p>因而，如果分类损失和三元组损失使用的都是经过归一化的特征向量，往往会出现分类损失和三元组损失不同步收敛的情况。</p>
+<p>为了解决这一问题，将网络经过全局池化得到的特征图（欧式空间）直接用于计算三元组损失，这一特征被称为$f_t$。接着将特征$f_t$经过一层BN层得到$f_i$，此时的特征图已经被近似归一化到超球面附近。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/1572964292519.png" alt="BNNeck示意"></p>
+<p>同时，用于分类的全连接层未使用偏置，因为Softmax函数是关于原点对称的，去掉偏置后，特征图会关于原点对称，进而保证分类的超平面一定经过原点。</p>
+<h3 id="中心损失（Center-Loss）"><a href="#中心损失（Center-Loss）" class="headerlink" title="中心损失（Center Loss）"></a>中心损失（Center Loss）</h3><p>三元组损失的缺点之一是只考虑了相对距离，损失大小与正样本对的绝对距离无关。假如三元组损失中的$\alpha$参数为0.3，正样本对的距离为1.0，负样本对的距离为1.1，此时损失为0.2；假设正样本对的距离为2.0，负样本对的距离为2.1，损失同样为0.2。为了加强正样本对之间的聚类性能，引入中心损失：</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/equation-1572964636537.svg" alt="中心损失"></p>
+<h3 id="学习率唤醒策略（Warm-Up-Strategy"><a href="#学习率唤醒策略（Warm-Up-Strategy" class="headerlink" title="学习率唤醒策略（Warm-Up Strategy)"></a>学习率唤醒策略（Warm-Up Strategy)</h3><p>这是一种学习率调整策略，即在训练开始阶段先给学习率一个较小的初始值，接着慢慢增大，一段时间后又慢慢衰减。如下述公式所示：</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/equation.svg" alt="warmup公式"></p>
+<p>学习率变化曲线：</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-da1d26e5a0da9cfad38fdaa73101b6b7_hd.jpg" alt="warmup策略" style="zoom: 50%;"></p>
+<h3 id="Loss"><a href="#Loss" class="headerlink" title="Loss"></a>Loss</h3><p>分别使用上述的三种损失函数，softmax损失使用图像分类的策略进行样本的选取；训练triplet hard和softmax+triplet hard在每个batch采样32个人，每个人采样4张图片。</p>
+<h3 id="输入大小和Batch-Size"><a href="#输入大小和Batch-Size" class="headerlink" title="输入大小和Batch Size"></a>输入大小和Batch Size</h3><p>使用了不同的输入大小和batch size，最终的结果如下：</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-46c33706eb1b12dcafe8526d82674f19_hd.jpg" alt="结果"></p>
+<h3 id="随机擦除数据增广"><a href="#随机擦除数据增广" class="headerlink" title="随机擦除数据增广"></a>随机擦除数据增广</h3><p>在图片中随机选取一块区域，加上噪声掩膜，这个掩膜可以是固定值（黑块、灰块）或者随机正太噪声。随机数据擦除属于数据增广的一种方式，可以降低模型过拟合的程度，进而提升模型的性能。</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/v2-0e563bc3605a8d91e57177985a00c3fc_hd.jpg" alt="随机擦除数据"></p>
+<h3 id="标签平滑（Label-Smoothing）"><a href="#标签平滑（Label-Smoothing）" class="headerlink" title="标签平滑（Label Smoothing）"></a>标签平滑（Label Smoothing）</h3><p>标签平滑是一种应用于分类任务的策略。传统的分类任务使用交叉熵损失，标签使用one-hot编码，但one-hot编码是一种很强的监督约束，为了缓和标签对于网络的约束，可以对标签进行平滑：</p>
+<p><img src="/shen-du-xue-xi/xing-ren-chong-shi-bie/xing-ren-chong-shi-bie-ru-men/equation-1572963181659.svg" alt="标签平滑"></p>
+<p>例如，原始标签为$[0,0,1,0,0,0]$，设置平滑系数为0.1，那么平滑之后的标签为：$[0.02，0.02，0.9，0.02，0.02，0.02]$，同时损失应该由交叉熵变为相对熵，<strong>标签平滑可以降低模型的过拟合程度</strong>。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/40514536" target="_blank" rel="noopener">一个强力的ReID basemodel-Sherlock</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/61831669" target="_blank" rel="noopener">一个更加强力的ReID Baseline</a></li>
+<li><a href="https://github.com/michuanhaohao/reid-strong-baseline" target="_blank" rel="noopener">github-reid-strong-baseline</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/行人重识别/" rel="tag"># 行人重识别</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shu-ju-jie-gou-yu-suan-fa/suan-fa/ha-xi-suan-fa-shang/" rel="next" title="哈希算法-上">
+                <i class="fa fa-chevron-left"></i> 哈希算法-上
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#行人重识别入门"><span class="nav-number">1.</span> <span class="nav-text">行人重识别入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是行人重识别？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是行人重识别？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#行人重识别的定义"><span class="nav-number">1.1.1.</span> <span class="nav-text">行人重识别的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行人重识别的评价指标"><span class="nav-number">1.1.2.</span> <span class="nav-text">行人重识别的评价指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的行人重识别方法"><span class="nav-number">1.1.3.</span> <span class="nav-text">常见的行人重识别方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于表征学习的ReID方法"><span class="nav-number">1.2.</span> <span class="nav-text">基于表征学习的ReID方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于度量学习的ReID方法"><span class="nav-number">1.3.</span> <span class="nav-text">基于度量学习的ReID方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对比损失"><span class="nav-number">1.3.1.</span> <span class="nav-text">对比损失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三元组损失（Triplet-loss）"><span class="nav-number">1.3.2.</span> <span class="nav-text">三元组损失（Triplet loss）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四元组损失"><span class="nav-number">1.3.3.</span> <span class="nav-text">四元组损失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#难样本采样三元组损失（Triplet-loss-with-batch-hard-mining-TriHard-loss）"><span class="nav-number">1.3.4.</span> <span class="nav-text">难样本采样三元组损失（Triplet loss with batch hard mining, TriHard loss）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#边界挖掘损失（Margin-sample-mining-loss-MSML）"><span class="nav-number">1.3.5.</span> <span class="nav-text">边界挖掘损失（Margin sample mining loss, MSML）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数性能的对比"><span class="nav-number">1.3.6.</span> <span class="nav-text">损失函数性能的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于局部特征的ReID方法"><span class="nav-number">1.4.</span> <span class="nav-text">基于局部特征的ReID方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像切块"><span class="nav-number">1.4.1.</span> <span class="nav-text">图像切块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何训练和测试行人重识别模型？"><span class="nav-number">1.5.</span> <span class="nav-text">如何训练和测试行人重识别模型？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#训练"><span class="nav-number">1.5.1.</span> <span class="nav-text">训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.5.2.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行人重识别常用Tricks"><span class="nav-number">1.6.</span> <span class="nav-text">行人重识别常用Tricks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Baseline-Model"><span class="nav-number">1.6.1.</span> <span class="nav-text">Baseline Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加入BNNeck"><span class="nav-number">1.6.2.</span> <span class="nav-text">加入BNNeck</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中心损失（Center-Loss）"><span class="nav-number">1.6.3.</span> <span class="nav-text">中心损失（Center Loss）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习率唤醒策略（Warm-Up-Strategy"><span class="nav-number">1.6.4.</span> <span class="nav-text">学习率唤醒策略（Warm-Up Strategy)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Loss"><span class="nav-number">1.6.5.</span> <span class="nav-text">Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入大小和Batch-Size"><span class="nav-number">1.6.6.</span> <span class="nav-text">输入大小和Batch Size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机擦除数据增广"><span class="nav-number">1.6.7.</span> <span class="nav-text">随机擦除数据增广</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标签平滑（Label-Smoothing）"><span class="nav-number">1.6.8.</span> <span class="nav-text">标签平滑（Label Smoothing）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.7.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">108.3k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
