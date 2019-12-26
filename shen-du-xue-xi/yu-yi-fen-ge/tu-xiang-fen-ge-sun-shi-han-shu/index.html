@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="图像分割的损失函数 本文翻译自losses for image segmentation  基于分布相似度的损失在此类损失函数中，主要使用信息论中的交叉熵机制来度量模型输出和真实目标之间所包含的信息的相似性。 交叉熵损失假设$P(Y=0)=p$，$P(Y=1)=1-p$。预测值由logistic/sigmoid函数计算得出： $P(\hat Y=0)= \frac{1}{1+e^{-z}}$和$P">
+<meta name="keywords" content="深度学习,语义分割">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像分割的损失函数">
+<meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/yu-yi-fen-ge/tu-xiang-fen-ge-sun-shi-han-shu/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="图像分割的损失函数 本文翻译自losses for image segmentation  基于分布相似度的损失在此类损失函数中，主要使用信息论中的交叉熵机制来度量模型输出和真实目标之间所包含的信息的相似性。 交叉熵损失假设$P(Y=0)=p$，$P(Y=1)=1-p$。预测值由logistic/sigmoid函数计算得出： $P(\hat Y=0)= \frac{1}{1+e^{-z}}$和$P">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-26T11:50:22.523Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图像分割的损失函数">
+<meta name="twitter:description" content="图像分割的损失函数 本文翻译自losses for image segmentation  基于分布相似度的损失在此类损失函数中，主要使用信息论中的交叉熵机制来度量模型输出和真实目标之间所包含的信息的相似性。 交叉熵损失假设$P(Y=0)=p$，$P(Y=1)=1-p$。预测值由logistic/sigmoid函数计算得出： $P(\hat Y=0)= \frac{1}{1+e^{-z}}$和$P">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shen-du-xue-xi/yu-yi-fen-ge/tu-xiang-fen-ge-sun-shi-han-shu/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>图像分割的损失函数 | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shen-du-xue-xi/yu-yi-fen-ge/tu-xiang-fen-ge-sun-shi-han-shu/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图像分割的损失函数
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-26 19:50:39 / 修改时间：19:50:22" itemprop="dateCreated datePublished" datetime="2019-12-26T19:50:39+08:00">2019-12-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/语义分割/" itemprop="url" rel="index"><span itemprop="name">语义分割</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="图像分割的损失函数"><a href="#图像分割的损失函数" class="headerlink" title="图像分割的损失函数"></a>图像分割的损失函数</h1><blockquote>
+<p>本文翻译自<a href="https://lars76.github.io/neural-networks/object-detection/losses-for-segmentation/" target="_blank" rel="noopener">losses for image segmentation</a></p>
+</blockquote>
+<h2 id="基于分布相似度的损失"><a href="#基于分布相似度的损失" class="headerlink" title="基于分布相似度的损失"></a>基于分布相似度的损失</h2><p>在此类损失函数中，主要使用信息论中的交叉熵机制来度量模型输出和真实目标之间所包含的信息的相似性。</p>
+<h3 id="交叉熵损失"><a href="#交叉熵损失" class="headerlink" title="交叉熵损失"></a>交叉熵损失</h3><p>假设$P(Y=0)=p$，$P(Y=1)=1-p$。预测值由<code>logistic</code>/<code>sigmoid</code>函数计算得出：</p>
+<p>$P(\hat Y=0)= \frac{1}{1+e^{-z}}$和$P(\hat Y=1)=1- \frac{1}{1+e^{-z}}=1-\hat p$</p>
+<p>交叉熵损失函数的定义形式如下：</p>
+<script type="math/tex; mode=display">
+\left(p, \hat{p}\right) = -\left(p \log\left(\hat{p}\right) + (1-p) \log\left(1 - \hat{p}\right)\right)</script><p>上述交叉熵损失为二维交叉熵损失。</p>
+<h3 id="加权交叉熵损失"><a href="#加权交叉熵损失" class="headerlink" title="加权交叉熵损失"></a>加权交叉熵损失</h3><p>加权交叉熵损失（weighted corss entropy, WCE）是交叉熵损失的一种变体，其中，所有的正样本都被乘以一个系数以进行加权。该损失函数常用于类别不平衡问题中。例如，当你有一张有10%的黑像素和90%的白像素的图片时，常规的CE效果不会太好。</p>
+<p>WCE定义如下式：</p>
+<script type="math/tex; mode=display">
+\text{WCE}\left(p, \hat{p}\right) = -\left(\beta p \log\left(\hat{p}\right) + (1-p) \log\left(1 - \hat{p}\right)\right)</script><p>减少假负样本的数目，将$\beta$设置为大于1.增加假正样本的数目，将$\beta$设置为小于1。</p>
+<p><strong>weighted bce代码实现</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">criterion_pixel</span><span class="params">(logit_pixel, truth_pixel)</span>:</span></span><br><span class="line">    logit = logit_pixel.view(<span class="number">-1</span>)</span><br><span class="line">    truth = truth_pixel.view(<span class="number">-1</span>)</span><br><span class="line">    <span class="keyword">assert</span>(logit.shape==truth.shape)</span><br><span class="line"></span><br><span class="line">    loss = F.binary_cross_entropy_with_logits(logit, truth, reduction=<span class="string">'none'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span>:</span><br><span class="line">        loss = loss.mean()</span><br><span class="line">    <span class="keyword">if</span> <span class="number">1</span>:</span><br><span class="line">        pos = (truth&gt;<span class="number">0.5</span>).float()</span><br><span class="line">        neg = (truth&lt;<span class="number">0.5</span>).float()</span><br><span class="line">        pos_weight = pos.sum().item() + <span class="number">1e-12</span></span><br><span class="line">        neg_weight = neg.sum().item() + <span class="number">1e-12</span></span><br><span class="line">        loss = (<span class="number">0.25</span>*pos*loss/pos_weight + <span class="number">0.75</span>*neg*loss/neg_weight).sum()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<h3 id="均衡交叉熵损失"><a href="#均衡交叉熵损失" class="headerlink" title="均衡交叉熵损失"></a>均衡交叉熵损失</h3><p>均衡交叉熵损失（balanced corss entropy, BCE）和WCE类似，唯一的不同之处在于也对负样本进行了加权。</p>
+<p>如下式所示：</p>
+<script type="math/tex; mode=display">
+\text{BCE}\left(p, \hat{p}\right) = -\left(\beta p \log\left(\hat{p}\right) + (1 - \beta)(1-p) \log\left(1 - \hat{p}\right)\right)</script><h3 id="Focal-loss"><a href="#Focal-loss" class="headerlink" title="Focal loss"></a>Focal loss</h3><p>在机器学习任务中，除了会遇到严重的类别样本数不均衡问题之外，经常也会遇到容易识别的样本数目和难识别的样本数目不均衡的问题。为了解决这一问题，何凯明大神提出了Focal loss。</p>
+<p>Focal loss尝试降低easy example对损失的贡献，这样网络会集中注意力在难样本上。</p>
+<p>FL定义如下：</p>
+<script type="math/tex; mode=display">
+\text{FL}\left(p, \hat{p}\right) = -\left(\alpha (1 - \hat{p})^{\gamma} p \log\left(\hat{p}\right) + (1 - \alpha) \hat{p}^{\gamma} (1-p) \log\left(1 - \hat{p}\right)\right)</script><p>上述公式为<strong>二分类问题</strong>的Focal loss，可以看出对于每一个样本，使用$(1-\hat p)^\gamma$作为其识别难易程度的指标，预测值$\hat p$越大代表对其进行预测越容易，因而其在总体损失中的占比应该越小。</p>
+<p>对于多分类问题，其形式为：</p>
+<script type="math/tex; mode=display">
+FL(p_t)=-\alpha_t(1-p_t)^\gamma \log(p_t)</script><p>对于每一个样本，$p_t$为模型预测出其属于其真实类别的概率，$\alpha_t$可用于调节不同类别之间的权重。将$\lambda$设置为0便可以得到BCE。</p>
+<p>下述代码既可以计算二分类问题，也可以计算多分类问题的focal loss。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RobustFocalLoss2d</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="comment">#assume top 10% is outliers</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, gamma=<span class="number">2</span>, size_average=True)</span>:</span></span><br><span class="line">        super(RobustFocalLoss2d, self).__init__()</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.size_average = size_average</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, logit, target, class_weight=None, type=<span class="string">'sigmoid'</span>)</span>:</span></span><br><span class="line">        target = target.view(<span class="number">-1</span>, <span class="number">1</span>).long()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> type==<span class="string">'sigmoid'</span>:</span><br><span class="line">            <span class="keyword">if</span> class_weight <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                class_weight = [<span class="number">1</span>]*<span class="number">2</span> <span class="comment"># [0.5, 0.5]</span></span><br><span class="line"></span><br><span class="line">            prob = torch.sigmoid(logit)</span><br><span class="line">            prob = prob.view(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">            prob = torch.cat((<span class="number">1</span>-prob, prob), <span class="number">1</span>)</span><br><span class="line">            <span class="comment"># select表示样本属于的类别(one-hot)形式</span></span><br><span class="line">            select = torch.FloatTensor(len(prob), <span class="number">2</span>).zero_().cuda()</span><br><span class="line">            select.scatter_(<span class="number">1</span>, target, <span class="number">1.</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> type == <span class="string">'softmax'</span>:</span><br><span class="line">            B, C, H, W = logit.size()</span><br><span class="line">            <span class="keyword">if</span> class_weight <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">                class_weight =[<span class="number">1</span>]*C <span class="comment">#[1/C]*C</span></span><br><span class="line"></span><br><span class="line">            logit = logit.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>).contiguous().view(<span class="number">-1</span>, C)</span><br><span class="line">            prob = F.softmax(logit,<span class="number">1</span>)</span><br><span class="line">            select = torch.FloatTensor(len(prob), C).zero_().cuda()</span><br><span class="line">            select.scatter_(<span class="number">1</span>, target, <span class="number">1.</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 各个类别的损失对应的权重</span></span><br><span class="line">        class_weight = torch.FloatTensor(class_weight).cuda().view(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line">        class_weight = torch.gather(class_weight, <span class="number">0</span>, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 样本属于真实类别的概率</span></span><br><span class="line">        prob = (prob * select).sum(<span class="number">1</span>).view(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">        prob = torch.clamp(prob, <span class="number">1e-8</span>, <span class="number">1</span><span class="number">-1e-8</span>)</span><br><span class="line"></span><br><span class="line">        focus = torch.pow((<span class="number">1</span>-prob), self.gamma)</span><br><span class="line">        <span class="comment">#focus = torch.where(focus &lt; 2.0, focus, torch.zeros(prob.size()).cuda())</span></span><br><span class="line">        focus = torch.clamp(focus, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        batch_loss = - class_weight * focus * prob.log()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.size_average:</span><br><span class="line">            loss = batch_loss.mean()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            loss = batch_loss</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<h3 id="与最近的cell的距离"><a href="#与最近的cell的距离" class="headerlink" title="与最近的cell的距离"></a>与最近的cell的距离</h3><p>有文章在交叉熵损失的基础上加入了一个距离函数，是的网络学习两个结束目标的分离边界。如下所示：</p>
+<script type="math/tex; mode=display">
+\text{BCE}\left(p, \hat{p}\right) + w_0\cdot\exp\left(-\frac{(d_1(x) + d_2(x))^2}{2\sigma^2}\right)</script><p>其中$d_1(x)$和$d_2(x)$为两个距离函数计算点x与最近和第二近的cell的距离。</p>
+<p>计算损失函数中的指数项会降低训练的速度，因此一般将距离和输入图片一起输入神经网络。</p>
+<h2 id="基于重合度的度量"><a href="#基于重合度的度量" class="headerlink" title="基于重合度的度量"></a>基于重合度的度量</h2><h3 id="Dice损失或F1分数"><a href="#Dice损失或F1分数" class="headerlink" title="Dice损失或F1分数"></a>Dice损失或F1分数</h3><h4 id="Dice系数"><a href="#Dice系数" class="headerlink" title="Dice系数"></a>Dice系数</h4><p>根据Lee Raymond Dice命名，是一种集合相似度度量函数，通常用于计算两个样本的相似度（取值范围为[0,1]）。</p>
+<p>Dice系数和Jaccard index类似：</p>
+<script type="math/tex; mode=display">
+\text{DC} = \frac{2 TP}{2 TP + FP + FN} = \frac{2|X \cap Y|}{|X| + |Y|}</script><script type="math/tex; mode=display">
+\text{IoU} = \frac{TP}{TP + FP + FN} = \frac{|X \cap Y|}{|X| + |Y| - |X \cap Y|}</script><p>$|X \bigcap Y|$表示两个样本之间的交集；$|X|$和$|Y|$分别表示X和Y的元素个数，分母的系数为2，用于处理两个集合存在交集的情况。可以看出DC大于IoU。</p>
+<h4 id="Dice损失"><a href="#Dice损失" class="headerlink" title="Dice损失"></a>Dice损失</h4><p>可以将dice系数定义为损失函数：</p>
+<script type="math/tex; mode=display">
+\text{DL}\left(\mathbf{p}, \mathbf{\hat{p}}\right) = 1 - \frac{2 \langle\mathbf{p}, \mathbf{\hat{p}}\rangle}{\left\lVert\mathbf{p}\right\rVert_2^2 + \left\lVert\mathbf{\hat{p}}\right\rVert_2^2}</script><p>其中$p\in \{0,1\}^n$，$\hat p \in [0,1]$。实际计算方式如下：</p>
+<ol>
+<li><p><strong>分子的计算</strong></p>
+<p>将$|X \bigcap Y|$近似为预测图和真实标注之间的点乘，点乘的结果进行元素相加：</p>
+<script type="math/tex; mode=display">
+|X \bigcap Y| = \begin{bmatrix}
+  0.01 & 0.03 & 0.02 & 0.02 \\
+  0.05 & 0.12 & 0.09 & 0.07 \\
+  0.89 & 0.85 & 0.88 & 0.91 \\
+  0.99 & 0.97 & 0.95 & 0.97
+\end{bmatrix} * \begin{bmatrix}
+  0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 \\
+  1 & 1 & 1 & 1 \\
+  1 & 1 & 1 & 1
+\end{bmatrix}</script></li>
+</ol>
+<p>   接着进行元素相加：</p>
+<script type="math/tex; mode=display">
+   |X \bigcap Y| = \begin{bmatrix}
+     0 & 0 & 0 & 0 \\
+     0 & 0 & 0 & 0 \\
+     0.89 & 0.85 & 0.88 & 0.91 \\
+     0.99 & 0.97 & 0.95 & 0.97
+   \end{bmatrix} \rightarrow 7.41 (逐元素相加和)</script><ol>
+<li><p><strong>分母的计算</strong></p>
+<p>可以直接取元素的平方相加，也可以直接进行元素相加。</p>
+<script type="math/tex; mode=display">
+|X| = \begin{bmatrix}
+  0.01 & 0.03 & 0.02 & 0.02 \\
+  0.05 & 0.12 & 0.09 & 0.07 \\
+  0.89 & 0.85 & 0.88 & 0.91 \\
+  0.99 & 0.97 & 0.95 & 0.97
+\end{bmatrix} ^{2(可选)} \rightarrow 7.82 (逐元素相加和)</script><script type="math/tex; mode=display">
+|Y| = \begin{bmatrix}
+  0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & 0 \\
+  1 & 1 & 1 & 1 \\
+  1 & 1 & 1 & 1
+\end{bmatrix} ^{2(可选)} \rightarrow 8 (逐元素相加和)</script><blockquote>
+<p>Dice损失比较适合样本极度不平衡的情况，但会对反向传播造成影响，导致反向传播不稳定。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="Dice损失和交叉熵损失的对比及选择"><a href="#Dice损失和交叉熵损失的对比及选择" class="headerlink" title="Dice损失和交叉熵损失的对比及选择"></a>Dice损失和交叉熵损失的对比及选择</h4><p><strong>选择交叉熵损失的原因</strong>：</p>
+<p>交叉熵损失函数相比于基于重合度度量的损失函数，具有更简单的梯度形式，dice损失的梯度形式比较复杂。</p>
+<p><strong>选择Dice损失的原因</strong>：</p>
+<p>该类损失的真实目标就是最大化预测值和真实值的重合度，更为直接，且一般来说，该损失更适用于类别不均衡问题。</p>
+<p><strong>weighted soft dice的代码实现</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">criterion_pixel</span><span class="params">(logit_pixel, truth_pixel)</span>:</span></span><br><span class="line">    batch_size = len(logit_pixel)</span><br><span class="line">    logit = logit_pixel.view(batch_size,<span class="number">-1</span>)</span><br><span class="line">    truth = truth_pixel.view(batch_size,<span class="number">-1</span>)</span><br><span class="line">    <span class="keyword">assert</span>(logit.shape==truth.shape)</span><br><span class="line"></span><br><span class="line">    loss = soft_dice_criterion(logit, truth)</span><br><span class="line"></span><br><span class="line">    loss = loss.mean()</span><br><span class="line">    <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">soft_dice_criterion</span><span class="params">(logit, truth, weight=[<span class="number">0.2</span>,<span class="number">0.8</span>])</span>:</span></span><br><span class="line"></span><br><span class="line">    batch_size = len(logit)</span><br><span class="line">    probability = torch.sigmoid(logit)</span><br><span class="line"></span><br><span class="line">    p = probability.view(batch_size,<span class="number">-1</span>)</span><br><span class="line">    t = truth.view(batch_size,<span class="number">-1</span>)</span><br><span class="line">    <span class="comment"># 计算正样本和负样本的权重</span></span><br><span class="line">    w = truth.detach()</span><br><span class="line">    w = w*(weight[<span class="number">1</span>]-weight[<span class="number">0</span>])+weight[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    p = w*(p*<span class="number">2</span><span class="number">-1</span>)  <span class="comment">#convert to [0,1] --&gt; [-1, 1]</span></span><br><span class="line">    t = w*(t*<span class="number">2</span><span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">    intersection = (p * t).sum(<span class="number">-1</span>)</span><br><span class="line">    union =  (p * p).sum(<span class="number">-1</span>) + (t * t).sum(<span class="number">-1</span>)</span><br><span class="line">    dice  = <span class="number">1</span> - <span class="number">2</span>*intersection/union</span><br><span class="line"></span><br><span class="line">    loss = dice</span><br><span class="line">    <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+<h3 id="Tversky损失"><a href="#Tversky损失" class="headerlink" title="Tversky损失"></a>Tversky损失</h3><p>TL损失是DL的改进，该FP和FN加上权重。</p>
+<script type="math/tex; mode=display">
+\text{DL}\left(\mathbf{p}, \mathbf{\hat{p}}\right) = \frac{ \langle\mathbf{p}, \mathbf{\hat{p}}\rangle}{\langle\mathbf{p}, \mathbf{\hat{p}}\rangle + \beta\langle\mathbf{1 - p}, \mathbf{\hat{p}}\rangle + (1 - \beta)\langle\mathbf{p}, \mathbf{1 - \hat{p}}\rangle}</script><p>将$\beta$设置为$\frac{1}{2}$，则变为DL损失。</p>
+<h2 id="交叉熵和Dice损失的结合"><a href="#交叉熵和Dice损失的结合" class="headerlink" title="交叉熵和Dice损失的结合"></a>交叉熵和Dice损失的结合</h2><p>也有将交叉熵和Dice损失进行结合的损失函数：</p>
+<script type="math/tex; mode=display">
+Loss = BCE + DiceLoss</script><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># reference: https://github.com/asanakoy/kaggle_carvana_segmentation</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dice_loss</span><span class="params">(preds, trues, weight=None, is_average=True)</span>:</span></span><br><span class="line">    num = preds.size(<span class="number">0</span>)</span><br><span class="line">    preds = preds.view(num, <span class="number">-1</span>)</span><br><span class="line">    trues = trues.view(num, <span class="number">-1</span>)</span><br><span class="line">    <span class="keyword">if</span> weight <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">        w = torch.autograd.Variable(weight).view(num, <span class="number">-1</span>)</span><br><span class="line">        preds = preds * w</span><br><span class="line">        trues = trues * w</span><br><span class="line">    intersection = (preds * trues).sum(<span class="number">1</span>)</span><br><span class="line">    scores = <span class="number">2.</span> * (intersection + <span class="number">1</span>) / (preds.sum(<span class="number">1</span>) + trues.sum(<span class="number">1</span>) + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> is_average:</span><br><span class="line">        score = scores.sum() / num</span><br><span class="line">        <span class="keyword">return</span> torch.clamp(score, <span class="number">0.</span>, <span class="number">1.</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> scores</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dice_clamp</span><span class="params">(preds, trues, is_average=True)</span>:</span></span><br><span class="line">    preds = torch.round(preds)</span><br><span class="line">    <span class="keyword">return</span> dice_loss(preds, trues, is_average=is_average)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size_average=True)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.size_average = size_average</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, target, weight=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> - dice_loss(F.sigmoid(input), target, weight=weight, is_average=self.size_average)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BCEDiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size_average=True)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.size_average = size_average</span><br><span class="line">        self.dice = DiceLoss(size_average=size_average)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, target, weight=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> nn.modules.loss.BCEWithLogitsLoss(size_average=self.size_average, weight=weight)(input, target) + self.dice(input, target, weight=weight)</span><br></pre></td></tr></table></figure>
+<p>为了解决样本类别不平衡问题，还可以使用加权BCE+DICE。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SoftDiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""二分类加权dice损失</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size_average=True, weight=[<span class="number">0.2</span>, <span class="number">0.8</span>])</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        weight: 各类别权重</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super(SoftDiceLoss, self).__init__()</span><br><span class="line">        self.size_average = size_average</span><br><span class="line">        self.weight = torch.FloatTensor(weight)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, logit_pixel, truth_pixel)</span>:</span></span><br><span class="line">        batch_size = len(logit_pixel)</span><br><span class="line">        logit = logit_pixel.view(batch_size, <span class="number">-1</span>)</span><br><span class="line">        truth = truth_pixel.view(batch_size, <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">assert</span>(logit.shape == truth.shape)</span><br><span class="line"></span><br><span class="line">        loss = self.soft_dice_criterion(logit, truth)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.size_average:</span><br><span class="line">            loss = loss.mean()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">soft_dice_criterion</span><span class="params">(self, logit, truth)</span>:</span></span><br><span class="line">        batch_size = len(logit)</span><br><span class="line">        probability = torch.sigmoid(logit)</span><br><span class="line"></span><br><span class="line">        p = probability.view(batch_size, <span class="number">-1</span>)</span><br><span class="line">        t = truth.view(batch_size, <span class="number">-1</span>)</span><br><span class="line">        <span class="comment"># 向各样本分配所属类别的权重</span></span><br><span class="line">        w = truth.detach()</span><br><span class="line">        self.weight = self.weight.type_as(logit)</span><br><span class="line">        w = w * (self.weight[<span class="number">1</span>] - self.weight[<span class="number">0</span>]) + self.weight[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        p = w * (p*<span class="number">2</span> - <span class="number">1</span>)  <span class="comment">#convert to [0,1] --&gt; [-1, 1]</span></span><br><span class="line">        t = w * (t*<span class="number">2</span> - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        intersection = (p * t).sum(<span class="number">-1</span>)</span><br><span class="line">        union =  (p * p).sum(<span class="number">-1</span>) + (t * t).sum(<span class="number">-1</span>)</span><br><span class="line">        dice  = <span class="number">1</span> - <span class="number">2</span> * intersection/union</span><br><span class="line"></span><br><span class="line">        loss = dice</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SoftBCEDiceLoss</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""加权BCE+DiceLoss</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size_average=True, weight=[<span class="number">0.2</span>, <span class="number">0.8</span>])</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        weight: weight[0]为负类的权重，weight[1]为正类的权重</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super(SoftBCEDiceLoss, self).__init__()</span><br><span class="line">        self.size_average = size_average</span><br><span class="line">        self.weight = weight</span><br><span class="line">        self.bce_loss = nn.BCEWithLogitsLoss(size_average=self.size_average, pos_weight=torch.tensor(self.weight[<span class="number">1</span>]/self.weight[<span class="number">0</span>]))</span><br><span class="line">        self.softdiceloss = SoftDiceLoss(size_average=self.size_average, weight=weight)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, target)</span>:</span></span><br><span class="line">        soft_bce_loss = self.bce_loss(input, target)</span><br><span class="line">        soft_dice_loss = self.softdiceloss(input, target)</span><br><span class="line">        loss = soft_bce_loss + soft_dice_loss</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/语义分割/" rel="tag"># 语义分割</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shen-du-xue-xi/ji-chu-zhi-shi/dui-shu-ju-bu-ping-heng-de-ying-dui/" rel="next" title="如何应对深度学习中的数据分布不平衡问题">
+                <i class="fa fa-chevron-left"></i> 如何应对深度学习中的数据分布不平衡问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图像分割的损失函数"><span class="nav-number">1.</span> <span class="nav-text">图像分割的损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于分布相似度的损失"><span class="nav-number">1.1.</span> <span class="nav-text">基于分布相似度的损失</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵损失"><span class="nav-number">1.1.1.</span> <span class="nav-text">交叉熵损失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加权交叉熵损失"><span class="nav-number">1.1.2.</span> <span class="nav-text">加权交叉熵损失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#均衡交叉熵损失"><span class="nav-number">1.1.3.</span> <span class="nav-text">均衡交叉熵损失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Focal-loss"><span class="nav-number">1.1.4.</span> <span class="nav-text">Focal loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与最近的cell的距离"><span class="nav-number">1.1.5.</span> <span class="nav-text">与最近的cell的距离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于重合度的度量"><span class="nav-number">1.2.</span> <span class="nav-text">基于重合度的度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dice损失或F1分数"><span class="nav-number">1.2.1.</span> <span class="nav-text">Dice损失或F1分数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dice系数"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Dice系数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dice损失"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Dice损失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dice损失和交叉熵损失的对比及选择"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Dice损失和交叉熵损失的对比及选择</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tversky损失"><span class="nav-number">1.2.2.</span> <span class="nav-text">Tversky损失</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交叉熵和Dice损失的结合"><span class="nav-number">1.3.</span> <span class="nav-text">交叉熵和Dice损失的结合</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">120.9k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
