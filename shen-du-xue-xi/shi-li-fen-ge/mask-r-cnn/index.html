@@ -96,40 +96,42 @@
 
 
 
-  <meta name="description" content="Mask R-CNN作者何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick 内容在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。 目标检测、目标实例分割、语义分割如下图所">
-<meta name="keywords" content="深度学习,论文阅读">
+  <meta name="description" content="简介在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。 首先，我们需要清楚几大计算机视觉常见问题的区别：  图片分类 仅需要识别出一张图片中存在哪几类目标即可。  目标检测 需要给出图片中目标的类别和具体位置。  语义">
+<meta name="keywords" content="深度学习,何凯明,实例分割">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mask R-CNN论文解读">
-<meta property="og:url" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/index.html">
+<meta property="og:title" content="Mask R-CNN解读">
+<meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="Mask R-CNN作者何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick 内容在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。 目标检测、目标实例分割、语义分割如下图所">
+<meta property="og:description" content="简介在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。 首先，我们需要清楚几大计算机视觉常见问题的区别：  图片分类 仅需要识别出一张图片中存在哪几类目标即可。  目标检测 需要给出图片中目标的类别和具体位置。  语义">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/5d9736d2-0b1a-43fa-912a-60be077b0387.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/b65ae552-1ac7-478c-91d8-82ae6e23d285.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/b19b660d-8e82-48cf-817d-1429475f15be.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/27847427-802c-4928-8626-e535429eae7a.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/d1f5ad89-4152-4cf0-b22b-6b307397dee6.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/ee623a5f-c1f5-4a2a-98f7-4c94fa379a3a.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/bf8dcd4c-4274-44c7-ab9d-0ed1ebea64fa.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/82c99a99-edf8-4c09-9e5c-b7f9ea190722.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/86330610-af9b-4205-9736-3240e2bcadb2.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/2e9be7aa-3b8d-4bc1-ab91-c7a24239e866.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/6424cdaa-67a6-4774-8d71-662bbba20f6c.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/e0da9a7e-36b8-468e-8860-db023a099a91.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/170fbc97-7e4f-44bd-bf89-dbeae157b64a.jpg">
-<meta property="og:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/3095a77a-a0f9-4b7f-9482-42fde3b002fd.jpg">
-<meta property="og:updated_time" content="2019-11-30T15:23:51.480Z">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot%20from%202019-12-31%2010-17-27.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/b19b660d-8e82-48cf-817d-1429475f15be.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/27847427-802c-4928-8626-e535429eae7a.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/ee623a5f-c1f5-4a2a-98f7-4c94fa379a3a.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/bf8dcd4c-4274-44c7-ab9d-0ed1ebea64fa.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/82c99a99-edf8-4c09-9e5c-b7f9ea190722.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/86330610-af9b-4205-9736-3240e2bcadb2.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/2e9be7aa-3b8d-4bc1-ab91-c7a24239e866.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/6424cdaa-67a6-4774-8d71-662bbba20f6c.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/4ab90a74-ed8e-49ee-93d6-08ebfcc44f9e.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/6cad9bd2-e36e-4823-8430-af71c149bd85.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/e0da9a7e-36b8-468e-8860-db023a099a91.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot%20from%202019-12-31%2011-09-32.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot%20from%202019-12-31%2011-10-06.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/170fbc97-7e4f-44bd-bf89-dbeae157b64a.jpg">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/3095a77a-a0f9-4b7f-9482-42fde3b002fd.png">
+<meta property="og:updated_time" content="2019-12-31T03:16:47.029Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mask R-CNN论文解读">
-<meta name="twitter:description" content="Mask R-CNN作者何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick 内容在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。 目标检测、目标实例分割、语义分割如下图所">
-<meta name="twitter:image" content="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/5d9736d2-0b1a-43fa-912a-60be077b0387.jpg">
+<meta name="twitter:title" content="Mask R-CNN解读">
+<meta name="twitter:description" content="简介在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。 首先，我们需要清楚几大计算机视觉常见问题的区别：  图片分类 仅需要识别出一张图片中存在哪几类目标即可。  目标检测 需要给出图片中目标的类别和具体位置。  语义">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot%20from%202019-12-31%2010-17-27.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/">
+  <link rel="canonical" href="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/">
 
 
 
@@ -139,7 +141,7 @@
   };
 </script>
 
-  <title>Mask R-CNN论文解读 | MXQ</title>
+  <title>Mask R-CNN解读 | MXQ</title>
   
 
 
@@ -411,7 +413,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MXQ">
@@ -428,7 +430,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mask R-CNN论文解读
+          <h1 class="post-title" itemprop="name headline">Mask R-CNN解读
 
               
             
@@ -454,24 +456,12 @@
                 
               
 
-              <time title="创建时间：2019-05-05 14:56:28" itemprop="dateCreated datePublished" datetime="2019-05-05T14:56:28+08:00">2019-05-05</time>
+              <time title="创建时间：2019-12-31 11:15:20 / 修改时间：11:16:47" itemprop="dateCreated datePublished" datetime="2019-12-31T11:15:20+08:00">2019-12-31</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-11-30 23:23:51" itemprop="dateModified" datetime="2019-11-30T23:23:51+08:00">2019-11-30</time>
               
             
           </span>
@@ -537,107 +527,80 @@
       
 
       
-        <h1 id="Mask-R-CNN"><a href="#Mask-R-CNN" class="headerlink" title="Mask R-CNN"></a>Mask R-CNN</h1><h2 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h2><p>何凯明 Geeorgia Gkioxari Piotr Dollar Ross Girshick</p>
-<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。</p>
-<h2 id="目标检测、目标实例分割、语义分割"><a href="#目标检测、目标实例分割、语义分割" class="headerlink" title="目标检测、目标实例分割、语义分割"></a>目标检测、目标实例分割、语义分割</h2><p>如下图所示：</p>
-<center>
-![](https://img-blog.csdn.net/20171121232307984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlhbWVudGluZ3Rhbw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
-
-</center>
-
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在本文中，作者提出了一种用于目标实例分割的方法。该方法在检测目标的同时针对每一个目标实例产生一个高质量的分割蒙板。Mask R-CNN通过在Faster R-CNN现有的用于目标检测的分支的基础上添加用于目标mask预测的分支实现。</p>
+<p>首先，我们需要清楚几大计算机视觉常见问题的区别：</p>
 <ul>
-<li>图片分类<br>仅需要识别出一张图片中存在哪几类目标即可。</li>
-<li>目标检测<br>需要给出图片中目标的类别和具体位置。</li>
-<li>语义分割<br>对图片中的目标进行像素级分割，但只需要区分不同类别目标即可，统一类别的目标不需要区分。</li>
-<li>实例分割<br>对图片中的目标进行像素级分割，但需要区分不同的实例，同一类别的不同个体同样需要进行区分。</li>
+<li><p>图片分类</p>
+<p>仅需要识别出一张图片中存在哪几类目标即可。</p>
+</li>
+<li><p>目标检测</p>
+<p>需要给出图片中目标的类别和具体位置。</p>
+</li>
+<li><p>语义分割</p>
+<p>对图片中的目标进行像素级分割，但只需要区分不同类别目标即可，统一类别的目标不需要区分。</p>
+</li>
+<li><p>实例分割</p>
+<p>对图片中的目标进行像素级分割，但需要区分不同的实例，同一类别的不同个体同样需要进行区分。</p>
+</li>
 </ul>
-<h2 id="Mask-R-CNN-解决实例分割问题"><a href="#Mask-R-CNN-解决实例分割问题" class="headerlink" title="Mask R-CNN:解决实例分割问题"></a>Mask R-CNN:解决实例分割问题</h2><p><strong>R-CNN的网络结构：</strong></p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/5d9736d2-0b1a-43fa-912a-60be077b0387.jpg">
-</center>
-
-<p><strong>Fast R-CNN的网络结构：</strong></p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/b65ae552-1ac7-478c-91d8-82ae6e23d285.jpg">
-
-</center>
-
-<p><strong>Faster R-CNN的网络结构</strong></p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/b19b660d-8e82-48cf-817d-1429475f15be.jpg">
-
-</center>
-
-<p><strong>Mask R-CNN的总体框架如图所示：</strong></p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/27847427-802c-4928-8626-e535429eae7a.jpg">
-
-</center>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/d1f5ad89-4152-4cf0-b22b-6b307397dee6.jpg">
-
-</center>
-
-<p>作者在Faster R-CNN原有的用于预测目标bounding boxes的子网络的基础上，添加用于预测mask的分支，使用FCN(全卷积网络)对每一个RoI分别进行预测。Faster R-CNN并不是为网络输入与输出之间的像素级的匹配而设计的，这一问题主要是由RoIPool层的空间量化操作所导致的。为了解决这一问题，作者提出了一种简单的、无需量化的层，即RoIAlign，该层的引入极大地保证了空间位置地准确性。RoIAlign层对最终的检测结果有着极大的影响。<br>除此之外，作者发现很有必要对mask预测和类别预测进行解耦和。针对每一类分别预测一层mask，类别之间不存在竞争关系，将类别预测任务交给RoI的分类分支。</p>
-<h3 id="RoIAlign"><a href="#RoIAlign" class="headerlink" title="RoIAlign"></a>RoIAlign</h3><p>给定特征图如下所示：</p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/ee623a5f-c1f5-4a2a-98f7-4c94fa379a3a.jpg">
-
-</center>
-
-<p>传统的RoIPool层针对每一个RoI分别产生一层小的特征图。RoIPool的步骤如下：</p>
-<ol>
-<li>首先对RoI的浮点坐标、大小参数进行量化，将其对应到特征图中。<br><center><img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/bf8dcd4c-4274-44c7-ab9d-0ed1ebea64fa.jpg">
-</center></li>
-</ol>
-<p>&lt;/center&gt;</p>
-<ol>
-<li>接着经过量化的RoI将被划分为格子，针对每一个格子内部进行池化操作，进而得到固定大小的特征图。<br><center><img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/82c99a99-edf8-4c09-9e5c-b7f9ea190722.jpg">
-</center></li>
-</ol>
-<p>&lt;/center&gt;</p>
+<p>本篇论文解决的就是实例分割问题。示例如下：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot from 2019-12-31 10-17-27.png" style="zoom:67%;"></p>
+<p>相比于语义分割问题，实例分割问题更为复杂。语义分割问题只需要在语义上对像素点进行区分即可。而实例分割问题不仅需要正确地检测出所有的目标，还需要在单个目标的基础上对每一个实例进行准确的分割。在此基础上，自然而然可以将实例分割问题分为以下步骤：</p>
+<ul>
+<li>分类出单个的目标并使用边界框对这些目标进行定位；</li>
+<li>对这些识别出的目标进行分割。</li>
+</ul>
+<p>作者解决这一问题的方法是，通过在Faster R-CNN的基础上添加分割分支，对每一个RoI都以像素分割的方式额外预测一个分割掩膜。</p>
+<h2 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h2><h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p>首先给出Faster R-CNN的网络结构：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/b19b660d-8e82-48cf-817d-1429475f15be.jpg" style="zoom: 67%;"></p>
+<p>在使用RPN得到RoI区域后，Faster R-CNN会使用一步被称为RoIPool的操作从特征图中抽取到RoI区域对应的特征图信息。这里存在一个问题，由于Faster R-CNN是被设计用于目标检测的，只需要定位出目标的位置即可，因而在抽取RoI区域对应的特征图时，并没有进行严格的空间对准操作。这一细节对于目标检测影响不大，因为只要抽取出的框中基本包含目标的特征信息即可，但对于实例分割来说，就有着较大的影响。特征图空间位置未对齐会导致最终分割出的像素位置无法与原始的实例对齐，导致粗糙的分割结果。</p>
+<p>为了解决这一问题，作者提出了RoIAlign操作，这是一个在空间位置上更为精确的特征抽取操作。下图为Mask R-CNN的整体框架：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/27847427-802c-4928-8626-e535429eae7a.jpg" style="zoom:67%;"></p>
+<p>除此之外，作者发现<strong>很有必要对mask预测和类别预测进行解耦和</strong>。针对每一类分别预测一层mask，而不是所有类同时占用一个掩膜，类别之间不存在竞争关系。而是将类别预测任务交给了RoI的分类分支，在计算掩膜损失时，只计算与RoI匹配的ground truth所对应的类别所对应的预测掩膜的损失， 不计算其他类别的掩膜的损失。实验表明，这一设计对最后的结果影响很大。</p>
+<p>在进行mask预测时，为了不丢失空间特征，作者直接使用FCN预测大小为$m\times m$的掩膜。这一设计有着更少的参数，同时更为准确。但是，这一pixel to pixel的处理方法对RoI所抽取的特征的空间精确度要求更高，所抽取出的特征图需要尽可能在空间位置上与原始RoI对应。</p>
+<p>为了解决这一问题，作者提出了RoIAlign操作。</p>
+<h3 id="RoIAlign"><a href="#RoIAlign" class="headerlink" title="RoIAlign"></a>RoIAlign</h3><p>首先，给定整幅输入图像的特征图如下：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/ee623a5f-c1f5-4a2a-98f7-4c94fa379a3a.jpg" alt=""></p>
+<p>在Faster R-CNN中使用的RoIPool层是针对每一个RoI分别产生一层小的特征图。RoIPool的步骤如下：</p>
+<ul>
+<li><p>首先对RoI的浮点坐标、大小参数进行量化，将其对应到特征图中的整数坐标。 </p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/bf8dcd4c-4274-44c7-ab9d-0ed1ebea64fa.jpg" alt=""></p>
+</li>
+<li><p>接着经过量化的RoI将被划分为格子，针对每一个格子内部进行池化操作，进而得到固定大小的特征图。</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/82c99a99-edf8-4c09-9e5c-b7f9ea190722.jpg" alt=""></p>
+</li>
+</ul>
 <p>在上述操作中，共存在两步取整操作，一个是将RoI对应至特征图时，一个是对量化后的RoI进行划分。这两步取整量化操作会导致原始RoI与抽取出的特征图在空间位置上不匹配。这一问题不会对目标的分类造成大的影响，但会对mask预测造成极大的负面影响。</p>
-<p>为了解决这一问题，作者提出了RoIAlign层，RoIAlign去除了量化取整操作，使得抽取的特征图与输入图片有着精确的位置对应。对于RoI中的每一个格子，使用双线性插值法计算其对应的值，双线性插值法需要的原始值来自于格子四角位置上的值。如下图所示：</p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/86330610-af9b-4205-9736-3240e2bcadb2.jpg">
-
-</center>
-整体步骤如下：
-1. 使用浮点运算，将RoI对应至特征图的相应位置
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/2e9be7aa-3b8d-4bc1-ab91-c7a24239e866.jpg">
-
-</center>
-
-<ol>
-<li>将每一个格子划分为四个小格子<br><center><img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/6424cdaa-67a6-4774-8d71-662bbba20f6c.jpg">
-</center></li>
-</ol>
-<p>&lt;/center&gt;</p>
-<ol>
-<li>使用双线性插值法计算每一个格子的值，取四角的值为原始值<br><center>
-</center></li>
-</ol>
-<p>&lt;/center&gt;</p>
-<ol>
-<li>对每一个格子进行池化操作，得到最终结果<br><center>
-</center></li>
-</ol>
-<p>&lt;/center&gt;</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>损失函数由类别损失、边框回归损失、mask损失三部分构成，与其他方法不同，计算mask损失时，对预测的各个类别的mask分别使用sigmoid函数进行激活（而不是使用softmax函数对所有类别的mask进行激活），接着使用二维交叉熵计算损失。</p>
-<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><p>用于预测mask的子网络的结构如图所示：</p>
-<center>
-<img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/e0da9a7e-36b8-468e-8860-db023a099a91.jpg">
-
-</center>
-
+<p>为了解决这一问题，作者提出了RoIAlign层，RoIAlign去除了量化取整操作，使得抽取的特征图与输入图片有着精确的位置对应。对于RoI中的每一个格子，使用双线性插值法计算其对应的值，双线性插值法需要的原始值来自于格子四角位置上的值。如下图所示： </p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/86330610-af9b-4205-9736-3240e2bcadb2.jpg" alt=""></p>
+<p>整体步骤如下：</p>
+<ul>
+<li><p>使用浮点运算，将RoI对应至特征图的相应位置 </p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/2e9be7aa-3b8d-4bc1-ab91-c7a24239e866.jpg" alt=""></p>
+</li>
+<li><p>将每一个格子划分为四个小格子</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/6424cdaa-67a6-4774-8d71-662bbba20f6c.jpg" alt=""></p>
+</li>
+<li><p>使用双线性插值法计算每一个格子的值，取四角的值为原始值 </p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/4ab90a74-ed8e-49ee-93d6-08ebfcc44f9e.png" alt=""></p>
+</li>
+<li><p>对每一个格子进行池化操作，得到最终结果</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/6cad9bd2-e36e-4823-8430-af71c149bd85.png" alt=""></p>
+</li>
+</ul>
+<h3 id="网络结构-1"><a href="#网络结构-1" class="headerlink" title="网络结构"></a>网络结构</h3><p>用于预测mask的子网络的结构如图所示：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/e0da9a7e-36b8-468e-8860-db023a099a91.jpg" style="zoom:67%;"></p>
 <p>左侧使用resnet-c4作为前面的卷积网络，将rpn生成的roi映射到C4的输出，并进行roi pooling，最后进行分叉预测三个目标。右侧即使用Faster R-CNN加FPN的结构。</p>
-<h3 id="对比实验"><a href="#对比实验" class="headerlink" title="对比实验"></a>对比实验</h3><p>与FCIS+++的对比，如下图所示：</p>
-<p><center><br><img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/170fbc97-7e4f-44bd-bf89-dbeae157b64a.jpg"></center></p>
-<p>&lt;/center&gt;<br>在FCIS++的预测中会在目标重合位置出现一条直线，而Mask R-CNN的预测结果则没有。</p>
-<p><strong>消融实验</strong><br>结果如图所示：</p>
-<p><center><br><img src="/lun-wen-yue-du/mask-r-cnn-lun-wen-jie-du/mask-r-cnn-lun-wen-jie-du/3095a77a-a0f9-4b7f-9482-42fde3b002fd.jpg"></center></p>
-<p>&lt;/center&gt;<br>作者分别给出了不同backbone、多任务和独立任务、使用RoIAligh和不使用、使用FPN进行结果预测和使用全连接层的对比结果。</p>
+<h2 id="对比实验"><a href="#对比实验" class="headerlink" title="对比实验"></a>对比实验</h2><p>在COCO测试集上的可视化结果：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot from 2019-12-31 11-09-32.png" alt=""></p>
+<p>与其他模型在COCO test-dev上的指标对比：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/Screenshot from 2019-12-31 11-10-06.png" alt=""></p>
+<p>与FCIS+++的对比，如下图所示：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/170fbc97-7e4f-44bd-bf89-dbeae157b64a.jpg" alt=""></p>
+<p>在FCIS++的预测中会在目标重合位置出现一条直线，而Mask R-CNN的预测结果则没有。</p>
+<h2 id="消融实验"><a href="#消融实验" class="headerlink" title="消融实验"></a>消融实验</h2><p>结果如图所示：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/3095a77a-a0f9-4b7f-9482-42fde3b002fd.png" alt=""></p>
+<p>作者分别给出了不同backbone、多任务和独立任务、使用RoIAligh和不使用、使用FCN进行结果预测和使用全连接层的对比结果。</p>
 
       
     </div>
@@ -663,7 +626,9 @@
           
             <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
           
-            <a href="/tags/论文阅读/" rel="tag"># 论文阅读</a>
+            <a href="/tags/何凯明/" rel="tag"># 何凯明</a>
+          
+            <a href="/tags/实例分割/" rel="tag"># 实例分割</a>
           
         </div>
       
@@ -676,8 +641,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shen-du-xue-xi/mu-biao-jian-ce/ssd-lun-wen-yue-du-ji-he-xin-dai-ma-jie-xi/" rel="next" title="SSD论文阅读及核心代码解析">
-                <i class="fa fa-chevron-left"></i> SSD论文阅读及核心代码解析
+              <a href="/shu-ju-jie-gou-yu-suan-fa/shu-ju-jie-gou/er-cha-shu/" rel="next" title="好用又令人头大的二叉树">
+                <i class="fa fa-chevron-left"></i> 好用又令人头大的二叉树
               </a>
             
           </div>
@@ -685,10 +650,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shen-du-xue-xi/mu-biao-jian-ce/faster-r-cnn-ju-ti-shi-xian-xiang-jie/" rel="prev" title="Faster R-CNN具体实现详解">
-                Faster R-CNN具体实现详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -868,7 +829,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">18</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -904,7 +869,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mask-R-CNN"><span class="nav-number">1.</span> <span class="nav-text">Mask R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作者"><span class="nav-number">1.1.</span> <span class="nav-text">作者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内容"><span class="nav-number">1.2.</span> <span class="nav-text">内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目标检测、目标实例分割、语义分割"><span class="nav-number">1.3.</span> <span class="nav-text">目标检测、目标实例分割、语义分割</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mask-R-CNN-解决实例分割问题"><span class="nav-number">1.4.</span> <span class="nav-text">Mask R-CNN:解决实例分割问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RoIAlign"><span class="nav-number">1.4.1.</span> <span class="nav-text">RoIAlign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">1.4.2.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现细节"><span class="nav-number">1.4.3.</span> <span class="nav-text">实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对比实验"><span class="nav-number">1.4.4.</span> <span class="nav-text">对比实验</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现细节"><span class="nav-number">2.</span> <span class="nav-text">实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构"><span class="nav-number">2.1.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RoIAlign"><span class="nav-number">2.2.</span> <span class="nav-text">RoIAlign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构-1"><span class="nav-number">2.3.</span> <span class="nav-text">网络结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比实验"><span class="nav-number">3.</span> <span class="nav-text">对比实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消融实验"><span class="nav-number">4.</span> <span class="nav-text">消融实验</span></a></li></ol></div>
             
 
           </div>
@@ -945,7 +910,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">130.7k</span> 字
+      博客全站共： <span class="post-count">131k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
@@ -1126,7 +1091,66 @@
     distractionFreeMode: 'true'
   });
   gitalk.render('gitalk-container');
-</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -1145,29 +1169,7 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
-  
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-
+    
   
 
 
