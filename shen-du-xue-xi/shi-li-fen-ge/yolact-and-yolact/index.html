@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目的，作者将实例分割任务划分为两个更简">
+<meta name="keywords" content="深度学习,实例分割,实时实例分割">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当前最快的实例分割模型：YOLACT 和 YOLACT++">
+<meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/index.html">
+<meta property="og:site_name" content="MXQ">
+<meta property="og:description" content="本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目的，作者将实例分割任务划分为两个更简">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2009-57-56.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2010-34-27.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2010-35-06.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2010-42-15.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2011-43-34.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2011-00-30.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2011-01-01.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2011-04-03.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2011-05-47.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-32-39.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-33-53.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-34-39.png">
+<meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-35-05.png">
+<meta property="og:updated_time" content="2020-01-03T03:40:13.363Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="当前最快的实例分割模型：YOLACT 和 YOLACT++">
+<meta name="twitter:description" content="本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目的，作者将实例分割任务划分为两个更简">
+<meta name="twitter:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2009-57-56.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>当前最快的实例分割模型：YOLACT 和 YOLACT++ | MXQ</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/XiangqianMa/" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">MXQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Keep Moving</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MXQ">
+      <meta itemprop="description" content="Keep Thinking Keep Moving">
+      <meta itemprop="image" content="/images/image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="MXQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">当前最快的实例分割模型：YOLACT 和 YOLACT++
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-03 11:39:20 / 修改时间：11:40:13" itemprop="dateCreated datePublished" datetime="2020-01-03T11:39:20+08:00">2020-01-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/实例分割/" itemprop="url" rel="index"><span itemprop="name">实例分割</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/深度学习/实例分割/实时实例分割/" itemprop="url" rel="index"><span itemprop="name">实时实例分割</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。</p>
+<h2 id="YOLACT"><a href="#YOLACT" class="headerlink" title="YOLACT"></a>YOLACT</h2><p>这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。</p>
+<p>为了达到这一目的，作者将实例分割任务划分为两个更简单的平行任务，通过对这两个任务的结果进行融合来得到最终的实例分割结果。具体如下：</p>
+<ul>
+<li>第一分支：使用全卷积网络（FCN）作为分支来产生一些具有整个图像大小的“prototype masks”，这些prototype masks不与任何实例相关；</li>
+<li>第二分支：在目标检测分支的基础上添加额外的head，该head针对每一个anchor都预测一个掩膜系数（mask coefficients）。这些系数的作用是在prototype空间对某个实例的表示进行编码。</li>
+</ul>
+<p>最后，在使用NMS得到所有的实例后，对其中的每一个实例都通过对上述两个分支的结果进行线性组合来得到所对应的掩膜。结构如下图所示：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 09-57-56.png" alt=""></p>
+<p>作者这么做的依据在于掩膜之间是空间相关的：例如相邻的两个像素更有可能属于同一个实例。卷积层很自然地利用了这一相关性，但全连接层没有。这会导致一个问题，对于one-stage目标检测器来说，其使用全连接层来针对每一个anchor输出类别预测和box系数，无法利用到掩膜的空间相关性；而类似于Mask R-CNN的two stages方法则使用额外的定位步骤（RoI-Align）来解决这一问题，定位步骤既保留了特征图中的空间相关性，也可以使用卷积运算得到掩膜输出。但是这一做法的代价是，定位层会引入额外的计算，降低算法的运行效率。</p>
+<p>因而，将这一问题分为了两个平行的步骤：使用善于产生语义向量的全连接层来产生掩膜系数，而使用善于产生空间相关掩膜的卷积层来产生”prototype masks”。</p>
+<p>Protonet由FCN构成，其最后一层输出k个通道，每一个通道对应一个类别的prototype mask。结构如下所示。</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 10-34-27.png" style="zoom:67%;"></p>
+<p>而在进行掩膜系数预测时，作者简单地在目标检测器的class和box分支的基础上，添加第三个分支来预测k个掩膜系数，每一个系数对应一个prototype。因而，对于每一个anchor，最终产生$4+c+k$个系数。为了能够通过线性组合来得到mask，从最终的mask中减去原型mask是很重要的。换言之就是，mask系数必须有正有负。所以，在mask系数预测时使用了tanh函数进行非线性激活，因为tanh函数的值域是(-1,1)。结构如下所示。</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 10-35-06.png" style="zoom: 67%;"></p>
+<p>接着，将上述两个步骤得到的prototype mask和掩膜系数做矩阵乘法，并使用Sigmoid进行激活，便可以得到最终的实例掩膜。</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 10-42-15.png" style="zoom:67%;"></p>
+<p>其中，$P$的大小为$h\times w \times k$，$C$的大小为$n\times k$，$n$为经过NMS和阈值操作后留下的anchor。对于每一个anchor都会分别预测$k$个系数，使用这$k$个系数对$k$个prototype掩膜进行线性组合，便可以得到每一个anchor对应的掩膜。将结合过程进行可视化，如下图所示：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 11-43-34.png" alt=""></p>
+<p>左侧为各个anchor所预测的$k$个掩膜系数，而右侧针对每一个anchor，使用系数和prototype的$k$个掩膜进行线性组合得到最终的预测结果，整个思路比较简单。</p>
+<p>损失计算：有三个损失，依次是分类损失、边界框损失和掩膜损失，三个损失的权重分别为1、1.5和6.125。分类损失和边界框损失采用和SSD相同的计算方法；在计算掩膜损失时，使用的是预测掩膜和真实掩膜之间的二维交叉熵损失。</p>
+<p>最后，在进行评估时，<strong>使用预测得到的边界框对得到的掩膜进行裁剪</strong>（边界框外的掩膜被清零）；而在训练时，使用gound truth边界框对预测的掩膜进行裁剪，并对掩膜损失除以ground truth边界框的面积来照顾prototype中的小目标。</p>
+<p>除此之外，为了进一步提升速度，作者还使用Fast NMS替换了NMS算法，虽然会降低检测性能，但进一步提高了检测速度。</p>
+<h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 11-00-30.png" alt=""></p>
+<p>有着更高的大目标分割质量：由于该方法使用了大小为$138\times 138$的特征图，且直接在原始特征图上产生掩膜（没有repooling步骤），因而在大目标上有着更好的掩膜质量。</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 11-01-01.png" alt=""></p>
+<p>在COCO上的对比结果：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 11-04-03.png" alt=""></p>
+<p>一些消融实验：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-02 11-05-47.png" alt=""></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>大多数错误来自于目标检测部分：误分类、边界框误对准。但是，除此之外，掩膜生成算法部分也有两个典型的错误：</p>
+<ul>
+<li>定位失败：如果在一个场景中的某一个点上有着太多的目标，那么网络则无法在prototype中定位每一个目标。在这种情况下，网络将输出与前景掩膜更为接近的而不是这一组中的一些目标实例分割。</li>
+<li>泄露：该算法的裁剪步骤是在掩膜集成后进行的，因而无法过滤裁剪区域之外的噪声。当边界框是准确的时候，这一方法有着较好的效果，但当边界框不准确的时候，噪声将被裁剪进实例的掩膜中，导致裁剪区域之外的掩膜的泄露。同时，当预测的边界框太大时，掩膜中也会包含一些离得很远的实例掩膜。</li>
+<li>导致AP差距的原因：作者认为这一差距是由检测器相对差的性能所导致的，而不是产生masks的方法。</li>
+</ul>
+<h2 id="YOLACT-1"><a href="#YOLACT-1" class="headerlink" title="YOLACT++"></a>YOLACT++</h2><p>在YOLACT的基础上，作者进一步进行了如下修改，来得到一个准确度更高的实例分割模型。</p>
+<ul>
+<li>在backbonde网络中加入可变形卷积（deformable convolutions）；</li>
+<li>使用更好的anchor尺度和比例对prediction head进行优化；</li>
+<li>加入新的mask re-scoring支路。</li>
+</ul>
+<p>最终，在MS COCO上，YOLACT++可以获得34.1mAP和33.5fps的成绩，其精度已经非常接近SOTA模型。</p>
+<h3 id="Fast-Mask-Re-Scoring分支"><a href="#Fast-Mask-Re-Scoring分支" class="headerlink" title="Fast Mask Re-Scoring分支"></a>Fast Mask Re-Scoring分支</h3><p>对于模型来说，其分类置信度和预测的掩膜的质量之间是存在差异的。为此，作者引入了一个fast mask re-scoring分支，该分支依据所预测的掩膜与ground-truth的IoU对掩膜进行评分。具体来说，Fast Mask Re-Scoring网络由6层FCN组成，每一层卷积层之后跟一层ReLU，最后一层为全局池化层。该网络以YOLACT所输出的裁剪过的mask（未经过阈值）为输入，输出mask对于每一个目标种类的IoU。接着，将分类分支预测的类别所对应的mask IoU与相对应的类别置信度的乘积作为该mask最终的分数。</p>
+<p>与Mask Scoring R-CNN相比，作者提出的方法有以下不同：</p>
+<ul>
+<li>输入为全尺寸的图像的mask（预测框之外的区域值为0），而Mask Scoring R-CNN输入的是RoI repooled的掩膜与来自于掩膜预测分支的特征图所拼接得到的；</li>
+<li>没有全连接层，因而本方法更快，加入Fast Mask Re-Scoring分支后时间仅增加了1.2ms。</li>
+</ul>
+<h3 id="可变形卷积"><a href="#可变形卷积" class="headerlink" title="可变形卷积"></a>可变形卷积</h3><p>通过加入可变形卷积，mAP提高了1.8，速度慢了8ms。作者认为性能提升的原因有以下几点：</p>
+<ul>
+<li>通过和目标实例进行对准，使得网络可以处理不同尺度、旋转角度和比例的实例；</li>
+<li>YOLACT本身没有再采样策略，因而一个更好、更灵活的采样策略更重要。</li>
+</ul>
+<p>同时作者发现，在引入可变形卷积时需要选择合适的插入位置才能取得性能的提升。</p>
+<h3 id="对Prediction-Head进行优化"><a href="#对Prediction-Head进行优化" class="headerlink" title="对Prediction Head进行优化"></a>对Prediction Head进行优化</h3><p>YOLACT是基于anchor-based检测器的，因而选择正确的anchor超参数是很重要的。作者尝试了以下两种策略：</p>
+<ul>
+<li>保持anchor的尺度不变，增加比例的数目：$[1,\frac{1}{2},2]$到$[1,\frac{1}{2},2,\frac{1}{3},3]$；</li>
+<li>保持比例不变，将每一个FPN等级的尺度数目增加三倍（$[1\times,2^{\frac{1}{3}}\times,2^{\frac{2}{3}}\times]$）。</li>
+</ul>
+<p>上述两种方法分别将anchor的数目增加为原来的$\frac{5}{3}\times$和$3\times$。</p>
+<h3 id="实验结果-1"><a href="#实验结果-1" class="headerlink" title="实验结果"></a>实验结果</h3><p>下图为YOLACT和YOLACT++的实验结果对比：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-03 11-32-39.png" alt=""></p>
+<p>下表为加入改进措施后的性能提升：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-03 11-33-53.png" alt=""></p>
+<p>不同尺度的结果：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-03 11-34-39.png" alt=""></p>
+<p>可变形卷积的不同插入位置的结果对比：</p>
+<p><img src="/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot from 2020-01-03 11-35-05.png" alt=""></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://arxiv.org/abs/1904.02689" target="_blank" rel="noopener">YOLACT: Real-time Instance Segmentation</a></li>
+<li><a href="https://arxiv.org/abs/1912.06218" target="_blank" rel="noopener">YOLOACT++ Better Real-time Instance Segmentation</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/实例分割/" rel="tag"># 实例分割</a>
+          
+            <a href="/tags/实时实例分割/" rel="tag"># 实时实例分割</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shen-du-xue-xi/shi-li-fen-ge/mask-r-cnn/" rel="next" title="Mask R-CNN解读">
+                <i class="fa fa-chevron-left"></i> Mask R-CNN解读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/image.jpg" alt="MXQ">
+            
+              <p class="site-author-name" itemprop="name">MXQ</p>
+              <p class="site-description motion-element" itemprop="description">Keep Thinking Keep Moving</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">56</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLACT"><span class="nav-number">1.</span> <span class="nav-text">YOLACT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验结果"><span class="nav-number">1.1.</span> <span class="nav-text">实验结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLACT-1"><span class="nav-number">2.</span> <span class="nav-text">YOLACT++</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-Mask-Re-Scoring分支"><span class="nav-number">2.1.</span> <span class="nav-text">Fast Mask Re-Scoring分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变形卷积"><span class="nav-number">2.2.</span> <span class="nav-text">可变形卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对Prediction-Head进行优化"><span class="nav-number">2.3.</span> <span class="nav-text">对Prediction Head进行优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验结果-1"><span class="nav-number">2.4.</span> <span class="nav-text">实验结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count">133.4k</span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MXQ</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '7cf4fc787f067d6dee7f',
+    clientSecret: 'a2a33207ac87439208ed09d72fd8a3c485c9e6e7',
+    repo: 'GitTalk',
+    owner: 'xiangqianma',
+    admin: ['xiangqianma'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end --></body>
+</html>
