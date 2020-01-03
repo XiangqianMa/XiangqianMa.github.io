@@ -96,13 +96,13 @@
 
 
 
-  <meta name="description" content="本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目的，作者将实例分割任务划分为两个更简">
+  <meta name="description" content="版权所有，如需转载请联系作者。  本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目">
 <meta name="keywords" content="深度学习,实例分割,实时实例分割">
 <meta property="og:type" content="article">
 <meta property="og:title" content="当前最快的实例分割模型：YOLACT 和 YOLACT++">
 <meta property="og:url" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/index.html">
 <meta property="og:site_name" content="MXQ">
-<meta property="og:description" content="本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目的，作者将实例分割任务划分为两个更简">
+<meta property="og:description" content="版权所有，如需转载请联系作者。  本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2009-57-56.png">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2010-34-27.png">
@@ -117,10 +117,10 @@
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-33-53.png">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-34-39.png">
 <meta property="og:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-03%2011-35-05.png">
-<meta property="og:updated_time" content="2020-01-03T03:40:13.363Z">
+<meta property="og:updated_time" content="2020-01-03T03:42:14.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="当前最快的实例分割模型：YOLACT 和 YOLACT++">
-<meta name="twitter:description" content="本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目的，作者将实例分割任务划分为两个更简">
+<meta name="twitter:description" content="版权所有，如需转载请联系作者。  本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。 YOLACT这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。 为了达到这一目">
 <meta name="twitter:image" content="http://xiangqianma.github.io/shen-du-xue-xi/shi-li-fen-ge/yolact-and-yolact/Screenshot%20from%202020-01-02%2009-57-56.png">
 
 
@@ -453,7 +453,7 @@
                 
               
 
-              <time title="创建时间：2020-01-03 11:39:20 / 修改时间：11:40:13" itemprop="dateCreated datePublished" datetime="2020-01-03T11:39:20+08:00">2020-01-03</time>
+              <time title="创建时间：2020-01-03 11:39:20 / 修改时间：11:42:14" itemprop="dateCreated datePublished" datetime="2020-01-03T11:39:20+08:00">2020-01-03</time>
             
 
             
@@ -531,7 +531,10 @@
       
 
       
-        <p>本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。</p>
+        <blockquote>
+<p>版权所有，如需转载请联系作者。</p>
+</blockquote>
+<p>本文是最近新出的实时实例分割的两篇论文的学习笔记，这两篇论文的方法代表目前实时实例分割的最高结果。</p>
 <h2 id="YOLACT"><a href="#YOLACT" class="headerlink" title="YOLACT"></a>YOLACT</h2><p>这篇文章的目标是解决实例分割的实时性问题。通过在现有one-stage目标检测模型的基础上添加mask分支来解决这一问题。与Mask R-CNN等明显使用特征定位步骤（特征repooling）的方法不同，在YOLACT中并不存在这一步。</p>
 <p>为了达到这一目的，作者将实例分割任务划分为两个更简单的平行任务，通过对这两个任务的结果进行融合来得到最终的实例分割结果。具体如下：</p>
 <ul>
@@ -1157,7 +1160,24 @@
 .MathJax_Display {
   overflow: auto hidden;
 }
-</style>
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
     
   
@@ -1179,22 +1199,5 @@
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
